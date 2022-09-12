@@ -10,8 +10,8 @@ export default async function index(
     switch (method) {
         case 'GET':
             try {
-                const responce = await prisma.user.findMany();
-                return res.status(200).json(responce)
+                const response = await prisma.user.findMany({ where: { active: true } });
+                return res.status(200).json(response)
             } catch (error: any) {
                 return res.status(500).json({ error: error.message });
             }
@@ -19,8 +19,8 @@ export default async function index(
             if (!name || !mail || !description) return res.status(400).json({ msg: 'faltan datos intenta de nuevo ' })
             let user: User = { name, mail, description };
             try {
-                const responce = await prisma.user.create({ data: user });
-                return res.status(201).json(responce);
+                const response = await prisma.user.create({ data: user });
+                return res.status(201).json(response);
             } catch (error: any) {
                 return res.status(500).json({ error: error.message, name, mail, description });
             }

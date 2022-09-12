@@ -11,9 +11,11 @@ export default async function index(
         case 'GET':
             try {
                 const response = await prisma.user.findUnique({ where: { id: id.toString() } });
-                response?.active
-                    ? res.status(200).json(response)
-                    : res.status(404).json({ msg: 'Usuario inactivo contacta con el admin' });
+                if(response.active) {
+                    return res.status(200).json(response)
+                } else {
+                    return res.status(404).json({ msg: 'Usuario inactivo contacta con el admin' });
+                }
             } catch (error: any) {
                 return res.status(500).json({ error: error.message });
             }
@@ -22,9 +24,12 @@ export default async function index(
             let user: UserUpdate = { name, description };
             try {
                 const response = await prisma.user.update({ where: { id: id.toString() }, data: user });
-                response?.active
-                    ? res.status(201).json(response)
-                    : res.status(404).json({ msg: 'Usuario inactivo contacta con el admin' });
+                console.log(response)
+                if(response.active) {
+                    return res.status(201).json(response);
+                } else {
+                    return res.status(404).json({ msg: 'Usuario inactivo contacta con el admin' });
+                }
             } catch (error: any) {
                 return res.status(500).json({ error: error.message, name, description });
             }

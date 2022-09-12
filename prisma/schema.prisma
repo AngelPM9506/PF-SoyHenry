@@ -26,6 +26,7 @@ model User {
   urlInstagram String?        @db.VarChar()
   trips        Trip[]
   useOnTrip    UsersOnTrips[]
+  active       Boolean        @default(true)
 }
 
 model Trip {

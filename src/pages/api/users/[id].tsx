@@ -11,7 +11,9 @@ export default async function index(
         case 'GET':
             try {
                 const responce = await prisma.user.findUnique({ where: { id: id } });
-                return res.status(200).json(responce)
+                responce?.active
+                    ? res.status(200).json(responce)
+                    : res.status(404).json({ msg: 'Usuario inactivo contacta con el admin' });
             } catch (error: any) {
                 return res.status(500).json({ error: error.message });
             }
@@ -20,12 +22,19 @@ export default async function index(
             let user: UserUpdate = { name, description };
             try {
                 const responce = await prisma.user.update({ where: { id: id }, data: user });
-                return res.status(201).json(responce);
+                responce?.active
+                    ? res.status(201).json(responce)
+                    : res.status(404).json({ msg: 'Usuario inactivo contacta con el admin' });
             } catch (error: any) {
                 return res.status(500).json({ error: error.message, name, description });
             }
         case 'DELETE':
-            res.status(404).send('Por modificar la tabla para no borrar el usuario como tal');
+            try {
+                const responce = await prisma.user.update({ where: { id: id }, data: { active: false } });
+                res.status(200).json({ User: responce, msg: 'Cuanta suspendida' })
+            } catch (error: any) {
+                return res.status(500).json({ error: error.message, name, description });
+            }
         default:
             res.status(400).send('metodo no soposrtado intenta de nuevo')
             break;

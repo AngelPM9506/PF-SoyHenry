@@ -7,9 +7,24 @@ import {
   Stack,
   Image,
   Button,
+  Link,
+  Highlight,
 } from "@chakra-ui/react";
+// import {
+//   Previous,
+//   Paginator,
+//   PageGroup,
+//   Page,
+//   Next,
+//   generatePages
+// } from 'chakra-paginator'; ESTARIA BUENO PODER HACER EL PAGINADO CON CHAKRA
+import next from "next";
 
-export function TripCard(props: any) {
+const defaultpic: string =
+  "https://drive.google.com/uc?id=1YZhzZFB0nRQuLLzmFVq13upFeZQo5CLd";
+
+export function TripCard({ props }: any) {
+  console.log(props);
   return (
     <Center key={props.id} py={12}>
       <Box
@@ -27,7 +42,7 @@ export function TripCard(props: any) {
           rounded={"lg"}
           mt={-12}
           pos={"relative"}
-          height={"230px"}
+          height={"300px"}
           _after={{
             transition: "all .3s ease",
             content: '""',
@@ -47,31 +62,41 @@ export function TripCard(props: any) {
         >
           <Image
             rounded={"lg"}
-            height={230}
+            height={260}
             width={282}
             objectFit={"cover"}
-            src={props.image}
+            src={props.image ? props.image : defaultpic}
           />
         </Box>
-        <Stack pt={10} align={"center"}>
-          <Heading fontSize={"2xl"} fontFamily={"body"} fontWeight={500}>
+        <Stack pt={10} height={"120px"} align={"center"}>
+          <Heading
+            fontSize={"2xl"}
+            fontFamily={"body"}
+            fontWeight={600}
+            textAlign={"center"}
+          >
             {props.name}
           </Heading>
-          <Stack direction={"row"} align={"center"}>
-            <Text fontWeight={800} fontSize={"xl"}>
-              Duration: from {props.initDate} to {props.endDate}
-            </Text>
-            {/* <Text fontWeight={800} fontSize={"xl"}>
+        </Stack>
+        <Stack direction={"row"} align={"center"}>
+          <Text fontWeight={400} fontSize={"xl"}>
+            Duration: from {props.initDate.slice(0, 10)} to{" "}
+            {props.endDate.slice(0, 10)}
+          </Text>
+        </Stack>
+        {/* <Text fontWeight={800} fontSize={"xl"}>
               N of Travelers: {props.tripOnUser.length}
             </Text>
             <Text fontWeight={800} fontSize={"xl"}>
               Activities: {props.activities.map((a: any) => a.name)}
             </Text> */}
-            <Text fontWeight={800} fontSize={"xl"}>
-              {props.price}
-            </Text>
-          </Stack>
+
+        <Stack>
+          <Text fontWeight={700} fontSize={"xl"}>
+            $ {props.price}
+          </Text>
         </Stack>
+        <Link href={`/trips/${props.id}`}> See more info of this trip </Link>
         <Button
           w={"full"}
           mt={8}
@@ -83,7 +108,7 @@ export function TripCard(props: any) {
             boxShadow: "lg",
           }}
         >
-          Join the Trip!
+          <Link href={`/pasarella`}> Join the Trip! </Link>
         </Button>
       </Box>
     </Center>

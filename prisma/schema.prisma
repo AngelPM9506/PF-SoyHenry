@@ -66,5 +66,6 @@ model city {
   name        String @unique @db.VarChar()
   country     String @db.VarChar()
   population  Int
-  coordinates Int[]
+  latitude Float
+  longitude Float
 }

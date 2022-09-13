@@ -11,7 +11,7 @@ import {
 
 export function TripCard(props: any) {
   return (
-    <Center py={12}>
+    <Center key={props.id} py={12}>
       <Box
         role={"group"}
         p={6}
@@ -61,12 +61,12 @@ export function TripCard(props: any) {
             <Text fontWeight={800} fontSize={"xl"}>
               Duration: from {props.initDate} to {props.endDate}
             </Text>
-            <Text fontWeight={800} fontSize={"xl"}>
+            {/* <Text fontWeight={800} fontSize={"xl"}>
               N of Travelers: {props.tripOnUser.length}
             </Text>
             <Text fontWeight={800} fontSize={"xl"}>
               Activities: {props.activities.map((a: any) => a.name)}
-            </Text>
+            </Text> */}
             <Text fontWeight={800} fontSize={"xl"}>
               {props.price}
             </Text>

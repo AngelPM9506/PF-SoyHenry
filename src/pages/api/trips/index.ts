@@ -31,7 +31,7 @@ export default async function index(
             let initialDate = new Date(initDate)
             let finishDate = new Date(endDate)
             try {
-                const response = await prisma.Trip.create({
+                const response = await prisma.trip.create({
                     data: {
                         name: name,
                         initDate: initialDate,

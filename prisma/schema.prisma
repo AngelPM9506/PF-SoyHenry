@@ -59,13 +59,16 @@ model Activity {
   image        String?  @db.VarChar()
   description  String   @db.Text
   price        Float
+  city         city?    @relation(fields: [cityId], references: [id])
+  cityId       String?
 }
 
 model city {
-  id          String @id @default(cuid())
-  name        String @unique @db.VarChar()
-  country     String @db.VarChar()
-  population  Int
-  latitude Float
-  longitude Float
+  id         String     @id @default(cuid())
+  name       String     @unique @db.VarChar()
+  country    String     @db.VarChar()
+  population Int
+  latitude   Float
+  longitude  Float
+  activity   Activity[]
 }

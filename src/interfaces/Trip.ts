@@ -3,7 +3,6 @@ export interface Trip {
   name: String;
   initDate: string;
   endDate: string;
-  planner: object;
   plannerId: String;
   tripOnUser: object[];
   description: String;

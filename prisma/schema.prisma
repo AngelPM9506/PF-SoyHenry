@@ -60,14 +60,18 @@ model Activity {
   description  String       @db.Text
   price        Float
   active       Boolean?      @default(true)
+  city         city?    @relation(fields: [cityId], references: [id])
+  cityId       String?
 }
 
 model city {
-  id          String @id @default(cuid())
-  name        String @unique @db.VarChar()
-  country     String @db.VarChar()
-  population  Int
-  coordinates Int[]
+  id         String     @id @default(cuid())
+  name       String     @unique @db.VarChar()
+  country    String     @db.VarChar()
+  population Int
+  latitude   Float
+  longitude  Float
+  activity   Activity[]
 }
 
 enum availability {

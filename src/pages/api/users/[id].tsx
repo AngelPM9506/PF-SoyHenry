@@ -14,13 +14,13 @@ export default async function index(
                 if (response.active) {
                     return res.status(200).json(response)
                 } else {
-                    return res.status(404).json({ msg: 'Usuario inactivo contacta con el admin' });
+                    return res.status(404).json({ msg: 'Inactive user contact the admin' });
                 }
             } catch (error: any) {
                 return res.status(500).json({ error: error.message });
             }
         case 'PUT':
-            if (!name && !description) return res.status(400).json({ msg: 'faltan datos intenta de nuevo ' })
+            if (!name && !description) return res.status(400).json({ msg: 'Missing data, try again' })
             let user: UserUpdate = { name, description };
             try {
                 const response = await prisma.user.update({ where: { id: id.toString() }, data: user });
@@ -28,7 +28,7 @@ export default async function index(
                 if (response.active) {
                     return res.status(201).json(response);
                 } else {
-                    return res.status(404).json({ msg: 'Usuario inactivo contacta con el admin' });
+                    return res.status(404).json({ msg: 'Inactive user contact the admin' });
                 }
             } catch (error: any) {
                 return res.status(500).json({ error: error.message, name, description });
@@ -36,12 +36,12 @@ export default async function index(
         case 'DELETE':
             try {
                 const response = await prisma.user.update({ where: { id: id.toString() }, data: { active: false } });
-                res.status(200).json({ User: response, msg: 'Cuanta suspendida' })
+                res.status(200).json({ User: response, msg: 'Suspendeed acount' })
             } catch (error: any) {
                 return res.status(500).json({ error: error.message, name, description });
             }
         default:
-            res.status(400).send('metodo no soposrtado intenta de nuevo')
+            res.status(400).send('Method not supported try again')
             break;
     }
 }

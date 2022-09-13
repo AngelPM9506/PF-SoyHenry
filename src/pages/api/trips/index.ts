@@ -16,7 +16,7 @@ export default async function index(
                 return res.status(500).json({ error: error.message });
             }
         case 'POST':
-            if (!name || !initDate || !endDate || !description || !price || !planner) return res.status(400).json({ msg: 'faltan datos intenta de nuevo ' })
+            if (!name || !initDate || !endDate || !description || !price || !planner) return res.status(400).json({ msg: 'Missing data, try again' })
             // planner debe ser el id del usuario que esta creando el viaje
             /*
             {
@@ -47,7 +47,7 @@ export default async function index(
                 return res.status(500).json({ error: error.message, name, description });
             }
         default:
-            res.status(400).send('metodo no soportado intenta de nuevo')
+            res.status(400).send('Method not supported try again')
             break;
     }
 }

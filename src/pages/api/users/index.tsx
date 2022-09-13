@@ -16,7 +16,7 @@ export default async function index(
                 return res.status(500).json({ error: error.message });
             }
         case 'POST':
-            if (!name || !mail || !description) return res.status(400).json({ msg: 'faltan datos intenta de nuevo ' })
+            if (!name || !mail || !description) return res.status(400).json({ msg: 'Missing data, try again' })
             let user: User = { name, mail, description };
             try {
                 const response = await prisma.user.create({ data: user });
@@ -25,7 +25,7 @@ export default async function index(
                 return res.status(500).json({ error: error.message, name, mail, description });
             }
         default:
-            res.status(400).send('metodo no soposrtado intenta de nuevo')
+            res.status(400).send('Metohd not supported try again')
             break;
     }
 }

@@ -17,7 +17,7 @@ const id = async (
             break;
         case 'PUT':
             try {
-                if (!active && !description) return res.status(400).json({ msg: 'faltan datos intenta de nuevo ' });
+                if (!active && !description) return res.status(400).json({ msg: 'Missing data try again' });
                 let trip = await prisma.trip.findUnique({ where: { id: id.toString() } });
                 let condition = {
                     where: {
@@ -41,7 +41,7 @@ const id = async (
         // case 'DELETE':
         //     break;
         default:
-            res.status(400).send('metodo no soportado intenta de nuevo');
+            res.status(400).send('Method not supported try again');
             break;
     }
 }

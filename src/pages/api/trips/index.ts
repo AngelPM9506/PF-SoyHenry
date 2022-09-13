@@ -6,7 +6,7 @@ export default async function index(
     req: NextApiRequest,
     res: NextApiResponse
 ) {
-    const { method, body: { name, initDate, endDate, planner, description, price} } = req;
+    const { method, body: { name, initDate, endDate, planner, description, price } } = req;
     switch (method) {
         case 'GET':
             try {
@@ -31,7 +31,7 @@ export default async function index(
             let initialDate = new Date(initDate)
             let finishDate = new Date(endDate)
             try {
-                const response = await prisma.Trip.create({ 
+                const response = await prisma.Trip.create({
                     data: {
                         name: name,
                         initDate: initialDate,
@@ -39,7 +39,7 @@ export default async function index(
                         description: description,
                         price: price,
                         plannerId: planner
-                    } 
+                    }
                 });
                 return res.status(201).json(response);
             } catch (error: any) {

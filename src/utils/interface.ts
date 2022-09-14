@@ -1,4 +1,18 @@
+export interface Trip {
+  id?: String;
+  name: String;
+  initDate: String;
+  cities?: String[];
+  endDate: String;
+  plannerId?: String;
+  tripOnUser: Object[];
+  description: String;
+  image?: String;
+  price: Number;
+}
+
 export interface User {
+
   name: string;
   mail: string;
   avatar: string;
@@ -6,10 +20,11 @@ export interface User {
 }
 
 export interface UserUpdate {
-  name: string;
-  description: string;
-  mail: string
+  name: String;
+  mail: String;
+  description: String;
 }
+
 
 
 export interface Activity {
@@ -59,4 +74,3 @@ export interface CityInDB {
 	latitude: number,
 	longitude: number
 }
-

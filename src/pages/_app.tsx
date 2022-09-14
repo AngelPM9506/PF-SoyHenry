@@ -6,10 +6,6 @@ import { myTheme } from "src/styles/theme";
 import { useEffect, useState } from "react";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
-
-
-
-
 function MyApp({ Component, pageProps }: AppProps) {
 	const queryClient = new QueryClient();
 	const [showChild, setShowChild] = useState(false);
@@ -17,24 +13,22 @@ function MyApp({ Component, pageProps }: AppProps) {
 		setShowChild(true);
 	}, []);
 
-	if (!showChild) {
-		return null;
-	}
-	if (typeof window === "undefined") {
-		return <></>;
-	} else {
-		return (
-			<QueryClientProvider client={queryClient}>
-				<ChakraProvider>
-					<UserProvider>
-						<Component {...pageProps} />
-						<ReactQueryDevtools />
-					</UserProvider>
-				</ChakraProvider>
-			</QueryClientProvider>
-		);
-	}
+  if (!showChild) {
+    return null;
+  }
+   if (typeof window === "undefined") {
+    return <></>;
+  } else {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <ChakraProvider>
+        <UserProvider>
+          <Component {...pageProps} />
+          <ReactQueryDevtools />
+        </UserProvider>
+      </ChakraProvider>
+    </QueryClientProvider>
+  );
+  }
 }
-
-
 export default MyApp;

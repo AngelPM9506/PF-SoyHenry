@@ -1,6 +1,6 @@
-import { NextApiRequest, NextApiResponse } from "next";
-import prisma from "src/utils/prisma";
-import { UserData } from "src/components/UserProfile";
+import { NextApiRequest, NextApiResponse } from 'next';
+import prisma from 'src/utils/prisma';
+import { UserData } from 'src/components/UserProfile';
 
 export default async function index(req: NextApiRequest, res: NextApiResponse) {
   const {
@@ -19,7 +19,7 @@ export default async function index(req: NextApiRequest, res: NextApiResponse) {
   } = req;
 
   switch (method) {
-    case "GET":
+    case 'GET':
       try {
         const response = await prisma.user.findUnique({
           where: { id: id?.toString() },
@@ -29,14 +29,14 @@ export default async function index(req: NextApiRequest, res: NextApiResponse) {
         } else {
           return res
             .status(404)
-            .json({ msg: "Inactive user contact the admin" });
+            .json({ msg: 'Inactive user contact the admin' });
         }
       } catch (error: any) {
         return res.status(500).json({ error: error.message });
       }
-    case "PUT":
+    case 'PUT':
       if (!name || !description || !mail)
-        return res.status(400).json({ msg: "Missing data, try again" });
+        return res.status(400).json({ msg: 'Missing data, try again' });
       let user: UserData = {
         name,
         description,
@@ -60,27 +60,27 @@ export default async function index(req: NextApiRequest, res: NextApiResponse) {
         } else {
           return res
             .status(404)
-            .json({ msg: "Inactive user contact the admin" });
+            .json({ msg: 'Inactive user contact the admin' });
         }
       } catch (error: any) {
         return res
           .status(500)
           .json({ error: error.message, name, description });
       }
-    case "DELETE":
+    case 'DELETE':
       try {
         const response = await prisma.user.update({
           where: { id: id?.toString() },
           data: { active: false },
         });
-        res.status(200).json({ User: response, msg: "Suspendeed acount" });
+        res.status(200).json({ User: response, msg: 'Suspendeed acount' });
       } catch (error: any) {
         return res
           .status(500)
           .json({ error: error.message, name, description });
       }
     default:
-      res.status(400).send("Method not supported try again");
+      res.status(400).send('Method not supported try again');
       break;
   }
 }

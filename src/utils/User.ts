@@ -1,5 +1,5 @@
-import axios from "axios";
-import { UserData } from "src/components/UserProfile";
+import axios from 'axios';
+import { UserData } from 'src/components/UserProfile';
 export interface UserAuth0 {
   user?: {
     name?: string;
@@ -14,11 +14,11 @@ export interface UserAuth0 {
   description?: string;
 }
 export const getOrCreateUser = async (user: UserAuth0) => {
-  const userDb: UserData = await axios.post("/api/users", {
+  const userDb: UserData = await axios.post('/api/users', {
     name: user.name,
     mail: user.email,
     avatar: user.picture,
-    description: "asd",
+    description: '',
   });
 
   return userDb;

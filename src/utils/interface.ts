@@ -1,10 +1,23 @@
+export interface Trip {
+  id?: String;
+  name: String;
+  initDate: String;
+  cities?: String[];
+  endDate: String;
+  plannerId?: String;
+  tripOnUser: Object[];
+  description: String;
+  image?: String;
+  price: Number;
+}
+
 export interface User {
-    name: string;
-    mail: string;
-    description: string;
+  name: String;
+  mail: String;
+  description: String;
 }
 
 export interface UserUpdate {
-    name: string;
-    description: string;
+  name: String;
+  description: String;
 }

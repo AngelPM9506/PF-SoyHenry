@@ -13,6 +13,7 @@ import {
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import UploadImgInput from "src/components/uploadImg";
 import { useState } from "react";
+import Layout from "src/components/layout/Layout";
 
 const CreateTrip = () => {
   const [input, setInput] = useState({

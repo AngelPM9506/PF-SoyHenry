@@ -17,7 +17,7 @@ model User {
   id           String         @id @default(cuid())
   name         String         @db.VarChar()
   mail         String         @unique
-  description  String?         @db.Text
+  description  String?        @db.Text
   isAdmin      Boolean        @default(false)
   avatar       String?        @db.VarChar()
   keyWords     String?        @db.VarChar()
@@ -59,8 +59,8 @@ model Activity {
   image        String?      @db.VarChar()
   description  String       @db.Text
   price        Float
-  active       Boolean?      @default(true)
-  city         city?    @relation(fields: [cityId], references: [id])
+  active       Boolean?     @default(true)
+  city         city?        @relation(fields: [cityId], references: [id])
   cityId       String?
 }
 

@@ -25,7 +25,6 @@ export const getOrCreateUser = async (user: UserAuth0) => {
 };
 
 export const updateUser = async (user: UserData) => {
-  console.log(user.urlTiktok, user.urlFaceBook);
   const userDb = await axios.put(`/api/users/:${user.mail}`, {
     name: user.name,
     mail: user.mail,

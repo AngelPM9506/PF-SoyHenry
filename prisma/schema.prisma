@@ -53,18 +53,40 @@ model UsersOnTrips {
 }
 
 model Activity {
-  id           String   @id @default(cuid())
-  name         String   @unique @db.VarChar()
-  availability String[]
-  image        String?  @db.VarChar()
-  description  String   @db.Text
+  id           String       @id @default(cuid())
+  name         String       @unique @db.VarChar()
+  availability availability @default(Monday)
+  image        String?      @db.VarChar()
+  description  String       @db.Text
   price        Float
+  active       Boolean?      @default(true)
+  city         city?    @relation(fields: [cityId], references: [id])
+  cityId       String?
 }
 
 model city {
-  id          String @id @default(cuid())
-  name        String @unique @db.VarChar()
-  country     String @db.VarChar()
-  population  Int
-  coordinates Int[]
+  id         String     @id @default(cuid())
+  name       String     @unique @db.VarChar()
+  country    String     @db.VarChar()
+  population Int
+  latitude   Float
+  longitude  Float
+  activity   Activity[]
+}
+
+enum availability {
+  Monday
+  Tuesday
+  Wednesday
+  Thursday
+  Friday
+  Saturday
+  Sunday
+}
+
+// propuesta extra
+
+enum Roll {
+  User
+  Admin
 }

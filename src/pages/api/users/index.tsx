@@ -22,7 +22,17 @@ export default async function index(req: NextApiRequest, res: NextApiResponse) {
         return res.status(400).json({ msg: 'Missing data, try again' });
       let user: User = { name, mail, description, avatar };
       try {
-        const response = await prisma.user.upsert({
+         if(mail === 'admin@gmail.com'){
+                    const response = await prisma.user.create({ 
+                        data: {
+                            name: name, 
+                            mail: mail, 
+                            description: description,
+                            isAdmin: true 
+                    }});
+                    return res.status(201).json(response);
+                } else { 
+          const response = await prisma.user.upsert({
           where: { mail: mail },
           update: {},
           create: {
@@ -33,7 +43,8 @@ export default async function index(req: NextApiRequest, res: NextApiResponse) {
           },
         });
         return res.status(201).json(response);
-      } catch (error: any) {
+      } }
+       catch (error: any) {
         return res
           .status(500)
           .json({ error: error.message, name, mail, description });
@@ -42,4 +53,3 @@ export default async function index(req: NextApiRequest, res: NextApiResponse) {
       res.status(400).send('Metohd not supported try again');
       break;
   }
-}

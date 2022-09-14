@@ -10,6 +10,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { motion, useAnimation } from "framer-motion";
+import { NextComponentType } from "next";
 
 const first = {
   rest: {
@@ -105,7 +106,7 @@ const PreviewImage = forwardRef<BoxProps, typeof Box>((props, ref) => {
   );
 });
 
-const UploadImgInput = () => {
+const UploadImgInput: NextComponentType = () => {
   const controls = useAnimation();
   const startAnimation = () => controls.start("hover");
   const stopAnimation = () => controls.stop();

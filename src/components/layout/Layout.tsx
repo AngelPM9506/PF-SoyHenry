@@ -1,15 +1,17 @@
 import Footer from "./Footer";
 import Nav from "./Nav";
-import {
-    Container,
-} from "@chakra-ui/react";
+import { Container } from "@chakra-ui/react";
 
-export default function Layaut({children}: {children: JSX.Element | JSX.Element[]}) {
-    return (
-        <Container>
-            <Nav/>
-            {children}
-            <Footer/>        
-        </Container>
-    )
+export default function Layout({
+  children,
+}: {
+  children: JSX.Element | JSX.Element[];
+}) {
+  return (
+    <>
+      <Nav />
+      {children}
+      <Footer />
+    </>
+  );
 }

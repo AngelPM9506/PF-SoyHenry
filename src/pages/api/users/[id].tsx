@@ -1,47 +1,87 @@
-import { NextApiRequest, NextApiResponse } from "next"
+import { NextApiRequest, NextApiResponse } from "next";
 import prisma from "src/utils/prisma";
 import { UserUpdate } from "src/utils/interface";
+import { UserData } from "src/components/UserProfile";
 
-export default async function index(
-    req: NextApiRequest,
-    res: NextApiResponse
-) {
-    const { method, body: { name, description }, query: { id } } = req;
-    switch (method) {
-        case 'GET':
-            try {
-                const response = await prisma.user.findUnique({ where: { id: id.toString() } });
-                if (response.active) {
-                    return res.status(200).json(response)
-                } else {
-                    return res.status(404).json({ msg: 'Inactive user contact the admin' });
-                }
-            } catch (error: any) {
-                return res.status(500).json({ error: error.message });
-            }
-        case 'PUT':
-            if (!name && !description) return res.status(400).json({ msg: 'Missing data, try again' })
-            let user: UserUpdate = { name, description };
-            try {
-                const response = await prisma.user.update({ where: { id: id.toString() }, data: user });
-                console.log(response)
-                if (response.active) {
-                    return res.status(201).json(response);
-                } else {
-                    return res.status(404).json({ msg: 'Inactive user contact the admin' });
-                }
-            } catch (error: any) {
-                return res.status(500).json({ error: error.message, name, description });
-            }
-        case 'DELETE':
-            try {
-                const response = await prisma.user.update({ where: { id: id.toString() }, data: { active: false } });
-                res.status(200).json({ User: response, msg: 'Suspendeed acount' })
-            } catch (error: any) {
-                return res.status(500).json({ error: error.message, name, description });
-            }
-        default:
-            res.status(400).send('Method not supported try again')
-            break;
-    }
+export default async function index(req: NextApiRequest, res: NextApiResponse) {
+  const {
+    method,
+    body: {
+      name,
+      description,
+      mail,
+      avatar,
+      keyWords,
+      urlTiktok,
+      urlInstagram,
+      urlFaceBook,
+    },
+    query: { id },
+  } = req;
+
+  switch (method) {
+    case "GET":
+      try {
+        const response = await prisma.user.findUnique({
+          where: { id: id?.toString() },
+        });
+        if (response.active) {
+          return res.status(200).json(response);
+        } else {
+          return res
+            .status(404)
+            .json({ msg: "Inactive user contact the admin" });
+        }
+      } catch (error: any) {
+        return res.status(500).json({ error: error.message });
+      }
+    case "PUT":
+      if (!name || !description || !mail)
+        return res.status(400).json({ msg: "Missing data, try again" });
+      let user: UserData = {
+        name,
+        description,
+        mail,
+        avatar,
+        urlTiktok,
+        urlInstagram,
+        urlFaceBook,
+        keyWords,
+      };
+
+      try {
+        console.log(urlTiktok);
+        const response = await prisma.user.update({
+          where: { mail: mail },
+          data: user,
+        });
+        console.log(response);
+        if (response.active) {
+          return res.status(201).json(response);
+        } else {
+          return res
+            .status(404)
+            .json({ msg: "Inactive user contact the admin" });
+        }
+      } catch (error: any) {
+        return res
+          .status(500)
+          .json({ error: error.message, name, description });
+      }
+    case "DELETE":
+      try {
+        const response = await prisma.user.update({
+          where: { id: id?.toString() },
+          data: { active: false },
+        });
+        res.status(200).json({ User: response, msg: "Suspendeed acount" });
+      } catch (error: any) {
+        return res
+          .status(500)
+          .json({ error: error.message, name, description });
+      }
+    default:
+      res.status(400).send("Method not supported try again");
+      break;
+  }
 }

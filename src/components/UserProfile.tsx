@@ -16,28 +16,32 @@ import {
 } from "@chakra-ui/react";
 import { SmallCloseIcon } from "@chakra-ui/icons";
 import React, { useState } from "react";
-
+import { getOrCreateUser, updateUser, UserAuth0 } from "src/utils/updateUser";
+import { useQuery } from "react-query";
 export interface UserData {
   name: string;
-  email: string;
+  email?: string;
+  picture?: string;
+  mail: string;
   description: string;
   avatar: string;
-  tiktok?: string;
-  facebook?: string;
-  instagram?: string;
-  keywords?: string;
+  urlTiktok?: string;
+  urlFaceBook?: string;
+  urlInstagram?: string;
+  keyWords?: string;
   trips?: string[];
 }
 
-export const UserProfile = ({ user }: any) => {
-  const defaultData: UserData = {
-    name: user.name,
-    email: user.email,
-    avatar: user.picture,
+export const UserProfile = ({ user }: UserAuth0 | any) => {
+  const defaultData = {
+    name: user.data.name,
+    mail: user.data.mail,
+    avatar: user.data.avatar,
     description: "",
-    tiktok: "",
-    facebook: "",
-    instagram: "",
+    urlTiktok: "",
+    urlFaceBook: "",
+    urlInstagram: "",
+    keyWords: "",
   };
   const [data, setData] = useState(defaultData);
   const handleChange = (
@@ -46,8 +50,13 @@ export const UserProfile = ({ user }: any) => {
       | React.ChangeEvent<HTMLTextAreaElement>
   ) => {
     setData((prev) => {
-      return { ...prev, [e.target.name]: e.target.value };
+      return { ...prev, [e.target.id]: e.target.value };
     });
+  };
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    updateUser(data);
   };
   return (
     <Flex
@@ -69,109 +78,116 @@ export const UserProfile = ({ user }: any) => {
         <Heading lineHeight={1.1} fontSize={{ base: "2xl", sm: "3xl" }}>
           User Profile Edit
         </Heading>
-        <FormControl id="userName">
-          <FormLabel>User Icon</FormLabel>
-          <Stack direction={["column", "row"]} spacing={6}>
-            <Center>
-              <Avatar size="xl" src={user.picture}>
-                <AvatarBadge
-                  as={IconButton}
-                  size="sm"
-                  rounded="full"
-                  top="-10px"
-                  colorScheme="red"
-                  aria-label="remove Image"
-                  icon={<SmallCloseIcon />}
-                />
-              </Avatar>
-            </Center>
-            <Center w="full">
-              <Button w="full">Change Icon</Button>
-            </Center>
+        <form
+          onSubmit={(e) => {
+            handleSubmit(e);
+          }}
+        >
+          <FormControl id="userName">
+            <FormLabel>User Icon</FormLabel>
+            <Stack direction={["column", "row"]} spacing={6}>
+              <Center>
+                <Avatar size="xl" src={data.avatar}>
+                  <AvatarBadge
+                    as={IconButton}
+                    size="sm"
+                    rounded="full"
+                    top="-10px"
+                    colorScheme="red"
+                    aria-label="remove Image"
+                    icon={<SmallCloseIcon />}
+                  />
+                </Avatar>
+              </Center>
+              <Center w="full">
+                <Button w="full">Change Icon</Button>
+              </Center>
+            </Stack>
+          </FormControl>
+          <FormControl id="name" isRequired>
+            <FormLabel>Name</FormLabel>
+            <Input
+              placeholder="Name"
+              _placeholder={{ color: "gray.500" }}
+              type="text"
+              value={data.name}
+              onChange={(e) => handleChange(e)}
+            />
+          </FormControl>
+          <FormControl id="mail" isRequired>
+            <FormLabel>Email address</FormLabel>
+            <Input
+              placeholder="your-email@example.com"
+              _placeholder={{ color: "gray.500" }}
+              type="email"
+              value={data.mail}
+              disabled={true}
+              onChange={(e) => handleChange(e)}
+            />
+          </FormControl>
+          <FormControl id="description" isRequired>
+            <FormLabel>Description</FormLabel>
+            <Textarea
+              placeholder="Description"
+              _placeholder={{ color: "gray.500" }}
+              onChange={(e) => handleChange(e)}
+              value={data.description}
+            />
+          </FormControl>
+          <FormControl id="keyWords">
+            <FormLabel>Keywords</FormLabel>
+            <Input
+              placeholder="Beach, Mountains, Europe, South America"
+              _placeholder={{ color: "gray.500" }}
+              onChange={(e) => handleChange(e)}
+              value={data.keyWords}
+              type="text"
+            />
+          </FormControl>
+          <FormControl id="urlTiktok">
+            <FormLabel>Tiktok</FormLabel>
+            <Input
+              placeholder="URL"
+              _placeholder={{ color: "gray.500" }}
+              type="text"
+              onChange={(e) => handleChange(e)}
+              value={data.urlTiktok}
+            />
+          </FormControl>
+          <FormControl id="urlInstagram">
+            <FormLabel>Instagram</FormLabel>
+            <Input
+              placeholder="URL"
+              _placeholder={{ color: "gray.500" }}
+              type="text"
+              onChange={(e) => handleChange(e)}
+              value={data.urlInstagram}
+            />
+          </FormControl>
+          <FormControl id="urlFaceBook">
+            <FormLabel>Facebook</FormLabel>
+            <Input
+              placeholder="URL"
+              _placeholder={{ color: "gray.500" }}
+              type="text"
+              onChange={(e) => handleChange(e)}
+              value={data.urlFaceBook}
+            />
+          </FormControl>
+          <Stack spacing={6} direction={["column", "row"]}>
+            <Button
+              bg={"blue.400"}
+              color={"white"}
+              w="full"
+              _hover={{
+                bg: "blue.500",
+              }}
+              type={"submit"}
+            >
+              Submit
+            </Button>
           </Stack>
-        </FormControl>
-        <FormControl id="userName" isRequired>
-          <FormLabel>Name</FormLabel>
-          <Input
-            placeholder="Name"
-            _placeholder={{ color: "gray.500" }}
-            type="text"
-            value={data.name}
-            onChange={(e) => handleChange(e)}
-          />
-        </FormControl>
-        <FormControl id="email" isRequired>
-          <FormLabel>Email address</FormLabel>
-          <Input
-            placeholder="your-email@example.com"
-            _placeholder={{ color: "gray.500" }}
-            type="email"
-            value={data.email}
-            disabled={true}
-            onChange={(e) => handleChange(e)}
-          />
-        </FormControl>
-        <FormControl id="description" isRequired>
-          <FormLabel>Description</FormLabel>
-          <Textarea
-            placeholder="Description"
-            _placeholder={{ color: "gray.500" }}
-            onChange={(e) => handleChange(e)}
-            value={data.description}
-          />
-        </FormControl>
-        <FormControl id="keyworkds">
-          <FormLabel>Keywords</FormLabel>
-          <Input
-            placeholder="Beach, Mountains, Europe, South America"
-            _placeholder={{ color: "gray.500" }}
-            onChange={(e) => handleChange(e)}
-            value={data.description}
-            type="text"
-          />
-        </FormControl>
-        <FormControl id="urlTiktok">
-          <FormLabel>Tiktok</FormLabel>
-          <Input
-            placeholder="URL"
-            _placeholder={{ color: "gray.500" }}
-            type="text"
-            onChange={(e) => handleChange(e)}
-            value={data.tiktok}
-          />
-        </FormControl>
-        <FormControl id="urlInstagram">
-          <FormLabel>Instagram</FormLabel>
-          <Input
-            placeholder="URL"
-            _placeholder={{ color: "gray.500" }}
-            type="text"
-            onChange={(e) => handleChange(e)}
-            value={data.instagram}
-          />
-        </FormControl>
-        <FormControl id="urlFacebook">
-          <FormLabel>Facebook</FormLabel>
-          <Input
-            placeholder="URL"
-            _placeholder={{ color: "gray.500" }}
-            type="text"
-            onChange={(e) => handleChange(e)}
-            value={data.facebook}
-          />
-        </FormControl>
-        <Stack spacing={6} direction={["column", "row"]}>
-          <Button
-            bg={"blue.400"}
-            color={"white"}
-            w="full"
-            _hover={{
-              bg: "blue.500",
-            }}
-          >
-            Submit
-          </Button>
-        </Stack>
+        </form>
       </Stack>
     </Flex>
   );

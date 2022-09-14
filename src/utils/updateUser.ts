@@ -1,2 +1,40 @@
-import prisma from "./prisma";
-export const updateUser = () => {};
+import axios from "axios";
+import { UserData } from "src/components/UserProfile";
+export interface UserAuth0 {
+  user?: {
+    name?: string;
+    email?: string;
+    picture?: string;
+    mail?: string;
+    avatar?: string;
+  };
+  name?: string | null;
+  email?: string | null;
+  picture?: string | null;
+  description?: string;
+}
+export const getOrCreateUser = async (user: UserAuth0) => {
+  const userDb: UserData = await axios.post("/api/users", {
+    name: user.name,
+    mail: user.email,
+    avatar: user.picture,
+    description: "asd",
+  });
+
+  return userDb;
+};
+
+export const updateUser = async (user: UserData) => {
+  console.log(user.urlTiktok, user.urlFaceBook);
+  const userDb = await axios.put(`/api/users/:${user.mail}`, {
+    name: user.name,
+    mail: user.mail,
+    avatar: user.avatar,
+    description: user.description,
+    urlTikTok: user.urlTiktok,
+    urlFaceBook: user.urlFaceBook,
+    urlInstagram: user.urlInstagram,
+    keyWords: user.keyWords,
+  });
+  return userDb;
+};

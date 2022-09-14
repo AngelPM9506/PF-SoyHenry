@@ -16,7 +16,7 @@ import {
 } from "@chakra-ui/react";
 import { SmallCloseIcon } from "@chakra-ui/icons";
 import React, { useState } from "react";
-import { updateUser, UserAuth0 } from "src/utils/updateUser";
+import { updateUser, UserAuth0 } from "src/utils/User";
 
 export interface UserData {
   name: string;
@@ -176,7 +176,7 @@ export const UserProfile = ({ user }: UserAuth0 | any) => {
               value={data.urlFaceBook}
             />
           </FormControl>
-          <Stack spacing={6} direction={["column", "row"]}>
+          <Stack spacing={6} marginTop={"1.5rem"} direction={["column", "row"]}>
             <Button
               bg={"blue.400"}
               color={"white"}

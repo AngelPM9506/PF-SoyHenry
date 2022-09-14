@@ -16,6 +16,7 @@ import {
   HStack,
   Text,
 } from "@chakra-ui/react";
+import Layout from "../components/layout/Layout";
 
 interface Props {
   trips: Trip[];
@@ -32,7 +33,7 @@ export default function Trips({ trips }: Props) {
       <h1>There are no trips yet! </h1>
     </div>
   ) : (
-    <Box>
+    <Layout>
       <Heading textAlign={"center"} margin={"40px"}>
         All our travelers trips
       </Heading>
@@ -89,7 +90,7 @@ export default function Trips({ trips }: Props) {
         setCurrentPage={setCurrentPage}
         max={max}
       />
-    </Box>
+    </Layout>
   );
 }
 export const getServerSideProps = async () => {

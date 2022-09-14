@@ -16,8 +16,8 @@ import {
 } from "@chakra-ui/react";
 import { SmallCloseIcon } from "@chakra-ui/icons";
 import React, { useState } from "react";
-import { getOrCreateUser, updateUser, UserAuth0 } from "src/utils/updateUser";
-import { useQuery } from "react-query";
+import { updateUser, UserAuth0 } from "src/utils/updateUser";
+
 export interface UserData {
   name: string;
   email?: string;
@@ -44,6 +44,7 @@ export const UserProfile = ({ user }: UserAuth0 | any) => {
     keyWords: "",
   };
   const [data, setData] = useState(defaultData);
+
   const handleChange = (
     e:
       | React.ChangeEvent<HTMLInputElement>
@@ -58,6 +59,7 @@ export const UserProfile = ({ user }: UserAuth0 | any) => {
     e.preventDefault();
     updateUser(data);
   };
+
   return (
     <Flex
       minH={"100vh"}

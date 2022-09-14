@@ -14,6 +14,7 @@ import {
   Flex,
   Heading,
   HStack,
+  Text,
 } from "@chakra-ui/react";
 
 interface Props {
@@ -33,7 +34,6 @@ export default function Trips({ trips }: Props) {
   ) : (
     <Box>
       <Heading textAlign={"center"} margin={"40px"}>
-        {" "}
         All our travelers trips
       </Heading>
       <Box
@@ -43,6 +43,11 @@ export default function Trips({ trips }: Props) {
         align-items="center"
         justifyContent={"space-around"}
       >
+        <HStack spacing="10px">
+          <Text>Max price: </Text>
+          <Input width="80px" textAlign={"center"} placeholder="$" />
+        </HStack>
+
         <Select width="250px" placeholder="Order alphabetically">
           <option value="names asc">names A - Z </option>
           <option value="names desc">names Z - A</option>
@@ -51,12 +56,8 @@ export default function Trips({ trips }: Props) {
           <option value="names asc">ascendent </option>
           <option value="names desc">descendent</option>
         </Select>
-        <Select width="250px" placeholder="Order by travelers">
-          <option value="travelers asc">ascendent </option>
-          <option value="travelers desc">descendent</option>
-        </Select>
         <HStack spacing="10px">
-          <Input width="250px" placeholder="Type a city ..." />
+          <Input width="250px" placeholder="Type a city or an activity ..." />
           <Button
             mt={8}
             bg={useColorModeValue("#151f21", "gray.900")}

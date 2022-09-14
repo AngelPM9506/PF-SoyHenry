@@ -25,7 +25,7 @@ export interface UserData {
   mail: string;
   description: string;
   avatar: string;
-  urlTiktok?: string;
+  urlTikTok?: string;
   urlFaceBook?: string;
   urlInstagram?: string;
   keyWords?: string;
@@ -38,7 +38,7 @@ export const UserProfile = ({ user }: UserAuth0 | any) => {
     mail: user.data.mail,
     avatar: user.data.avatar,
     description: "",
-    urlTiktok: "",
+    urlTikTok: "",
     urlFaceBook: "",
     urlInstagram: "",
     keyWords: "",
@@ -144,14 +144,14 @@ export const UserProfile = ({ user }: UserAuth0 | any) => {
               type="text"
             />
           </FormControl>
-          <FormControl id="urlTiktok">
+          <FormControl id="urlTikTok">
             <FormLabel>Tiktok</FormLabel>
             <Input
               placeholder="URL"
               _placeholder={{ color: "gray.500" }}
               type="text"
               onChange={(e) => handleChange(e)}
-              value={data.urlTiktok}
+              value={data.urlTikTok}
             />
           </FormControl>
           <FormControl id="urlInstagram">

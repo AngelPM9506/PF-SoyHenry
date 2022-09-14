@@ -31,7 +31,7 @@ export const updateUser = async (user: UserData) => {
     mail: user.mail,
     avatar: user.avatar,
     description: user.description,
-    urlTikTok: user.urlTiktok,
+    urlTikTok: user.urlTikTok,
     urlFaceBook: user.urlFaceBook,
     urlInstagram: user.urlInstagram,
     keyWords: user.keyWords,

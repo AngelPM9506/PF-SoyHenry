@@ -1,6 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import prisma from "src/utils/prisma";
-import { UserUpdate } from "src/utils/interface";
 import { UserData } from "src/components/UserProfile";
 
 export default async function index(req: NextApiRequest, res: NextApiResponse) {
@@ -12,7 +11,7 @@ export default async function index(req: NextApiRequest, res: NextApiResponse) {
       mail,
       avatar,
       keyWords,
-      urlTiktok,
+      urlTikTok,
       urlInstagram,
       urlFaceBook,
     },
@@ -43,14 +42,14 @@ export default async function index(req: NextApiRequest, res: NextApiResponse) {
         description,
         mail,
         avatar,
-        urlTiktok,
+        urlTikTok,
         urlInstagram,
         urlFaceBook,
         keyWords,
       };
 
       try {
-        console.log(urlTiktok);
+        console.log(urlTikTok);
         const response = await prisma.user.update({
           where: { mail: mail },
           data: user,

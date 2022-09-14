@@ -4,9 +4,11 @@ import { UserProvider } from "@auth0/nextjs-auth0";
 import { ChakraProvider } from "@chakra-ui/react";
 import { myTheme } from "src/styles/theme";
 import { useEffect, useState } from "react";
-
+import { QueryClient, QueryClientProvider } from "react-query";
+import { ReactQueryDevtools } from "react-query/devtools";
 function MyApp({ Component, pageProps }: AppProps) {
-  const [showChild, setShowChild] = useState(false);
+const queryClient = new QueryClient();
+ const [showChild, setShowChild] = useState(false);
   useEffect(() => {
     setShowChild(true);
   }, []);
@@ -14,17 +16,19 @@ function MyApp({ Component, pageProps }: AppProps) {
   if (!showChild) {
     return null;
   }
-  if (typeof window === "undefined") {
+   if (typeof window === "undefined") {
     return <></>;
   } else {
-    return (
-      <ChakraProvider theme={myTheme}>
+  return (
+    <QueryClientProvider client={queryClient}>
+      <ChakraProvider>
         <UserProvider>
           <Component {...pageProps} />
+          <ReactQueryDevtools />
         </UserProvider>
       </ChakraProvider>
-    );
+    </QueryClientProvider>
+  );
   }
-}
 
 export default MyApp;

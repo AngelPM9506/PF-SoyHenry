@@ -12,16 +12,20 @@ export interface Trip {
 }
 
 export interface User {
+
+  name: string;
+  mail: string;
+  avatar: string;
+  description: string;
+}
+
+export interface UserUpdate {
   name: String;
   mail: String;
   description: String;
 }
 
-export interface UserUpdate {
 
-  name: String;
-  description: String;
-}
 
 export interface Activity {
     where: {

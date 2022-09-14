@@ -13,47 +13,12 @@ import {
   Heading,
   HStack,
 } from "@chakra-ui/react";
-// import {
-//   Previous,
-//   Paginator,
-//   PageGroup,
-//   Page,
-//   Next,
-//   generatePages,
-// } from "chakra-paginator";
-
-// import { useEffect, useState } from "react";
-// import {
-//   BsFillArrowLeftSquareFill,
-//   BsFillArrowRightSquareFill,
-// } from "react-icons/bs";
 
 interface Props {
   trips: Trip[];
 }
 
 export default function Trips({ trips }: Props) {
-  // const itemLimit = 9;
-  // const [pagesQuantity, setPagesQuantity] = useState(0);
-  // const [curPage, setCurPage] = useState(0);
-
-  // const handlePageChange = (page: number) => {
-  //   setCurPage(page);
-  // };
-
-  // useEffect(() => {
-  //   const pagesTotal = Math.ceil(trips.length / itemLimit);
-  //   setPagesQuantity(pagesTotal);
-  // }, [trips.length]);
-
-  // const normalStyles = {
-  //   bg: "white",
-  // };
-
-  // const activeStyles = {
-  //   bg: "#293541",
-  // };
-
   return trips.length === 0 ? (
     <div>
       <h1>There are no trips yet! </h1>
@@ -94,42 +59,15 @@ export default function Trips({ trips }: Props) {
       </Box>
       <SimpleGrid minChildWidth="330px" spacing={2}>
         {trips.map((t) => (
-          <TripCard
-            key={t.id}
-            props={t}
-            // curPage={curPage}
-            // itemLimit={itemLimit}
-          />
+          <TripCard key={t.id} props={t} />
         ))}
       </SimpleGrid>
-      {/* <Paginator
-        onPageChange={handlePageChange}
-        pagesQuantity={pagesQuantity}
-        isDisabled={false}
-      >
-        <Previous bg="white">
-          <BsFillArrowLeftSquareFill />
-        </Previous>
-        <PageGroup>
-          {generatePages(pagesQuantity)?.map((page) => (
-            <Page
-              key={`paginator_page_${page}`}
-              page={page}
-              normalStyles={normalStyles}
-              activeStyles={activeStyles}
-            />
-          ))}
-        </PageGroup>
-        <Next bg="white">
-          <BsFillArrowRightSquareFill />
-        </Next>
-      </Paginator> */}
     </Box>
   );
 }
 
 export const getServerSideProps = async () => {
-  const res = await fetch("http://localhost:3000/api/trips"); //chequear que endPoint eligen los chicos en Api
+  const res = await fetch("http://localhost:3000/api/trips");
   const trips = await res.json();
   return {
     props: {

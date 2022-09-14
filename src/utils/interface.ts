@@ -38,7 +38,6 @@ export interface Activity {
     active?: boolean
 }
 
-
 export type typeSort = {
     [x: string]: string
 }

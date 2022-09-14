@@ -30,6 +30,7 @@ export default async function index(req: NextApiRequest, res: NextApiResponse) {
 
                 let response = await prisma.activity.findMany(condition);
                 return res.status(200).json(response);
+
             } catch (error: any) {
                 return res.status(400).json({ msg: error.message });
             }

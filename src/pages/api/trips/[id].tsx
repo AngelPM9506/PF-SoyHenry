@@ -19,6 +19,7 @@ const id = async (
             try {
                 if (!active && !description) return res.status(400).json({ msg: 'Missing data try again' });
                 let trip = await prisma.trip.findUnique({ where: { id: id.toString() } });
+                if (!trip) return res.status(400).json({ msg: 'Trip not found, try again' });
                 let condition = {
                     where: {
                         id: id.toString()

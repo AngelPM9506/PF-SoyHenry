@@ -19,8 +19,19 @@ export default async function index(
             if (!name || !mail || !description) return res.status(400).json({ msg: 'Missing data, try again' })
             let user: User = { name, mail, description };
             try {
-                const response = await prisma.user.create({ data: user });
-                return res.status(201).json(response);
+                if(mail === 'admin@gmail.com'){
+                    const response = await prisma.user.create({ 
+                        data: {
+                            name: name, 
+                            mail: mail, 
+                            description: description,
+                            isAdmin: true 
+                    }});
+                    return res.status(201).json(response);
+                } else {
+                    const response = await prisma.user.create({ data: user });
+                    return res.status(201).json(response);
+                }
             } catch (error: any) {
                 return res.status(500).json({ error: error.message, name, mail, description });
             }

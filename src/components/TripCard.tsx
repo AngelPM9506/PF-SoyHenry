@@ -8,23 +8,12 @@ import {
   Image,
   Button,
   Link,
-  Highlight,
 } from "@chakra-ui/react";
-// import {
-//   Previous,
-//   Paginator,
-//   PageGroup,
-//   Page,
-//   Next,
-//   generatePages
-// } from 'chakra-paginator'; ESTARIA BUENO PODER HACER EL PAGINADO CON CHAKRA
-import next from "next";
 
 const defaultpic: string =
   "https://drive.google.com/uc?id=1YZhzZFB0nRQuLLzmFVq13upFeZQo5CLd";
 
 export function TripCard({ props }: any) {
-  console.log(props);
   return (
     <Center key={props.id} py={12}>
       <Box

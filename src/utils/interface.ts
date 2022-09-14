@@ -1,90 +1,99 @@
-import { type } from "os";
+import { type } from 'os';
 
 export interface Trip {
-    id?: String;
-    name: String;
-    initDate: String;
-    cities?: String[];
-    endDate: String;
-    plannerId?: String;
-    tripOnUser: Object[];
-    description: String;
-    image?: String;
-    price: Number;
+  id?: String;
+  name: String;
+  initDate: String;
+  cities?: String[];
+  endDate: String;
+  plannerId?: String;
+  tripOnUser: Object[];
+  description: String;
+  image?: String;
+  price: Number;
 }
 
 export interface User {
-
-    name: string;
-    mail: string;
-    avatar: string;
-    description: string;
+  name: string;
+  mail: string;
+  avatar: string;
+  description: string;
 }
 
 export interface UserUpdate {
-    name: String;
-    mail: String;
-    description: String;
+  name: String;
+  mail: String;
+  description: String;
 }
-
-
 
 export interface Activity {
-    id?: string
-    name: string
-    availability: string
-    description: string
-    price: number
-    active?: boolean
+  id?: string;
+  name: string;
+  availability: string;
+  description: string;
+  price: number;
+  active?: boolean;
 }
-
 
 export type ActivitySort = {
-    [x: string]: string
+  [x: string]: string;
+};
+
+export interface Activity {
+  id?: string;
+  name: string;
+  availability: string;
+  description: string;
+  price: number;
+  active?: boolean;
 }
+
+export type ActivitySort = {
+  [x: string]: string;
+};
 
 export type condition = {
-    where: {
-        city?: object,
-        name?: object,
-        price?: object
-    };
-    include?: object;
-    select?: object;
-    orderBy: ActivitySort[];
-}
+  where: {
+    city?: object;
+    name?: object;
+    price?: object;
+  };
+  include?: object;
+  select?: object;
+  orderBy: ActivitySort[];
+};
 
 export enum weekdays {
-    'Monday',
-    'Tuesday',
-    'Wednesday',
-    'Thursday',
-    'Friday',
-    'Saturday',
-    'Sunday',
+  'Monday',
+  'Tuesday',
+  'Wednesday',
+  'Thursday',
+  'Friday',
+  'Saturday',
+  'Sunday',
 }
 
 export interface City {
-    cityId: String,
-    name: String,
-    country: String,
-    altCountry: String,
-    muni: String,
-    muniSub: String,
-    featureClass: String,
-    featureCode: String,
-    adminCode: String,
-    population: Number,
-    loc: {
-        type: String,
-        coordinates: Number[]
-    }
+  cityId: String;
+  name: String;
+  country: String;
+  altCountry: String;
+  muni: String;
+  muniSub: String;
+  featureClass: String;
+  featureCode: String;
+  adminCode: String;
+  population: Number;
+  loc: {
+    type: String;
+    coordinates: Number[];
+  };
 }
 
 export interface CityInDB {
-    name: string,
-    country: string,
-    population: number,
-    latitude: number,
-    longitude: number
+  name: string;
+  country: string;
+  population: number;
+  latitude: number;
+  longitude: number;
 }

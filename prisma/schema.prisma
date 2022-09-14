@@ -17,7 +17,7 @@ model User {
   id           String         @id @default(cuid())
   name         String         @db.VarChar()
   mail         String         @unique
-  description  String?         @db.Text
+  description  String?        @db.Text
   isAdmin      Boolean        @default(false)
   avatar       String?        @db.VarChar()
   keyWords     String?        @db.VarChar()
@@ -30,17 +30,18 @@ model User {
 }
 
 model Trip {
-  id          String         @id @default(cuid())
-  name        String         @unique @db.VarChar()
-  initDate    DateTime       @db.Date
-  endDate     DateTime       @db.Date
-  planner     User           @relation(fields: [plannerId], references: [id])
-  plannerId   String
-  tripOnUser  UsersOnTrips[]
-  description String         @db.Text
-  image       String?        @db.VarChar()
-  price       Float
-  active      Boolean        @default(true)
+  id                String              @id @default(cuid())
+  name              String              @unique @db.VarChar()
+  initDate          DateTime            @db.Date
+  endDate           DateTime            @db.Date
+  planner           User                @relation(fields: [plannerId], references: [id])
+  plannerId         String
+  tripOnUser        UsersOnTrips[]
+  description       String              @db.Text
+  image             String?             @db.VarChar()
+  price             Float
+  active            Boolean             @default(true)
+  activitiesOnTrips activitiesOnTrips[]
 }
 
 model UsersOnTrips {
@@ -53,15 +54,16 @@ model UsersOnTrips {
 }
 
 model Activity {
-  id           String       @id @default(cuid())
-  name         String       @unique @db.VarChar()
-  availability availability @default(Monday)
-  image        String?      @db.VarChar()
-  description  String       @db.Text
-  price        Float
-  active       Boolean?      @default(true)
-  city         city?    @relation(fields: [cityId], references: [id])
-  cityId       String?
+  id                String              @id @default(cuid())
+  name              String              @unique @db.VarChar()
+  availability      availability        @default(Monday)
+  image             String?             @db.VarChar()
+  description       String              @db.Text
+  price             Float
+  active            Boolean?            @default(true)
+  city              city?               @relation(fields: [cityId], references: [id])
+  cityId            String?
+  activitiesOnTrips activitiesOnTrips[]
 }
 
 model city {
@@ -72,6 +74,15 @@ model city {
   latitude   Float
   longitude  Float
   activity   Activity[]
+}
+
+model activitiesOnTrips {
+  activity   Activity @relation(fields: [activityId], references: [id])
+  activityId String
+  trip       Trip     @relation(fields: [tripId], references: [id])
+  tripId     String
+
+  @@id([activityId, tripId])
 }
 
 enum availability {

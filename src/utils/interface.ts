@@ -44,7 +44,7 @@ export type typeSort = {
 }
 
 export type condition = {
-    where: {
+    where?: {
         city?: object,
         name?: object,
         price?: object,
@@ -54,7 +54,15 @@ export type condition = {
     };
     include?: object;
     select?: object;
-    orderBy: typeSort[];
+    orderBy?: typeSort[];
+}
+
+export type create = {
+    user: { 
+        connect: { 
+            id: string; 
+        } 
+    }
 }
 
 export enum weekdays {

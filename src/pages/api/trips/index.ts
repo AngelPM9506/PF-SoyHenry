@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next"
 import prisma from "src/utils/prisma";
-import { condition, typeSort } from "src/utils/interface"
+import { condition, create, typeSort } from "src/utils/interface"
 
 
 export default async function index(
@@ -9,8 +9,7 @@ export default async function index(
 ) {
     const {
         method,
-        body: { name, initDate, endDate, planner, description, price, image, activitie },
-
+        body: { name, initDate, endDate, planner, description, price, idPartaker, image, activitie },
         query: { wName, sort, sortBy, wActivity, wplanner, maxPrice }
     } = req;
     switch (method) {
@@ -21,7 +20,7 @@ export default async function index(
             let sortName: string = sortBy ? sortBy.toString().toLowerCase() : 'name';
             sortfrom[sortName] = sort ? sort.toString().toLowerCase() : 'desc';
             orderBy.push(sortfrom);
-            let condition: condition = {
+            var condition: condition = {
                 where: wName ? { name: { contains: wName.toString() } } : {},
                 include: {
                     planner: true,
@@ -39,16 +38,16 @@ export default async function index(
             wActivity
                 ? condition.where = {
                     ...condition.where,
-                    activitiesOnTrips: { 
-                        some: { 
+                    activitiesOnTrips: {
+                        some: {
                             activity: {
-                                 is: { 
-                                    name: { 
-                                        contains: wActivity.toString() 
-                                    } 
-                                } 
-                            } 
-                        } 
+                                is: {
+                                    name: {
+                                        contains: wActivity.toString()
+                                    }
+                                }
+                            }
+                        }
                     }
                 } : '';
             maxPrice ? condition.where = { ...condition.where, price: { lte: parseFloat(maxPrice.toString()) } } : '';
@@ -60,11 +59,12 @@ export default async function index(
                 return res.status(500).json({ error: error.message });
             }
         case 'POST':
-            if (!name || !initDate || !endDate || !description || !price || !planner) {
-                return res.status(400).json({ msg: 'Missing data, try again' })
+            if (!name || !initDate || !endDate || !description || !price || !planner || !idPartaker || !Array.isArray(idPartaker)) {
+                return res.status(400).json({ msg: 'Missing or invalid data, try again' })
             }
-            let initialDate = new Date(initDate)
-            let finishDate = new Date(endDate)
+            let initialDate = new Date(initDate);
+            let finishDate = new Date(endDate);
+            let create: create[] = idPartaker.map((idP: Object) => { return { user: { connect: { id: idP.toString() } } } });
             try {
                 const response = await prisma.trip.create({
                     data: {
@@ -74,16 +74,10 @@ export default async function index(
                         description: description,
                         price: price,
                         plannerId: planner,
-                        image: image
+                        tripOnUser: { create: create }
                     }
                 });
-                await prisma.activitiesOnTrips.create({
-                    data: {
-                        tripId: response.id.toString(),
-                        activityId: activitie
-                    }
-                })
-                return res.status(201).json(response);
+                return res.status(201).json({ create, response});
             } catch (error: any) {
                 console.log(error);
                 return res.status(500).json({ error: error.message, name, description });

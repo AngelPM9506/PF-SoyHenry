@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { ReactNode } from 'react';
 import {
   Box,
   Flex,
@@ -20,11 +20,15 @@ import {
 } from "@chakra-ui/react";
 import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
 import { MoonIcon, SunIcon } from "@chakra-ui/icons";
+import { useUser } from '@auth0/nextjs-auth0';
+import { useQuery } from 'react-query';
+import { getOrCreateUser } from 'src/utils/User';
+
 
 const logo: string =
-  "https://drive.google.com/uc?id=1YCJtH1cFYm8UAe3NR_pATYQXZzJv1a2I";
+  'https://drive.google.com/uc?id=1YCJtH1cFYm8UAe3NR_pATYQXZzJv1a2I';
 const logoNight: string =
-  "https://drive.google.com/uc?id=1LyKP8Kz3OK6LiScZ75NnQsdZbUdGzoP4";
+  'https://drive.google.com/uc?id=1LyKP8Kz3OK6LiScZ75NnQsdZbUdGzoP4';
 const Links = [
   ["/home", "Home"],
   ["/trips", "All Trips"],
@@ -34,30 +38,38 @@ const Links = [
 ];
 
 export default function NavBar() {
+
+  const { user, error } = useUser();
+
+  const { data: userDb, isLoading } = useQuery(
+    ['userDb', user],
+    () => user && getOrCreateUser(user)
+  );
+
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { colorMode, toggleColorMode } = useColorMode();
   return (
     <>
-      <Box padding={"3px"} boxShadow={"1px 1px 1px 1px #D1DFE3"} px={4}>
-        <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
+      <Box padding={'3px'} boxShadow={'1px 1px 1px 1px #D1DFE3'} px={4}>
+        <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
           <IconButton
-            size={"md"}
+            size={'md'}
             icon={isOpen ? <CloseIcon /> : <HamburgerIcon />}
-            aria-label={"Open Menu"}
-            display={{ md: "none" }}
+            aria-label={'Open Menu'}
+            display={{ md: 'none' }}
             onClick={isOpen ? onClose : onOpen}
           />
 
-          <HStack spacing={8} alignItems={"center"}>
+          <HStack spacing={8} alignItems={'center'}>
             <Box>
               <Image height={"60px"} src={useColorModeValue(logo, logoNight)} alt='logo'/>
             </Box>
           </HStack>
           <HStack
-            as={"nav"}
+            as={'nav'}
             spacing={10}
-            justifyContent={"center"}
-            display={{ base: "none", md: "flex" }}
+            justifyContent={'center'}
+            display={{ base: 'none', md: 'flex' }}
           >
             {Links.map((l, index) => (
               <Link href={l[0]} fontSize={"2xl"} fontWeight={"3px"} key={index}>
@@ -65,29 +77,27 @@ export default function NavBar() {
               </Link>
             ))}
           </HStack>
-          <Flex alignItems={"center"}>
+          <Flex alignItems={'center'}>
             <Button
-              marginRight={"50px"}
-              justifyContent={"center"}
-              alignItems={"center"}
+              marginRight={'50px'}
+              justifyContent={'center'}
+              alignItems={'center'}
               onClick={toggleColorMode}
-              bgColor={"transparent"}
+              bgColor={'transparent'}
             >
-              {colorMode === "light" ? <MoonIcon /> : <SunIcon />}
+              {colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
             </Button>
             <Menu>
               <MenuButton
                 as={Button}
-                rounded={"full"}
-                variant={"link"}
-                cursor={"pointer"}
+                rounded={'full'}
+                variant={'link'}
+                cursor={'pointer'}
                 minW={0}
               >
                 <Avatar
                   size={"sm"}
-                  src={
-                    "https://images.unsplash.com/photo-1493666438817-866a91353ca9?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=b616b2c5b373a80ffc9636ba24f7a4a9"
-                  }
+                  src={userDb.data.avatar}
                 />
               </MenuButton>
               <MenuList>
@@ -101,7 +111,7 @@ export default function NavBar() {
             </Menu>
           </Flex>
         </Flex>
-        {isOpen ? <Box pb={4} display={{ md: "none" }}></Box> : null}
+        {isOpen ? <Box pb={4} display={{ md: 'none' }}></Box> : null}
       </Box>
     </>
   );

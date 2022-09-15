@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next"
-import { createUsers, createActivities } from "src/utils/interface";
+import { createUsers, createActivities, createCity } from "src/utils/interface";
 import prisma from "src/utils/prisma";
 
 
@@ -8,7 +8,7 @@ const id = async (
     req: NextApiRequest,
     res: NextApiResponse
 ) => {
-    const { method, body: { description, active, traveler, idPartaker, activitiesName }, query: { id } } = req;
+    const { method, body: { description, active, traveler, idPartaker, activitiesName, citiesIds }, query: { id } } = req;
     switch (method) {
         /**obtener info de un solo trp */
         case 'GET':
@@ -23,6 +23,9 @@ const id = async (
                     },
                     activitiesOnTrips: {
                         include: { activity: true }
+                    },
+                    citiesOnTrips: {
+                        include: { city: true }
                     }
                 }
             }
@@ -32,7 +35,7 @@ const id = async (
             } catch (error: any) {
                 return res.status(404).json({ error: error.message });
             }
-            /**actualizar untrip  */
+        /**actualizar untrip  */
         case 'PUT':
             try {
                 if (!active && !description && !traveler) {
@@ -63,6 +66,9 @@ const id = async (
                         },
                         activitiesOnTrips: {
                             include: { activity: true }
+                        },
+                        citiesOnTrips: {
+                            include: { city: true }
                         }
                     }
                 }
@@ -75,9 +81,9 @@ const id = async (
             } catch (error: any) {
                 return res.status(404).json({ error: error.message });
             }
-            /**agrgar usuarios y actividades a un trip */
+        /**agrgar usuarios y actividades a un trip */
         case 'PATCH':
-            if (!idPartaker && !Array.isArray(idPartaker) && !activitiesName && !Array.isArray(activitiesName)) {
+            if (!idPartaker && !Array.isArray(idPartaker) && !activitiesName && !Array.isArray(activitiesName) && !citiesIds && !Array.isArray(citiesIds)) {
                 return res.status(400).json({ msg: 'Missing or invalid data, try again' })
             }
             let createUsers: createUsers[] = idPartaker ? idPartaker.map((idP: Object) => {
@@ -97,7 +103,16 @@ const id = async (
                         }
                     }
                 }
-            }): [];
+            }) : [];
+            let createCities: createCity[] = citiesIds ? citiesIds.map((idCity: string) => {
+                return {
+                    city: {
+                        connect: {
+                            id: idCity.toString()
+                        }
+                    }
+                }
+            }) : [];
             try {
                 return res.status(201).json(await prisma.trip.update({
                     where: {
@@ -105,7 +120,8 @@ const id = async (
                     },
                     data: {
                         tripOnUser: { create: createUsers },
-                        activitiesOnTrips: { create: createActivities }
+                        activitiesOnTrips: { create: createActivities },
+                        citiesOnTrips: { create: createCities }
                     },
                     include: {
                         planner: true,
@@ -114,13 +130,16 @@ const id = async (
                         },
                         activitiesOnTrips: {
                             include: { activity: true }
+                        },
+                        citiesOnTrips: {
+                            include: { city: true }
                         }
                     }
                 }))
             } catch (error: any) {
                 return res.status(404).json({ error: error.message });
             }
-            /**eliminar un trip  */
+        /**eliminar un trip  */
         case 'DELETE':
             try {
                 return res.status(201).json(await prisma.trip.delete({ where: { id: id.toString() } }))

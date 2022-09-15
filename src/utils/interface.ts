@@ -15,10 +15,10 @@ export interface Trip {
 }
 
 export interface User {
-    name: string;
-    mail: string;
-    avatar: string;
-    description: string;
+  name: string;
+  mail: string;
+  avatar: string;
+  description: string;
 }
 
 export interface UserUpdate {
@@ -50,11 +50,11 @@ export type condition = {
     activity?: object;
     activitiesOnTrips?: object;
     planner?: object;
+    citiesOnTrips?: object;
   };
   include?: object;
   select?: object;
-
-  orderBy?: ActivitySort[];
+  orderBy?: typeSort[];
 };
 export type createUsers = {
   user: {
@@ -66,6 +66,14 @@ export type createUsers = {
 
 export type createActivities = {
   activity: {
+    connect: {
+      name: string;
+    };
+  };
+};
+
+export type createCity = {
+  city: {
     connect: {
       name: string;
     };

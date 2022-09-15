@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import prisma from 'src/utils/prisma';
 import { UserData } from 'src/components/UserProfile';
 import cloudinary from 'src/utils/cloudinary';
-const {CLOUDINARY_PRESET} = process.env;
+const {CLOUDINARY_PRESET_AVATARS} = process.env;
 
 export default async function index(req: NextApiRequest, res: NextApiResponse) {
 	const {
@@ -54,7 +54,7 @@ export default async function index(req: NextApiRequest, res: NextApiResponse) {
 
 				const uploadImage = await cloudinary.uploader.upload(user.avatar,
 					{
-						upload_preset: CLOUDINARY_PRESET, 
+						upload_preset: CLOUDINARY_PRESET_AVATARS, 
 						public_id: `${user.mail}-avatar:${Date.now()}`,
 						allowed_formats: ['png', 'jpg', 'jpeg', 'jfif', 'gif'] 
 					}, 

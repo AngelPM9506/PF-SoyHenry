@@ -1,17 +1,17 @@
 import { type } from "os";
 
 export interface Trip {
-    id?: String;
-    name: String;
-    initDate: String;
-    cities?: String[];
-    endDate: String;
-    planner?: String;
-    tripOnUser: Object[];
-    description: String;
-    activities: String[];
-    image?: String;
-    price?: Number;
+  id?: String;
+  name: String;
+  initDate: String;
+  cities?: String[];
+  endDate: String;
+  planner?: String;
+  tripOnUser: Object[];
+  description: String;
+  activities: String[];
+  image?: String | ArrayBuffer;
+  price?: Number;
 }
 
 export interface User {

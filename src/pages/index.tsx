@@ -14,6 +14,7 @@ import ReactPlayer from "react-player";
 
 const landingPage: NextPage = () => {
   const url = "https://www.youtube.com/watch?v=nxCM5uSrM7s";
+
   return (
     <Container maxW="7xl">
       <Stack
@@ -107,6 +108,16 @@ const landingPage: NextPage = () => {
       </Stack>
     </Container>
   );
+};
+
+export const getServerSideProps = async () => {
+  const response = await fetch("http://localhost:3000/api/hello");
+  const dataCities = await response.json();
+  return {
+    props: {
+      cities: dataCities,
+    },
+  };
 };
 
 export default landingPage;

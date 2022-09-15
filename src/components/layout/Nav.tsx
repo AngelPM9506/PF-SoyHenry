@@ -24,7 +24,7 @@ import { useUser } from '@auth0/nextjs-auth0';
 import { useQuery } from 'react-query';
 import { getOrCreateUser } from 'src/utils/User';
 import { UserData } from '../UserProfile';
-
+import NextLink from 'next/link';
 const logo: string =
   'https://drive.google.com/uc?id=1YCJtH1cFYm8UAe3NR_pATYQXZzJv1a2I';
 const logoNight: string =
@@ -75,9 +75,11 @@ export default function NavBar() {
             display={{ base: 'none', md: 'flex' }}
           >
             {Links.map((l, index) => (
-              <Link href={l[0]} fontSize={'2xl'} fontWeight={'3px'} key={index}>
-                {l[1]}
-              </Link>
+              <NextLink href={l[0]} key={index}>
+                <Link href={l[0]} fontSize={'2xl'} fontWeight={'3px'}>
+                  {l[1]}
+                </Link>
+              </NextLink>
             ))}
           </HStack>
           <Flex alignItems={'center'}>

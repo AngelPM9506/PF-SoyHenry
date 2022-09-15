@@ -1,24 +1,25 @@
 import { type } from "os";
 
 export interface Trip {
-    id?: String;
-    name: String;
-    initDate: String;
-    cities?: String[];
-    endDate: String;
-    plannerId?: String;
-    tripOnUser: Object[];
-    description: String;
-    image?: String;
-    price: Number;
+  id?: String;
+  name: String;
+  initDate: String;
+  cities?: String[];
+  endDate: String;
+  planner?: String;
+  tripOnUser: Object[];
+  description: String;
+  activities: String[];
+  image?: String;
+  price?: Number;
 }
 
 export interface User {
+  name: string;
+  mail: string;
+  avatar: string;
+  description: string;
 
-    name: string;
-    mail: string;
-    avatar: string;
-    description: string;
 }
 
 export interface UserUpdate {
@@ -27,9 +28,8 @@ export interface UserUpdate {
     description: String;
 }
 
-
-
 export interface Activity {
+
     id?: string
     name: string
     availability: string | string[]
@@ -53,9 +53,9 @@ export type condition = {
     };
     include?: object;
     select?: object;
+
     orderBy?: typeSort[];
 }
-
 export type create = {
     user: { 
         connect: { 
@@ -65,16 +65,17 @@ export type create = {
 }
 
 export enum weekdays {
-    'Monday',
-    'Tuesday',
-    'Wednesday',
-    'Thursday',
-    'Friday',
-    'Saturday',
-    'Sunday',
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
+  "Sunday",
 }
 
 export interface City {
+
     cityId: String,
     name: String,
     country: String,
@@ -97,4 +98,5 @@ export interface CityInDB {
     population: number,
     latitude: number,
     longitude: number
+
 }

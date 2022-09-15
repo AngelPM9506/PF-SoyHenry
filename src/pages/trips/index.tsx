@@ -1,6 +1,6 @@
 import type { NextPage } from "next";
-import { TripCard } from "../components/TripCard";
-import Pagination from "../components/pagination";
+import { TripCard } from "../../components/TripCard";
+import Pagination from "../../components/pagination";
 import { Trip } from "src/interfaces/Trip";
 import { useState } from "react";
 import {
@@ -16,7 +16,7 @@ import {
   HStack,
   Text,
 } from "@chakra-ui/react";
-import Layout from "../components/layout/Layout";
+import Layout from "../../components/layout/Layout";
 
 interface Props {
   trips: Trip[];

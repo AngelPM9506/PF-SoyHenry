@@ -13,6 +13,5 @@ export const getActivities = async (
       sortBy || 'name'
     }&wCity=${wCity || '&'}&wName=${wName || '&'}&maxPrice=${maxPrice || '&'}`
   );
-
-  return activities.data.response;
+  return activities.data;
 };

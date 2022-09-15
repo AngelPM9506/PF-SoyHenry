@@ -9,19 +9,19 @@ interface Props {
   activities: Activity[];
 }
 const Activities = ({ activities }: Props) => {
-  const [city, setCity] = useState<string>(null);
-  const [name, setName] = useState<string>(null);
-  const [maxPrice, setMaxPrice] = useState<number>(null);
+  const [city, setCity] = useState<string>(undefined);
+  const [name, setName] = useState<string>(undefined);
+  const [maxPrice, setMaxPrice] = useState<number>(undefined);
   const [sort, setSort] = useState<string>('desc');
   const [sortBy, setSortBy] = useState<string>('name');
-  const [input, setInput] = useState<string>(null);
+  const [input, setInput] = useState<string>(undefined);
   const { data } = useQuery(
     ['activities', city, name, maxPrice, sort, sortBy], //dependencies: React is going to re-render when one of these changes
     () => getActivities(city, name, maxPrice, sort, sortBy)
   );
   const cities = activities.map((a) => a.city.name);
   const citiesUnique: string[] = Array.from(new Set(cities)).sort(); // remove duplicates, sort alphabetically
-  if (city === 'All Cities') setCity(null);
+  if (city === 'All Cities') setCity(undefined);
   if (sort === 'Sort Order') setSort('desc');
   if (sortBy === 'Sort By') setSortBy('name');
   const handleCity = (e: React.ChangeEvent<HTMLSelectElement>) => {

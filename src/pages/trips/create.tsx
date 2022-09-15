@@ -67,11 +67,13 @@ const CreateTrip = ({ activities, cities }: Props) => {
   }: ChangeEvent<HTMLSelectElement>) => {
     const activity = value.split("|")[0];
     const price = Number(value.split("|")[1]) + Number(input.price);
-    setInput({
-      ...input,
-      activities: [...input.activities, activity],
-      price: price,
-    });
+    if (!input.activities.includes(activity)) {
+      setInput({
+        ...input,
+        activities: [...input.activities, activity],
+        price: price,
+      });
+    }
   };
 
   const createTrip = async (trip: Trip) => {

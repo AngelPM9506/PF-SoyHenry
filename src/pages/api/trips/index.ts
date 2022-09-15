@@ -6,7 +6,11 @@ export default async function index(
     req: NextApiRequest,
     res: NextApiResponse
 ) {
-    const { method, body: { name, initDate, endDate, planner, description, price, image, activitie } } = req;
+    const {
+        method,
+        body: { name, initDate, endDate, planner, description, price, image, activitie },
+        query: { wName, sort, sortBy, wActivity, wplanner, maxPrice }
+    } = req;
     switch (method) {
         case 'GET':
             try {

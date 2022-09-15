@@ -1,12 +1,29 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { weekdays } from "src/utils/interface";
+import { typeSort, condition, weekdays } from "src/utils/interface";
 import prisma from "src/utils/prisma";
 
 export default async function index(req: NextApiRequest, res: NextApiResponse) {
-    let { method, body: { name, availability, description, price, cityName, image } } = req;
+    let {
+        method,
+        body: { name, availability, description, price, cityName, image },
+        query: { wName, sort, sortBy, wCity, maxPrice }
+    } = req;
     switch (method) {
         /**obtener todos las actividades */
         case 'GET':
+            let orderBy: typeSort[] = [];
+            let sortfrom: typeSort = {};
+            let sortName: string = sortBy ? sortBy.toString().toLowerCase() : 'name';
+            sortfrom[sortName] = sort ? sort.toString().toLowerCase() : 'desc';
+            orderBy.push(sortfrom);
+            let condition: condition = {
+                where: wName ? { name: { contains: wName.toString() } } : {},
+                include: { city: true, },
+                orderBy
+            };
+
+            wCity ? condition.where = { ...condition.where, city: { is: { name: { contains: wCity.toString() } } } } : '';
+            maxPrice ? condition.where = { ...condition.where, price: { lte: parseFloat(maxPrice.toString()) } } : '';
             try {
                 let response = await prisma.activity.findMany();
                 return res.status(200).json(response);

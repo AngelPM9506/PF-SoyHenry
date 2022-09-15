@@ -20,6 +20,9 @@ import { FaInstagram, FaTwitter, FaYoutube } from "react-icons/fa";
 import { MdLocalShipping } from "react-icons/md";
 
 export default function TripDetail({ props }) {
+  const iday = props.initDate.slice(0, 10).split("").reverse().join("");
+  const eday = props.endDate.slice(0, 10).split("").reverse().join("");
+
   return (
     <Container maxW={"7xl"}>
       <SimpleGrid
@@ -49,10 +52,11 @@ export default function TripDetail({ props }) {
             </Heading>
             <Text
               color={useColorModeValue("gray.900", "gray.400")}
-              fontWeight={300}
+              fontWeight={"bold"}
+              marginTop={"20px"}
               fontSize={"2xl"}
             >
-              {props.price}
+              $ {props.price}
             </Text>
           </Box>
 
@@ -71,10 +75,8 @@ export default function TripDetail({ props }) {
                 fontSize={"2xl"}
                 fontWeight={"300"}
               >
-                Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed
-                diam nonumy eirmod tempor invidunt ut labore
+                {props.description}
               </Text>
-              <Text fontSize={"lg"}>{props.description}</Text>
             </VStack>
             <Box>
               <Text
@@ -84,19 +86,14 @@ export default function TripDetail({ props }) {
                 textTransform={"uppercase"}
                 mb={"4"}
               >
-                Features
+                Details
               </Text>
 
               <SimpleGrid columns={{ base: 1, md: 2 }} spacing={10}>
                 <List spacing={2}>
-                  <ListItem>Chronograph</ListItem>
-                  <ListItem>Master Chronometer Certified</ListItem>{" "}
-                  <ListItem>Tachymeter</ListItem>
-                </List>
-                <List spacing={2}>
-                  <ListItem>Anti‑magnetic</ListItem>
-                  <ListItem>Chronometer</ListItem>
-                  <ListItem>Small seconds</ListItem>
+                  <ListItem>Initial date: {iday}</ListItem>
+                  <ListItem>Ending date:{eday}</ListItem>
+                  <ListItem>Cities:</ListItem>
                 </List>
               </SimpleGrid>
             </Box>
@@ -108,53 +105,18 @@ export default function TripDetail({ props }) {
                 textTransform={"uppercase"}
                 mb={"4"}
               >
-                Product Details
+                Activities
               </Text>
 
               <List spacing={2}>
-                <ListItem>
-                  <Text as={"span"} fontWeight={"bold"}>
-                    Between lugs:
-                  </Text>{" "}
-                  20 mm
-                </ListItem>
-                <ListItem>
-                  <Text as={"span"} fontWeight={"bold"}>
-                    Bracelet:
-                  </Text>{" "}
-                  leather strap
-                </ListItem>
-                <ListItem>
-                  <Text as={"span"} fontWeight={"bold"}>
-                    Case:
-                  </Text>{" "}
-                  Steel
-                </ListItem>
-                <ListItem>
-                  <Text as={"span"} fontWeight={"bold"}>
-                    Case diameter:
-                  </Text>{" "}
-                  42 mm
-                </ListItem>
-                <ListItem>
-                  <Text as={"span"} fontWeight={"bold"}>
-                    Dial color:
-                  </Text>{" "}
-                  Black
-                </ListItem>
-                <ListItem>
-                  <Text as={"span"} fontWeight={"bold"}>
-                    Crystal:
-                  </Text>{" "}
-                  Domed, scratch‑resistant sapphire crystal with anti‑reflective
-                  treatment inside
-                </ListItem>
-                <ListItem>
-                  <Text as={"span"} fontWeight={"bold"}>
-                    Water resistance:
-                  </Text>{" "}
-                  5 bar (50 metres / 167 feet){" "}
-                </ListItem>
+                {/* {props.activities
+                  ? props.activities.map((a) => (
+                      <ListItem>
+                        <Image>{a.image} </Image>
+                        <Text> {a.name}</Text>
+                      </ListItem>
+                    ))
+                  : null} */}
               </List>
             </Box>
           </Stack>
@@ -173,13 +135,14 @@ export default function TripDetail({ props }) {
               boxShadow: "lg",
             }}
           >
-            Add to cart
+            Pay and Join the trip!
           </Button>
 
-          <Stack direction="row" alignItems="center" justifyContent={"center"}>
-            <MdLocalShipping />
-            <Text>2-3 business days delivery</Text>
-          </Stack>
+          <Stack
+            direction="row"
+            alignItems="center"
+            justifyContent={"center"}
+          ></Stack>
         </Stack>
       </SimpleGrid>
     </Container>

@@ -23,6 +23,7 @@ import { MoonIcon, SunIcon } from '@chakra-ui/icons';
 import { useUser } from '@auth0/nextjs-auth0';
 import { useQuery } from 'react-query';
 import { getOrCreateUser } from 'src/utils/User';
+import { UserData } from '../UserProfile';
 
 const logo: string =
   'https://drive.google.com/uc?id=1YCJtH1cFYm8UAe3NR_pATYQXZzJv1a2I';

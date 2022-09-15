@@ -33,8 +33,8 @@ export interface UserData {
   keyWords?: string;
   trips?: string[];
   data?: {
-    id: string;
     avatar: string;
+    id: string;
   };
 }
 

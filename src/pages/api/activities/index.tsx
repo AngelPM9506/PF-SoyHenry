@@ -42,12 +42,21 @@ export default async function index(req: NextApiRequest, res: NextApiResponse) {
                 !Object.values(weekdays).includes(availability) ||
                 !description ||
                 !price ||
-                !cityName) {
+                !cityName
+                ) {
                 return res.status(400).json({ msg: 'Missing data, try again' })
             };
             let searchCity = await prisma.city.findMany({ where: { name: cityName } })
             let cityId = searchCity[0].id
-            let activity = { data: { name, availability, description, price, cityId } };
+            let activity = { 
+                data: { 
+                    name, 
+                    availability, 
+                    description, 
+                    price, 
+                    cityId 
+                } 
+            };
             try {
                 let response = await prisma.activity.create(activity);
                 return res.status(201).json(response);

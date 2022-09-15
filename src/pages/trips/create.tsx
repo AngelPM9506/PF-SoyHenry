@@ -13,8 +13,8 @@ import {
   List,
   ListItem,
   ListIcon,
-  Text,
   Container,
+  useToast,
 } from "@chakra-ui/react";
 import { ChevronDownIcon, CheckCircleIcon } from "@chakra-ui/icons";
 import UploadImgInput from "src/components/uploadImg";
@@ -23,6 +23,7 @@ import { Trip, Activity, City } from "src/utils/interface";
 import { ChangeEvent, FormEvent, MouseEvent } from "react";
 import Layout from "src/components/layout/Layout";
 import axios from "axios";
+import { useRouter } from "next/router";
 
 interface Props {
   activities: Activity[];
@@ -39,8 +40,13 @@ const CreateTrip = ({ activities, cities }: Props) => {
     description: "",
     tripOnUser: [],
     activities: [],
+    planner: "cl81ovgaz0000lgujhtrdzufs",
     price: 0,
   };
+
+  const toast = useToast();
+  const router = useRouter();
+
   const [input, setInput] = useState(initialState);
 
   const [inputCities, setInputCities] = useState("");
@@ -88,6 +94,7 @@ const CreateTrip = ({ activities, cities }: Props) => {
     e.preventDefault();
     createTrip(input);
     setInput(initialState);
+    router.push("/trips");
   };
 
   return (
@@ -99,12 +106,12 @@ const CreateTrip = ({ activities, cities }: Props) => {
         <FormControl>
           <Center>
             <Grid
+              marginBottom="5%"
               h="80vh"
               w="80vw"
               templateRows="repeat(4, 1fr)"
               templateColumns="repeat(5, 1fr)"
               gap={1}
-              margin="2%"
             >
               <GridItem
                 borderRadius="2xl"
@@ -115,7 +122,7 @@ const CreateTrip = ({ activities, cities }: Props) => {
                 <UploadImgInput />
               </GridItem>
               <GridItem borderRadius="2xl" colSpan={4} bg="blackAlpha.100">
-                <FormLabel htmlFor="name" mt={2}>
+                <FormLabel htmlFor="name" paddingLeft="2" mt={2}>
                   Name
                 </FormLabel>
                 <Input
@@ -125,7 +132,7 @@ const CreateTrip = ({ activities, cities }: Props) => {
                 />
                 <FormErrorMessage>Name errors....</FormErrorMessage>
 
-                <FormLabel htmlFor="cities" mt={2}>
+                <FormLabel paddingLeft="2" htmlFor="cities" mt={2}>
                   Cities
                 </FormLabel>
                 <Input
@@ -152,11 +159,11 @@ const CreateTrip = ({ activities, cities }: Props) => {
                 </Center>
                 <FormErrorMessage>Cities errors....</FormErrorMessage>
 
-                <FormLabel htmlFor="initialDate" mt={2}>
+                <FormLabel paddingLeft="2" htmlFor="initialDate" mt={2}>
                   Initial date
                 </FormLabel>
                 <Input
-                  name="initiDate"
+                  name="initDate"
                   placeholder="Select the initial date of the trip..."
                   size="md"
                   type="date"
@@ -164,7 +171,7 @@ const CreateTrip = ({ activities, cities }: Props) => {
                 />
                 <FormErrorMessage>Initial date errors....</FormErrorMessage>
 
-                <FormLabel htmlFor="endDate" mt={2}>
+                <FormLabel paddingLeft="2" htmlFor="endDate" mt={2}>
                   End date
                 </FormLabel>
                 <Input
@@ -177,7 +184,12 @@ const CreateTrip = ({ activities, cities }: Props) => {
                 <FormErrorMessage>Ending date errors....</FormErrorMessage>
               </GridItem>
               <GridItem borderRadius="2xl" colSpan={5} bg="blackAlpha.100">
-                <FormLabel htmlFor="description" mt={2} mb="8px">
+                <FormLabel
+                  paddingLeft="2"
+                  htmlFor="description"
+                  mt={2}
+                  mb="8px"
+                >
                   Description
                 </FormLabel>
                 <Textarea
@@ -189,16 +201,19 @@ const CreateTrip = ({ activities, cities }: Props) => {
                 <FormErrorMessage>Description errors....</FormErrorMessage>
               </GridItem>
               <GridItem borderRadius="2xl" colSpan={5}>
-                <FormLabel htmlFor="activities" mt={2}>
+                <FormLabel paddingLeft="2" htmlFor="activities" mt={2}>
                   Associated activities
                 </FormLabel>
                 <Select
                   name="activities"
+                  defaultValue="title"
                   mt={2}
                   icon={<ChevronDownIcon />}
-                  placeholder="Choose the activities to enjoy on the trip..."
                   onChange={(e) => handleSelect(e)}
                 >
+                  <option value="title" disabled>
+                    Choose the activities to enjoy on the trip...
+                  </option>
                   {activities?.map((a) => {
                     return (
                       <option key={a.id} value={a.name + "|" + a.price}>
@@ -207,20 +222,20 @@ const CreateTrip = ({ activities, cities }: Props) => {
                     );
                   })}
                 </Select>
-                <Container minH="full">
-                  <Center>
-                    <List spacing={3}>
-                      {input.activities?.map((a, index) => {
-                        return (
-                          <ListItem>
-                            <ListIcon as={CheckCircleIcon} />
-                            {a}
-                          </ListItem>
-                        );
-                      })}
-                    </List>
-                  </Center>
-                </Container>
+
+                <Center>
+                  <List spacing={3}>
+                    {input.activities?.map((a, index) => {
+                      return (
+                        <ListItem>
+                          <ListIcon as={CheckCircleIcon} />
+                          {a}
+                        </ListItem>
+                      );
+                    })}
+                  </List>
+                </Center>
+
                 <FormErrorMessage>
                   Activities Select errors....
                 </FormErrorMessage>
@@ -234,11 +249,29 @@ const CreateTrip = ({ activities, cities }: Props) => {
               color="primary"
               _hover={{ bg: "danger" }}
               type="submit"
+              onClick={() =>
+                toast({
+                  title: "Trip Created",
+                  description: "We've created your trip",
+                  status: "success",
+                  duration: 3000,
+                  isClosable: true,
+                })
+              }
             >
-              {input.price
-                ? `PAY ($${input.price}) AND POST YOUR TRIP`
-                : `PAY AND POST YOUR TRIP`}
+              CREATE AND POST
             </Button>
+            {input.price ? (
+              <Button
+                marginLeft="1%"
+                mt={5}
+                bg="highlight"
+                color="primary"
+                _hover={{ bg: "danger" }}
+              >
+                {`PAY $${input.price}`}
+              </Button>
+            ) : null}
           </Center>
         </FormControl>
       </form>

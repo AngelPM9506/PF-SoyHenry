@@ -16,6 +16,7 @@ export default async function index(req: NextApiRequest, res: NextApiResponse) {
       /**http://192.168.0.8:3000/api/activities?sort=asc&sortBy=price&wName=nadar&wCity=Dubai&maxPrice=60*/
       let sortName: string = sortBy ? sortBy.toString().toLowerCase() : 'name';
       sortfrom[sortName] = sort ? sort.toString().toLowerCase() : 'desc';
+      orderBy.push(sortfrom);
       let condition: condition = {
         where: wName ? { name: { contains: wName.toString() } } : {},
         include: { city: true },

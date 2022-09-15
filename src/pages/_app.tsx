@@ -4,7 +4,7 @@ import { UserProvider } from '@auth0/nextjs-auth0';
 import { ChakraProvider } from '@chakra-ui/react';
 import { myTheme } from 'src/styles/theme';
 import { useEffect, useState } from 'react';
-import { QueryClient, QueryClientProvider } from 'react-query';
+import { Hydrate, QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
 function MyApp({ Component, pageProps }: AppProps) {
   const queryClient = new QueryClient();
@@ -23,7 +23,9 @@ function MyApp({ Component, pageProps }: AppProps) {
       <QueryClientProvider client={queryClient}>
         <ChakraProvider>
           <UserProvider>
-            <Component {...pageProps} />
+            <Hydrate state={pageProps.dehydratedState}>
+              <Component {...pageProps} />
+            </Hydrate>
             <ReactQueryDevtools />
           </UserProvider>
         </ChakraProvider>

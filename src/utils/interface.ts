@@ -33,6 +33,7 @@ export interface Activity {
   description: string;
   price: number;
   active?: boolean;
+  city: CityInDB;
 }
 
 export type ActivitySort = {

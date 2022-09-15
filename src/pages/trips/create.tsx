@@ -142,6 +142,20 @@ const CreateTrip = ({ activities, cities }: Props) => {
     router.push("/trips");
   };
 
+  const handleDelete = (activity: String) => {
+    setInput({
+      ...input,
+      activitiesName: input.activitiesName?.filter((a) => a !== activity),
+    });
+  };
+
+  const handleDeleteCity = (city: String) => {
+    setInput({
+      ...input,
+      cities: input.cities?.filter((c) => c !== city),
+    });
+  };
+
   if (isLoading) return <div>Loading...</div>;
   return (
     <Layout>
@@ -214,11 +228,29 @@ const CreateTrip = ({ activities, cities }: Props) => {
                       <option key={index}> {c.name} </option>
                     ))}
                 </datalist>
-                <Button onClick={(e) => handleCitiesSelect(e)}>+</Button>
+                <Button
+                  mt={1}
+                  bg="highlight"
+                  color="primary"
+                  _hover={{ bg: "danger" }}
+                  onClick={(e) => handleCitiesSelect(e)}
+                >
+                  +
+                </Button>
                 <Center>
                   <List spacing={3}>
                     {input.cities?.map((c, index) => {
-                      return <ListItem key={index}>{c}</ListItem>;
+                      return (
+                        <ListItem key={index}>
+                          {c}
+                          <Button
+                            marginLeft="2"
+                            onClick={() => handleDeleteCity(c)}
+                          >
+                            X
+                          </Button>
+                        </ListItem>
+                      );
                     })}
                   </List>
                 </Center>
@@ -297,6 +329,12 @@ const CreateTrip = ({ activities, cities }: Props) => {
                         <ListItem key={index}>
                           <ListIcon as={CheckCircleIcon} />
                           {a}
+                          <Button
+                            marginLeft="2"
+                            onClick={() => handleDelete(a)}
+                          >
+                            X
+                          </Button>
                         </ListItem>
                       );
                     })}

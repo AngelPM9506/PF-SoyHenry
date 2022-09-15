@@ -1,4 +1,4 @@
-import { type } from 'os';
+import { type } from "os";
 
 export interface Trip {
   id?: String;
@@ -15,10 +15,10 @@ export interface Trip {
 }
 
 export interface User {
-    name: string;
-    mail: string;
-    avatar: string;
-    description: string;
+  name: string;
+  mail: string;
+  avatar: string;
+  description: string;
 }
 
 export interface UserUpdate {
@@ -33,7 +33,7 @@ export interface Activity {
   availability: string | string[];
   description: string;
   price: number;
-
+  city: City;
   image?: string;
   active?: boolean;
 }
@@ -73,13 +73,13 @@ export type createActivities = {
 };
 
 export enum weekdays {
-  'Monday',
-  'Tuesday',
-  'Wednesday',
-  'Thursday',
-  'Friday',
-  'Saturday',
-  'Sunday',
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
+  "Sunday",
 }
 
 export interface City {

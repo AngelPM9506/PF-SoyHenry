@@ -17,9 +17,9 @@ export default async function index(req: NextApiRequest, res: NextApiResponse) {
       } catch (error: any) {
         return res.status(500).json({ error: error.message });
       }
-    case "POST":
-      if (!name || !mail)
-        return res.status(400).json({ msg: "Missing data, try again" });
+      case "POST":
+        if (!name || !mail)
+          return res.status(400).json({ msg: "Missing data, try again" });
       let user: User = { name, mail, description, avatar };
       try {
         if (mail === "admin@gmail.com") {

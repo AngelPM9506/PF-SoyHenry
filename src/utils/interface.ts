@@ -1,4 +1,4 @@
-import { type } from "os";
+import { type } from 'os';
 
 export interface Trip {
   id?: String;
@@ -33,6 +33,7 @@ export interface Activity {
   availability: string | string[];
   description: string;
   price: number;
+
   image?: string;
   active?: boolean;
 }
@@ -53,32 +54,32 @@ export type condition = {
   include?: object;
   select?: object;
 
-    orderBy?: typeSort[];
-}
+  orderBy?: ActivitySort[];
+};
 export type createUsers = {
-    user: {
-        connect: {
-            id: string;
-        }
-    }
-}
+  user: {
+    connect: {
+      id: string;
+    };
+  };
+};
 
 export type createActivities = {
-    activity: {
-        connect: {
-            name: string;
-        }
-    }
-}
+  activity: {
+    connect: {
+      name: string;
+    };
+  };
+};
 
 export enum weekdays {
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
-    "Sunday",
+  'Monday',
+  'Tuesday',
+  'Wednesday',
+  'Thursday',
+  'Friday',
+  'Saturday',
+  'Sunday',
 }
 
 export interface City {

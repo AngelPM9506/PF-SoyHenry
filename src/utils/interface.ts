@@ -1,24 +1,25 @@
 import { type } from "os";
 
 export interface Trip {
-    id?: String;
-    name: String;
-    initDate: String;
-    cities?: String[];
-    endDate: String;
-    plannerId?: String;
-    tripOnUser: Object[];
-    description: String;
-    image?: String;
-    price: Number;
+  id?: String;
+  name: String;
+  initDate: String;
+  cities?: String[];
+  endDate: String;
+  planner?: String;
+  tripOnUser: Object[];
+  description: String;
+  activities: String[];
+  image?: String;
+  price?: Number;
 }
 
 export interface User {
+  name: string;
+  mail: string;
+  avatar: string;
+  description: string;
 
-    name: string;
-    mail: string;
-    avatar: string;
-    description: string;
 }
 
 export interface UserUpdate {
@@ -27,44 +28,54 @@ export interface UserUpdate {
     description: String;
 }
 
-
-
 export interface Activity {
+
     id?: string
     name: string
-    availability: string
+    availability: string | string[]
     description: string
     price: number
     active?: boolean
 }
 
-
-export type ActivitySort = {
+export type typeSort = {
     [x: string]: string
 }
 
 export type condition = {
-    where: {
+    where?: {
         city?: object,
         name?: object,
-        price?: object
+        price?: object,
+        activity?: object,
+        activitiesOnTrips?: object,
+        planner?: object
     };
     include?: object;
     select?: object;
-    orderBy: ActivitySort[];
+
+    orderBy?: typeSort[];
+}
+export type create = {
+    user: { 
+        connect: { 
+            id: string; 
+        } 
+    }
 }
 
 export enum weekdays {
-    'Monday',
-    'Tuesday',
-    'Wednesday',
-    'Thursday',
-    'Friday',
-    'Saturday',
-    'Sunday',
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
+  "Sunday",
 }
 
 export interface City {
+
     cityId: String,
     name: String,
     country: String,
@@ -87,4 +98,5 @@ export interface CityInDB {
     population: number,
     latitude: number,
     longitude: number
+
 }

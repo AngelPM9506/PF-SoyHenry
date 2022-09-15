@@ -14,8 +14,9 @@ import ReactPlayer from "react-player";
 
 const landingPage: NextPage = () => {
   const url = "https://www.youtube.com/watch?v=nxCM5uSrM7s";
+
   return (
-    <Container maxW="7xl">
+    <Container maxW="container.xl">
       <Stack
         align="center"
         spacing={{ base: 8, md: 10 }}
@@ -83,7 +84,6 @@ const landingPage: NextPage = () => {
         >
           <Box
             position="relative"
-            height="100%"
             rounded="2xl"
             boxShadow="2xl"
             width="full"
@@ -107,6 +107,16 @@ const landingPage: NextPage = () => {
       </Stack>
     </Container>
   );
+};
+
+export const getServerSideProps = async () => {
+  const response = await fetch("http://localhost:3000/api/hello");
+  const dataCities = await response.json();
+  return {
+    props: {
+      cities: dataCities,
+    },
+  };
 };
 
 export default landingPage;

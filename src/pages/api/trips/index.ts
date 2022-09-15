@@ -1,7 +1,9 @@
 import { NextApiRequest, NextApiResponse } from "next"
 import prisma from "src/utils/prisma";
 import { condition, create, typeSort } from "src/utils/interface"
-
+import cloudinary from 'src/utils/cloudinary';
+const {CLOUDINARY_PRESET_TRIPS} = process.env;
+import { condition, createActivities, createUsers, typeSort } from "src/utils/interface"
 
 export default async function index(
     req: NextApiRequest,
@@ -9,7 +11,7 @@ export default async function index(
 ) {
     const {
         method,
-        body: { name, initDate, endDate, planner, description, price, idPartaker },
+        body: { name, initDate, endDate, planner, description, price, idPartaker, activitiesName, image },
         query: { wName, sort, sortBy, wActivity, wplanner, maxPrice }
     } = req;
     switch (method) {
@@ -25,7 +27,7 @@ export default async function index(
                 include: {
                     planner: true,
                     tripOnUser: {
-                        include: { user: true }
+                        include: { user: true, trip: true }
                     },
                     activitiesOnTrips: {
                         include: { activity: true }
@@ -59,13 +61,52 @@ export default async function index(
                 return res.status(500).json({ error: error.message });
             }
         case 'POST':
-            if (!name || !initDate || !endDate || !description || !price || !planner || !idPartaker || !Array.isArray(idPartaker)) {
+            if (
+                !name ||
+                !initDate ||
+                !endDate ||
+                !description ||
+                !price ||
+                !planner ||
+                (idPartaker && !Array.isArray(idPartaker)) ||
+                !activitiesName ||
+                !Array.isArray(activitiesName)
+            ) {
                 return res.status(400).json({ msg: 'Missing or invalid data, try again' })
             }
             let initialDate = new Date(initDate);
             let finishDate = new Date(endDate);
-            let create: create[] = idPartaker.map((idP: Object) => { return { user: { connect: { id: idP.toString() } } } });
+            let createUsers: createUsers[] = idPartaker ? idPartaker.map((idP: string) => {
+                return {
+                    user: {
+                        connect: {
+                            id: idP.toString()
+                        }
+                    }
+                }
+            }) : [];
+            let createActivities: createActivities[] = activitiesName ? activitiesName.map((nameAct: string) => {
+                return {
+                    activity: {
+                        connect: {
+                            name: nameAct
+                        }
+                    }
+                }
+            }) : [];
             try {
+
+                const uploadImage = await cloudinary.uploader.upload(image,
+					{
+						upload_preset: CLOUDINARY_PRESET_TRIPS, 
+						public_id: `${name}-image:${Date.now()}`,
+						allowed_formats: ['png', 'jpg', 'jpeg', 'jfif', 'gif'] 
+					}, 
+					function(error: any, result: any) { 
+						if(error) console.log(error);
+						console.log(result); 
+					});
+
                 const response = await prisma.trip.create({
                     data: {
                         name: name.toLowerCase(),
@@ -74,14 +115,44 @@ export default async function index(
                         description: description,
                         price: price,
                         plannerId: planner,
-                        tripOnUser: { create: create }
+                        image: uploadImage.secure_url
+                        tripOnUser: { create: createUsers },
+                        activitiesOnTrips: { create: createActivities }
+                    },
+                    include: {
+                        planner: true,
+                        tripOnUser: {
+                            include: { user: true, trip: true }
+                        },
+                        activitiesOnTrips: {
+                            include: { activity: true }
+                        }
                     }
                 });
-                return res.status(201).json({ create, response});
+                return res.status(201).json(response);
             } catch (error: any) {
                 console.log(error);
                 return res.status(500).json({ error: error.message, name, description });
             }
+        /** Forma en la que se envia la informasión
+             {
+                "name": "Nuevo trip 08",
+                "initDate": "2022-10-10",
+                "endDate": "2022-12-12",
+                "planner": "cl82bc4ow0091auqirz3xjdxv",
+                "description": "probando agregar users y actividades",
+                "price": 30.26,
+                "image": "Prueba de imagen",
+                "idPartaker": [
+                    "cl834gov0119529qiqiew4ldtmw",
+                    "cl82bc4ow0091auqirz3xjdxv"
+                ],
+                "activitiesName": [
+                    "uno",
+                    "Monte everest"
+                ]
+            }
+        */
         default:
             res.status(400).send('Method not supported try again')
             break;

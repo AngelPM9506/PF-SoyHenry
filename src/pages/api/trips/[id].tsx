@@ -5,19 +5,37 @@ const id = async (
     req: NextApiRequest,
     res: NextApiResponse
 ) => {
-    const { method, body: { description, active }, query: { id } } = req;
+    const { method, body: { description, active, traveler }, query: { id } } = req;
     switch (method) {
         case 'GET':
             try {
                 let response = await prisma.trip.findUnique({ where: { id: id.toString() } });
-                return res.status(200).json(response);
+                let travelersOnTrip = await prisma.usersOnTrips.findMany({
+                    where: {
+                        tripId: id.toLocaleString()
+                    },
+                    select: {
+                        userid: true,
+                        tripId: false
+                    }
+                })
+                return res.status(200).json({ response, travelersOnTrip });
             } catch (error: any) {
                 return res.status(404).json({ error: error.message });
             }
-            break;
         case 'PUT':
             try {
-                if (!active && !description) return res.status(400).json({ msg: 'Missing data try again' });
+                if (!active && !description && !traveler) {
+                    return res.status(400).json({ msg: 'Missing data try again' })
+                };
+                if (traveler) {
+                    await prisma.usersOnTrips.create({
+                        data: {
+                            userid: traveler,
+                            tripId: id.toLocaleString()
+                        }
+                    })
+                }
                 let trip = await prisma.trip.findUnique({ where: { id: id.toString() } });
                 if (!trip) return res.status(400).json({ msg: 'Trip not found, try again' });
                 let condition = {

@@ -13,6 +13,7 @@ export default async function index(req: NextApiRequest, res: NextApiResponse) {
         case 'GET':
             let orderBy: typeSort[] = [];
             let sortfrom: typeSort = {};
+            /**http://127.0.0.1:3000/api/activities?sort=asc&sortBy=price&wName=nadar&wCity=Dubai&maxPrice=60*/
             let sortName: string = sortBy ? sortBy.toString().toLowerCase() : 'name';
             sortfrom[sortName] = sort ? sort.toString().toLowerCase() : 'desc';
             orderBy.push(sortfrom);
@@ -25,7 +26,7 @@ export default async function index(req: NextApiRequest, res: NextApiResponse) {
             wCity ? condition.where = { ...condition.where, city: { is: { name: { contains: wCity.toString() } } } } : '';
             maxPrice ? condition.where = { ...condition.where, price: { lte: parseFloat(maxPrice.toString()) } } : '';
             try {
-                let response = await prisma.activity.findMany();
+                let response = await prisma.activity.findMany(condition);
                 return res.status(200).json(response);
             } catch (error: any) {
                 return res.status(400).json({ msg: error.message });

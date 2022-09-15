@@ -11,8 +11,8 @@ const CarouselActivities = ({ activities }: Props) => {
   const lastActivities = activities?.reverse().slice(0, 11);
   return (
     <Carousel infiniteLoop>
-      {lastActivities?.map((t) => {
-        return <div>Activitiees</div>;
+      {lastActivities?.map((t, i) => {
+        return <div key={i}>Activitiees</div>;
       })}
     </Carousel>
   );

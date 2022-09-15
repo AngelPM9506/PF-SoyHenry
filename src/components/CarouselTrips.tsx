@@ -12,8 +12,8 @@ const CarouselTrips = ({ trips }: Props) => {
   console.log(lastTrips);
   return (
     <Carousel infiniteLoop>
-      {lastTrips?.map((t) => {
-        return <TripCard props={t} />;
+      {lastTrips?.map((t, i) => {
+        return <TripCard key={i} props={t} />;
       })}
     </Carousel>
   );

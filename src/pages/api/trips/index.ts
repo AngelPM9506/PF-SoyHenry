@@ -1,6 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next"
 import prisma from "src/utils/prisma";
-import { condition, create, typeSort } from "src/utils/interface"
 import cloudinary from 'src/utils/cloudinary';
 const {CLOUDINARY_PRESET_TRIPS} = process.env;
 import { condition, createActivities, createUsers, typeSort } from "src/utils/interface"
@@ -115,7 +114,7 @@ export default async function index(
                         description: description,
                         price: price,
                         plannerId: planner,
-                        image: uploadImage.secure_url
+                        image: uploadImage.secure_url,
                         tripOnUser: { create: createUsers },
                         activitiesOnTrips: { create: createActivities }
                     },

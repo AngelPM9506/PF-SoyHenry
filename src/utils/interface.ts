@@ -15,10 +15,10 @@ export interface Trip {
 }
 
 export interface User {
-    name: string;
-    mail: string;
-    avatar: string;
-    description: string;
+  name: string;
+  mail: string;
+  avatar: string;
+  description: string;
 }
 
 export interface UserUpdate {
@@ -54,7 +54,7 @@ export type condition = {
   include?: object;
   select?: object;
 
-  orderBy?: ActivitySort[];
+  orderBy?: typeSort[];
 };
 export type createUsers = {
   user: {

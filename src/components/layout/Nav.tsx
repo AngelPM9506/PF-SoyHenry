@@ -20,6 +20,9 @@ import {
 } from "@chakra-ui/react";
 import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
 import { MoonIcon, SunIcon } from "@chakra-ui/icons";
+import { useUser } from '@auth0/nextjs-auth0';
+import { useQuery } from 'react-query';
+import { getOrCreateUser } from 'src/utils/User';
 
 const logo: string =
   "https://drive.google.com/uc?id=1YCJtH1cFYm8UAe3NR_pATYQXZzJv1a2I";
@@ -34,6 +37,14 @@ const Links = [
 ];
 
 export default function NavBar() {
+
+  const { user, error } = useUser();
+
+  const { data: userDb, isLoading } = useQuery(
+    ['userDb', user],
+    () => user && getOrCreateUser(user)
+  );
+
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { colorMode, toggleColorMode } = useColorMode();
   return (
@@ -85,9 +96,7 @@ export default function NavBar() {
               >
                 <Avatar
                   size={"sm"}
-                  src={
-                    "https://images.unsplash.com/photo-1493666438817-866a91353ca9?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=b616b2c5b373a80ffc9636ba24f7a4a9"
-                  }
+                  src={userDb.data.avatar}
                 />
               </MenuButton>
               <MenuList>

@@ -56,7 +56,7 @@ model UsersOnTrips {
 model Activity {
   id                String              @id @default(cuid())
   name              String              @unique @db.VarChar()
-  availability      availability        @default(Monday)
+  availability      availability[]      
   image             String?             @db.VarChar()
   description       String              @db.Text
   price             Float

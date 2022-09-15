@@ -32,14 +32,13 @@ export interface UserUpdate {
 export interface Activity {
     id?: string
     name: string
-    availability: string
+    availability: string | string[]
     description: string
     price: number
     active?: boolean
 }
 
-
-export type ActivitySort = {
+export type typeSort = {
     [x: string]: string
 }
 
@@ -47,11 +46,14 @@ export type condition = {
     where: {
         city?: object,
         name?: object,
-        price?: object
+        price?: object,
+        activity?: object,
+        activitiesOnTrips?: object,
+        planner?: object
     };
     include?: object;
     select?: object;
-    orderBy: ActivitySort[];
+    orderBy: typeSort[];
 }
 
 export enum weekdays {

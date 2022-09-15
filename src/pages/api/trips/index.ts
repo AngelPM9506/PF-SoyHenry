@@ -120,6 +120,25 @@ export default async function index(
                 console.log(error);
                 return res.status(500).json({ error: error.message, name, description });
             }
+            /** Forma en la que se envia la informasión
+                 {
+                    "name": "Nuevo trip 08",
+                    "initDate": "2022-10-10",
+                    "endDate": "2022-12-12",
+                    "planner": "cl82bc4ow0091auqirz3xjdxv",
+                    "description": "probando agregar users y actividades",
+                    "price": 30.26,
+                    "image": "Prueba de imagen",
+                    "idPartaker": [
+                        "cl834gov0119529qiqiew4ldtmw",
+                        "cl82bc4ow0091auqirz3xjdxv"
+                    ],
+                    "activitiesName": [
+                        "uno",
+                        "Monte everest"
+                    ]
+                }
+            */
         default:
             res.status(400).send('Method not supported try again')
             break;

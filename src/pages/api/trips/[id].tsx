@@ -1,16 +1,14 @@
 import { NextApiRequest, NextApiResponse } from "next"
-import { create } from "src/utils/interface";
+import { createUsers, createActivities } from "src/utils/interface";
 import prisma from "src/utils/prisma";
 
-/**
- * git add . && git commit -m "actualizacion de default del modelo Activity, mejoras y correcion de rutas de trips y se añadio el type create " && git push -u origin FiltrosTrips 
- */
+
 
 const id = async (
     req: NextApiRequest,
     res: NextApiResponse
 ) => {
-    const { method, body: { description, active, traveler, idPartaker }, query: { id } } = req;
+    const { method, body: { description, active, traveler, idPartaker, activitiesName }, query: { id } } = req;
     switch (method) {
         case 'GET':
             let condition = {
@@ -54,7 +52,16 @@ const id = async (
                     },
                     data: {
                         description: description ? description : trip.description,
-                        active: trip.active ? false : true
+                        active: trip.active ? false : true,
+                    },
+                    include: {
+                        planner: true,
+                        tripOnUser: {
+                            include: { user: true, trip: true }
+                        },
+                        activitiesOnTrips: {
+                            include: { activity: true }
+                        }
                     }
                 }
                 if (active !== undefined) {
@@ -67,17 +74,44 @@ const id = async (
                 return res.status(404).json({ error: error.message });
             }
         case 'PATCH':
-            if (!idPartaker && !Array.isArray(idPartaker)) {
+            if (!idPartaker && !Array.isArray(idPartaker) && !activitiesName && !Array.isArray(activitiesName)) {
                 return res.status(400).json({ msg: 'Missing or invalid data, try again' })
             }
-            let create: create[] = idPartaker.map((idP: Object) => { return { user: { connect: { id: idP.toString() } } } });
+            let createUsers: createUsers[] = idPartaker.map((idP: Object) => {
+                return {
+                    user: {
+                        connect: {
+                            id: idP.toString()
+                        }
+                    }
+                }
+            });
+            let createActivities: createActivities[] = activitiesName.map((nameAct: string) => {
+                return {
+                    activity: {
+                        connect: {
+                            name: nameAct
+                        }
+                    }
+                }
+            });
             try {
                 return res.status(201).json(await prisma.trip.update({
                     where: {
                         id: id.toString()
                     },
                     data: {
-                        tripOnUser: { create: create }
+                        tripOnUser: { create: createUsers },
+                        activitiesOnTrips: { create: createActivities }
+                    },
+                    include: {
+                        planner: true,
+                        tripOnUser: {
+                            include: { user: true, trip: true }
+                        },
+                        activitiesOnTrips: {
+                            include: { activity: true }
+                        }
                     }
                 }))
             } catch (error: any) {

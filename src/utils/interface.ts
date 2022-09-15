@@ -4,7 +4,7 @@ export interface Trip {
   initDate: String;
   cities?: String[];
   endDate: String;
-  plannerId?: String;
+  planner?: String;
   tripOnUser: Object[];
   description: String;
   activities: String[];

@@ -1,19 +1,19 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { ActivitySort, condition, weekdays } from 'src/utils/interface';
+import { typeSort, condition, weekdays } from 'src/utils/interface';
 import prisma from 'src/utils/prisma';
 
 export default async function index(req: NextApiRequest, res: NextApiResponse) {
   let {
     method,
-    body: { name, availability, description, price, cityName },
+    body: { name, availability, description, price, cityName, image, tripsId },
     query: { wName, sort, sortBy, wCity, maxPrice },
   } = req;
   switch (method) {
     /**obtener todos las actividades */
     case 'GET':
-      let orderBy: ActivitySort[] = [];
-      let sortfrom: ActivitySort = {};
-      /**http://192.168.0.8:3000/api/activities?sort=asc&sortBy=price&wName=nadar&wCity=Dubai&maxPrice=60*/
+      let orderBy: typeSort[] = [];
+      let sortfrom: typeSort = {};
+      /**http://127.0.0.1:3000/api/activities?sort=asc&sortBy=price&wName=nadar&wCity=Dubai&maxPrice=60*/
       let sortName: string = sortBy ? sortBy.toString().toLowerCase() : 'name';
       sortfrom[sortName] = sort ? sort.toString().toLowerCase() : 'desc';
       orderBy.push(sortfrom);
@@ -38,7 +38,7 @@ export default async function index(req: NextApiRequest, res: NextApiResponse) {
 
       try {
         let response = await prisma.activity.findMany(condition);
-        return res.status(200).json({ response });
+        return res.status(200).json(response);
       } catch (error: any) {
         return res.status(400).json({ msg: error.message });
       }
@@ -51,19 +51,29 @@ export default async function index(req: NextApiRequest, res: NextApiResponse) {
         !Object.values(weekdays).includes(availability) ||
         !description ||
         !price ||
-        !cityName
+        !cityName ||
+        !tripsId ||
+        !Array.isArray(tripsId) ||
+        !image
       ) {
         return res.status(400).json({ msg: 'Missing data, try again' });
       }
+
       let searchCity = await prisma.city.findMany({
         where: { name: cityName },
       });
       let cityId = searchCity[0].id;
       let activity = {
-        data: { name, availability, description, price, cityId },
+        data: { name, availability, description, price, cityId, image },
       };
       try {
         let response = await prisma.activity.create(activity);
+        await prisma.activitiesOnTrips.create({
+          data: {
+            activityId: response.id.toString(),
+            tripId: tripsId.toString(),
+          },
+        });
         return res.status(201).json(response);
       } catch (error: any) {
         return res.status(400).json({ msg: error.message });

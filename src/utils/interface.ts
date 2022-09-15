@@ -29,7 +29,7 @@ export interface UserUpdate {
 export interface Activity {
   id?: string;
   name: string;
-  availability: string;
+  availability: string | string[];
   description: string;
   price: number;
   active?: boolean;

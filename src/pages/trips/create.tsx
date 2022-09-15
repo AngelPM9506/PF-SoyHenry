@@ -24,6 +24,9 @@ import { ChangeEvent, FormEvent, MouseEvent, useRef } from "react";
 import Layout from "src/components/layout/Layout";
 import axios from "axios";
 import { useRouter } from "next/router";
+import { useUser } from '@auth0/nextjs-auth0';
+import { useQuery } from 'react-query';
+import { getOrCreateUser } from 'src/utils/User';
 
 interface Props {
 	activities: Activity[];
@@ -31,16 +34,23 @@ interface Props {
 }
 
 const CreateTrip = ({ activities, cities }: Props) => {
+
+	const { user, error } = useUser();
+
+	const { data: userDb, isLoading } = useQuery(
+	  ['userDb', user],
+	  () => user && getOrCreateUser(user)
+	);
+
 	const initialState: Trip = {
-		// image: "", How to set input image?
 		name: "",
 		cities: [],
 		initDate: "",
 		endDate: "",
 		description: "",
 		tripOnUser: [],
-		activities: [],
-		planner: "cl81ovgaz0000lgujhtrdzufs",
+		activitiesName: [],
+		planner: "",
 		price: 0,
 		image: ""
 	};
@@ -54,6 +64,8 @@ const CreateTrip = ({ activities, cities }: Props) => {
 	const [file, setFile] = useState<File>();
 	const [nameFile, setNameFile] = useState("");
 	const hiddenFileInput = useRef(null);
+
+	if(!isLoading && input.planner === "" && userDb?.data.id) setInput({...input, planner: userDb.data.id})
 
 	const handleCities = ({
 		target: { value },
@@ -77,10 +89,10 @@ const CreateTrip = ({ activities, cities }: Props) => {
 	}: ChangeEvent<HTMLSelectElement>) => {
 		const activity = value.split("|")[0];
 		const price = Number(value.split("|")[1]) + Number(input.price);
-		if (!input.activities.includes(activity)) {
+		if (!input.activitiesName.includes(activity)) {
 			setInput({
 				...input,
-				activities: [...input.activities, activity],
+				activitiesName: [...input.activitiesName, activity],
 				price: price,
 			});
 		}
@@ -122,13 +134,16 @@ const CreateTrip = ({ activities, cities }: Props) => {
 		}
 	};
 
-	const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+	const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
+		console.log(input);
 		createTrip(input);
 		setInput(initialState);
 		router.push("/trips");
 	};
 
+
+	if (isLoading) return <div>Loading...</div>;
 	return (
 		<Layout>
 			<Center marginTop="1%">
@@ -154,7 +169,7 @@ const CreateTrip = ({ activities, cities }: Props) => {
 								alignSelf='center'
 
 							>
-								<Image src={image}
+								<Image src={`${image}`}
 									   fallbackSrc='https://via.placeholder.com/150' alt='img'
 									   boxSize='200px'
 								/>
@@ -251,11 +266,11 @@ const CreateTrip = ({ activities, cities }: Props) => {
 								<FormErrorMessage>Description errors....</FormErrorMessage>
 							</GridItem>
 							<GridItem borderRadius="2xl" colSpan={5}>
-								<FormLabel paddingLeft="2" htmlFor="activities" mt={2}>
+								<FormLabel paddingLeft="2" htmlFor="activitiesName" mt={2}>
 									Associated activities
 								</FormLabel>
 								<Select
-									name="activities"
+									name="activitiesName"
 									defaultValue="title"
 									mt={2}
 									icon={<ChevronDownIcon />}
@@ -275,7 +290,7 @@ const CreateTrip = ({ activities, cities }: Props) => {
 
 								<Center>
 									<List spacing={3}>
-										{input.activities?.map((a, index) => {
+										{input.activitiesName?.map((a, index) => {
 											return (
 												<ListItem key={index}>
 													<ListIcon as={CheckCircleIcon} />

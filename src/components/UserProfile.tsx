@@ -32,6 +32,10 @@ export interface UserData {
 	urlInstagram?: string;
 	keyWords?: string;
 	trips?: string[];
+	data?: {
+		avatar: string;
+		id: string;
+	}
 }
 
 export const UserProfile = ({ user }: UserAuth0 | any) => {

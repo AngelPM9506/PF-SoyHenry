@@ -67,7 +67,7 @@ export default async function index(
                 !description ||
                 !price ||
                 !planner ||
-                (idPartaker && !Array.isArray(idPartaker)) ||
+                // (idPartaker && !Array.isArray(idPartaker)) ||
                 !activitiesName ||
                 !Array.isArray(activitiesName)
             ) {

@@ -50,7 +50,7 @@ export default function NavBar() {
 
           <HStack spacing={8} alignItems={"center"}>
             <Box>
-              <Image height={"60px"} src={useColorModeValue(logo, logoNight)} />
+              <Image height={"60px"} src={useColorModeValue(logo, logoNight)} alt='logo'/>
             </Box>
           </HStack>
           <HStack
@@ -59,8 +59,8 @@ export default function NavBar() {
             justifyContent={"center"}
             display={{ base: "none", md: "flex" }}
           >
-            {Links.map((l) => (
-              <Link href={l[0]} fontSize={"2xl"} fontWeight={"3px"}>
+            {Links.map((l, index) => (
+              <Link href={l[0]} fontSize={"2xl"} fontWeight={"3px"} key={index}>
                 {l[1]}
               </Link>
             ))}

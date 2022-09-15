@@ -14,7 +14,13 @@ const id = async (
                         id: id.toString()
                     },
                     include: {
-                        tripOnUser: true
+                        tripOnUser: true,
+                        activitiesOnTrips: {
+                            select: {
+                                activityId: true,
+                                tripId: false
+                            }
+                        }
                     }
                 });
                 return res.status(200).json(response);

@@ -6,7 +6,7 @@ export default async function index(
     req: NextApiRequest,
     res: NextApiResponse
 ) {
-    const { method, body: { name, initDate, endDate, planner, description, price } } = req;
+    const { method, body: { name, initDate, endDate, planner, description, price, image, activitie } } = req;
     switch (method) {
         case 'GET':
             try {
@@ -29,9 +29,16 @@ export default async function index(
                         endDate: finishDate,
                         description: description,
                         price: price,
-                        plannerId: planner
+                        plannerId: planner,
+                        image: image
                     }
                 });
+                await prisma.activitiesOnTrips.create({
+                    data: {
+                        tripId: response.id.toString(),
+                        activityId: activitie
+                    }
+                })
                 return res.status(201).json(response);
             } catch (error: any) {
                 console.log(error);

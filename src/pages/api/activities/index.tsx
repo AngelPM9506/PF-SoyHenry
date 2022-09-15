@@ -3,7 +3,7 @@ import { weekdays } from "src/utils/interface";
 import prisma from "src/utils/prisma";
 
 export default async function index(req: NextApiRequest, res: NextApiResponse) {
-    let { method, body: { name, availability, description, price, cityName } } = req;
+    let { method, body: { name, availability, description, price, cityName, image } } = req;
     switch (method) {
         /**obtener todos las actividades */
         case 'GET':
@@ -26,7 +26,7 @@ export default async function index(req: NextApiRequest, res: NextApiResponse) {
             };
             let searchCity = await prisma.city.findMany({ where: { name: cityName } })
             let cityId = searchCity[0].id
-            let activity = { data: { name, availability, description, price, cityId } };
+            let activity = { data: { name, availability, description, price, cityId, image } };
             try {
                 let response = await prisma.activity.create(activity);
                 return res.status(201).json(response);

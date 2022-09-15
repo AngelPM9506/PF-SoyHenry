@@ -5,7 +5,7 @@ import prisma from "src/utils/prisma";
 export default async function index(req: NextApiRequest, res: NextApiResponse) {
     let {
         method,
-        body: { name, availability, description, price, cityName },
+        body: { name, availability, description, price, cityName, image, tripsId },
         query: { wName, sort, sortBy, wCity, maxPrice }
     } = req;
     switch (method) {
@@ -42,23 +42,24 @@ export default async function index(req: NextApiRequest, res: NextApiResponse) {
                 !Object.values(weekdays).includes(availability) ||
                 !description ||
                 !price ||
-                !cityName
-                ) {
+                !cityName ||
+                !tripsId ||
+                !Array.isArray(tripsId) ||
+                !image) {
                 return res.status(400).json({ msg: 'Missing data, try again' })
             };
+
             let searchCity = await prisma.city.findMany({ where: { name: cityName } })
             let cityId = searchCity[0].id
-            let activity = { 
-                data: { 
-                    name, 
-                    availability, 
-                    description, 
-                    price, 
-                    cityId 
-                } 
-            };
+            let activity = { data: { name, availability, description, price, cityId, image } };
             try {
                 let response = await prisma.activity.create(activity);
+                await prisma.activitiesOnTrips.create({
+                    data: {
+                        activityId: response.id.toString(),
+                        tripId: tripsId.toString()
+                    }
+                })
                 return res.status(201).json(response);
             } catch (error: any) {
                 return res.status(400).json({ msg: error.message });

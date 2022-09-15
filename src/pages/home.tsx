@@ -4,9 +4,18 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
+import CarouselTrips from "src/components/CarouselTrips";
 import styles from "../styles/Home.module.css";
+import { Activity, Trip } from "src/utils/interface";
+import Layout from "src/components/layout/Layout";
+import CarouselActivities from "src/components/CarouselActivities";
 
-const Home: NextPage = () => {
+interface Props {
+  trips: Trip[];
+  activities: Activity[];
+}
+
+const Home = ({ trips, activities }: Props) => {
   return (
     <div className={styles.container}>
       <Head>
@@ -15,20 +24,38 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <h1>Este es el home</h1>
+      <Layout>
+        <CarouselTrips trips={trips} />
+        <br />
+        <CarouselActivities activities={activities} />
 
-      <main className={styles.main}>
-        <a href="/api/auth/login">Login</a>
-        {/* auth 0 don't recommend to use here the Link component because we're
+        <main className={styles.main}>
+          <a href="/api/auth/login">Login</a>
+          {/* auth 0 don't recommend to use here the Link component because we're
         pointing to an API route here and not a client page, see more: https://auth0.com/docs/quickstart/webapp/nextjs/01-login#add-login-to-your-application */}
-        <br />
-        <a href="/api/auth/logout">Logout</a>
-        <br />
-        <Link href="/user/profile">Profile</Link>
-        <br />
-      </main>
+          <br />
+          <a href="/api/auth/logout">Logout</a>
+          <br />
+          <Link href="/user/profile">Profile</Link>
+          <br />
+        </main>
+      </Layout>
     </div>
   );
+};
+
+export const getServerSideProps = async () => {
+  const res = await fetch("http://localhost:3000/api/trips");
+  const trips = await res.json();
+  const response = await fetch("http://localhost:3000/api/activities");
+  const activities = await response.json();
+
+  return {
+    props: {
+      trips: trips,
+      activities: activities,
+    },
+  };
 };
 
 export default Home;

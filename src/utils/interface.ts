@@ -10,7 +10,7 @@ export interface Trip {
   tripOnUser: Object[];
   description: String;
   activities: String[];
-  image?: String;
+  image?: String | ArrayBuffer;
   price?: Number;
 }
 

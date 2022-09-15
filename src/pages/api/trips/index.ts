@@ -1,7 +1,8 @@
 import { NextApiRequest, NextApiResponse } from "next"
 import prisma from "src/utils/prisma";
+import cloudinary from 'src/utils/cloudinary';
+const {CLOUDINARY_PRESET_TRIPS} = process.env;
 import { condition, createActivities, createUsers, typeSort } from "src/utils/interface"
-
 
 export default async function index(
     req: NextApiRequest,
@@ -9,7 +10,7 @@ export default async function index(
 ) {
     const {
         method,
-        body: { name, initDate, endDate, planner, description, price, idPartaker, activitiesName },
+        body: { name, initDate, endDate, planner, description, price, idPartaker, activitiesName, image },
         query: { wName, sort, sortBy, wActivity, wplanner, maxPrice }
     } = req;
     switch (method) {
@@ -93,6 +94,18 @@ export default async function index(
                 }
             }) : [];
             try {
+
+                const uploadImage = await cloudinary.uploader.upload(image,
+					{
+						upload_preset: CLOUDINARY_PRESET_TRIPS, 
+						public_id: `${name}-image:${Date.now()}`,
+						allowed_formats: ['png', 'jpg', 'jpeg', 'jfif', 'gif'] 
+					}, 
+					function(error: any, result: any) { 
+						if(error) console.log(error);
+						console.log(result); 
+					});
+
                 const response = await prisma.trip.create({
                     data: {
                         name: name.toLowerCase(),
@@ -101,6 +114,7 @@ export default async function index(
                         description: description,
                         price: price,
                         plannerId: planner,
+                        image: uploadImage.secure_url,
                         tripOnUser: { create: createUsers },
                         activitiesOnTrips: { create: createActivities }
                     },

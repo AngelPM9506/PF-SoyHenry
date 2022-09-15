@@ -10,6 +10,7 @@ const id = async (
 ) => {
     const { method, body: { description, active, traveler, idPartaker, activitiesName }, query: { id } } = req;
     switch (method) {
+        /**obtener info de un solo trp */
         case 'GET':
             let condition = {
                 where: {
@@ -31,6 +32,7 @@ const id = async (
             } catch (error: any) {
                 return res.status(404).json({ error: error.message });
             }
+            /**actualizar untrip  */
         case 'PUT':
             try {
                 if (!active && !description && !traveler) {
@@ -73,11 +75,12 @@ const id = async (
             } catch (error: any) {
                 return res.status(404).json({ error: error.message });
             }
+            /**agrgar usuarios y actividades a un trip */
         case 'PATCH':
             if (!idPartaker && !Array.isArray(idPartaker) && !activitiesName && !Array.isArray(activitiesName)) {
                 return res.status(400).json({ msg: 'Missing or invalid data, try again' })
             }
-            let createUsers: createUsers[] = idPartaker.map((idP: Object) => {
+            let createUsers: createUsers[] = idPartaker ? idPartaker.map((idP: Object) => {
                 return {
                     user: {
                         connect: {
@@ -85,8 +88,8 @@ const id = async (
                         }
                     }
                 }
-            });
-            let createActivities: createActivities[] = activitiesName.map((nameAct: string) => {
+            }) : [];
+            let createActivities: createActivities[] = activitiesName ? activitiesName.map((nameAct: string) => {
                 return {
                     activity: {
                         connect: {
@@ -94,7 +97,7 @@ const id = async (
                         }
                     }
                 }
-            });
+            }): [];
             try {
                 return res.status(201).json(await prisma.trip.update({
                     where: {
@@ -117,6 +120,7 @@ const id = async (
             } catch (error: any) {
                 return res.status(404).json({ error: error.message });
             }
+            /**eliminar un trip  */
         case 'DELETE':
             try {
                 return res.status(201).json(await prisma.trip.delete({ where: { id: id.toString() } }))

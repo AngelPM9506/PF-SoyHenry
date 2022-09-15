@@ -66,8 +66,7 @@ export default async function index(
                 !description ||
                 !price ||
                 !planner ||
-                !idPartaker ||
-                !Array.isArray(idPartaker) ||
+                (idPartaker && !Array.isArray(idPartaker)) ||
                 !activitiesName ||
                 !Array.isArray(activitiesName)
             ) {
@@ -75,7 +74,7 @@ export default async function index(
             }
             let initialDate = new Date(initDate);
             let finishDate = new Date(endDate);
-            let createUsers: createUsers[] = idPartaker.map((idP: string) => {
+            let createUsers: createUsers[] = idPartaker ? idPartaker.map((idP: string) => {
                 return {
                     user: {
                         connect: {
@@ -83,8 +82,8 @@ export default async function index(
                         }
                     }
                 }
-            });
-            let createActivities: createActivities[] = activitiesName.map((nameAct: string) => {
+            }) : [];
+            let createActivities: createActivities[] = activitiesName ? activitiesName.map((nameAct: string) => {
                 return {
                     activity: {
                         connect: {
@@ -92,7 +91,7 @@ export default async function index(
                         }
                     }
                 }
-            });
+            }) : [];
             try {
                 const response = await prisma.trip.create({
                     data: {
@@ -120,25 +119,25 @@ export default async function index(
                 console.log(error);
                 return res.status(500).json({ error: error.message, name, description });
             }
-            /** Forma en la que se envia la informasión
-                 {
-                    "name": "Nuevo trip 08",
-                    "initDate": "2022-10-10",
-                    "endDate": "2022-12-12",
-                    "planner": "cl82bc4ow0091auqirz3xjdxv",
-                    "description": "probando agregar users y actividades",
-                    "price": 30.26,
-                    "image": "Prueba de imagen",
-                    "idPartaker": [
-                        "cl834gov0119529qiqiew4ldtmw",
-                        "cl82bc4ow0091auqirz3xjdxv"
-                    ],
-                    "activitiesName": [
-                        "uno",
-                        "Monte everest"
-                    ]
-                }
-            */
+        /** Forma en la que se envia la informasión
+             {
+                "name": "Nuevo trip 08",
+                "initDate": "2022-10-10",
+                "endDate": "2022-12-12",
+                "planner": "cl82bc4ow0091auqirz3xjdxv",
+                "description": "probando agregar users y actividades",
+                "price": 30.26,
+                "image": "Prueba de imagen",
+                "idPartaker": [
+                    "cl834gov0119529qiqiew4ldtmw",
+                    "cl82bc4ow0091auqirz3xjdxv"
+                ],
+                "activitiesName": [
+                    "uno",
+                    "Monte everest"
+                ]
+            }
+        */
         default:
             res.status(400).send('Method not supported try again')
             break;

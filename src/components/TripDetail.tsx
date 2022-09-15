@@ -20,8 +20,9 @@ import {
 import { FaInstagram, FaTwitter, FaYoutube } from "react-icons/fa";
 import { MdLocalShipping } from "react-icons/md";
 import { MinusIcon } from "@chakra-ui/icons";
+import MiniCardAct from "./miniCardActivity";
 
-export default function TripDetail({ props }) {
+export default function TripDetail({ props }: any) {
   const iday = props.initDate.slice(0, 10).split("").reverse().join("");
   const eday = props.endDate.slice(0, 10).split("").reverse().join("");
 
@@ -36,7 +37,11 @@ export default function TripDetail({ props }) {
           <Image
             rounded={"md"}
             alt={"Trip image"}
-            src={props.image}
+            src={
+              props.image
+                ? props.image
+                : "https://drive.google.com/uc?id=1YZhzZFB0nRQuLLzmFVq13upFeZQo5CLd"
+            }
             fit={"cover"}
             align={"center"}
             w={"100%"}
@@ -127,16 +132,15 @@ export default function TripDetail({ props }) {
                 Activities
               </Text>
 
-              <List spacing={2}>
+              <SimpleGrid columns={3} spacing={2}>
+                <MiniCardAct />
+                <MiniCardAct />
                 {/* {props.activities
-                  ? props.activities.map((a) => (
-                      <ListItem>
-                        <Image>{a.image} </Image>
-                        <Text> {a.name}</Text>
-                      </ListItem>
+                  ? props.activities.map((activity: any) => (
+                      <MiniCardAct props={activity} />
                     ))
                   : null} */}
-              </List>
+              </SimpleGrid>
             </Box>
           </Stack>
 

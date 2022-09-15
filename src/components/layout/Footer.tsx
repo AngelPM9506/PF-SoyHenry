@@ -97,7 +97,9 @@ export default function Footer() {
             >
               <FaGithub />
             </SocialButton>
-            <Text>GitHub Repository</Text>
+            <Link href={"https://github.com/AngelPM9506/PF-SoyHenry"}>
+              GitHub Repository
+            </Link>
           </Stack>
         </Container>
       </Box>

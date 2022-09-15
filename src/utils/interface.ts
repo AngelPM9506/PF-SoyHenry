@@ -15,10 +15,10 @@ export interface Trip {
 }
 
 export interface User {
-  name: string;
-  mail: string;
-  avatar: string;
-  description: string;
+    name: string;
+    mail: string;
+    avatar: string;
+    description: string;
 }
 
 export interface UserUpdate {
@@ -33,11 +33,12 @@ export interface Activity {
   availability: string | string[];
   description: string;
   price: number;
+
+  image?: string;
   active?: boolean;
-  city: CityInDB;
 }
 
-export type ActivitySort = {
+export type typeSort = {
   [x: string]: string;
 };
 

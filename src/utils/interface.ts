@@ -1,23 +1,26 @@
 import { type } from 'os';
 
 export interface Trip {
-  id?: String;
-  name: String;
-  initDate: String;
-  cities?: String[];
-  endDate: String;
-  plannerId?: String;
-  tripOnUser: Object[];
-  description: String;
-  image?: String;
-  price: Number;
+    id?: String;
+    name: String;
+    initDate: String;
+    cities?: String[];
+    endDate: String;
+    planner?: String;
+    tripOnUser: Object[];
+    description: String;
+    activities: String[];
+    image?: String;
+    price?: Number;
 }
 
 export interface User {
-  name: string;
-  mail: string;
-  avatar: string;
-  description: string;
+    name: string;
+    mail: string;
+    avatar: string;
+    description: string;
+
+>>>>>>> c24f2e7c9e081d8917fdc5e4d2e4d093d9e46a6d
 }
 
 export interface UserUpdate {
@@ -42,24 +45,43 @@ export type ActivitySort = {
 };
 
 export type condition = {
-  where: {
-    city?: object;
-    name?: object;
-    price?: object;
-  };
-  include?: object;
-  select?: object;
-  orderBy: ActivitySort[];
-};
+    where?: {
+        city?: object,
+        name?: object,
+        price?: object,
+        activity?: object,
+        activitiesOnTrips?: object,
+        planner?: object
+    };
+    include?: object;
+    select?: object;
+
+    orderBy?: typeSort[];
+}
+export type createUsers = {
+    user: {
+        connect: {
+            id: string;
+        }
+    }
+}
+
+export type createActivities = {
+    activity: {
+        connect: {
+            name: string;
+        }
+    }
+}
 
 export enum weekdays {
-  'Monday',
-  'Tuesday',
-  'Wednesday',
-  'Thursday',
-  'Friday',
-  'Saturday',
-  'Sunday',
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+    "Sunday",
 }
 
 export interface City {

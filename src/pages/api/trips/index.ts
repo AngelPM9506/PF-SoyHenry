@@ -28,7 +28,7 @@ export default async function index(
         case 'GET':
             let orderBy: typeSort[] = [];
             let sortfrom: typeSort = {};
-            /**http://192.168.0.8:3000/api/trips?sort=asc&sortBy=price&wName=na&wplanner=cl7z6as0h01100cqiw589yste&maxPrice=500&wActivity=vol*/
+            /**http://192.168.0.8:3000/api/trips?sort=asc&sortBy=price&wName=10&wplanner=cl7z6as0h01100cqiw589yste&maxPrice=7&wActivity=uno&wCity=Mex*/
             let sortName: string = sortBy ? sortBy.toString().toLowerCase() : 'name';
             sortfrom[sortName] = sort ? sort.toString().toLowerCase() : 'desc';
             orderBy.push(sortfrom);

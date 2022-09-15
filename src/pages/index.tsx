@@ -16,7 +16,7 @@ const landingPage: NextPage = () => {
   const url = "https://www.youtube.com/watch?v=nxCM5uSrM7s";
 
   return (
-    <Container maxW="7xl">
+    <Container maxW="container.xl">
       <Stack
         align="center"
         spacing={{ base: 8, md: 10 }}
@@ -84,7 +84,6 @@ const landingPage: NextPage = () => {
         >
           <Box
             position="relative"
-            height="100%"
             rounded="2xl"
             boxShadow="2xl"
             width="full"

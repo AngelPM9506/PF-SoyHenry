@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { ActivitySort, condition, weekdays } from 'src/utils/interface';
+import { typeSort, condition, weekdays } from 'src/utils/interface';
 import prisma from 'src/utils/prisma';
 
 export default async function index(req: NextApiRequest, res: NextApiResponse) {
@@ -11,8 +11,8 @@ export default async function index(req: NextApiRequest, res: NextApiResponse) {
   switch (method) {
     /**obtener todos las actividades */
     case 'GET':
-      let orderBy: ActivitySort[] = [];
-      let sortfrom: ActivitySort = {};
+      let orderBy: typeSort[] = [];
+      let sortfrom: typeSort = {};
       /**http://127.0.0.1:3000/api/activities?sort=asc&sortBy=price&wName=nadar&wCity=Dubai&maxPrice=60*/
       let sortName: string = sortBy ? sortBy.toString().toLowerCase() : 'name';
       sortfrom[sortName] = sort ? sort.toString().toLowerCase() : 'desc';
@@ -22,7 +22,6 @@ export default async function index(req: NextApiRequest, res: NextApiResponse) {
         include: { city: true },
         orderBy,
       };
-
       wCity
         ? (condition.where = {
             ...condition.where,

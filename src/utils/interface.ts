@@ -10,15 +10,15 @@ export interface Trip {
   tripOnUser: Object[];
   description: String;
   activities: String[];
-  image?: String;
+  image?: String | ArrayBuffer;
   price?: Number;
 }
 
 export interface User {
-  name: string;
-  mail: string;
-  avatar: string;
-  description: string;
+    name: string;
+    mail: string;
+    avatar: string;
+    description: string;
 }
 
 export interface UserUpdate {
@@ -53,24 +53,32 @@ export type condition = {
   include?: object;
   select?: object;
 
-  orderBy?: typeSort[];
-};
-export type create = {
-  user: {
-    connect: {
-      id: string;
-    };
-  };
-};
+    orderBy?: typeSort[];
+}
+export type createUsers = {
+    user: {
+        connect: {
+            id: string;
+        }
+    }
+}
+
+export type createActivities = {
+    activity: {
+        connect: {
+            name: string;
+        }
+    }
+}
 
 export enum weekdays {
-  "Monday",
-  "Tuesday",
-  "Wednesday",
-  "Thursday",
-  "Friday",
-  "Saturday",
-  "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+    "Sunday",
 }
 
 export interface City {

@@ -26,11 +26,11 @@ const logo: string =
 const logoNight: string =
   "https://drive.google.com/uc?id=1LyKP8Kz3OK6LiScZ75NnQsdZbUdGzoP4";
 const Links = [
-  ["home", "Home"],
-  ["trips", "All Trips"],
-  ["activities", "All activities"],
-  ["about", "About"],
-  ["contact", "Contact Us"],
+  ["/home", "Home"],
+  ["/trips", "All Trips"],
+  ["/activities", "All activities"],
+  ["/about", "About"],
+  ["/contact", "Contact Us"],
 ];
 
 export default function NavBar() {
@@ -50,7 +50,7 @@ export default function NavBar() {
 
           <HStack spacing={8} alignItems={"center"}>
             <Box>
-              <Image height={"60px"} src={useColorModeValue(logo, logoNight)} />
+              <Image height={"60px"} src={useColorModeValue(logo, logoNight)} alt='logo'/>
             </Box>
           </HStack>
           <HStack
@@ -59,8 +59,8 @@ export default function NavBar() {
             justifyContent={"center"}
             display={{ base: "none", md: "flex" }}
           >
-            {Links.map((l) => (
-              <Link href={l[0]} fontSize={"2xl"} fontWeight={"3px"}>
+            {Links.map((l, index) => (
+              <Link href={l[0]} fontSize={"2xl"} fontWeight={"3px"} key={index}>
                 {l[1]}
               </Link>
             ))}
@@ -92,7 +92,10 @@ export default function NavBar() {
               </MenuButton>
               <MenuList>
                 <MenuItem>
-                  <Link href="user/profile">My Profile </Link>
+                  <Link href="/user/profile">My Profile </Link>
+                </MenuItem>
+                <MenuItem>
+                  <Link href="/api/auth/logout">Logout</Link>
                 </MenuItem>
               </MenuList>
             </Menu>

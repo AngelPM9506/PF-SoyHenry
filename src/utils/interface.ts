@@ -6,11 +6,12 @@ export interface Trip {
   initDate: String;
   cities?: String[];
   endDate: String;
-  plannerId?: String;
+  planner?: String;
   tripOnUser: Object[];
   description: String;
+  activities: String[];
   image?: String;
-  price: Number;
+  price?: Number;
 }
 
 export interface User {
@@ -18,6 +19,10 @@ export interface User {
   mail: string;
   avatar: string;
   description: string;
+<<<<<<< HEAD
+=======
+
+>>>>>>> c24f2e7c9e081d8917fdc5e4d2e4d093d9e46a6d
 }
 
 export interface UserUpdate {
@@ -27,73 +32,74 @@ export interface UserUpdate {
 }
 
 export interface Activity {
-  id?: string;
-  name: string;
-  availability: string;
-  description: string;
-  price: number;
-  active?: boolean;
+
+    id?: string
+    name: string
+    availability: string | string[]
+    description: string
+    price: number
+    active?: boolean
 }
 
-export type ActivitySort = {
-  [x: string]: string;
-};
-
-export interface Activity {
-  id?: string;
-  name: string;
-  availability: string;
-  description: string;
-  price: number;
-  active?: boolean;
+export type typeSort = {
+    [x: string]: string
 }
-
-export type ActivitySort = {
-  [x: string]: string;
-};
 
 export type condition = {
-  where: {
-    city?: object;
-    name?: object;
-    price?: object;
-  };
-  include?: object;
-  select?: object;
-  orderBy: ActivitySort[];
-};
+    where?: {
+        city?: object,
+        name?: object,
+        price?: object,
+        activity?: object,
+        activitiesOnTrips?: object,
+        planner?: object
+    };
+    include?: object;
+    select?: object;
+
+    orderBy?: typeSort[];
+}
+export type create = {
+    user: { 
+        connect: { 
+            id: string; 
+        } 
+    }
+}
 
 export enum weekdays {
-  'Monday',
-  'Tuesday',
-  'Wednesday',
-  'Thursday',
-  'Friday',
-  'Saturday',
-  'Sunday',
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
+  "Sunday",
 }
 
 export interface City {
-  cityId: String;
-  name: String;
-  country: String;
-  altCountry: String;
-  muni: String;
-  muniSub: String;
-  featureClass: String;
-  featureCode: String;
-  adminCode: String;
-  population: Number;
-  loc: {
-    type: String;
-    coordinates: Number[];
-  };
+
+    cityId: String,
+    name: String,
+    country: String,
+    altCountry: String,
+    muni: String,
+    muniSub: String,
+    featureClass: String,
+    featureCode: String,
+    adminCode: String,
+    population: Number,
+    loc: {
+        type: String,
+        coordinates: Number[]
+    }
 }
 
 export interface CityInDB {
-  name: string;
-  country: string;
-  population: number;
-  latitude: number;
-  longitude: number;
+    name: string,
+    country: string,
+    population: number,
+    latitude: number,
+    longitude: number
+
 }

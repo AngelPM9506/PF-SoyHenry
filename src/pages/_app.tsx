@@ -16,6 +16,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   if (!showChild) {
     return null;
   }
+
   if (typeof window === 'undefined') {
     return <></>;
   } else {
@@ -31,4 +32,5 @@ function MyApp({ Component, pageProps }: AppProps) {
     );
   }
 }
+
 export default MyApp;

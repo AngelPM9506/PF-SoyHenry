@@ -9,7 +9,19 @@ export default async function index(req: NextApiRequest, res: NextApiResponse) {
         /**obtener tuna sola actividad */
         case 'GET':
             try {
-                let response = await prisma.activity.findUnique({ where: { id: id.toString() } });
+                let response = await prisma.activity.findUnique({
+                    where: {
+                        id: id.toString()
+                    },
+                    include: {
+                        activitiesOnTrips: {
+                            include: {
+                                trip: true,
+                            }
+                        },
+                        city: true
+                    }
+                });
                 return res.status(200).json(response);
             } catch (error: any) {
                 return res.status(400).json({ msg: error.message });

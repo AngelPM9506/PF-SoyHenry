@@ -26,11 +26,11 @@ const logo: string =
 const logoNight: string =
   "https://drive.google.com/uc?id=1LyKP8Kz3OK6LiScZ75NnQsdZbUdGzoP4";
 const Links = [
-  ["home", "Home"],
-  ["trips", "All Trips"],
-  ["activities", "All activities"],
-  ["about", "About"],
-  ["contact", "Contact Us"],
+  ["/home", "Home"],
+  ["/trips", "All Trips"],
+  ["/activities", "All activities"],
+  ["/about", "About"],
+  ["/contact", "Contact Us"],
 ];
 
 export default function NavBar() {
@@ -92,7 +92,10 @@ export default function NavBar() {
               </MenuButton>
               <MenuList>
                 <MenuItem>
-                  <Link href="user/profile">My Profile </Link>
+                  <Link href="/user/profile">My Profile </Link>
+                </MenuItem>
+                <MenuItem>
+                  <Link href="/api/auth/logout">Logout</Link>
                 </MenuItem>
               </MenuList>
             </Menu>

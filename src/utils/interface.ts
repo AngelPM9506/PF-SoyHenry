@@ -36,18 +36,6 @@ export interface Activity {
   city: CityInDB;
 }
 
-export type ActivitySort = {
-  [x: string]: string;
-};
-
-export interface Activity {
-  id?: string;
-  name: string;
-  availability: string;
-  description: string;
-  price: number;
-  active?: boolean;
-}
 
 export type ActivitySort = {
   [x: string]: string;

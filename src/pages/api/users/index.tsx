@@ -54,10 +54,6 @@ export default async function index(req: NextApiRequest, res: NextApiResponse) {
       res.status(400).send("Metohd not supported try again");
       break;
   }
-<<<<<<< HEAD
-}
-=======
 
 }
 
->>>>>>> c24f2e7c9e081d8917fdc5e4d2e4d093d9e46a6d

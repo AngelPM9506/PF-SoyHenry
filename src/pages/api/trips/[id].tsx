@@ -9,17 +9,15 @@ const id = async (
     switch (method) {
         case 'GET':
             try {
-                let response = await prisma.trip.findUnique({ where: { id: id.toString() } });
-                let travelersOnTrip = await prisma.usersOnTrips.findMany({
+                let response = await prisma.trip.findUnique({
                     where: {
-                        tripId: id.toLocaleString()
+                        id: id.toString()
                     },
-                    select: {
-                        userid: true,
-                        tripId: false
+                    include: {
+                        tripOnUser: true
                     }
-                })
-                return res.status(200).json({ response, travelersOnTrip });
+                });
+                return res.status(200).json(response);
             } catch (error: any) {
                 return res.status(404).json({ error: error.message });
             }
@@ -32,7 +30,7 @@ const id = async (
                     await prisma.usersOnTrips.create({
                         data: {
                             userid: traveler,
-                            tripId: id.toLocaleString()
+                            tripId: id.toString()
                         }
                     })
                 }

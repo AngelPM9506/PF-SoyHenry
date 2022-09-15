@@ -15,9 +15,11 @@ import {
   VisuallyHidden,
   List,
   ListItem,
+  ListIcon,
 } from "@chakra-ui/react";
 import { FaInstagram, FaTwitter, FaYoutube } from "react-icons/fa";
 import { MdLocalShipping } from "react-icons/md";
+import { MinusIcon } from "@chakra-ui/icons";
 
 export default function TripDetail({ props }) {
   const iday = props.initDate.slice(0, 10).split("").reverse().join("");
@@ -93,7 +95,24 @@ export default function TripDetail({ props }) {
                 <List spacing={2}>
                   <ListItem>Initial date: {iday}</ListItem>
                   <ListItem>Ending date:{eday}</ListItem>
-                  <ListItem>Cities:</ListItem>
+                  <ListItem>
+                    Cities:
+                    <List>
+                      {props.cities ? (
+                        props.cities.map((c) => (
+                          <ListItem>
+                            <ListIcon as={MinusIcon} color="#F3B46F" />
+                            {c.name}
+                          </ListItem>
+                        ))
+                      ) : (
+                        <ListItem>
+                          <ListIcon as={MinusIcon} color="#F3B46F" /> No cities
+                          asocieted to this trip
+                        </ListItem>
+                      )}
+                    </List>
+                  </ListItem>
                 </List>
               </SimpleGrid>
             </Box>

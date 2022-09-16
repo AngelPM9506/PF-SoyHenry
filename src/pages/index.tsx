@@ -1,4 +1,4 @@
-import type { NextPage } from 'next';
+import type { NextPage } from "next";
 import {
   Container,
   Stack,
@@ -9,24 +9,25 @@ import {
   Button,
   AspectRatio,
   Center,
-} from '@chakra-ui/react';
-import ReactPlayer from 'react-player';
+} from "@chakra-ui/react";
+import ReactPlayer from "react-player";
 
 const landingPage: NextPage = () => {
-  const url = 'https://www.youtube.com/watch?v=nxCM5uSrM7s';
+  const url =
+    "https://res.cloudinary.com/mauro4202214/video/upload/v1663337043/world-travelers/videolandingpagecrop_iklwjv.mp4";
   return (
     <Container maxW="container.xl">
       <Stack
         align="center"
         spacing={{ base: 8, md: 10 }}
         py={{ base: 20, md: 28 }}
-        direction={{ base: 'column', md: 'row' }}
+        direction={{ base: "column", md: "row" }}
       >
         <Stack flex={1} spacing={{ base: 5, md: 10 }}>
           <Heading
             lineHeight={1.1}
             fontWeight={600}
-            fontSize={{ base: '3xl', sm: '4xl', lg: '6xl' }}
+            fontSize={{ base: "3xl", sm: "4xl", lg: "6xl" }}
           >
             <Text
               as="span"
@@ -34,12 +35,12 @@ const landingPage: NextPage = () => {
               color="primary"
               _after={{
                 content: "''",
-                width: 'full',
-                height: '30%',
-                position: 'absolute',
+                width: "full",
+                height: "30%",
+                position: "absolute",
                 bottom: 1,
                 left: 0,
-                bg: 'hightlight',
+                bg: "hightlight",
                 zIndex: -1,
               }}
             >
@@ -57,7 +58,7 @@ const landingPage: NextPage = () => {
           </Text>
           <Stack
             spacing={{ base: 4, sm: 6 }}
-            direction={{ base: 'column', sm: 'row' }}
+            direction={{ base: "column", sm: "row" }}
           >
             {/*eslint-disable-next-line @next/next/no-html-link-for-pages*/}
             <a href="/api/auth/login">
@@ -68,7 +69,7 @@ const landingPage: NextPage = () => {
                 px={6}
                 colorScheme="primary"
                 bg="highlight"
-                _hover={{ bg: 'danger' }}
+                _hover={{ bg: "danger" }}
               >
                 LOG IN
               </Button>
@@ -81,28 +82,19 @@ const landingPage: NextPage = () => {
           align="center"
           position="relative"
           w="full"
+          rounded="2xl"
+          overflow="hidden"
+          boxShadow="2xl"
         >
-          <Box
-            position="relative"
-            rounded="2xl"
-            boxShadow="2xl"
-            width="full"
-            overflow="hidden"
-          >
-            <AspectRatio>
-              <Center>
-                <ReactPlayer
-                  width="100%"
-                  height="100%"
-                  url={url}
-                  playing
-                  controls={false}
-                  loop
-                  volume={0.3}
-                />
-              </Center>
-            </AspectRatio>
-          </Box>
+          <ReactPlayer
+            height={"full"}
+            object-fit="cover"
+            url={url}
+            playing
+            controls={false}
+            loop
+            volume={0.3}
+          />
         </Flex>
       </Stack>
     </Container>
@@ -110,7 +102,7 @@ const landingPage: NextPage = () => {
 };
 
 export const getServerSideProps = async () => {
-  const response = await fetch('http://localhost:3000/api/hello');
+  const response = await fetch("http://localhost:3000/api/hello");
   const dataCities = await response.json();
   return {
     props: {

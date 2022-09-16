@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
-import { Activity } from 'src/utils/interface';
-import { SimpleGrid } from '@chakra-ui/react';
-import { ActivityCard } from '../../components/ActivityCard';
-import { getActivities } from 'src/utils/activities';
-import { useQuery, dehydrate, QueryClient } from 'react-query';
-import { ActivityFilters } from '../../components/ActivityFilters';
-import Layout from 'src/components/layout/Layout';
+import React, { useState } from "react";
+import { Activity } from "src/utils/interface";
+import { SimpleGrid } from "@chakra-ui/react";
+import { ActivityCard } from "../../components/ActivityCard";
+import { getActivities } from "src/utils/activities";
+import { useQuery, dehydrate, QueryClient } from "react-query";
+import { ActivityFilters } from "../../components/ActivityFilters";
+import Layout from "src/components/layout/Layout";
 interface Props {
   activities: Activity[];
 }
@@ -13,18 +13,18 @@ const Activities = ({ activities }: Props) => {
   const [city, setCity] = useState<string>(undefined);
   const [name, setName] = useState<string>(undefined);
   const [maxPrice, setMaxPrice] = useState<number>(undefined);
-  const [sort, setSort] = useState<string>('desc');
-  const [sortBy, setSortBy] = useState<string>('name');
+  const [sort, setSort] = useState<string>("desc");
+  const [sortBy, setSortBy] = useState<string>("name");
   const [input, setInput] = useState<string>(undefined);
   const { data } = useQuery(
-    ['activities', city, name, maxPrice, sort, sortBy], //dependencies: React is going to re-render when one of these changes
+    ["activities", city, name, maxPrice, sort, sortBy], //dependencies: React is going to re-render when one of these changes
     () => getActivities(city, name, maxPrice, sort, sortBy)
   );
   const cities = activities.map((a) => a.city.name);
   const citiesUnique: string[] = Array.from(new Set(cities)).sort(); // remove duplicates, sort alphabetically
-  if (city === 'All Cities') setCity(undefined);
-  if (sort === 'Sort Order') setSort('desc');
-  if (sortBy === 'Sort By') setSortBy('name');
+  if (city === "All Cities") setCity(undefined);
+  if (sort === "Sort Order") setSort("desc");
+  if (sortBy === "Sort By") setSortBy("name");
   const handleCity = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setCity(e.target.value);
   };
@@ -82,7 +82,7 @@ const Activities = ({ activities }: Props) => {
 export const getServerSideProps = async () => {
   const queryClient = new QueryClient(); //https://tanstack.com/query/v4/docs/guides/ssr
 
-  await queryClient.prefetchQuery(['activities'], await getActivities());
+  await queryClient.prefetchQuery(["activities"], await getActivities());
   const activities = await getActivities();
   return {
     props: {

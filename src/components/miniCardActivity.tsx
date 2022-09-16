@@ -8,6 +8,7 @@ import {
   Image,
   Link,
 } from "@chakra-ui/react";
+import Activities from "src/pages/activities";
 
 // export default function MiniCardAct(activity: any) {
 //   return (
@@ -67,9 +68,9 @@ import {
 //   );
 // }
 
-export default function MiniCardAct(activity: any) {
+export default function MiniCardAct(activity: any, trip: boolean) {
   return (
-    <Link href={`activities/${activity.id}`}>
+    <Link href={!trip ? `activities/${activity.id} ` : `trips/${activity.id} `}>
       <Center py={12}>
         <Box
           role={"group"}
@@ -121,10 +122,10 @@ export default function MiniCardAct(activity: any) {
               fontSize={"sm"}
               textTransform={"uppercase"}
             >
-              CITY
+              {activity.city || "CITY"}
             </Text>
             <Heading fontSize={"xl"} fontFamily={"body"} fontWeight={500}>
-              ACTIVITY NAME
+              {activity.name || "ACTIVITY NAME"}
             </Heading>
           </Stack>
         </Box>

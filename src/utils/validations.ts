@@ -18,7 +18,7 @@ export const validateDescription = (description: string) => {
   );
 };
 
-export const validateDates = (date: Date) => {
+export const validateDates = (date: string) => {
   let result = moment(date, "YYYY-MM-DD").isValid();
   return result;
 };
@@ -46,8 +46,6 @@ export const formControl = (input: Trip, trips: Trip[]) => {
     trips?.find((t) => t.name.toLowerCase() === input.name?.toLowerCase())
   ) {
     errors.name = "There is already a trip with that name";
-  } else if (!validateImgUrl(input.image)) {
-    errors.image = "Please, insert a jpg, jpeg, png, webp, avif, gif, svg url";
   } else if (!validateDates(input.initDate)) {
     errors.initDate = "Please, select the right format of the date";
   } else if (!validateDates(input.initDate)) {

@@ -19,7 +19,7 @@ export default async function index(
             price,
             activitiesName,
             image,
-            citiesName
+            cities
         },
         query: { wName, sort, sortBy, wActivity, wplanner, wCity, maxPrice }
     } = req;
@@ -97,8 +97,8 @@ export default async function index(
                 !planner ||
                 !activitiesName ||
                 !Array.isArray(activitiesName) ||
-                !citiesName ||
-                !Array.isArray(citiesName)
+                !cities ||
+                !Array.isArray(cities)
             ) {
                 return res.status(400).json({ msg: 'Missing or invalid data, try again' })
             }
@@ -131,7 +131,7 @@ export default async function index(
                     }
                 }
             }) : [];
-            let createCities: createCity[] = citiesName ? citiesName.map((nameCity: string) => {
+            let createCities: createCity[] = cities ? cities.map((nameCity: string) => {
                 return {
                     city: {
                         connect: {

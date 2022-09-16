@@ -27,7 +27,6 @@ export default async function index(req: NextApiRequest, res: NextApiResponse) {
                 res.status(400).send('Metohd not supported try again')
                 break;
         }
-
     } catch (error) {
         return res.status(400).json({ stastus: 'error', error });
     }

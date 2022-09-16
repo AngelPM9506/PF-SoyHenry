@@ -13,11 +13,11 @@ import {
   IconButton,
   Center,
   Textarea,
-} from '@chakra-ui/react';
-import React, { ChangeEvent, SetStateAction, useState, useEffect } from 'react';
-import { updateUser, UserAuth0, getOrCreateUser } from 'src/utils/User';
-import { Cloudinary } from '@cloudinary/url-gen';
-import { useQuery, useQueryClient } from 'react-query';
+} from "@chakra-ui/react";
+import React, { ChangeEvent, SetStateAction, useState, useEffect } from "react";
+import { updateUser, UserAuth0, getOrCreateUser } from "src/utils/User";
+import { Cloudinary } from "@cloudinary/url-gen";
+import { useQuery, useQueryClient } from "react-query";
 const { CLOUDINARY_NAME } = process.env;
 
 export interface UserData {
@@ -43,17 +43,17 @@ export const UserProfile = ({ user }: UserAuth0 | any) => {
     name: user.data.name,
     mail: user.data.mail,
     avatar: user.data.avatar,
-    description: '',
-    urlTikTok: '',
-    urlFaceBook: '',
-    urlInstagram: '',
-    keyWords: '',
+    description: user.data.description,
+    urlTikTok: user.data.urlTikTok,
+    urlFaceBook: user.data.urlFaceBook,
+    urlInstagram: user.data.urlInstagram,
+    keyWords: user.data.keyWords,
   };
 
   const [data, setData] = useState(defaultData);
   const [image, setImage] = useState<string | ArrayBuffer>();
   const [file, setFile] = useState<File>();
-  const [nameFile, setNameFile] = useState('');
+  const [nameFile, setNameFile] = useState("");
   const queryClient = useQueryClient();
   const hiddenFileInput = React.useRef(null);
 
@@ -101,22 +101,22 @@ export const UserProfile = ({ user }: UserAuth0 | any) => {
 
   return (
     <Flex
-      minH={'100vh'}
-      align={'center'}
-      justify={'center'}
-      bg={useColorModeValue('gray.50', 'gray.800')}
+      minH={"100vh"}
+      align={"center"}
+      justify={"center"}
+      bg={useColorModeValue("gray.50", "gray.800")}
     >
       <Stack
         spacing={4}
-        w={'full'}
-        maxW={'md'}
-        bg={useColorModeValue('white', 'gray.700')}
-        rounded={'xl'}
-        boxShadow={'lg'}
+        w={"full"}
+        maxW={"md"}
+        bg={useColorModeValue("white", "gray.700")}
+        rounded={"xl"}
+        boxShadow={"lg"}
         p={6}
         my={12}
       >
-        <Heading lineHeight={1.1} fontSize={{ base: '2xl', sm: '3xl' }}>
+        <Heading lineHeight={1.1} fontSize={{ base: "2xl", sm: "3xl" }}>
           User Profile Edit
         </Heading>
         <form
@@ -126,7 +126,7 @@ export const UserProfile = ({ user }: UserAuth0 | any) => {
         >
           <FormControl id="userName">
             <FormLabel>User Icon</FormLabel>
-            <Stack direction={['column']} spacing={6} align="center">
+            <Stack direction={["column"]} spacing={6} align="center">
               <Center>
                 <Avatar size="2xl" src={image ? image : data.avatar} />
               </Center>
@@ -137,7 +137,7 @@ export const UserProfile = ({ user }: UserAuth0 | any) => {
                 <Input
                   type="file"
                   ref={hiddenFileInput}
-                  style={{ display: 'none' }}
+                  style={{ display: "none" }}
                   accept="image/png, image/jpeg, image/gif, image/jpg, image/jfif"
                   onChange={(e) => handleImage(e)}
                 />
@@ -148,7 +148,7 @@ export const UserProfile = ({ user }: UserAuth0 | any) => {
             <FormLabel>Name</FormLabel>
             <Input
               placeholder="Name"
-              _placeholder={{ color: 'gray.500' }}
+              _placeholder={{ color: "gray.500" }}
               type="text"
               value={data.name}
               onChange={(e) => handleChange(e)}
@@ -158,7 +158,7 @@ export const UserProfile = ({ user }: UserAuth0 | any) => {
             <FormLabel>Email address</FormLabel>
             <Input
               placeholder="your-email@example.com"
-              _placeholder={{ color: 'gray.500' }}
+              _placeholder={{ color: "gray.500" }}
               type="email"
               value={data.mail}
               disabled={true}
@@ -169,7 +169,7 @@ export const UserProfile = ({ user }: UserAuth0 | any) => {
             <FormLabel>Description</FormLabel>
             <Textarea
               placeholder="Description"
-              _placeholder={{ color: 'gray.500' }}
+              _placeholder={{ color: "gray.500" }}
               onChange={(e) => handleChange(e)}
               value={data.description}
             />
@@ -178,7 +178,7 @@ export const UserProfile = ({ user }: UserAuth0 | any) => {
             <FormLabel>Keywords</FormLabel>
             <Input
               placeholder="Beach, Mountains, Europe, South America"
-              _placeholder={{ color: 'gray.500' }}
+              _placeholder={{ color: "gray.500" }}
               onChange={(e) => handleChange(e)}
               value={data.keyWords}
               type="text"
@@ -188,7 +188,7 @@ export const UserProfile = ({ user }: UserAuth0 | any) => {
             <FormLabel>Tiktok</FormLabel>
             <Input
               placeholder="URL"
-              _placeholder={{ color: 'gray.500' }}
+              _placeholder={{ color: "gray.500" }}
               type="text"
               onChange={(e) => handleChange(e)}
               value={data.urlTikTok}
@@ -198,7 +198,7 @@ export const UserProfile = ({ user }: UserAuth0 | any) => {
             <FormLabel>Instagram</FormLabel>
             <Input
               placeholder="URL"
-              _placeholder={{ color: 'gray.500' }}
+              _placeholder={{ color: "gray.500" }}
               type="text"
               onChange={(e) => handleChange(e)}
               value={data.urlInstagram}
@@ -208,21 +208,21 @@ export const UserProfile = ({ user }: UserAuth0 | any) => {
             <FormLabel>Facebook</FormLabel>
             <Input
               placeholder="URL"
-              _placeholder={{ color: 'gray.500' }}
+              _placeholder={{ color: "gray.500" }}
               type="text"
               onChange={(e) => handleChange(e)}
               value={data.urlFaceBook}
             />
           </FormControl>
-          <Stack spacing={6} marginTop={'1.5rem'} direction={['column', 'row']}>
+          <Stack spacing={6} marginTop={"1.5rem"} direction={["column", "row"]}>
             <Button
-              bg={'blue.400'}
-              color={'white'}
+              bg={"blue.400"}
+              color={"white"}
               w="full"
               _hover={{
-                bg: 'blue.500',
+                bg: "blue.500",
               }}
-              type={'submit'}
+              type={"submit"}
             >
               Submit
             </Button>

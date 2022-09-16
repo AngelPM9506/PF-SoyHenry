@@ -162,6 +162,7 @@ export default async function index(
                         price: price,
                         plannerId: planner,
                         image: uploadImage.secure_url,
+                        public_id_image: uploadImage.public_id,
                         activitiesOnTrips: { create: createActivities },
                         citiesOnTrips: { create: createCities }
                     },

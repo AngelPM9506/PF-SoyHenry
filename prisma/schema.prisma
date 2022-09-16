@@ -39,6 +39,7 @@ model Trip {
   tripOnUser        UsersOnTrips[]
   description       String              @db.Text
   image             String?             @db.VarChar()
+  public_id_image   String?
   price             Float
   active            Boolean             @default(true)
   activitiesOnTrips activitiesOnTrips[]
@@ -68,6 +69,7 @@ model Activity {
   name              String              @unique @db.VarChar()
   availability      availability[]      @default([Saturday, Sunday])
   image             String?             @db.VarChar()
+  public_id_image   String?
   description       String              @db.Text
   price             Float
   active            Boolean?            @default(true)

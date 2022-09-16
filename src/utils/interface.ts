@@ -1,16 +1,16 @@
 import { type } from "os";
 
 export interface Trip {
-  id?: String | string;
-  name: String | string;
-  initDate: String | string;
-  cities?: String[];
-  endDate: String | string;
-  planner?: String | string;
+  id?: string;
+  name: string;
+  initDate: string;
+  cities?: string[];
+  endDate: string;
+  planner?: string;
   tripOnUser?: Object[];
-  description: String | string;
-  activitiesName: String[];
-  image?: String | string | ArrayBuffer;
+  description: string;
+  activitiesName: string[];
+  image?: string | ArrayBuffer;
   price?: Number;
 }
 
@@ -91,18 +91,18 @@ export enum weekdays {
 }
 
 export interface City {
-  cityId: String;
-  name: String;
-  country: String;
-  altCountry: String;
-  muni: String;
-  muniSub: String;
-  featureClass: String;
-  featureCode: String;
-  adminCode: String;
+  cityId: string;
+  name: string;
+  country: string;
+  altCountry: string;
+  muni: string;
+  muniSub: string;
+  featureClass: string;
+  featureCode: string;
+  adminCode: string;
   population: Number;
   loc: {
-    type: String;
+    type: string;
     coordinates: Number[];
   };
 }
@@ -117,7 +117,7 @@ export interface CityInDB {
 
 export interface Errors {
   name?: string;
-  image?: string | ArrayBuffer;
+  image?: string;
   initDate?: string;
   endDate?: string;
   description?: string;

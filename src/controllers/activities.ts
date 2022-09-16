@@ -4,6 +4,7 @@ import cloudinary from 'src/utils/cloudinary';
 const { CLOUDINARY_PRESET_ACTIVITIES } = process.env;
 
 type query = {
+    id?: string | string[];
     wName?: string | string[];
     sort?: string | string[];
     sortBy?: string | string[];
@@ -12,23 +13,42 @@ type query = {
 }
 
 type body = {
-    name?: string | string[]
-    availability?: any
-    description?: string | string[]
-    price?: string
-    cityName?: string | string[]
-    image?: string
+    name?: string | string[];
+    availability?: any;
+    description?: string | string[];
+    price?: string;
+    cityName?: string | string[];
+    image?: string;
+    active?: any;
 }
-type post = {
+
+type activity = {
+    where: object;
     data: {
-        name: string,
-        availability: string[],
-        description: string,
-        price: string,
-        image: string,
-        city: object
-    };
+        name: string;
+        availability: any;
+        description: string;
+        price: number;
+        active: any;
+        image?: string
+        public_id_image?: string
+    }
     include?: object;
+}
+
+const uploadImage = async (image: string, name: string) => {
+
+    let resp = await cloudinary.uploader.upload(image,
+        {
+            upload_preset: CLOUDINARY_PRESET_ACTIVITIES,
+            public_id: `${name}-image:${Date.now()}`,
+            allowed_formats: ['png', 'jpg', 'jpeg', 'jfif', 'gif']
+        },
+        function (error: any, result: any) {
+            if (error) console.log(error);
+            console.log(result);
+        });
+    return resp;
 }
 
 const ActivitiesControles = {
@@ -43,7 +63,12 @@ const ActivitiesControles = {
 
         let condition: condition = {
             where: wName ? { name: { contains: wName.toString() } } : {},
-            include: { city: true },
+            include: {
+                activitiesOnTrips: {
+                    include: { trip: true, }
+                },
+                city: true
+            },
             orderBy,
         };
 
@@ -66,27 +91,16 @@ const ActivitiesControles = {
             let { name, availability, description, price, cityName, image } = body;
             if (
                 !name || !availability || !description || !price || !cityName || !image
-            ) { return { status: 'error', msg: 'Missing data, try again' } }
-
-            const uploadImage = await cloudinary.uploader.upload(image,
-                {
-                    upload_preset: CLOUDINARY_PRESET_ACTIVITIES,
-                    public_id: `${name}-image:${Date.now()}`,
-                    allowed_formats: ['png', 'jpg', 'jpeg', 'jfif', 'gif']
-                },
-                function (error: any, result: any) {
-                    if (error) console.log(error);
-                    console.log(result);
-                });
-
+            ) { throw new Error("Missing data, try again"); }
+            let uploadedImage = await uploadImage(image, name.toString())
             let activity = {
                 data: {
                     name: name.toString(),
                     availability: availability,
                     description: description.toString(),
                     price: parseFloat(price),
-                    image: uploadImage.secure_url,
-                    public_id_image: uploadImage.public_id,
+                    image: uploadedImage.secure_url,
+                    public_id_image: uploadedImage.public_id,
                     city: { connect: { name: cityName.toString() } }
                 },
                 include: { city: true }
@@ -96,6 +110,78 @@ const ActivitiesControles = {
         } catch (error) {
             return { status: 'error', error }
         }
+    },
+    getActivity: async (query: query) => {
+        let { id } = query;
+        try {
+            let response = await prisma.activity.findUnique({
+                where: {
+                    id: id.toString()
+                },
+                include: {
+                    activitiesOnTrips: {
+                        include: { trip: true, }
+                    },
+                    city: true
+                }
+            });
+            return response;
+        } catch (error) {
+            return error;
+        }
+    },
+    putActivity: async (body: body, query: query) => {
+        let { name, image, availability, description, price, active } = body;
+        let { id } = query;
+        try {
+            /**Si no existe ningun valor retorna un error*/
+            if (!name && !image && !availability && !description && !price && !active) throw new Error("Missing data, try again");
+            let toUpActivity = await prisma.activity.findUnique({ where: { id: id.toString() } });
+            if (!toUpActivity) throw new Error("Activity not found, try again");
+            let activity: activity = {
+                where: {
+                    id: id.toString()
+                },
+                data: {
+                    name: name ? name.toString() : toUpActivity.name,
+                    availability: availability ? availability : toUpActivity.availability,
+                    description: description ? description.toString() : toUpActivity.description,
+                    image: toUpActivity.image,
+                    public_id_image: toUpActivity.public_id_image,
+                    price: price ? parseFloat(price) : toUpActivity.price,
+                    active: toUpActivity.active ? false : true
+                },
+                include: {
+                    activitiesOnTrips: {
+                        include: { trip: true, }
+                    },
+                    city: true
+                },
+            };
+
+            if (image) {
+                let uploadedImage = await uploadImage(image, name ? name.toString() : toUpActivity.name);
+                activity.data.image = uploadedImage.secure_url;
+                activity.data.public_id_image = uploadedImage.public_id;
+            }
+
+            if (active !== undefined) {
+                let response = await prisma.activity.update(activity);
+                return response;
+            } else {
+                delete activity.data.active;
+                let response = await prisma.activity.update(activity);
+                return response;
+            }
+        } catch (error) {
+            return error;
+        }
+    },
+    deletActivity: async (query: query) => {
+        let { id } = query;
+        let response = await prisma.activity.delete({ where: { id: id.toString() } });
+        await cloudinary.uploader.destroy(response.public_id_image);
+        return response;
     }
 }
 export default ActivitiesControles

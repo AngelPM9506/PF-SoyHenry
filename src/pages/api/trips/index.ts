@@ -20,7 +20,7 @@ export default async function index(
             idPartaker,
             activitiesName,
             image,
-            citiesIds
+            citiesName
         },
         query: { wName, sort, sortBy, wActivity, wplanner, wCity, maxPrice }
     } = req;
@@ -28,7 +28,8 @@ export default async function index(
         case 'GET':
             let orderBy: typeSort[] = [];
             let sortfrom: typeSort = {};
-            /**http://192.168.0.8:3000/api/trips?sort=asc&sortBy=price&wName=10&wplanner=cl7z6as0h01100cqiw589yste&maxPrice=7&wActivity=uno&wCity=Mex*/
+            /**
+             * http://127.0.0.1:3000/api/trips?sort=asc&sortBy=price&wName=10&wplanner=cl7z6as0h01100cqiw589yste&maxPrice=7&wActivity=uno&wCity=Mex*/
             let sortName: string = sortBy ? sortBy.toString().toLowerCase() : 'name';
             sortfrom[sortName] = sort ? sort.toString().toLowerCase() : 'desc';
             orderBy.push(sortfrom);
@@ -98,8 +99,8 @@ export default async function index(
                 (idPartaker && !Array.isArray(idPartaker)) ||
                 !activitiesName ||
                 !Array.isArray(activitiesName) ||
-                !citiesIds ||
-                !Array.isArray(citiesIds)
+                !citiesName ||
+                !Array.isArray(citiesName)
             ) {
                 return res.status(400).json({ msg: 'Missing or invalid data, try again' })
             }
@@ -123,7 +124,7 @@ export default async function index(
                     }
                 }
             }) : [];
-            let createCities: createCity[] = citiesIds ? citiesIds.map((nameCity: string) => {
+            let createCities: createCity[] = citiesName ? citiesName.map((nameCity: string) => {
                 return {
                     city: {
                         connect: {
@@ -134,16 +135,16 @@ export default async function index(
             }) : [];
             try {
 
-                // const uploadImage = await cloudinary.uploader.upload(image,
-                //     {
-                //         upload_preset: CLOUDINARY_PRESET_TRIPS,
-                //         public_id: `${name}-image:${Date.now()}`,
-                //         allowed_formats: ['png', 'jpg', 'jpeg', 'jfif', 'gif']
-                //     },
-                //     function (error: any, result: any) {
-                //         if (error) console.log(error);
-                //         console.log(result);
-                //     });
+                const uploadImage = await cloudinary.uploader.upload(image,
+                    {
+                        upload_preset: CLOUDINARY_PRESET_TRIPS,
+                        public_id: `${name}-image:${Date.now()}`,
+                        allowed_formats: ['png', 'jpg', 'jpeg', 'jfif', 'gif']
+                    },
+                    function (error: any, result: any) {
+                        if (error) console.log(error);
+                        console.log(result);
+                    });
 
                 const response = await prisma.trip.create({
                     data: {
@@ -153,7 +154,7 @@ export default async function index(
                         description: description,
                         price: price,
                         plannerId: planner,
-                        image: image,//uploadImage.secure_url,
+                        image: uploadImage.secure_url,
                         tripOnUser: { create: createUsers },
                         activitiesOnTrips: { create: createActivities },
                         citiesOnTrips: { create: createCities }
@@ -177,22 +178,19 @@ export default async function index(
                 return res.status(500).json({ error, name, description });
             }
         /** Forma en la que se envia la informasión
+         * idPartaker es opcional si no lo lleva no hace no hay problema
+         * activitiesName y citiesName es necesario contar con almenos uno
              {
-                "name": "Nuevo trip 08",
-                "initDate": "2022-10-10",
+                "name": "Trip de pruebas",
+                "initDate": "2022-06-15",
                 "endDate": "2022-12-12",
                 "planner": "cl82bc4ow0091auqirz3xjdxv",
-                "description": "probando agregar users y actividades",
-                "price": 30.26,
-                "image": "Prueba de imagen",
-                "idPartaker": [
-                    "cl834gov0119529qiqiew4ldtmw",
-                    "cl82bc4ow0091auqirz3xjdxv"
-                ],
-                "activitiesName": [
-                    "uno",
-                    "Monte everest"
-                ]
+                "description": "Pruebas...",
+                "price": 15.30,
+                "image": "Pruebas de imagen",
+                "idPartaker": [],
+                "activitiesName": ["Chichen Itza"],
+                "citiesName": ["Toluca"]
             }
         */
         default:

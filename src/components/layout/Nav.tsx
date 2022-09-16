@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { ReactNode } from "react";
 import {
   Box,
   Flex,
@@ -17,31 +17,32 @@ import {
   Stack,
   Image,
   useColorMode,
-} from '@chakra-ui/react';
-import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
-import { MoonIcon, SunIcon } from '@chakra-ui/icons';
-import { useUser } from '@auth0/nextjs-auth0';
-import { useQuery } from 'react-query';
-import { getOrCreateUser } from 'src/utils/User';
-import { UserData } from '../UserProfile';
-import NextLink from 'next/link';
+} from "@chakra-ui/react";
+import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
+import { MoonIcon, SunIcon } from "@chakra-ui/icons";
+import { useUser } from "@auth0/nextjs-auth0";
+import { useQuery } from "react-query";
+import { getOrCreateUser } from "src/utils/User";
+import { UserData } from "../UserProfile";
+import NextLink from "next/link";
 const logo: string =
-  'https://drive.google.com/uc?id=1YCJtH1cFYm8UAe3NR_pATYQXZzJv1a2I';
+  'https://res.cloudinary.com/mauro4202214/image/upload/v1663331570/world-travelers/logowt_qifbpn.png';
 const logoNight: string =
-  'https://drive.google.com/uc?id=1LyKP8Kz3OK6LiScZ75NnQsdZbUdGzoP4';
+  'https://res.cloudinary.com/mauro4202214/image/upload/v1663331569/world-travelers/logolargonight_yqpbps.png';
+        
 const Links = [
-  ['/home', 'Home'],
-  ['/trips', 'All Trips'],
-  ['/activities', 'All activities'],
-  ['/about', 'About'],
-  ['/contact', 'Contact Us'],
+  ["/home", "Home"],
+  ["/trips", "All Trips"],
+  ["/activities", "All activities"],
+  ["/about", "About"],
+  ["/contact", "Contact Us"],
 ];
 
 export default function NavBar() {
   const { user, error } = useUser();
 
   const { data: userDb, isLoading } = useQuery(
-    ['userDb', user],
+    ["userDb", user],
     () => user && getOrCreateUser(user)
   );
 
@@ -49,58 +50,58 @@ export default function NavBar() {
   const { colorMode, toggleColorMode } = useColorMode();
   return (
     <>
-      <Box padding={'3px'} boxShadow={'1px 1px 1px 1px #D1DFE3'} px={4}>
-        <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
+      <Box padding={"3px"} boxShadow={"1px 1px 1px 1px #D1DFE3"} px={4}>
+        <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
           <IconButton
-            size={'md'}
+            size={"md"}
             icon={isOpen ? <CloseIcon /> : <HamburgerIcon />}
-            aria-label={'Open Menu'}
-            display={{ md: 'none' }}
+            aria-label={"Open Menu"}
+            display={{ md: "none" }}
             onClick={isOpen ? onClose : onOpen}
           />
 
-          <HStack spacing={8} alignItems={'center'}>
+          <HStack spacing={8} alignItems={"center"}>
             <Box>
               <Image
-                height={'60px'}
+                height={"60px"}
                 src={useColorModeValue(logo, logoNight)}
                 alt="logo"
               />
             </Box>
           </HStack>
           <HStack
-            as={'nav'}
+            as={"nav"}
             spacing={10}
-            justifyContent={'center'}
-            display={{ base: 'none', md: 'flex' }}
+            justifyContent={"center"}
+            display={{ base: "none", md: "flex" }}
           >
             {Links.map((l, index) => (
               <NextLink href={l[0]} key={index}>
-                <Link href={l[0]} fontSize={'2xl'} fontWeight={'3px'}>
+                <Link href={l[0]} fontSize={"2xl"} fontWeight={"3px"}>
                   {l[1]}
                 </Link>
               </NextLink>
             ))}
           </HStack>
-          <Flex alignItems={'center'}>
+          <Flex alignItems={"center"}>
             <Button
-              marginRight={'50px'}
-              justifyContent={'center'}
-              alignItems={'center'}
+              marginRight={"50px"}
+              justifyContent={"center"}
+              alignItems={"center"}
               onClick={toggleColorMode}
-              bgColor={'transparent'}
+              bgColor={"transparent"}
             >
-              {colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
+              {colorMode === "light" ? <MoonIcon /> : <SunIcon />}
             </Button>
             <Menu>
               <MenuButton
                 as={Button}
-                rounded={'full'}
-                variant={'link'}
-                cursor={'pointer'}
+                rounded={"full"}
+                variant={"link"}
+                cursor={"pointer"}
                 minW={0}
               >
-                <Avatar size={'sm'} src={userDb?.data.avatar} />
+                <Avatar size={"lg"} src={userDb?.data.avatar} />
               </MenuButton>
               <MenuList>
                 <MenuItem>
@@ -113,7 +114,7 @@ export default function NavBar() {
             </Menu>
           </Flex>
         </Flex>
-        {isOpen ? <Box pb={4} display={{ md: 'none' }}></Box> : null}
+        {isOpen ? <Box pb={4} display={{ md: "none" }}></Box> : null}
       </Box>
     </>
   );

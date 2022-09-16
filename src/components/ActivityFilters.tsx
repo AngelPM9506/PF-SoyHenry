@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction } from 'react';
+import React, { Dispatch, SetStateAction } from "react";
 import {
   Select,
   Box,
@@ -7,8 +7,8 @@ import {
   Text,
   Button,
   useColorModeValue,
-} from '@chakra-ui/react';
-import { CityInDB } from 'src/utils/interface';
+} from "@chakra-ui/react";
+import { CityInDB } from "src/utils/interface";
 export type ActivityFilter = {
   city: string;
   sort: string;
@@ -45,7 +45,7 @@ export const ActivityFilters = ({
       margin="20px"
       flex-direction="center"
       align-items="center"
-      justifyContent={'space-around'}
+      justifyContent={"space-around"}
       mt={10}
     >
       <Select
@@ -61,19 +61,19 @@ export const ActivityFilters = ({
         ))}
       </Select>
       <Select width={250} value={sort} onChange={(e) => handleSort(e)}>
-        <option value={'asc'}>Sort Order: Ascending</option>
-        <option value={'desc'}>Sort Order: Descending</option>
+        <option value={"asc"}>Sort Order: Ascending</option>
+        <option value={"desc"}>Sort Order: Descending</option>
       </Select>
       <Select width={200} value={sortBy} onChange={(e) => handleSortBy(e)}>
-        <option value={'name'}>Sort By: Name</option>
-        <option value={'price'}>Sort By: Price</option>
+        <option value={"name"}>Sort By: Name</option>
+        <option value={"price"}>Sort By: Price</option>
       </Select>
       <HStack>
         <p>Max Price:</p>
         <form onSubmit={(e) => handleMaxPrice(e)}>
           <Input
             width="120px"
-            textAlign={'left'}
+            textAlign={"left"}
             placeholder="$"
             onChange={(e) => handleInput(e)}
             value={input}
@@ -82,16 +82,16 @@ export const ActivityFilters = ({
         </form>
         <Button
           mt={8}
-          bg={useColorModeValue('#151f21', 'gray.900')}
-          color={'white'}
-          rounded={'md'}
+          bg={useColorModeValue("#151f21", "#f4f4f4")}
+          color={useColorModeValue("#f4f4f4", "#151f21")}
+          rounded={"md"}
           _hover={{
-            transform: 'translateY(-2px)',
-            boxShadow: 'lg',
+            transform: "translateY(-2px)",
+            boxShadow: "lg",
           }}
           onClick={(e) => {
             setMaxPrice(null);
-            setInput('');
+            setInput("");
           }}
         >
           Reset

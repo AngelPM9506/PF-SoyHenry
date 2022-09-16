@@ -11,7 +11,7 @@ interface Props {
 
 const MyCarousel = ({ trips, activities }: Props) => {
   const defaultpic: any =
-    "https://drive.google.com/uc?id=1YZhzZFB0nRQuLLzmFVq13upFeZQo5CLd";
+    "https://res.cloudinary.com/mauro4202214/image/upload/v1663331567/world-travelers/defaultimagetrip_j90ewc.png";
   const lastTrips = trips?.reverse().slice(0, 11);
   const lastActivities = activities?.reverse().slice(0, 11);
   const router = useRouter();
@@ -35,6 +35,7 @@ const MyCarousel = ({ trips, activities }: Props) => {
                   rounded={"lg"}
                   maxW="96"
                   src={t.image ? t.image : defaultpic}
+                  alt='img'
                 />
                 <Heading> {t.name} </Heading>
                 <Text> {`$${t.price}`} </Text>
@@ -66,6 +67,7 @@ const MyCarousel = ({ trips, activities }: Props) => {
                   rounded={"lg"}
                   maxW="96"
                   src={a.image ? a.image : defaultpic}
+                  alt='img'
                 />
                 <Heading> {a.name} </Heading>
                 <Text> {`$${a.price}`} </Text>

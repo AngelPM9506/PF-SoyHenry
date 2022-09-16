@@ -6,20 +6,18 @@ import {
   Textarea,
   Select,
   Button,
-  FormErrorMessage,
   Grid,
   GridItem,
   Center,
   List,
   ListItem,
   ListIcon,
-  Container,
   useToast,
   Image,
 } from "@chakra-ui/react";
 import { ChevronDownIcon, CheckCircleIcon } from "@chakra-ui/icons";
 import { useState } from "react";
-import { Trip, Activity, City } from "src/utils/interface";
+import { Trip, Activity, City, Errors } from "src/utils/interface";
 import { ChangeEvent, FormEvent, MouseEvent, useRef } from "react";
 import Layout from "src/components/layout/Layout";
 import axios from "axios";
@@ -27,13 +25,15 @@ import { useRouter } from "next/router";
 import { useUser } from "@auth0/nextjs-auth0";
 import { useQuery } from "react-query";
 import { getOrCreateUser } from "src/utils/User";
+import { formControl } from "src/utils/validations";
 
 interface Props {
   activities: Activity[];
   cities: City[];
+  trips: Trip[];
 }
 
-const CreateTrip = ({ activities, cities }: Props) => {
+const CreateTrip = ({ activities, cities, trips }: Props) => {
   const { user, error } = useUser();
 
   const { data: userDb, isLoading } = useQuery(
@@ -47,11 +47,10 @@ const CreateTrip = ({ activities, cities }: Props) => {
     initDate: "",
     endDate: "",
     description: "",
-    tripOnUser: [],
     activitiesName: [],
     planner: "",
     price: 0,
-    image: "",
+    image: null,
   };
 
   const toast = useToast();
@@ -62,7 +61,10 @@ const CreateTrip = ({ activities, cities }: Props) => {
   const [image, setImage] = useState<string | ArrayBuffer>();
   const [file, setFile] = useState<File>();
   const [nameFile, setNameFile] = useState("");
+  const [errors, setErrors] = useState<Errors>({});
   const hiddenFileInput = useRef(null);
+
+  console.log(typeof input.image);
 
   if (!isLoading && input.planner === "" && userDb?.data.id)
     setInput({ ...input, planner: userDb.data.id });
@@ -82,6 +84,8 @@ const CreateTrip = ({ activities, cities }: Props) => {
     target: { name, value },
   }: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setInput({ ...input, [name]: value });
+    const errControl = formControl({ ...input, [name]: value }, trips);
+    setErrors(errControl);
   };
 
   const handleSelect = ({
@@ -108,7 +112,6 @@ const CreateTrip = ({ activities, cities }: Props) => {
         ...input,
         image: reader.result,
       });
-      console.log(typeof reader.result);
     };
   }
 
@@ -136,7 +139,6 @@ const CreateTrip = ({ activities, cities }: Props) => {
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(input);
     createTrip(input);
     setInput(initialState);
     router.push("/trips");
@@ -156,7 +158,6 @@ const CreateTrip = ({ activities, cities }: Props) => {
     });
   };
 
-  if (isLoading) return <div>Loading...</div>;
   return (
     <Layout>
       <Center marginTop="1%">
@@ -189,7 +190,7 @@ const CreateTrip = ({ activities, cities }: Props) => {
                 />
                 <Center>
                   <Button onClick={(event) => handleClick(event)} mt="20px">
-                    Change Activity Image
+                    Change Trip Image
                   </Button>
                   <Input
                     type="file"
@@ -209,7 +210,7 @@ const CreateTrip = ({ activities, cities }: Props) => {
                   placeholder="Type a name for your trip..."
                   onChange={(e) => handleChange(e)}
                 />
-                <FormErrorMessage>Name errors....</FormErrorMessage>
+                {errors.name && <p>{errors.name}</p>}
 
                 <FormLabel paddingLeft="2" htmlFor="cities" mt={2}>
                   Cities
@@ -254,7 +255,6 @@ const CreateTrip = ({ activities, cities }: Props) => {
                     })}
                   </List>
                 </Center>
-                <FormErrorMessage>Cities errors....</FormErrorMessage>
 
                 <FormLabel paddingLeft="2" htmlFor="initialDate" mt={2}>
                   Initial date
@@ -266,7 +266,7 @@ const CreateTrip = ({ activities, cities }: Props) => {
                   type="date"
                   onChange={(e) => handleChange(e)}
                 />
-                <FormErrorMessage>Initial date errors....</FormErrorMessage>
+                {errors.initDate && <p>{errors.initDate}</p>}
 
                 <FormLabel paddingLeft="2" htmlFor="endDate" mt={2}>
                   End date
@@ -278,7 +278,7 @@ const CreateTrip = ({ activities, cities }: Props) => {
                   type="date"
                   onChange={(e) => handleChange(e)}
                 />
-                <FormErrorMessage>Ending date errors....</FormErrorMessage>
+                {errors.endDate && <p>{errors.endDate}</p>}
               </GridItem>
               <GridItem borderRadius="2xl" colSpan={5} bg="blackAlpha.100">
                 <FormLabel
@@ -295,7 +295,7 @@ const CreateTrip = ({ activities, cities }: Props) => {
                   size="sm"
                   onChange={(e) => handleChange(e)}
                 />
-                <FormErrorMessage>Description errors....</FormErrorMessage>
+                {errors.description && <p>{errors.description}</p>}
               </GridItem>
               <GridItem borderRadius="2xl" colSpan={5}>
                 <FormLabel paddingLeft="2" htmlFor="activitiesName" mt={2}>
@@ -340,10 +340,6 @@ const CreateTrip = ({ activities, cities }: Props) => {
                     })}
                   </List>
                 </Center>
-
-                <FormErrorMessage>
-                  Activities Select errors....
-                </FormErrorMessage>
               </GridItem>
             </Grid>
           </Center>
@@ -389,11 +385,14 @@ export const getServerSideProps = async () => {
   const activities = await response.json();
   const res = await fetch("http://localhost:3000/api/cities");
   const cities = await res.json();
+  const data = await fetch("http://localhost:3000/api/trips");
+  const trips = await data.json();
 
   return {
     props: {
       activities: activities,
       cities: cities,
+      trips: trips,
     },
   };
 };

@@ -24,6 +24,9 @@ const MyCarousel = ({ trips, activities }: Props) => {
       padding="4"
     >
       <Box>
+        <Heading textAlign="center" color="primary" p={3}>
+          Last Trips
+        </Heading>
         <Carousel infiniteLoop>
           {lastTrips?.map((t) => {
             return (
@@ -53,6 +56,9 @@ const MyCarousel = ({ trips, activities }: Props) => {
         </Carousel>
       </Box>
       <Box>
+        <Heading textAlign="center" color="primary" p={3}>
+          Popular Activities
+        </Heading>
         <Carousel infiniteLoop>
           {lastActivities?.map((a) => {
             return (

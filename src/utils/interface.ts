@@ -1,16 +1,16 @@
 import { type } from "os";
 
 export interface Trip {
-  id?: String;
-  name: String;
-  initDate: String;
+  id?: String | string;
+  name: String | string;
+  initDate: String | string;
   cities?: String[];
-  endDate: String;
-  planner?: String;
-  tripOnUser: Object[];
-  description: String;
+  endDate: String | string;
+  planner?: String | string;
+  tripOnUser?: Object[];
+  description: String | string;
   activitiesName: String[];
-  image?: String | ArrayBuffer;
+  image?: String | string | ArrayBuffer;
   price?: Number;
 }
 
@@ -113,4 +113,12 @@ export interface CityInDB {
   population: number;
   latitude: number;
   longitude: number;
+}
+
+export interface Errors {
+  name?: string;
+  image?: string | ArrayBuffer;
+  initDate?: string;
+  endDate?: string;
+  description?: string;
 }

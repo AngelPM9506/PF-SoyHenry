@@ -27,13 +27,15 @@ import { useRouter } from "next/router";
 import { useUser } from "@auth0/nextjs-auth0";
 import { useQuery } from "react-query";
 import { getOrCreateUser } from "src/utils/User";
+import { formControl } from "src/utils/validations";
 
 interface Props {
   activities: Activity[];
   cities: City[];
+  trips: Trip[];
 }
 
-const CreateTrip = ({ activities, cities }: Props) => {
+const CreateTrip = ({ activities, cities, trips }: Props) => {
   const { user, error } = useUser();
 
   const { data: userDb, isLoading } = useQuery(
@@ -47,7 +49,6 @@ const CreateTrip = ({ activities, cities }: Props) => {
     initDate: "",
     endDate: "",
     description: "",
-    tripOnUser: [],
     activitiesName: [],
     planner: "",
     price: 0,
@@ -62,6 +63,7 @@ const CreateTrip = ({ activities, cities }: Props) => {
   const [image, setImage] = useState<string | ArrayBuffer>();
   const [file, setFile] = useState<File>();
   const [nameFile, setNameFile] = useState("");
+  const [errors, setErrors] = useState({});
   const hiddenFileInput = useRef(null);
 
   if (!isLoading && input.planner === "" && userDb?.data.id)
@@ -82,6 +84,8 @@ const CreateTrip = ({ activities, cities }: Props) => {
     target: { name, value },
   }: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setInput({ ...input, [name]: value });
+    const errControl = formControl({ ...input, [name]: value }, trips);
+    setErrors(errControl);
   };
 
   const handleSelect = ({
@@ -136,7 +140,6 @@ const CreateTrip = ({ activities, cities }: Props) => {
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(input);
     createTrip(input);
     setInput(initialState);
     router.push("/trips");
@@ -156,7 +159,6 @@ const CreateTrip = ({ activities, cities }: Props) => {
     });
   };
 
-  if (isLoading) return <div>Loading...</div>;
   return (
     <Layout>
       <Center marginTop="1%">
@@ -189,7 +191,7 @@ const CreateTrip = ({ activities, cities }: Props) => {
                 />
                 <Center>
                   <Button onClick={(event) => handleClick(event)} mt="20px">
-                    Change Activity Image
+                    Change Trip Image
                   </Button>
                   <Input
                     type="file"
@@ -389,11 +391,14 @@ export const getServerSideProps = async () => {
   const activities = await response.json();
   const res = await fetch("http://localhost:3000/api/cities");
   const cities = await res.json();
+  const data = await fetch("http://localhost:3000/api/trips");
+  const trips = await data.json();
 
   return {
     props: {
       activities: activities,
       cities: cities,
+      trips: trips,
     },
   };
 };

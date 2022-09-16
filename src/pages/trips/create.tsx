@@ -6,20 +6,18 @@ import {
   Textarea,
   Select,
   Button,
-  FormErrorMessage,
   Grid,
   GridItem,
   Center,
   List,
   ListItem,
   ListIcon,
-  Container,
   useToast,
   Image,
 } from "@chakra-ui/react";
 import { ChevronDownIcon, CheckCircleIcon } from "@chakra-ui/icons";
 import { useState } from "react";
-import { Trip, Activity, City } from "src/utils/interface";
+import { Trip, Activity, City, Errors } from "src/utils/interface";
 import { ChangeEvent, FormEvent, MouseEvent, useRef } from "react";
 import Layout from "src/components/layout/Layout";
 import axios from "axios";
@@ -52,7 +50,7 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
     activitiesName: [],
     planner: "",
     price: 0,
-    image: "",
+    image: null,
   };
 
   const toast = useToast();
@@ -63,8 +61,10 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
   const [image, setImage] = useState<string | ArrayBuffer>();
   const [file, setFile] = useState<File>();
   const [nameFile, setNameFile] = useState("");
-  const [errors, setErrors] = useState({});
+  const [errors, setErrors] = useState<Errors>({});
   const hiddenFileInput = useRef(null);
+
+  console.log(typeof input.image);
 
   if (!isLoading && input.planner === "" && userDb?.data.id)
     setInput({ ...input, planner: userDb.data.id });
@@ -112,7 +112,6 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
         ...input,
         image: reader.result,
       });
-      console.log(typeof reader.result);
     };
   }
 
@@ -211,7 +210,7 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
                   placeholder="Type a name for your trip..."
                   onChange={(e) => handleChange(e)}
                 />
-                <FormErrorMessage>Name errors....</FormErrorMessage>
+                {errors.name && <p>{errors.name}</p>}
 
                 <FormLabel paddingLeft="2" htmlFor="cities" mt={2}>
                   Cities
@@ -256,7 +255,6 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
                     })}
                   </List>
                 </Center>
-                <FormErrorMessage>Cities errors....</FormErrorMessage>
 
                 <FormLabel paddingLeft="2" htmlFor="initialDate" mt={2}>
                   Initial date
@@ -268,7 +266,7 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
                   type="date"
                   onChange={(e) => handleChange(e)}
                 />
-                <FormErrorMessage>Initial date errors....</FormErrorMessage>
+                {errors.initDate && <p>{errors.initDate}</p>}
 
                 <FormLabel paddingLeft="2" htmlFor="endDate" mt={2}>
                   End date
@@ -280,7 +278,7 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
                   type="date"
                   onChange={(e) => handleChange(e)}
                 />
-                <FormErrorMessage>Ending date errors....</FormErrorMessage>
+                {errors.endDate && <p>{errors.endDate}</p>}
               </GridItem>
               <GridItem borderRadius="2xl" colSpan={5} bg="blackAlpha.100">
                 <FormLabel
@@ -297,7 +295,7 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
                   size="sm"
                   onChange={(e) => handleChange(e)}
                 />
-                <FormErrorMessage>Description errors....</FormErrorMessage>
+                {errors.description && <p>{errors.description}</p>}
               </GridItem>
               <GridItem borderRadius="2xl" colSpan={5}>
                 <FormLabel paddingLeft="2" htmlFor="activitiesName" mt={2}>
@@ -342,10 +340,6 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
                     })}
                   </List>
                 </Center>
-
-                <FormErrorMessage>
-                  Activities Select errors....
-                </FormErrorMessage>
               </GridItem>
             </Grid>
           </Center>

@@ -95,7 +95,7 @@ export default async function index(
                 !description ||
                 !price ||
                 !planner ||
-                // (idPartaker && !Array.isArray(idPartaker)) ||
+                (idPartaker && !Array.isArray(idPartaker)) ||
                 !activitiesName ||
                 !Array.isArray(activitiesName) ||
                 !citiesIds ||
@@ -134,16 +134,16 @@ export default async function index(
             }) : [];
             try {
 
-                // const uploadImage = await cloudinary.uploader.upload(image,
-                //     {
-                //         upload_preset: CLOUDINARY_PRESET_TRIPS,
-                //         public_id: `${name}-image:${Date.now()}`,
-                //         allowed_formats: ['png', 'jpg', 'jpeg', 'jfif', 'gif']
-                //     },
-                //     function (error: any, result: any) {
-                //         if (error) console.log(error);
-                //         console.log(result);
-                //     });
+                 const uploadImage = await cloudinary.uploader.upload(image,
+                     {
+                         upload_preset: CLOUDINARY_PRESET_TRIPS,
+                         public_id: `${name}-image:${Date.now()}`,
+                         allowed_formats: ['png', 'jpg', 'jpeg', 'jfif', 'gif']
+                     },
+                     function (error: any, result: any) {
+                         if (error) console.log(error);
+                         console.log(result);
+                     });
 
                 const response = await prisma.trip.create({
                     data: {
@@ -153,7 +153,7 @@ export default async function index(
                         description: description,
                         price: price,
                         plannerId: planner,
-                        image: image,//uploadImage.secure_url,
+                        image: uploadImage.secure_url,
                         tripOnUser: { create: createUsers },
                         activitiesOnTrips: { create: createActivities },
                         citiesOnTrips: { create: createCities }

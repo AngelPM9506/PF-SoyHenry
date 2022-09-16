@@ -17,10 +17,9 @@ export default async function index(
             planner,
             description,
             price,
-            idPartaker,
             activitiesName,
             image,
-            citiesIds
+            cities
         },
         query: { wName, sort, sortBy, wActivity, wplanner, wCity, maxPrice }
     } = req;
@@ -28,7 +27,8 @@ export default async function index(
         case 'GET':
             let orderBy: typeSort[] = [];
             let sortfrom: typeSort = {};
-            /**http://192.168.0.8:3000/api/trips?sort=asc&sortBy=price&wName=10&wplanner=cl7z6as0h01100cqiw589yste&maxPrice=7&wActivity=uno&wCity=Mex*/
+            /**
+             * http://127.0.0.1:3000/api/trips?sort=asc&sortBy=price&wName=10&wplanner=cl7z6as0h01100cqiw589yste&maxPrice=7&wActivity=uno&wCity=Mex*/
             let sortName: string = sortBy ? sortBy.toString().toLowerCase() : 'name';
             sortfrom[sortName] = sort ? sort.toString().toLowerCase() : 'desc';
             orderBy.push(sortfrom);
@@ -95,25 +95,33 @@ export default async function index(
                 !description ||
                 !price ||
                 !planner ||
-                (idPartaker && !Array.isArray(idPartaker)) ||
                 !activitiesName ||
                 !Array.isArray(activitiesName) ||
-                !citiesIds ||
-                !Array.isArray(citiesIds)
+                !cities ||
+                !Array.isArray(cities)
             ) {
                 return res.status(400).json({ msg: 'Missing or invalid data, try again' })
             }
             let initialDate = new Date(initDate);
             let finishDate = new Date(endDate);
-            let createUsers: createUsers[] = idPartaker ? idPartaker.map((idP: string) => {
-                return {
-                    user: {
-                        connect: {
-                            id: idP.toString()
-                        }
-                    }
-                }
-            }) : [];
+
+            // idPartaker,
+            // (idPartaker && !Array.isArray(idPartaker)) ||
+            // let createUsers: createUsers[] = idPartaker ? idPartaker.map((idP: string) => {
+            //     return {
+            //         user: {
+            //             connect: {
+            //                 id: idP.toString()
+            //             }
+            //         }
+            //     }
+            // }) : [];
+            // tripOnUser: { create: createUsers },
+            // tripOnUser: {
+            //     include: { user: true, trip: true }
+            // },
+
+
             let createActivities: createActivities[] = activitiesName ? activitiesName.map((nameAct: string) => {
                 return {
                     activity: {
@@ -123,7 +131,7 @@ export default async function index(
                     }
                 }
             }) : [];
-            let createCities: createCity[] = citiesIds ? citiesIds.map((nameCity: string) => {
+            let createCities: createCity[] = cities ? cities.map((nameCity: string) => {
                 return {
                     city: {
                         connect: {
@@ -154,15 +162,11 @@ export default async function index(
                         price: price,
                         plannerId: planner,
                         image: uploadImage.secure_url,
-                        tripOnUser: { create: createUsers },
                         activitiesOnTrips: { create: createActivities },
                         citiesOnTrips: { create: createCities }
                     },
                     include: {
                         planner: true,
-                        tripOnUser: {
-                            include: { user: true, trip: true }
-                        },
                         activitiesOnTrips: {
                             include: { activity: true }
                         },
@@ -177,22 +181,18 @@ export default async function index(
                 return res.status(500).json({ error, name, description });
             }
         /** Forma en la que se envia la informasión
+         * idPartaker se queda comentado 
+         * activitiesName y citiesName es necesario contar con almenos uno
              {
-                "name": "Nuevo trip 08",
-                "initDate": "2022-10-10",
+                "name": "Trip de pruebas",
+                "initDate": "2022-06-15",
                 "endDate": "2022-12-12",
                 "planner": "cl82bc4ow0091auqirz3xjdxv",
-                "description": "probando agregar users y actividades",
-                "price": 30.26,
-                "image": "Prueba de imagen",
-                "idPartaker": [
-                    "cl834gov0119529qiqiew4ldtmw",
-                    "cl82bc4ow0091auqirz3xjdxv"
-                ],
-                "activitiesName": [
-                    "uno",
-                    "Monte everest"
-                ]
+                "description": "Pruebas...",
+                "price": 15.30,
+                "image": "Pruebas de imagen",
+                "activitiesName": ["Chichen Itza"],
+                "citiesName": ["Toluca"]
             }
         */
         default:

@@ -9,7 +9,7 @@ interface Props {
   activities: Activity[];
 }
 
-const myCarousel = ({ trips, activities }: Props) => {
+const MyCarousel = ({ trips, activities }: Props) => {
   const defaultpic: any =
     "https://drive.google.com/uc?id=1YZhzZFB0nRQuLLzmFVq13upFeZQo5CLd";
   const lastTrips = trips?.reverse().slice(0, 11);
@@ -24,6 +24,9 @@ const myCarousel = ({ trips, activities }: Props) => {
       padding="4"
     >
       <Box>
+        <Heading textAlign="center" color="primary" p={3}>
+          Last Trips
+        </Heading>
         <Carousel infiniteLoop>
           {lastTrips?.map((t) => {
             return (
@@ -52,6 +55,9 @@ const myCarousel = ({ trips, activities }: Props) => {
         </Carousel>
       </Box>
       <Box>
+        <Heading textAlign="center" color="primary" p={3}>
+          Popular Activities
+        </Heading>
         <Carousel infiniteLoop>
           {lastActivities?.map((a) => {
             return (
@@ -83,4 +89,4 @@ const myCarousel = ({ trips, activities }: Props) => {
   );
 };
 
-export default myCarousel;
+export default MyCarousel;

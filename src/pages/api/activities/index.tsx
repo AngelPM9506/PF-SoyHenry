@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { typeSort, condition, weekdays } from 'src/utils/interface';
 import prisma from 'src/utils/prisma';
+import ActivitiesControles from 'src/controllers/activities'
 
 export default async function index(req: NextApiRequest, res: NextApiResponse) {
   let {
@@ -12,31 +13,8 @@ export default async function index(req: NextApiRequest, res: NextApiResponse) {
     switch (method) {
       /**obtener todos las actividades */
       case 'GET':
-        let orderBy: typeSort[] = [];
-        let sortfrom: typeSort = {};
-        /**http://127.0.0.1:3000/api/activities?sort=asc&sortBy=price&wName=nadar&wCity=Dubai&maxPrice=60*/
-        let sortName: string = sortBy ? sortBy.toString().toLowerCase() : 'name';
-        sortfrom[sortName] = sort ? sort.toString().toLowerCase() : 'desc';
-        orderBy.push(sortfrom);
-
-        let condition: condition = {
-          where: wName ? { name: { contains: wName.toString() } } : {},
-          include: { city: true },
-          orderBy,
-        };
-
-        wCity ? (condition.where = {
-          ...condition.where,
-          city: { is: { name: { contains: wCity.toString() } } },
-        }) : '';
-
-        maxPrice ? (condition.where = {
-          ...condition.where,
-          price: { lte: parseFloat(maxPrice.toString()) },
-        }) : '';
-
-        var responseG = await prisma.activity.findMany(condition);
-        return res.status(200).json(responseG);
+        let repGet = await ActivitiesControles.getActivities({ wName, sort, sortBy, wCity, maxPrice });
+        return res.status(200).json(repGet);
 
       /**agregar una nueva actividad */
       case 'POST':

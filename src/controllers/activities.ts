@@ -1,4 +1,4 @@
-import { typeSort, condition } from 'src/utils/interface';
+import { typeSort, condition, Activity, weekdays } from 'src/utils/interface';
 import prisma from 'src/utils/prisma';
 import cloudinary from 'src/utils/cloudinary';
 const { CLOUDINARY_PRESET_ACTIVITIES } = process.env;
@@ -13,18 +13,18 @@ type query = {
 
 type body = {
     name?: string | string[]
-    availability?: string | string[]
+    availability?: any
     description?: string | string[]
-    price?: string | string[]
+    price?: string
     cityName?: string | string[]
     image?: string
 }
-type post ={
+type post = {
     data: {
-        name: string, 
-        availability: string, 
-        description: string, 
-        price: string, 
+        name: string,
+        availability: string[],
+        description: string,
+        price: string,
         image: string,
         city: object
     };
@@ -63,11 +63,11 @@ const ActivitiesControles = {
     postActivity: async (body: body) => {
         /**Comprobar que existan los argumentos y que availability este en el enum*/
         try {
-            let {name, availability, description, price, cityName, image} = body;
+            let { name, availability, description, price, cityName, image } = body;
             if (
                 !name || !availability || !description || !price || !cityName || !image
             ) { return { status: 'error', msg: 'Missing data, try again' } }
-    
+
             const uploadImage = await cloudinary.uploader.upload(image,
                 {
                     upload_preset: CLOUDINARY_PRESET_ACTIVITIES,
@@ -78,22 +78,23 @@ const ActivitiesControles = {
                     if (error) console.log(error);
                     console.log(result);
                 });
-    
+
             let activity = {
                 data: {
-                    name: name.toString(), 
-                    availability: availability.toString(), 
-                    description: description.toString(), 
-                    price: price.toString(), 
-                    image: image.toString(),
+                    name: name.toString(),
+                    availability: availability,
+                    description: description.toString(),
+                    price: parseFloat(price),
+                    image: uploadImage.secure_url,
+                    public_id_image: uploadImage.public_id,
                     city: { connect: { name: cityName.toString() } }
                 },
                 include: { city: true }
             };
             var responseP = await prisma.activity.create(activity);
             return responseP;
-        } catch (error :eny) {
-            return {status: 'error', error}
+        } catch (error) {
+            return { status: 'error', error }
         }
     }
 }

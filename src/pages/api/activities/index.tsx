@@ -1,6 +1,4 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { typeSort, condition, weekdays } from 'src/utils/interface';
-import prisma from 'src/utils/prisma';
 import ActivitiesControles from 'src/controllers/activities'
 
 export default async function index(req: NextApiRequest, res: NextApiResponse) {
@@ -18,20 +16,8 @@ export default async function index(req: NextApiRequest, res: NextApiResponse) {
 
       /**agregar una nueva actividad */
       case 'POST':
-        /**Comprobar que existan los argumentos y que availability este en el enum*/
-        if (
-          !name || !availability || !description || !price || !cityName || !image
-        ) { return res.status(400).json({ msg: 'Missing data, try again' }); }
-
-        let activity = {
-          data: {
-            name, availability, description, price, image,
-            city: { connect: { name: cityName.toString() } }
-          },
-          include: { city: true }
-        };
-        var responseP = await prisma.activity.create(activity);
-        return res.status(201).json(responseP);
+        let repPost = await ActivitiesControles.postActivity({ name, availability, description, price, cityName, image });
+        return res.status(201).json(repPost);
       default:
         res.status(400).send('Metohd not supported try again');
         break;
@@ -40,6 +26,10 @@ export default async function index(req: NextApiRequest, res: NextApiResponse) {
     return res.json({ status: "error", msg: error.message });
   }
 }
+/**
+ * Url del get de los filtros
+ * http://127.0.0.1:3000/api/activities?sort=asc&sortBy=price&wName=nadar&wCity=Dubai&maxPrice=60
+ * */
 /*
 {
   "name": "Nadar en un arecife de coral",

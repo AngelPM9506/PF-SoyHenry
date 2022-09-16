@@ -5,6 +5,7 @@ import { ActivityCard } from '../../components/ActivityCard';
 import { getActivities } from 'src/utils/activities';
 import { useQuery, dehydrate, QueryClient } from 'react-query';
 import { ActivityFilters } from '../../components/ActivityFilters';
+import Layout from 'src/components/layout/Layout';
 interface Props {
   activities: Activity[];
 }
@@ -46,30 +47,34 @@ const Activities = ({ activities }: Props) => {
 
   return !data ? (
     <div>
-      <h1>There are no activities yet! </h1>
+      <Layout>
+        <h1>There are no activities yet! </h1>
+      </Layout>
     </div>
   ) : (
     <div>
-      <ActivityFilters
-        city={city}
-        handleCity={handleCity}
-        handleInput={handleInput}
-        sort={sort}
-        handleSort={handleSort}
-        sortBy={sortBy}
-        handleSortBy={handleSortBy}
-        maxPrice={maxPrice}
-        handleMaxPrice={handleMaxPrice}
-        setMaxPrice={setMaxPrice}
-        citiesUnique={citiesUnique}
-        input={input}
-        setInput={setInput}
-      />
-      <SimpleGrid minChildWidth="330px" spacing={2}>
-        {data.map((a: Activity) => (
-          <ActivityCard key={a.id} props={a} />
-        ))}
-      </SimpleGrid>
+      <Layout>
+        <ActivityFilters
+          city={city}
+          handleCity={handleCity}
+          handleInput={handleInput}
+          sort={sort}
+          handleSort={handleSort}
+          sortBy={sortBy}
+          handleSortBy={handleSortBy}
+          maxPrice={maxPrice}
+          handleMaxPrice={handleMaxPrice}
+          setMaxPrice={setMaxPrice}
+          citiesUnique={citiesUnique}
+          input={input}
+          setInput={setInput}
+        />
+        <SimpleGrid minChildWidth="330px" spacing={2}>
+          {data.map((a: Activity) => (
+            <ActivityCard key={a.id} props={a} />
+          ))}
+        </SimpleGrid>
+      </Layout>
     </div>
   );
 };

@@ -9,7 +9,7 @@ export interface Trip {
   planner?: String;
   tripOnUser: Object[];
   description: String;
-  activities: String[];
+  activitiesName: String[];
   image?: String | ArrayBuffer;
   price?: Number;
 }

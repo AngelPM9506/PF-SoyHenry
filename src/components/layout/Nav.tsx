@@ -17,28 +17,27 @@ import {
   Stack,
   Image,
   useColorMode,
-} from "@chakra-ui/react";
-import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
-import { MoonIcon, SunIcon } from "@chakra-ui/icons";
+} from '@chakra-ui/react';
+import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
+import { MoonIcon, SunIcon } from '@chakra-ui/icons';
 import { useUser } from '@auth0/nextjs-auth0';
 import { useQuery } from 'react-query';
 import { getOrCreateUser } from 'src/utils/User';
-
-
+import { UserData } from '../UserProfile';
+import NextLink from 'next/link';
 const logo: string =
   'https://drive.google.com/uc?id=1YCJtH1cFYm8UAe3NR_pATYQXZzJv1a2I';
 const logoNight: string =
   'https://drive.google.com/uc?id=1LyKP8Kz3OK6LiScZ75NnQsdZbUdGzoP4';
 const Links = [
-  ["/home", "Home"],
-  ["/trips", "All Trips"],
-  ["/activities", "All activities"],
-  ["/about", "About"],
-  ["/contact", "Contact Us"],
+  ['/home', 'Home'],
+  ['/trips', 'All Trips'],
+  ['/activities', 'All activities'],
+  ['/about', 'About'],
+  ['/contact', 'Contact Us'],
 ];
 
 export default function NavBar() {
-
   const { user, error } = useUser();
 
   const { data: userDb, isLoading } = useQuery(
@@ -62,7 +61,11 @@ export default function NavBar() {
 
           <HStack spacing={8} alignItems={'center'}>
             <Box>
-              <Image height={"60px"} src={useColorModeValue(logo, logoNight)} alt='logo'/>
+              <Image
+                height={'60px'}
+                src={useColorModeValue(logo, logoNight)}
+                alt="logo"
+              />
             </Box>
           </HStack>
           <HStack
@@ -72,9 +75,11 @@ export default function NavBar() {
             display={{ base: 'none', md: 'flex' }}
           >
             {Links.map((l, index) => (
-              <Link href={l[0]} fontSize={"2xl"} fontWeight={"3px"} key={index}>
-                {l[1]}
-              </Link>
+              <NextLink href={l[0]} key={index}>
+                <Link href={l[0]} fontSize={'2xl'} fontWeight={'3px'}>
+                  {l[1]}
+                </Link>
+              </NextLink>
             ))}
           </HStack>
           <Flex alignItems={'center'}>
@@ -95,10 +100,7 @@ export default function NavBar() {
                 cursor={'pointer'}
                 minW={0}
               >
-                <Avatar
-                  size={"sm"}
-                  src={userDb.data.avatar}
-                />
+                <Avatar size={'sm'} src={userDb?.data.avatar} />
               </MenuButton>
               <MenuList>
                 <MenuItem>

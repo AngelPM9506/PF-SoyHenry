@@ -1,8 +1,8 @@
 import { NextApiRequest, NextApiResponse } from "next"
 import prisma from "src/utils/prisma";
 import cloudinary from 'src/utils/cloudinary';
-const {CLOUDINARY_PRESET_TRIPS} = process.env;
-import { condition, createActivities, createUsers, typeSort } from "src/utils/interface"
+const { CLOUDINARY_PRESET_TRIPS } = process.env;
+import { condition, createActivities, createCity, createUsers, typeSort } from "src/utils/interface"
 
 export default async function index(
     req: NextApiRequest,
@@ -10,14 +10,25 @@ export default async function index(
 ) {
     const {
         method,
-        body: { name, initDate, endDate, planner, description, price, idPartaker, activitiesName, image },
-        query: { wName, sort, sortBy, wActivity, wplanner, maxPrice }
+        body: {
+            name,
+            initDate,
+            endDate,
+            planner,
+            description,
+            price,
+            idPartaker,
+            activitiesName,
+            image,
+            citiesIds
+        },
+        query: { wName, sort, sortBy, wActivity, wplanner, wCity, maxPrice }
     } = req;
     switch (method) {
         case 'GET':
             let orderBy: typeSort[] = [];
             let sortfrom: typeSort = {};
-            /**http://192.168.0.8:3000/api/trips?sort=asc&sortBy=price&wName=na&wplanner=cl7z6as0h01100cqiw589yste&maxPrice=500&wActivity=vol*/
+            /**http://192.168.0.8:3000/api/trips?sort=asc&sortBy=price&wName=10&wplanner=cl7z6as0h01100cqiw589yste&maxPrice=7&wActivity=uno&wCity=Mex*/
             let sortName: string = sortBy ? sortBy.toString().toLowerCase() : 'name';
             sortfrom[sortName] = sort ? sort.toString().toLowerCase() : 'desc';
             orderBy.push(sortfrom);
@@ -30,14 +41,17 @@ export default async function index(
                     },
                     activitiesOnTrips: {
                         include: { activity: true }
+                    },
+                    citiesOnTrips: {
+                        include: { city: true }
                     }
                 },
                 orderBy
             };
 
             wplanner ? condition.where = { ...condition.where, planner: { is: { id: wplanner.toString() } } } : '';
-            wActivity
-                ? condition.where = {
+            wActivity ?
+                condition.where = {
                     ...condition.where,
                     activitiesOnTrips: {
                         some: {
@@ -45,6 +59,20 @@ export default async function index(
                                 is: {
                                     name: {
                                         contains: wActivity.toString()
+                                    }
+                                }
+                            }
+                        }
+                    }
+                } : '';
+            wCity ?
+                condition.where = {
+                    citiesOnTrips: {
+                        some: {
+                            city: {
+                                is: {
+                                    name: {
+                                        contains: wCity.toString()
                                     }
                                 }
                             }
@@ -69,7 +97,9 @@ export default async function index(
                 !planner ||
                 // (idPartaker && !Array.isArray(idPartaker)) ||
                 !activitiesName ||
-                !Array.isArray(activitiesName)
+                !Array.isArray(activitiesName) ||
+                !citiesIds ||
+                !Array.isArray(citiesIds)
             ) {
                 return res.status(400).json({ msg: 'Missing or invalid data, try again' })
             }
@@ -93,18 +123,27 @@ export default async function index(
                     }
                 }
             }) : [];
+            let createCities: createCity[] = citiesIds ? citiesIds.map((nameCity: string) => {
+                return {
+                    city: {
+                        connect: {
+                            name: nameCity.toString()
+                        }
+                    }
+                }
+            }) : [];
             try {
 
-                const uploadImage = await cloudinary.uploader.upload(image,
-					{
-						upload_preset: CLOUDINARY_PRESET_TRIPS, 
-						public_id: `${name}-image:${Date.now()}`,
-						allowed_formats: ['png', 'jpg', 'jpeg', 'jfif', 'gif'] 
-					}, 
-					function(error: any, result: any) { 
-						if(error) console.log(error);
-						console.log(result); 
-					});
+                // const uploadImage = await cloudinary.uploader.upload(image,
+                //     {
+                //         upload_preset: CLOUDINARY_PRESET_TRIPS,
+                //         public_id: `${name}-image:${Date.now()}`,
+                //         allowed_formats: ['png', 'jpg', 'jpeg', 'jfif', 'gif']
+                //     },
+                //     function (error: any, result: any) {
+                //         if (error) console.log(error);
+                //         console.log(result);
+                //     });
 
                 const response = await prisma.trip.create({
                     data: {
@@ -114,9 +153,10 @@ export default async function index(
                         description: description,
                         price: price,
                         plannerId: planner,
-                        image: uploadImage.secure_url,
+                        image: image,//uploadImage.secure_url,
                         tripOnUser: { create: createUsers },
-                        activitiesOnTrips: { create: createActivities }
+                        activitiesOnTrips: { create: createActivities },
+                        citiesOnTrips: { create: createCities }
                     },
                     include: {
                         planner: true,
@@ -125,13 +165,16 @@ export default async function index(
                         },
                         activitiesOnTrips: {
                             include: { activity: true }
+                        },
+                        citiesOnTrips: {
+                            include: { city: true }
                         }
                     }
                 });
                 return res.status(201).json(response);
             } catch (error: any) {
                 console.log(error);
-                return res.status(500).json({ error: error.message, name, description });
+                return res.status(500).json({ error, name, description });
             }
         /** Forma en la que se envia la informasión
              {

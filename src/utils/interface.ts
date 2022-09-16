@@ -50,10 +50,10 @@ export type condition = {
     activity?: object;
     activitiesOnTrips?: object;
     planner?: object;
+    citiesOnTrips?: object;
   };
   include?: object;
   select?: object;
-
   orderBy?: typeSort[];
 };
 export type createUsers = {
@@ -66,6 +66,14 @@ export type createUsers = {
 
 export type createActivities = {
   activity: {
+    connect: {
+      name: string;
+    };
+  };
+};
+
+export type createCity = {
+  city: {
     connect: {
       name: string;
     };

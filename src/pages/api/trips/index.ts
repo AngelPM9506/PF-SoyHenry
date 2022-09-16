@@ -17,7 +17,6 @@ export default async function index(
             planner,
             description,
             price,
-            idPartaker,
             activitiesName,
             image,
             citiesName
@@ -96,7 +95,6 @@ export default async function index(
                 !description ||
                 !price ||
                 !planner ||
-                // (idPartaker && !Array.isArray(idPartaker)) ||
                 !activitiesName ||
                 !Array.isArray(activitiesName) ||
                 !citiesName ||
@@ -106,15 +104,24 @@ export default async function index(
             }
             let initialDate = new Date(initDate);
             let finishDate = new Date(endDate);
-            let createUsers: createUsers[] = idPartaker ? idPartaker.map((idP: string) => {
-                return {
-                    user: {
-                        connect: {
-                            id: idP.toString()
-                        }
-                    }
-                }
-            }) : [];
+
+            // idPartaker,
+            // (idPartaker && !Array.isArray(idPartaker)) ||
+            // let createUsers: createUsers[] = idPartaker ? idPartaker.map((idP: string) => {
+            //     return {
+            //         user: {
+            //             connect: {
+            //                 id: idP.toString()
+            //             }
+            //         }
+            //     }
+            // }) : [];
+            // tripOnUser: { create: createUsers },
+            // tripOnUser: {
+            //     include: { user: true, trip: true }
+            // },
+
+
             let createActivities: createActivities[] = activitiesName ? activitiesName.map((nameAct: string) => {
                 return {
                     activity: {
@@ -155,15 +162,11 @@ export default async function index(
                         price: price,
                         plannerId: planner,
                         image: uploadImage.secure_url,
-                        tripOnUser: { create: createUsers },
                         activitiesOnTrips: { create: createActivities },
                         citiesOnTrips: { create: createCities }
                     },
                     include: {
                         planner: true,
-                        tripOnUser: {
-                            include: { user: true, trip: true }
-                        },
                         activitiesOnTrips: {
                             include: { activity: true }
                         },
@@ -178,7 +181,7 @@ export default async function index(
                 return res.status(500).json({ error, name, description });
             }
         /** Forma en la que se envia la informasión
-         * idPartaker es opcional si no lo lleva no hace no hay problema
+         * idPartaker se queda comentado 
          * activitiesName y citiesName es necesario contar con almenos uno
              {
                 "name": "Trip de pruebas",
@@ -188,7 +191,6 @@ export default async function index(
                 "description": "Pruebas...",
                 "price": 15.30,
                 "image": "Pruebas de imagen",
-                "idPartaker": [],
                 "activitiesName": ["Chichen Itza"],
                 "citiesName": ["Toluca"]
             }

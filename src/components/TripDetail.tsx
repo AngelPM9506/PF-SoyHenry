@@ -21,6 +21,8 @@ import { FaInstagram, FaTwitter, FaYoutube } from "react-icons/fa";
 import { MdLocalShipping } from "react-icons/md";
 import { MinusIcon } from "@chakra-ui/icons";
 import MiniCardAct from "./miniCardActivity";
+import { City } from "src/utils/interface";
+import { Key } from "react";
 
 export default function TripDetail({ props }: any) {
   const iday = props.initDate.slice(0, 10).split("").reverse().join("");
@@ -104,8 +106,8 @@ export default function TripDetail({ props }: any) {
                     Cities:
                     <List>
                       {props.cities ? (
-                        props.cities.map((c) => (
-                          <ListItem>
+                        props.cities.map((c: City, index: Key) => (
+                          <ListItem key={index}>
                             <ListIcon as={MinusIcon} color="#F3B46F" />
                             {c.name}
                           </ListItem>

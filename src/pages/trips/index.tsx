@@ -14,12 +14,11 @@ import {
   Input,
   Button,
   useColorModeValue,
-  Flex,
   Heading,
   HStack,
   Text,
-  Icon,
   Link,
+  FormControl,
 } from "@chakra-ui/react";
 import Layout from "../../components/layout/Layout";
 import { BsArrowDownUp } from "react-icons/bs";
@@ -84,14 +83,15 @@ function Trips({ trips }: Props) {
         justifyContent={"space-between"}
         textAlign={"center"}
         margin={"40px"}
+        marginBottom={"50px"}
       >
         <Text width={"1500px"}>All our travelers trips</Text>
         <Button
-          mt={8}
-          bg={useColorModeValue("#151f21", "gray.900")}
+          bg={useColorModeValue("#02b1b1", "#02b1b1")}
           color={"white"}
-          marginRight={"40px"}
+          marginRight={"55px"}
           rounded={"md"}
+          padding={"20px"}
           _hover={{
             transform: "translateY(-2px)",
             boxShadow: "lg",
@@ -106,8 +106,14 @@ function Trips({ trips }: Props) {
         flex-direction="center"
         align-items="center"
         justifyContent={"space-around"}
+        justifyItems={"center"}
       >
-        <HStack spacing="10px">
+        <HStack
+          height={"45px"}
+          justifyContent={"center"}
+          alignItems={"center"}
+          spacing="10px"
+        >
           <Text>Max price: </Text>
           <form onSubmit={(e) => handleMaxPrice(e)}>
             <Input
@@ -122,6 +128,7 @@ function Trips({ trips }: Props) {
         </HStack>
 
         <Select
+          height={"45px"}
           width="250px"
           placeholder="Order by:"
           onChange={(e) => handleSortBy(e)}
@@ -137,14 +144,21 @@ function Trips({ trips }: Props) {
           <option value={"asc"}>ascendent </option>
           <option value={"desc"}>descendent</option>
         </Select>
-        <form align-items={"center"} onSubmit={(e) => handleActivity}>
+        <FormControl
+          display={"flex"}
+          align-items={"center"}
+          width={"20%"}
+          height={"45px"}
+          justify-content={"center"}
+          onSubmit={(e) => handleActivity}
+        >
           <Input
             width="200px"
+            marginRight={"20px"}
             placeholder="Type an activity ..."
             onChange={(e) => setInputAct(e.target.value)}
           />
           <Button
-            mt={8}
             bg={useColorModeValue("#151f21", "gray.900")}
             color={"white"}
             rounded={"md"}
@@ -155,7 +169,7 @@ function Trips({ trips }: Props) {
           >
             Search
           </Button>
-        </form>
+        </FormControl>
       </Box>
       <SimpleGrid minChildWidth="330px" columns={[2, null, 3]}>
         {data

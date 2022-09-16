@@ -26,9 +26,9 @@ import { getOrCreateUser } from 'src/utils/User';
 import { UserData } from '../UserProfile';
 import NextLink from 'next/link';
 const logo: string =
-  'https://drive.google.com/uc?id=1YCJtH1cFYm8UAe3NR_pATYQXZzJv1a2I';
+  'https://res.cloudinary.com/mauro4202214/image/upload/v1663331570/world-travelers/logowt_qifbpn.png';
 const logoNight: string =
-  'https://drive.google.com/uc?id=1LyKP8Kz3OK6LiScZ75NnQsdZbUdGzoP4';
+  'https://res.cloudinary.com/mauro4202214/image/upload/v1663331569/world-travelers/logolargonight_yqpbps.png';
 const Links = [
   ['/home', 'Home'],
   ['/trips', 'All Trips'],

@@ -32,7 +32,7 @@ type body = {
     cities?: string[];
     active?: any;
     traveler?: string | string[];
-    idPartaker?: string | string[];
+    idPartaker?: string[];
 };
 
 const uploadImage = async (image: string, name: string) => {

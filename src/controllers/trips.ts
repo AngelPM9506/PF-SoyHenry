@@ -231,10 +231,10 @@ const TripsControllers = {
         return response;
     },
     putTrip: async (body: body, query: query) => {
-        const { description, active, traveler, idPartaker, activitiesName, cities, image, } = body;
+        const { description, active, idPartaker, activitiesName, cities, image, } = body;
         const { id } = query;
 
-        if (!active && !description && !traveler && !image) throw new Error("Missing data try again");
+        if (!active && !description && !image) throw new Error("Missing data try again");
 
         let createUsers: createUsers[] =
             idPartaker && Array.isArray(idPartaker)

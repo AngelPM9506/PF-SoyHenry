@@ -32,7 +32,7 @@ type body = {
   cities?: string[];
   active?: any;
   traveler?: string | string[];
-  idPartaker?: string | string[];
+  idPartaker?: string[];
 };
 
 const uploadImage = async (image: string, name: string) => {
@@ -360,6 +360,88 @@ const TripsControllers = {
       delete condition.data.active;
       return await prisma.trip.update(condition);
     }
+  },
+
+  patchTrip: async (body: body, query: query) => {
+    let { id } = query;
+    const {
+      name,
+      initDate,
+      endDate,
+      planner,
+      description,
+      price,
+      activitiesName,
+      image,
+      cities,
+      idPartaker,
+    } = body;
+    if (
+      !idPartaker &&
+      !Array.isArray(idPartaker) &&
+      !activitiesName &&
+      !Array.isArray(activitiesName) &&
+      !cities &&
+      !Array.isArray(cities)
+    ) {
+      return "Missing or invalid data, try again";
+    }
+    let createUsers: createUsers[] = idPartaker
+      ? idPartaker.map((idP: Object) => {
+          return {
+            user: {
+              connect: {
+                id: idP.toString(),
+              },
+            },
+          };
+        })
+      : [];
+    let createActivities: createActivities[] = activitiesName
+      ? activitiesName.map((nameAct: string) => {
+          return {
+            activity: {
+              connect: {
+                name: nameAct,
+              },
+            },
+          };
+        })
+      : [];
+    let createCities: any = cities
+      ? cities.map((idCity: string) => {
+          return {
+            city: {
+              connect: {
+                id: idCity.toString(),
+              },
+            },
+          };
+        })
+      : [];
+
+    await prisma.trip.update({
+      where: {
+        id: id.toString(),
+      },
+      data: {
+        tripOnUser: { create: createUsers },
+        activitiesOnTrips: { create: createActivities },
+        citiesOnTrips: { create: createCities },
+      },
+      include: {
+        planner: true,
+        tripOnUser: {
+          include: { user: true, trip: true },
+        },
+        activitiesOnTrips: {
+          include: { activity: true },
+        },
+        citiesOnTrips: {
+          include: { city: true },
+        },
+      },
+    });
   },
 };
 

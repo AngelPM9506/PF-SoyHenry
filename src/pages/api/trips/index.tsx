@@ -7,27 +7,20 @@ export default async function index(
 ) {
     const {
         method,
-        body: {
-            name,
-            initDate,
-            endDate,
-            planner,
-            description,
-            price,
-            activitiesName,
-            image,
-            cities
-        },
+        body: { name, initDate, endDate, planner, description, price, activitiesName, image, cities },
         query: { wName, sort, sortBy, wActivity, wplanner, wCity, maxPrice }
     } = req;
-    try { 
+    try {
         switch (method) {
-            case 'GET':{
-                const response = await TripsControllers.getTrips({ wName, sort, sortBy, wActivity, wplanner, wCity, maxPrice })
+            case 'GET': {
+                const response = await TripsControllers.getTrips({
+                    wName, sort, sortBy, wActivity, wplanner, wCity, maxPrice
+                })
                 return res.json(response);
             }
-            case 'POST':{
-                const response = await TripsControllers.postTrip({name, initDate, endDate, planner, description, price, activitiesName, image, cities})
+            case 'POST': {
+                let args = { name, initDate, endDate, planner, description, price, activitiesName, image, cities }
+                const response = await TripsControllers.postTrip(args)
                 return res.json(response)
             }
             default:

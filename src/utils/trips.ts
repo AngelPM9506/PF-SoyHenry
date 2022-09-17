@@ -1,4 +1,6 @@
 import axios from "axios";
+import { QueryFunctionContext } from "react-query";
+
 export const getTrips = async (
   wActivity?: string,
   wName?: string,
@@ -15,4 +17,9 @@ export const getTrips = async (
     }&wActivity=${wActivity || "&"}`
   );
   return trips.data;
+};
+
+export const getTripId = async (id: QueryFunctionContext<string[], any>) => {
+  const trip = await axios.get(`http://localhost:3000/api/trips/${id}`);
+  return trip.data;
 };

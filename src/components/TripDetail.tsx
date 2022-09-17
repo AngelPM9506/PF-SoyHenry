@@ -23,11 +23,19 @@ import { MinusIcon } from "@chakra-ui/icons";
 import MiniCardAct from "./miniCardActivity";
 import { City } from "src/utils/interface";
 import { Key } from "react";
+import { QueryFunctionContext, useQuery } from "react-query";
+import { Trip } from "src/interfaces/Trip";
 
-export default function TripDetail({ props }: any) {
-  const iday = props.initDate.slice(0, 10).split("").reverse().join("");
-  const eday = props.endDate.slice(0, 10).split("").reverse().join("");
+interface Props {
+  id: QueryFunctionContext<string[], any>;
+  cities: City[];
+}
 
+export default function TripDetail({ data, isLoading, error }: any) {
+  const iday = data.initDate.slice(0, 10).split("").reverse().join("");
+  const eday = data.endDate.slice(0, 10).split("").reverse().join("");
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>{error.message}</div>;
   return (
     <Container maxW={"7xl"}>
       <SimpleGrid
@@ -40,8 +48,8 @@ export default function TripDetail({ props }: any) {
             rounded={"md"}
             alt={"Trip image"}
             src={
-              props.image
-                ? props.image
+              data.image
+                ? data.image
                 : "https://drive.google.com/uc?id=1YZhzZFB0nRQuLLzmFVq13upFeZQo5CLd"
             }
             fit={"cover"}
@@ -57,7 +65,7 @@ export default function TripDetail({ props }: any) {
               fontWeight={600}
               fontSize={{ base: "2xl", sm: "4xl", lg: "5xl" }}
             >
-              {props.name}
+              {data.name}
             </Heading>
             <Text
               color={useColorModeValue("gray.900", "gray.400")}
@@ -65,7 +73,7 @@ export default function TripDetail({ props }: any) {
               marginTop={"20px"}
               fontSize={"2xl"}
             >
-              $ {props.price}
+              $ {data.price}
             </Text>
           </Box>
 
@@ -84,7 +92,7 @@ export default function TripDetail({ props }: any) {
                 fontSize={"2xl"}
                 fontWeight={"300"}
               >
-                {props.description}
+                {data.description}
               </Text>
             </VStack>
             <Box>
@@ -105,11 +113,11 @@ export default function TripDetail({ props }: any) {
                   <ListItem>
                     Cities:
                     <List>
-                      {props.cities ? (
-                        props.cities.map((c: City, index: Key) => (
+                      {data.citiesOnTrips.length != 0 ? (
+                        data.citiesOnTrips.map((c: any, index: Key) => (
                           <ListItem key={index}>
                             <ListIcon as={MinusIcon} color="#F3B46F" />
-                            {c.name}
+                            {c.city.name}
                           </ListItem>
                         ))
                       ) : (
@@ -133,19 +141,20 @@ export default function TripDetail({ props }: any) {
               >
                 Activities
               </Text>
-
               <SimpleGrid columns={3} spacing={2}>
-                <MiniCardAct />
-                <MiniCardAct />
-                {/* {props.activities
-                  ? props.activities.map((activity: any) => (
-                      <MiniCardAct props={activity} />
-                    ))
-                  : null} */}
+                {data.activitiesOnTrips.length != 0 ? (
+                  data.activitiesOnTrips.map((activity: any) => (
+                    <MiniCardAct
+                      activity={activity.activity}
+                      cities={data.citiesOnTrips}
+                    />
+                  ))
+                ) : (
+                  <Text> No Activities found</Text>
+                )}
               </SimpleGrid>
             </Box>
           </Stack>
-
           <Button
             rounded={"none"}
             w={"full"}

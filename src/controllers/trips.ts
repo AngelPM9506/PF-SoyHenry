@@ -1,13 +1,7 @@
-import prisma from "src/utils/prisma";
-import cloudinary from "src/utils/cloudinary";
-import {
-    typeSort,
-    condition,
-    createActivities,
-    createCity,
-    createUsers,
-} from "src/utils/interface";
+import { typeSort, condition, createActivities, createCity, createUsers, } from "src/utils/interface";
 const { CLOUDINARY_PRESET_TRIPS } = process.env;
+import cloudinary from "src/utils/cloudinary";
+import prisma from "src/utils/prisma";
 
 type query = {
     id?: string | string[];
@@ -339,24 +333,12 @@ const TripsControllers = {
         return await prisma.trip.update(condition);
     },
     deleteTrip: async (query: query) => {
-        let { id } = query;
-        let resp = await prisma.trip.delete({
-            where: { id: id.toString() },
-            include: {
-                planner: true,
-                tripOnUser: {
-                    include: { user: true, trip: true }
-                },
-                activitiesOnTrips: {
-                    include: { activity: true }
-                },
-                citiesOnTrips: {
-                    include: { city: true }
-                }
-            }
-        })
-        await cloudinary.uploader.destroy(resp.public_id_image);
-        return {resp, id};
+    let { id } = query;
+        let response = await prisma.trip.delete({
+          where: { id: id.toString() },
+        });
+        await cloudinary.uploader.destroy(response.public_id_image);
+        return response;
     }
 };
 

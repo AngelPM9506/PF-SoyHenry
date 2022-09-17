@@ -1,9 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next"
 import TripsControllers from "src/controllers/trips";
-import { createUsers, createActivities, createCity } from "src/utils/interface";
-import prisma from "src/utils/prisma";
-
-
 
 const id = async (
     req: NextApiRequest,
@@ -13,32 +9,33 @@ const id = async (
     try {
         switch (method) {
             /**obtener info de un solo trp */
-            case 'GET': {
-                const response = await TripsControllers.getTrip({ id });
-                return res.status(200).json(response);
-            }
+            case 'GET':
+                const respGet = await TripsControllers.getTrip({ id });
+                return res.status(200).json(respGet);
             /**actualizar untrip  */
-            case 'PUT': {
-                const response = await TripsControllers.putTrip(
+            case 'PUT':
+                const respPut = await TripsControllers.putTrip(
                     { description, active, traveler, idPartaker, activitiesName, cities },
                     { id }
                 )
-                return res.status(201).json(response);
-            }
-
+                return res.status(201).json(respPut);
             /**agrgar usuarios y actividades a un trip */
-            case 'PATCH': {
-                let response = await TripsControllers.patchTrip(
+            case 'PATCH':
+                let respPatch = await TripsControllers.patchTrip(
                     { description, active, traveler, idPartaker, activitiesName, cities },
                     { id }
                 )
-                return res.status(201).json(response)
-            }
+                return res.status(201).json(respPatch)
             /**eliminar un trip  */
-            case 'DELETE': {
-                let responce = await TripsControllers.deleteTrip({ id })
-                return res.status(201).json(responce)
-            }
+            case 'DELETE':
+                let respDelete = await TripsControllers.deleteTrip({ id })
+                // let respDelete = await prisma.trip.delete({
+                //     where: {
+                //         id: id.toString().trim()
+                //     }
+                // })
+                //await cloudinary.uploader.destroy(resp.public_id_image);
+                return res.status(201).json(respDelete)
             default: {
                 return res.status(400).send('Method not supported try again');
             }

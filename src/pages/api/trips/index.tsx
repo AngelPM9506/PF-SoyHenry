@@ -27,7 +27,7 @@ export default async function index(
                 res.status(400).send('Method not supported try again')
                 break;
         }
-    } catch (error) {
-        res.status(500).json(error)
+    } catch (error: any) {
+        res.status(500).json({ msg: `mesage_error -> ${error.message}`, error})
     }
 }

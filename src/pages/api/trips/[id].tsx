@@ -13,30 +13,35 @@ const id = async (
     try {
         switch (method) {
             /**obtener info de un solo trp */
-            case 'GET':{
-                const response = await TripsControllers.getTrip({id});
-                return res.json(response);
+            case 'GET': {
+                const response = await TripsControllers.getTrip({ id });
+                return res.status(200).json(response);
             }
             /**actualizar untrip  */
-            case 'PUT':{
-                const response = await TripsControllers.putTrip({ description, active, traveler, idPartaker, activitiesName, cities }, { id })
-                return res.json(response);
+            case 'PUT': {
+                const response = await TripsControllers.putTrip(
+                    { description, active, traveler, idPartaker, activitiesName, cities },
+                    { id }
+                )
+                return res.status(201).json(response);
             }
-                
+
             /**agrgar usuarios y actividades a un trip */
-            case 'PATCH':{
-                let response = await TripsControllers.patchTrip({ description, active, traveler, idPartaker, activitiesName, cities },{ id })
-                return res.json(response)
+            case 'PATCH': {
+                let response = await TripsControllers.patchTrip(
+                    { description, active, traveler, idPartaker, activitiesName, cities },
+                    { id }
+                )
+                return res.status(201).json(response)
             }
             /**eliminar un trip  */
-            case 'DELETE':
-                try {
-                    return res.status(201).json(await prisma.trip.delete({ where: { id: id.toString() } }))
-                } catch (error: any) {
-                    return res.status(404).json({ error: error.message });
-                }
-            default:
+            case 'DELETE': {
+                let responce = await TripsControllers.deleteTrip({ id })
+                return res.status(201).json(responce)
+            }
+            default: {
                 return res.status(400).send('Method not supported try again');
+            }
         }
     } catch (error) {
         return res.status(500).json(error);

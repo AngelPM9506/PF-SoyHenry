@@ -237,56 +237,26 @@ const TripsControllers = {
         return response;
     },
     putTrip: async (body: body, query: query) => {
-        const {
-            description,
-            active,
-            traveler,
-            idPartaker,
-            activitiesName,
-            cities,
-            image,
-        } = body;
+        const { description, active, traveler, idPartaker, activitiesName, cities, image, } = body;
         const { id } = query;
 
-        if (!active && !description && !traveler)
-            throw new Error("Missing data try again");
+        if (!active && !description && !traveler && !image) throw new Error("Missing data try again");
 
         let createUsers: createUsers[] =
             idPartaker && Array.isArray(idPartaker)
                 ? idPartaker.map((idP: string) => {
-                    return {
-                        user: {
-                            connect: {
-                                id: idP.toString(),
-                            },
-                        },
-                    };
-                })
-                : [];
+                    return { user: { connect: { id: idP.toString(), }, }, };
+                }) : [];
 
         let createActivities: createActivities[] = activitiesName
             ? activitiesName.map((nameAct: string) => {
-                return {
-                    activity: {
-                        connect: {
-                            name: nameAct,
-                        },
-                    },
-                };
-            })
-            : [];
+                return { activity: { connect: { name: nameAct, }, }, };
+            }) : [];
 
         let createCities: createCity[] = cities
             ? cities.map((nameCity: string) => {
-                return {
-                    city: {
-                        connect: {
-                            name: nameCity.toString(),
-                        },
-                    },
-                };
-            })
-            : [];
+                return { city: { connect: { name: nameCity.toString(), }, }, };
+            }) : [];
 
         let trip = await prisma.trip.findUnique({ where: { id: id.toString() } });
         if (!trip) throw new Error("Trip not found, try again");
@@ -298,9 +268,9 @@ const TripsControllers = {
             data: {
                 description: description ? description : trip.description,
                 active: trip.active ? false : true,
-                tripOnUser: { create: createUsers },
                 image: trip.image,
                 public_id_image: trip.public_id_image,
+                tripOnUser: { create: createUsers },
                 activitiesOnTrips: { create: createActivities },
                 citiesOnTrips: { create: createCities },
             },
@@ -320,7 +290,6 @@ const TripsControllers = {
 
         if (image) {
             let uploadedImage = await uploadImage(image, trip.name);
-
             condition.data.image = uploadedImage.secure_url;
             condition.data.public_id_image = uploadedImage.public_id;
         }
@@ -331,6 +300,64 @@ const TripsControllers = {
             return await prisma.trip.update(condition);
         }
     },
+    patchTrip: async (body: body, query: query) => {
+        let { idPartaker, activitiesName, cities } = body;
+        let { id } = query;
+        if (!idPartaker && !activitiesName && !cities) { throw new Error("Missing or invalid data, try again"); }
+        let createUsers: createUsers[] = idPartaker ? idPartaker.map((idP: Object) => {
+            return { user: { connect: { id: idP.toString() } } }
+        }) : [];
+        let createActivities: createActivities[] = activitiesName ? activitiesName.map((nameAct: string) => {
+            return { activity: { connect: { name: nameAct } } }
+        }) : [];
+        let createCities: createCity[] = cities ? cities.map((City: string) => {
+            return { city: { connect: { name: City.toString() } } }
+        }) : [];
+
+        let condition = {
+            where: {
+                id: id.toString()
+            },
+            data: {
+                tripOnUser: { create: createUsers },
+                activitiesOnTrips: { create: createActivities },
+                citiesOnTrips: { create: createCities }
+            },
+            include: {
+                planner: true,
+                tripOnUser: {
+                    include: { user: true, trip: true }
+                },
+                activitiesOnTrips: {
+                    include: { activity: true }
+                },
+                citiesOnTrips: {
+                    include: { city: true }
+                }
+            }
+        }
+        return await prisma.trip.update(condition);
+    },
+    deleteTrip: async (query: query) => {
+        let { id } = query;
+        let resp = await prisma.trip.delete({
+            where: { id: id.toString() },
+            include: {
+                planner: true,
+                tripOnUser: {
+                    include: { user: true, trip: true }
+                },
+                activitiesOnTrips: {
+                    include: { activity: true }
+                },
+                citiesOnTrips: {
+                    include: { city: true }
+                }
+            }
+        })
+        await cloudinary.uploader.destroy(resp.public_id_image);
+        return {resp, id};
+    }
 };
 
 export default TripsControllers;

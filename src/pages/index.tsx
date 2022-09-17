@@ -1,38 +1,39 @@
 import type { NextPage } from "next";
-import {
-  Container,
-  Stack,
-  Flex,
-  Box,
-  Heading,
-  Text,
-  Button,
-  AspectRatio,
-  Center,
-} from "@chakra-ui/react";
+import { Stack, Box, Heading, Text, Button, Center } from "@chakra-ui/react";
 import ReactPlayer from "react-player";
 
 const landingPage: NextPage = () => {
   const url =
     "https://res.cloudinary.com/mauro4202214/video/upload/v1663337043/world-travelers/videolandingpagecrop_iklwjv.mp4";
   return (
-    <Container maxW="container.xl">
-      <Stack
-        align="center"
-        spacing={{ base: 8, md: 10 }}
-        py={{ base: 20, md: 28 }}
-        direction={{ base: "column", md: "row" }}
-      >
+    <>
+      <ReactPlayer
+        playing
+        loop
+        width="100%"
+        height="100%"
+        top="50%"
+        left="50%"
+        transform="translate(-50%, -50%)"
+        zIndex="-1"
+        url={url}
+        controls={false}
+        volume={0.3}
+      />
+
+      <Box marginTop="-50%">
         <Stack flex={1} spacing={{ base: 5, md: 10 }}>
           <Heading
             lineHeight={1.1}
-            fontWeight={600}
-            fontSize={{ base: "3xl", sm: "4xl", lg: "6xl" }}
+            fontWeight={800}
+            fontSize={100}
+            textAlign="center"
           >
             <Text
               as="span"
               position="relative"
-              color="primary"
+              color="#293541"
+              textShadow="1px 1px #02b1b1"
               _after={{
                 content: "''",
                 width: "full",
@@ -40,64 +41,53 @@ const landingPage: NextPage = () => {
                 position: "absolute",
                 bottom: 1,
                 left: 0,
-                bg: "hightlight",
+                bg: "#02b1b1",
                 zIndex: -1,
               }}
             >
               Welcome to,
             </Text>
             <br />
-            <Text as="span" color="highlight">
+            <Text as="span" color="#02b1b1" textShadow="1px 1px #293541" m="1">
               WORLD TRAVELERS!
             </Text>
           </Heading>
-          <Text color="primary" lineHeight="tall" textAlign="justify">
-            An application where you can create, find and filter trips and
-            tourist activities according to your common interests. Log In and
-            join the most amazing community of travelers!
-          </Text>
-          <Stack
-            spacing={{ base: 4, sm: 6 }}
-            direction={{ base: "column", sm: "row" }}
+
+          <Text
+            color="#293541"
+            lineHeight="tall"
+            textAlign="center"
+            fontSize="40"
+            fontWeight="800"
+            textShadow="1px 1px #D1DFE3"
           >
-            {/*eslint-disable-next-line @next/next/no-html-link-for-pages*/}
-            <a href="/api/auth/login">
-              <Button
-                rounded="full"
-                size="lg"
-                fontWeight="normal"
-                px={6}
-                colorScheme="primary"
-                bg="highlight"
-                _hover={{ bg: "danger" }}
-              >
-                LOG IN
-              </Button>
-            </a>
-          </Stack>
+            The most amazing community of travelers!
+          </Text>
+          <Center>
+            <Stack
+              spacing={{ base: 4, sm: 6 }}
+              direction={{ base: "column", sm: "row" }}
+            >
+              {/*eslint-disable-next-line @next/next/no-html-link-for-pages*/}
+              <a href="/api/auth/login">
+                <Button
+                  rounded="full"
+                  size="lg"
+                  fontWeight="800"
+                  px={15}
+                  color="#293541"
+                  fontSize="24"
+                  bg="#02b1b1"
+                  _hover={{ bg: "#F3B46F", color: "black" }}
+                >
+                  LOG IN
+                </Button>
+              </a>
+            </Stack>
+          </Center>
         </Stack>
-        <Flex
-          flex={1}
-          justify="center"
-          align="center"
-          position="relative"
-          w="full"
-          rounded="2xl"
-          overflow="hidden"
-          boxShadow="2xl"
-        >
-          <ReactPlayer
-            height={"full"}
-            object-fit="cover"
-            url={url}
-            playing
-            controls={false}
-            loop
-            volume={0.3}
-          />
-        </Flex>
-      </Stack>
-    </Container>
+      </Box>
+    </>
   );
 };
 

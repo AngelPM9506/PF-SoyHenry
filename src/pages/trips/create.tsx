@@ -64,8 +64,6 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
   const [errors, setErrors] = useState<Errors>({});
   const hiddenFileInput = useRef(null);
 
-  console.log(typeof input.image);
-
   if (!isLoading && input.planner === "" && userDb?.data.id)
     setInput({ ...input, planner: userDb.data.id });
 

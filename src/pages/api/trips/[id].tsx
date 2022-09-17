@@ -24,63 +24,10 @@ const id = async (
             }
                 
             /**agrgar usuarios y actividades a un trip */
-            case 'PATCH':
-                if (!idPartaker && !Array.isArray(idPartaker) && !activitiesName && !Array.isArray(activitiesName) && !cities && !Array.isArray(cities)) {
-                    return res.status(400).json({ msg: 'Missing or invalid data, try again' })
-                }
-                let createUsers: createUsers[] = idPartaker ? idPartaker.map((idP: Object) => {
-                    return {
-                        user: {
-                            connect: {
-                                id: idP.toString()
-                            }
-                        }
-                    }
-                }) : [];
-                let createActivities: createActivities[] = activitiesName ? activitiesName.map((nameAct: string) => {
-                    return {
-                        activity: {
-                            connect: {
-                                name: nameAct
-                            }
-                        }
-                    }
-                }) : [];
-                let createCities: createCity[] = cities ? cities.map((idCity: string) => {
-                    return {
-                        city: {
-                            connect: {
-                                id: idCity.toString()
-                            }
-                        }
-                    }
-                }) : [];
-                try {
-                    return res.status(201).json(await prisma.trip.update({
-                        where: {
-                            id: id.toString()
-                        },
-                        data: {
-                            tripOnUser: { create: createUsers },
-                            activitiesOnTrips: { create: createActivities },
-                            citiesOnTrips: { create: createCities }
-                        },
-                        include: {
-                            planner: true,
-                            tripOnUser: {
-                                include: { user: true, trip: true }
-                            },
-                            activitiesOnTrips: {
-                                include: { activity: true }
-                            },
-                            citiesOnTrips: {
-                                include: { city: true }
-                            }
-                        }
-                    }))
-                } catch (error: any) {
-                    return res.status(404).json({ error: error.message });
-                }
+            case 'PATCH':{
+                let response = await TripsControllers.patchTrip({ description, active, traveler, idPartaker, activitiesName, cities },{ id })
+                return res.json(response)
+            }
             /**eliminar un trip  */
             case 'DELETE':
                 try {

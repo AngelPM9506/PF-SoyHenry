@@ -8,13 +8,13 @@ import {
   Image,
   Button,
   Link,
+  VStack,
 } from "@chakra-ui/react";
 
 const defaultpic: string =
   "https://drive.google.com/uc?id=1YZhzZFB0nRQuLLzmFVq13upFeZQo5CLd";
 
 export function TripCard({ props }: any) {
-  console.log(props);
   return (
     <Center key={props.id} py={12}>
       <Box
@@ -22,7 +22,7 @@ export function TripCard({ props }: any) {
         p={6}
         maxW={"330px"}
         w={"full"}
-        bg={useColorModeValue("white", "gray.800")}
+        bg={useColorModeValue("white", "#4b647c")}
         boxShadow={"2xl"}
         rounded={"lg"}
         pos={"relative"}
@@ -56,9 +56,10 @@ export function TripCard({ props }: any) {
             width={282}
             objectFit={"cover"}
             src={props.image ? props.image : defaultpic}
+            boxShadow={"0px 10px 13px -7px #000000"}
           />
         </Box>
-        <Stack pt={10} height={"120px"} align={"center"}>
+        <Stack marginTop={"0px"} height={"80px"} align={"center"}>
           <Heading
             fontSize={"2xl"}
             fontFamily={"body"}
@@ -68,12 +69,17 @@ export function TripCard({ props }: any) {
             {props.name}
           </Heading>
         </Stack>
-        <Stack direction={"row"} align={"center"}>
+        <VStack direction={"row"} align={"center"}>
           <Text fontWeight={400} fontSize={"xl"}>
-            Duration: from {props.initDate.slice(0, 10)} to{" "}
-            {props.endDate.slice(0, 10)}
+            Duration:
           </Text>
-        </Stack>
+          <Text fontWeight={400} fontSize={"xl"}>
+            From {props.initDate.slice(0, 10)}
+          </Text>
+          <Text fontWeight={400} fontSize={"xl"}>
+            To {props.endDate.slice(0, 10)}
+          </Text>
+        </VStack>
         {/* <Text fontWeight={800} fontSize={"xl"}>
               N of Travelers: {props.tripOnUser.length}
             </Text>
@@ -82,14 +88,25 @@ export function TripCard({ props }: any) {
             </Text> */}
 
         <Stack>
-          <Text fontWeight={700} fontSize={"xl"}>
+          <Text
+            marginTop={"10px"}
+            textAlign={"center"}
+            fontWeight={700}
+            fontSize={"xl"}
+          >
             $ {props.price}
           </Text>
         </Stack>
-        <Link href={`/trips/${props.id}`}> See more info of this trip </Link>
+        <Stack
+          marginTop={"10px"}
+          textAlign={"center"}
+          justifyContent={"center"}
+        >
+          <Link href={`/trips/${props.id}`}>See more info of this trip</Link>
+        </Stack>
         <Button
           w={"full"}
-          mt={8}
+          mt={5}
           bg={useColorModeValue("#151f21", "gray.900")}
           color={"white"}
           rounded={"md"}

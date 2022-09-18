@@ -77,13 +77,15 @@ const Activities = ({ activities }: Props) => {
               _hover={{
                 transform: "translateY(-2px)",
                 boxShadow: "lg",
+                bg: "#F3B46F",
+                color: "black",
               }}
             >
               <NextLink href="/activities/create">
                 <Link>Create Activity</Link>
               </NextLink>
             </Button>
-            Discover our Activities
+            DISCOVER OUR ACTIVITIES
           </Heading>
         </Center>
         <ActivityFilters

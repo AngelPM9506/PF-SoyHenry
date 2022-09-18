@@ -25,15 +25,16 @@ import { useQuery } from "react-query";
 import { getOrCreateUser } from "src/utils/User";
 import { UserData } from "../UserProfile";
 import NextLink from "next/link";
+
 const logo: string =
-  'https://res.cloudinary.com/mauro4202214/image/upload/v1663331570/world-travelers/logowt_qifbpn.png';
+  "https://res.cloudinary.com/mauro4202214/image/upload/v1663331570/world-travelers/logowt_qifbpn.png";
 const logoNight: string =
-  'https://res.cloudinary.com/mauro4202214/image/upload/v1663331569/world-travelers/logolargonight_yqpbps.png';
-        
+  "https://res.cloudinary.com/mauro4202214/image/upload/v1663331569/world-travelers/logolargonight_yqpbps.png";
+
 const Links = [
   ["/home", "Home"],
   ["/trips", "All Trips"],
-  ["/activities", "All activities"],
+  ["/activities", "All Activities"],
   ["/about", "About"],
   ["/contact", "Contact Us"],
 ];
@@ -48,6 +49,7 @@ export default function NavBar() {
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { colorMode, toggleColorMode } = useColorMode();
+
   return (
     <>
       <Box padding={"3px"} boxShadow={"1px 1px 1px 1px #D1DFE3"} px={4}>
@@ -101,11 +103,13 @@ export default function NavBar() {
                 cursor={"pointer"}
                 minW={0}
               >
-                <Avatar size={"lg"} src={userDb?.data.avatar} />
+                <Avatar size={"md"} src={userDb?.data.avatar} />
               </MenuButton>
               <MenuList>
                 <MenuItem>
-                  <Link href="/user/profile">My Profile </Link>
+                  <NextLink href={`/user/profile`}>
+                    <Link> My Profile </Link>
+                  </NextLink>
                 </MenuItem>
                 <MenuItem>
                   <Link href="/api/auth/logout">Logout</Link>

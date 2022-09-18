@@ -7,6 +7,7 @@ import {
   Select,
   Button,
   Grid,
+  SimpleGrid,
   GridItem,
   Center,
   List,
@@ -14,6 +15,9 @@ import {
   ListIcon,
   useToast,
   Image,
+  HStack,
+  Box,
+  Stack,
 } from "@chakra-ui/react";
 import { ChevronDownIcon, CheckCircleIcon } from "@chakra-ui/icons";
 import { useState } from "react";
@@ -63,8 +67,6 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
   const [nameFile, setNameFile] = useState("");
   const [errors, setErrors] = useState<Errors>({});
   const hiddenFileInput = useRef(null);
-
-  console.log(typeof input.image);
 
   if (!isLoading && input.planner === "" && userDb?.data.id)
     setInput({ ...input, planner: userDb.data.id });
@@ -167,7 +169,7 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
         <FormControl>
           <Center>
             <Grid
-              marginBottom="5%"
+              marginBottom={"10px"}
               h="80vh"
               w="80vw"
               templateRows="repeat(4, 1fr)"
@@ -211,49 +213,59 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
                   onChange={(e) => handleChange(e)}
                 />
                 {errors.name && <p>{errors.name}</p>}
-
                 <FormLabel paddingLeft="2" htmlFor="cities" mt={2}>
                   Cities
                 </FormLabel>
-                <Input
-                  list="cities-choices"
-                  name="cities"
-                  value={inputCities}
-                  placeholder="Type the cities you are visiting..."
-                  onChange={(e) => handleCities(e)}
-                />
-                <datalist id="cities-choices">
-                  {cities
-                    ?.filter((c) => !input.cities?.includes(c.name))
-                    ?.map((c, index) => (
-                      <option key={index}> {c.name} </option>
-                    ))}
-                </datalist>
-                <Button
-                  mt={1}
-                  bg="highlight"
-                  color="primary"
-                  _hover={{ bg: "danger" }}
-                  onClick={(e) => handleCitiesSelect(e)}
-                >
-                  +
-                </Button>
+                <HStack>
+                  <Input
+                    list="cities-choices"
+                    name="cities"
+                    value={inputCities}
+                    marginRight={"20px"}
+                    placeholder="Type the cities you are visiting..."
+                    onChange={(e) => handleCities(e)}
+                  />
+                  <datalist id="cities-choices">
+                    {cities
+                      ?.filter((c) => !input.cities?.includes(c.name))
+                      ?.map((c, index) => (
+                        <option key={index}> {c.name} </option>
+                      ))}
+                  </datalist>
+                  <Button
+                    marginLeft={"10px"}
+                    mt={1}
+                    width={"80px"}
+                    bg="highlight"
+                    color="primary"
+                    _hover={{ bg: "danger" }}
+                    onClick={(e) => handleCitiesSelect(e)}
+                  >
+                    +
+                  </Button>
+                </HStack>
                 <Center>
-                  <List spacing={3}>
-                    {input.cities?.map((c, index) => {
-                      return (
-                        <ListItem key={index}>
-                          {c}
-                          <Button
-                            marginLeft="2"
-                            onClick={() => handleDeleteCity(c)}
-                          >
-                            X
-                          </Button>
-                        </ListItem>
-                      );
-                    })}
-                  </List>
+                  <HStack marginTop={"5px"}>
+                    {input.cities.length != 0 ? (
+                      input.cities.map((c, index) => {
+                        return (
+                          <Box marginLeft={"10px"} key={index}>
+                            {c}
+                            <Button
+                              marginLeft="2"
+                              onClick={() => handleDeleteCity(c)}
+                              height={"25px"}
+                              width={"5px"}
+                            >
+                              X
+                            </Button>
+                          </Box>
+                        );
+                      })
+                    ) : (
+                      <Box height={"40px"}></Box>
+                    )}
+                  </HStack>
                 </Center>
 
                 <FormLabel paddingLeft="2" htmlFor="initialDate" mt={2}>
@@ -321,31 +333,36 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
                     }
                   })}
                 </Select>
-
                 <Center>
-                  <List spacing={3}>
+                  <SimpleGrid
+                    marginTop={"10px"}
+                    marginBottom={"5px"}
+                    columns={7}
+                    spacing={3}
+                  >
                     {input.activitiesName?.map((a, index) => {
                       return (
-                        <ListItem key={index}>
-                          <ListIcon as={CheckCircleIcon} />
+                        <GridItem key={index}>
                           {a}
                           <Button
                             marginLeft="2"
                             onClick={() => handleDelete(a)}
+                            height={"25px"}
+                            width={"5px"}
                           >
                             X
                           </Button>
-                        </ListItem>
+                        </GridItem>
                       );
                     })}
-                  </List>
+                  </SimpleGrid>
                 </Center>
               </GridItem>
             </Grid>
           </Center>
           <Center marginBottom="2%">
             <Button
-              mt={5}
+              mt={"20px"}
               bg="highlight"
               color="primary"
               _hover={{ bg: "danger" }}
@@ -364,8 +381,8 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
             </Button>
             {input.price ? (
               <Button
+                mt={"20px"}
                 marginLeft="1%"
-                mt={5}
                 bg="highlight"
                 color="primary"
                 _hover={{ bg: "danger" }}

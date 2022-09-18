@@ -11,7 +11,7 @@ export interface Trip {
   description: string;
   activitiesName: string[];
   image?: string | ArrayBuffer;
-  price?: Number;
+  price?: number;
 }
 
 export interface User {
@@ -33,8 +33,9 @@ export interface Activity {
   availability: string | string[];
   description: string;
   price: number;
-  city: City;
-  image?: string;
+  city?: City;
+  cityName: string;
+  image?: string | ArrayBuffer;
   active?: boolean;
 }
 
@@ -121,4 +122,7 @@ export interface Errors {
   initDate?: string;
   endDate?: string;
   description?: string;
+  price?: string;
+  cityName?: string;
+  availability?: string;
 }

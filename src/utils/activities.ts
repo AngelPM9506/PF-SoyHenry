@@ -25,3 +25,26 @@ export const getActivitiesId = async (
   );
   return activity.data;
 };
+
+export const createActivity = async ({
+  name,
+  image,
+  cityName,
+  availability,
+  description,
+  price,
+}: Activity) => {
+  try {
+    const activity = await axios.post("http://localhost:3000/api/activities/", {
+      name,
+      image,
+      cityName,
+      availability,
+      description,
+      price,
+    });
+    return activity.data;
+  } catch (err) {
+    console.error(err);
+  }
+};

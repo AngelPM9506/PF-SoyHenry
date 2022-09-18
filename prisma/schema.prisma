@@ -4,12 +4,14 @@
 //cliente
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = ["referentialIntegrity"]
 }
 
 //conexión
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+  referentialIntegrity = "prisma"
 }
 
 // modelos
@@ -49,16 +51,16 @@ model Trip {
 model UsersOnTrips {
   user   User   @relation(fields: [userid], references: [id])
   userid String
-  trip   Trip   @relation(fields: [tripId], references: [id])
+  trip   Trip   @relation(fields: [tripId], references: [id], onDelete: Cascade)
   tripId String
 
   @@id([userid, tripId])
 }
 
 model CitiesOnTrips {
-  city   city   @relation(fields: [cityId], references: [id])
+  city   city   @relation(fields: [cityId], references: [id], onDelete: SetNull)
   cityId String
-  trip   Trip   @relation(fields: [tripId], references: [id])
+  trip   Trip   @relation(fields: [tripId], references: [id], onDelete: SetNull)
   tripId String
 
   @@id([tripId, cityId])
@@ -92,7 +94,7 @@ model city {
 model activitiesOnTrips {
   activity   Activity @relation(fields: [activityId], references: [id])
   activityId String
-  trip       Trip     @relation(fields: [tripId], references: [id])
+  trip       Trip     @relation(fields: [tripId], references: [id], onDelete: Cascade)
   tripId     String
 
   @@id([activityId, tripId])

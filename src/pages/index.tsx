@@ -1,14 +1,15 @@
 import type { NextPage } from "next";
 import { Stack, Box, Heading, Text, Button, Center } from "@chakra-ui/react";
 import ReactPlayer from "react-player";
+import { useState } from "react";
 
 const landingPage: NextPage = () => {
+  const [isplaying, setPlaying] = useState(false);
   const url =
     "https://res.cloudinary.com/mauro4202214/video/upload/v1663337043/world-travelers/videolandingpagecrop_iklwjv.mp4";
   return (
     <>
       <ReactPlayer
-        playing
         loop
         width="100%"
         height="100%"
@@ -19,8 +20,8 @@ const landingPage: NextPage = () => {
         url={url}
         controls={false}
         volume={0.3}
+        onMouseOver={(e) => e.target.play()}
       />
-
       <Box marginTop="-50%">
         <Stack flex={1} spacing={{ base: 5, md: 10 }}>
           <Heading

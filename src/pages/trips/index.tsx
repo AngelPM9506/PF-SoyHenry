@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import type { NextPage } from "next";
 import { TripCard } from "../../components/TripCard";
 import Pagination from "../../components/pagination";

@@ -22,6 +22,7 @@ const NotFound = () => {
           overflow="hidden"
         >
           <Image
+          alt="404 image"
             objectFit={"cover"}
             src="https://drive.google.com/uc?id=1ImjvFaYq7BOJBKlPBlxDLScoGI14VPn5"
           />

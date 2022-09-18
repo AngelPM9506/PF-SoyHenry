@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import {
   Badge,
   Center,
@@ -41,6 +42,7 @@ export const UserDetail = (userDetail: UserData) => {
         >
           <Flex flex={1} bg="blue.200">
             <Image
+              alt="image user"
               objectFit="cover"
               boxSize="100%"
               src={user ? user.avatar : logo}
@@ -66,9 +68,10 @@ export const UserDetail = (userDetail: UserData) => {
               {user && user.description}
             </Text>
             <Stack align={"center"} justify={"center"} direction={"row"} mt={6}>
-              {arrInterests?.map((int) => {
+              {arrInterests?.map((int, i) => {
                 return (
                   <Badge
+                    key={i}
                     px={2}
                     py={1}
                     bg={useColorModeValue("gray.50", "gray.800")}

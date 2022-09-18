@@ -26,6 +26,8 @@ const MyCarousel = ({ trips, activities }: Props) => {
   const lastTrips = trips?.reverse().slice(0, 13);
   const lastActivities = activities?.reverse().slice(0, 13);
 
+  const useColorMode = useColorModeValue("white", "gray.800");
+
   const upPrice = (price: number) => {
     return Math.floor(price + (price * 30) / 100);
   };
@@ -37,6 +39,7 @@ const MyCarousel = ({ trips, activities }: Props) => {
       </Box>
       <Slider {...settings}>
         {lastTrips?.map((t) => {
+          const image = t.image ? t.image.toString() : defaultpic;
           return (
             <Center p={8} py={12} key={t.id}>
               <Box
@@ -44,7 +47,7 @@ const MyCarousel = ({ trips, activities }: Props) => {
                 p={6}
                 maxW={"330px"}
                 w={"full"}
-                bg={useColorModeValue("white", "gray.800")}
+                bg={useColorMode}
                 boxShadow={"2xl"}
                 rounded={"lg"}
                 pos={"relative"}
@@ -77,7 +80,8 @@ const MyCarousel = ({ trips, activities }: Props) => {
                     height={230}
                     width={282}
                     objectFit={"cover"}
-                    src={t.image ? t.image : defaultpic}
+                    src={image}
+                    alt='trip image'
                   />
                 </Box>
                 <Stack pt={10} align={"center"}>
@@ -108,6 +112,7 @@ const MyCarousel = ({ trips, activities }: Props) => {
       </Box>
       <Slider {...settings}>
         {lastActivities?.map((a) => {
+          const image = a.image ? a.image.toString() : defaultpic;
           return (
             <Center p={8} py={12} key={a.id}>
               <Box
@@ -115,7 +120,7 @@ const MyCarousel = ({ trips, activities }: Props) => {
                 p={6}
                 maxW={"330px"}
                 w={"full"}
-                bg={useColorModeValue("white", "gray.800")}
+                bg={useColorMode}
                 boxShadow={"2xl"}
                 rounded={"lg"}
                 pos={"relative"}
@@ -143,13 +148,13 @@ const MyCarousel = ({ trips, activities }: Props) => {
                     },
                   }}
                 >
-                  <Image
-                    rounded={"lg"}
-                    height={230}
-                    width={282}
-                    objectFit={"cover"}
-                    src={a.image ? a.image : defaultpic}
-                  />
+                  <Image 
+                  alt="image Activitie"
+                  rounded={"lg"} 
+                  height={230} 
+                  width={282} 
+                  objectFit={"cover"} 
+                  src={image} />
                 </Box>
                 <Stack pt={10} align={"center"}>
                   <Heading

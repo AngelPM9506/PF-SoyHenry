@@ -21,6 +21,7 @@ const { CLOUDINARY_NAME } = process.env;
 import Layout from "./layout/Layout";
 
 export interface UserData {
+  userDetail?: any;
   name: string;
   email?: string;
   picture?: string;
@@ -124,7 +125,7 @@ export const UserProfile = ({ user }: UserAuth0 | any) => {
               rowSpan={1}
               colSpan={1}
               bg="none"
-              align="center"
+              alignContent="center"
               alignSelf="center"
             >
               <FormControl id="userName">

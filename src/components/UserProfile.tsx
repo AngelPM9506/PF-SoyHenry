@@ -1,17 +1,16 @@
 import {
   Button,
-  Flex,
   FormControl,
   FormLabel,
   Heading,
   Input,
   Stack,
-  useColorModeValue,
-  HStack,
+  Box,
   Avatar,
-  AvatarBadge,
-  IconButton,
+  Grid,
+  GridItem,
   Center,
+  useToast,
   Textarea,
 } from "@chakra-ui/react";
 import React, { ChangeEvent, SetStateAction, useState, useEffect } from "react";
@@ -19,6 +18,7 @@ import { updateUser, UserAuth0, getOrCreateUser } from "src/utils/User";
 import { Cloudinary } from "@cloudinary/url-gen";
 import { useQuery, useQueryClient } from "react-query";
 const { CLOUDINARY_NAME } = process.env;
+import Layout from "./layout/Layout";
 
 export interface UserData {
   name: string;
@@ -73,7 +73,6 @@ export const UserProfile = ({ user }: UserAuth0 | any) => {
 
     reader.onloadend = () => {
       setImage(reader.result);
-      // console.log(reader.result);
     };
   }
 
@@ -99,136 +98,166 @@ export const UserProfile = ({ user }: UserAuth0 | any) => {
     });
   };
 
+  const toast = useToast();
+
   return (
-    <Flex
-      minH={"100vh"}
-      align={"center"}
-      justify={"center"}
-      bg={useColorModeValue("gray.50", "gray.800")}
-    >
-      <Stack
-        spacing={4}
-        w={"full"}
-        maxW={"md"}
-        bg={useColorModeValue("white", "gray.700")}
-        rounded={"xl"}
-        boxShadow={"lg"}
-        p={6}
-        my={12}
-      >
-        <Heading lineHeight={1.1} fontSize={{ base: "2xl", sm: "3xl" }}>
-          User Profile Edit
-        </Heading>
+    <>
+      <Center margin="2%">
+        <Heading color="primary">UPDATE PROFILE USER</Heading>
+      </Center>
+      <Center>
         <form
           onSubmit={(e) => {
             handleSubmit(e);
           }}
         >
-          <FormControl id="userName">
-            <FormLabel>User Icon</FormLabel>
-            <Stack direction={["column"]} spacing={6} align="center">
-              <Center>
-                <Avatar size="2xl" src={image ? image : data.avatar} />
-              </Center>
-              <Center>
-                <Button onClick={(event) => handleClick(event)}>
-                  Change Icon
-                </Button>
-                <Input
-                  type="file"
-                  ref={hiddenFileInput}
-                  style={{ display: "none" }}
-                  accept="image/png, image/jpeg, image/gif, image/jpg, image/jfif"
-                  onChange={(e) => handleImage(e)}
-                />
-              </Center>
-            </Stack>
-          </FormControl>
-          <FormControl id="name" isRequired>
-            <FormLabel>Name</FormLabel>
-            <Input
-              placeholder="Name"
-              _placeholder={{ color: "gray.500" }}
-              type="text"
-              value={data.name}
-              onChange={(e) => handleChange(e)}
-            />
-          </FormControl>
-          <FormControl id="mail" isRequired>
-            <FormLabel>Email address</FormLabel>
-            <Input
-              placeholder="your-email@example.com"
-              _placeholder={{ color: "gray.500" }}
-              type="email"
-              value={data.mail}
-              disabled={true}
-              onChange={(e) => handleChange(e)}
-            />
-          </FormControl>
-          <FormControl id="description" isRequired>
-            <FormLabel>Description</FormLabel>
-            <Textarea
-              placeholder="Description"
-              _placeholder={{ color: "gray.500" }}
-              onChange={(e) => handleChange(e)}
-              value={data.description}
-            />
-          </FormControl>
-          <FormControl id="keyWords">
-            <FormLabel>Keywords</FormLabel>
-            <Input
-              placeholder="Beach, Mountains, Europe, South America"
-              _placeholder={{ color: "gray.500" }}
-              onChange={(e) => handleChange(e)}
-              value={data.keyWords}
-              type="text"
-            />
-          </FormControl>
-          <FormControl id="urlTikTok">
-            <FormLabel>Tiktok</FormLabel>
-            <Input
-              placeholder="URL"
-              _placeholder={{ color: "gray.500" }}
-              type="text"
-              onChange={(e) => handleChange(e)}
-              value={data.urlTikTok}
-            />
-          </FormControl>
-          <FormControl id="urlInstagram">
-            <FormLabel>Instagram</FormLabel>
-            <Input
-              placeholder="URL"
-              _placeholder={{ color: "gray.500" }}
-              type="text"
-              onChange={(e) => handleChange(e)}
-              value={data.urlInstagram}
-            />
-          </FormControl>
-          <FormControl id="urlFaceBook">
-            <FormLabel>Facebook</FormLabel>
-            <Input
-              placeholder="URL"
-              _placeholder={{ color: "gray.500" }}
-              type="text"
-              onChange={(e) => handleChange(e)}
-              value={data.urlFaceBook}
-            />
-          </FormControl>
-          <Stack spacing={6} marginTop={"1.5rem"} direction={["column", "row"]}>
-            <Button
-              bg={"blue.400"}
-              color={"white"}
-              w="full"
-              _hover={{
-                bg: "blue.500",
-              }}
-              type={"submit"}
+          <Grid
+            marginBottom="12%"
+            h="80vh"
+            w="80vw"
+            templateRows="repeat(4, 1fr)"
+            templateColumns="300px 1fr 1fr 1fr 1fr"
+            gap={1}
+          >
+            <GridItem
+              borderRadius="2xl"
+              rowSpan={1}
+              colSpan={1}
+              bg="none"
+              align="center"
+              alignSelf="center"
             >
-              Submit
-            </Button>
-          </Stack>
+              <FormControl id="userName">
+                <Center>
+                  <FormLabel>User Icon</FormLabel>
+                </Center>
+                <Stack direction={["column"]} spacing={6} align="center">
+                  <Center>
+                    <Avatar size="2xl" src={image ? image : data.avatar} />
+                  </Center>
+                  <Center>
+                    <Button
+                      mt={5}
+                      bg="#02b1b1"
+                      color="#293541"
+                      _hover={{ bg: "#F3B46F" }}
+                      onClick={(event) => handleClick(event)}
+                    >
+                      Change Icon
+                    </Button>
+                    <Input
+                      type="file"
+                      ref={hiddenFileInput}
+                      style={{ display: "none" }}
+                      accept="image/png, image/jpeg, image/gif, image/jpg, image/jfif"
+                      onChange={(e) => handleImage(e)}
+                    />
+                  </Center>
+                </Stack>
+              </FormControl>
+            </GridItem>
+
+            <GridItem borderRadius="2xl" colSpan={4} bg="blackAlpha.100">
+              <FormControl id="name" isRequired>
+                <FormLabel p={2}>Name</FormLabel>
+                <Input
+                  placeholder="Name"
+                  _placeholder={{ color: "gray.500" }}
+                  type="text"
+                  value={data.name}
+                  onChange={(e) => handleChange(e)}
+                />
+              </FormControl>
+              <FormControl id="mail" isRequired>
+                <FormLabel p={2}>Email address</FormLabel>
+                <Input
+                  placeholder="your-email@example.com"
+                  _placeholder={{ color: "gray.500" }}
+                  type="email"
+                  value={data.mail}
+                  disabled={true}
+                  onChange={(e) => handleChange(e)}
+                />
+              </FormControl>
+              <FormControl id="description" isRequired>
+                <FormLabel p={2}>Description</FormLabel>
+                <Textarea
+                  placeholder="Description"
+                  _placeholder={{ color: "gray.500" }}
+                  onChange={(e) => handleChange(e)}
+                  value={data.description}
+                />
+              </FormControl>
+              <FormControl id="keyWords">
+                <FormLabel p={2}>Keywords</FormLabel>
+                <Input
+                  placeholder="Beach, Mountains, Europe, South America"
+                  _placeholder={{ color: "gray.500" }}
+                  onChange={(e) => handleChange(e)}
+                  value={data.keyWords}
+                  type="text"
+                />
+              </FormControl>
+            </GridItem>
+
+            <GridItem borderRadius="2xl" colSpan={5} bg="blackAlpha.100">
+              <FormControl id="urlTikTok">
+                <FormLabel p={2}>Tiktok</FormLabel>
+                <Input
+                  placeholder="URL"
+                  _placeholder={{ color: "gray.500" }}
+                  type="text"
+                  onChange={(e) => handleChange(e)}
+                  value={data.urlTikTok}
+                />
+              </FormControl>
+              <FormControl id="urlInstagram">
+                <FormLabel p={2}>Instagram</FormLabel>
+                <Input
+                  placeholder="URL"
+                  _placeholder={{ color: "gray.500" }}
+                  type="text"
+                  onChange={(e) => handleChange(e)}
+                  value={data.urlInstagram}
+                />
+              </FormControl>
+              <FormControl id="urlFaceBook">
+                <FormLabel p={2}>Facebook</FormLabel>
+                <Input
+                  placeholder="URL"
+                  _placeholder={{ color: "gray.500" }}
+                  type="text"
+                  onChange={(e) => handleChange(e)}
+                  value={data.urlFaceBook}
+                />
+              </FormControl>
+            </GridItem>
+          </Grid>
+          <Center>
+            <Box>
+              <Button
+                marginBottom={"15%"}
+                mt={5}
+                bg="#02b1b1"
+                color="#293541"
+                _hover={{ bg: "#F3B46F" }}
+                type={"submit"}
+                onClick={() =>
+                  toast({
+                    title: "Profile Updated",
+                    description: "We've updated your info",
+                    status: "success",
+                    duration: 3000,
+                    isClosable: true,
+                  })
+                }
+              >
+                Submit
+              </Button>
+            </Box>
+          </Center>
         </form>
-      </Stack>
-    </Flex>
+      </Center>
+    </>
   );
 };

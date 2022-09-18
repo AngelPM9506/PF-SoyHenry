@@ -12,10 +12,8 @@ import { useQuery } from "react-query";
 const url = "https://drive.google.com/uc?id=1_6Nlg2YJEROqakx47LjLzuLjhLifPJ5t";
 
 export default function MiniCardAct({ activity, cities }: any) {
-  console.log("1", activity);
-  console.log("2", cities);
   return (
-    <Center py={12}>
+    <Center>
       <Box
         role={"group"}
         p={6}

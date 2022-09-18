@@ -1,5 +1,5 @@
 import moment from "moment";
-import { Trip } from "src/utils/interface";
+import { Activity, Trip } from "src/utils/interface";
 import { Errors } from "src/utils/interface";
 
 export const validateName = (name: string) => {
@@ -16,6 +16,10 @@ export const validateDescription = (description: string) => {
   return /^(?=.{3,1000}$)[a-zA-ZÀ-ÿ0-9\u00f1\u00d1\s]+(\s*[a-zA-ZÀ-ÿ0-9\u00f1\u00d1\s]*)*[a-zA-ZÀ-ÿ0-9\u00f1\u00d1\s]+$/.test(
     description
   );
+};
+
+export const validatePrice = (price: number) => {
+  return /^[0-9]*\.?[0-9]*$/.test(price);
 };
 
 export const validateDates = (date: string) => {
@@ -52,6 +56,28 @@ export const formControl = (input: Trip, trips: Trip[]) => {
     errors.endDate = "Please, select the right format of the date";
   } else if (!dateCompare(input.initDate, input.endDate)) {
     errors.endDate = "The init date must be greater than the enn date";
+  } else if (!validateDescription) {
+    errors.description = "Only 1000 characters are allowed";
+  }
+  return errors;
+};
+
+export const formControlActivity = (
+  input: Activity,
+  activities: Activity[]
+) => {
+  let errors: Errors = {};
+  if (!validateName(input.name)) {
+    errors.name =
+      "Name has to be at least 3 characters long and cannot contain special characters";
+  } else if (!input.name.length) {
+    errors.name = "Name is required";
+  } else if (
+    activities?.find((a) => a.name.toLowerCase() === input.name?.toLowerCase())
+  ) {
+    errors.name = "There is already an activity with that name";
+  } else if (!validatePrice(input.price)) {
+    errors.price = "Price has to be a number";
   } else if (!validateDescription) {
     errors.description = "Only 1000 characters are allowed";
   }

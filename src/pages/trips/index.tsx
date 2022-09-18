@@ -85,7 +85,13 @@ function Trips({ trips }: Props) {
         margin={"40px"}
         marginBottom={"50px"}
       >
-        <Text width={"1500px"}>All our travelers trips</Text>
+        <Text
+          width={"1500px"}
+          fontFamily={"Trebuchet MS"}
+          color={useColorModeValue("#293541", "#02b1b1")}
+        >
+          All our travelers trips
+        </Text>
         <Button
           bg={useColorModeValue("#02b1b1", "#02b1b1")}
           color={"white"}
@@ -95,6 +101,8 @@ function Trips({ trips }: Props) {
           _hover={{
             transform: "translateY(-2px)",
             boxShadow: "lg",
+            bg: "#F3B46F",
+            color: "black",
           }}
         >
           <Link href="/trips/create">Create new Trip</Link>
@@ -159,7 +167,7 @@ function Trips({ trips }: Props) {
             onChange={(e) => setInputAct(e.target.value)}
           />
           <Button
-            bg={useColorModeValue("#151f21", "gray.900")}
+            bg={useColorModeValue("#151f21", "#293541")}
             color={"white"}
             rounded={"md"}
             _hover={{

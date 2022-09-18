@@ -88,9 +88,9 @@ function Trips({ trips }: Props) {
         <Text
           width={"1500px"}
           fontFamily={"Trebuchet MS"}
-          color={useColorModeValue("#293541", "#02b1b1")}
+          color={useColorModeValue("#293541", "white")}
         >
-          All our travelers trips
+          ALL OUR TRAVELERS TRIPS
         </Text>
         <Button
           bg={useColorModeValue("#02b1b1", "#02b1b1")}

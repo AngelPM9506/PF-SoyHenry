@@ -3,6 +3,7 @@ import MyCarousel from "src/components/Carousel";
 import styles from "../styles/Home.module.css";
 import { Activity, Trip } from "src/utils/interface";
 import Layout from "src/components/layout/Layout";
+import { Stack } from "@chakra-ui/react";
 
 interface Props {
   trips: Trip[];

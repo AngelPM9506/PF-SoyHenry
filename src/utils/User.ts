@@ -33,7 +33,7 @@ export const getUsers = async () => {
 };
 
 export const updateUser = async (user: UserData) => {
-  const userDb = await axios.put(`/api/users/:${user.mail}`, {
+  const userDb = await axios.put(`/api/users/${user.mail}`, {
     name: user.name,
     mail: user.mail,
     avatar: user.avatar,

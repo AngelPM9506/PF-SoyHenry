@@ -12,7 +12,7 @@ import {
 } from "@chakra-ui/react";
 import NextLink from "next/link";
 const defaultpic: string =
-  "https://drive.google.com/uc?id=1YZhzZFB0nRQuLLzmFVq13upFeZQo5CLd";
+  "https://drive.google.com/uc?id=1_6Nlg2YJEROqakx47LjLzuLjhLifPJ5t";
 
 export function ActivityCard({ props }: any) {
   return (
@@ -24,7 +24,7 @@ export function ActivityCard({ props }: any) {
             p={6}
             maxW={"330px"}
             w={"full"}
-            bg={useColorModeValue("#f4f4f4", "gray.800")}
+            bg={useColorModeValue("white", "#4b647c")}
             boxShadow={"2xl"}
             rounded={"lg"}
             pos={"relative"}
@@ -59,6 +59,7 @@ export function ActivityCard({ props }: any) {
                 objectFit={"cover"}
                 src={props.image ? props.image : defaultpic}
                 alt={props.name}
+                boxShadow={"0px 10px 13px -7px #000000"}
               />
             </Box>
             <Stack pt={4} height={"75px"} align={"center"}>
@@ -77,7 +78,12 @@ export function ActivityCard({ props }: any) {
               </Text>
             </Stack>
             <Stack pb={3} direction={"row"} align={"center"}>
-              <Text fontWeight={400} fontSize={"xl"}>
+              <Text
+                fontWeight={400}
+                fontSize={"lg"}
+                overflow={"hidden"}
+                height={"120px"}
+              >
                 {props.description}
               </Text>
             </Stack>
@@ -101,7 +107,7 @@ export function ActivityCard({ props }: any) {
                 boxShadow: "lg",
               }}
             >
-              <Link href={`/pasarella`}> Purchase activity </Link>
+              <Link href={`/activities/${props.id}`}>See more information</Link>
             </Button>
           </Box>
         </Link>

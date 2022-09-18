@@ -11,7 +11,7 @@ export interface Trip {
   description: string;
   activitiesName: string[];
   image?: string | ArrayBuffer;
-  price?: Number;
+  price?: number;
 }
 
 export interface User {

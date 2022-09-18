@@ -21,8 +21,8 @@ import {
 import { FaInstagram, FaTwitter, FaYoutube } from "react-icons/fa";
 import { MdLocalShipping } from "react-icons/md";
 import { MinusIcon } from "@chakra-ui/icons";
-import MiniCardAct from "./miniCardActivity";
 import { City, CityInDB } from "src/utils/interface";
+import NextLink from "next/link";
 
 export default function ActivityDetail({ data, isLoading, error }: any) {
   if (isLoading) return <div>Loading...</div>;
@@ -34,6 +34,7 @@ export default function ActivityDetail({ data, isLoading, error }: any) {
         columns={{ base: 1, lg: 2 }}
         spacing={{ base: 8, md: 10 }}
         py={{ base: 18, md: 24 }}
+        maxHeight={"max-content"}
       >
         <Flex>
           <Image
@@ -50,12 +51,17 @@ export default function ActivityDetail({ data, isLoading, error }: any) {
             h={{ base: "100%", sm: "400px", lg: "500px" }}
           />
         </Flex>
-        <Stack spacing={{ base: 6, md: 10 }}>
+        <Stack
+          alignItems={"left"}
+          justifyContent={"space-between"}
+          spacing={{ base: 6, md: 10 }}
+        >
           <Box as={"header"}>
             <Heading
               lineHeight={1.1}
               fontWeight={600}
               fontSize={{ base: "2xl", sm: "4xl", lg: "5xl" }}
+              color={useColorModeValue("#F3B46F", "#F3B46F")}
             >
               {data.name}
             </Heading>
@@ -83,6 +89,8 @@ export default function ActivityDetail({ data, isLoading, error }: any) {
                 color={useColorModeValue("gray.500", "gray.400")}
                 fontSize={"2xl"}
                 fontWeight={"300"}
+                width={"100%"}
+                overflow={"hidden"}
               >
                 {data.description}
               </Text>
@@ -90,7 +98,7 @@ export default function ActivityDetail({ data, isLoading, error }: any) {
             <Box>
               <Text
                 fontSize={{ base: "16px", lg: "18px" }}
-                color={useColorModeValue("yellow.500", "yellow.300")}
+                color={useColorModeValue("#F3B46F", "#F3B46F")}
                 fontWeight={"500"}
                 textTransform={"uppercase"}
                 mb={"4"}
@@ -122,40 +130,27 @@ export default function ActivityDetail({ data, isLoading, error }: any) {
                 </List>
               </Box>
             </Box>
-            <Box>
-              <Text
-                fontSize={{ base: "16px", lg: "18px" }}
-                color={useColorModeValue("yellow.500", "yellow.300")}
-                fontWeight={"500"}
-                textTransform={"uppercase"}
-                mb={"4"}
-              >
-                Activities
-              </Text>
-
-              <SimpleGrid columns={3} spacing={2}>
-                <MiniCardAct />
-                <MiniCardAct />
-              </SimpleGrid>
-            </Box>
           </Stack>
-
-          <Button
-            rounded={"none"}
-            w={"full"}
-            mt={8}
-            size={"lg"}
-            py={"7"}
-            bg={useColorModeValue("gray.900", "gray.50")}
-            color={useColorModeValue("white", "gray.900")}
-            textTransform={"uppercase"}
-            _hover={{
-              transform: "translateY(2px)",
-              boxShadow: "lg",
-            }}
-          >
-            Pay and Join the trip!
-          </Button>
+          <Stack alignItems={"center"} justifyContent={"space-between"}>
+            <NextLink href={"/activities"}>
+              <Button
+                rounded={"lg"}
+                w={"50%"}
+                mt={4}
+                size={"lg"}
+                py={"7"}
+                bg={useColorModeValue("gray.900", "gray.50")}
+                color={useColorModeValue("white", "gray.900")}
+                textTransform={"uppercase"}
+                _hover={{
+                  transform: "translateY(2px)",
+                  boxShadow: "lg",
+                }}
+              >
+                Go back to All Activities
+              </Button>
+            </NextLink>
+          </Stack>
 
           <Stack
             direction="row"

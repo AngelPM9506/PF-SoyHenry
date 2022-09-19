@@ -3,14 +3,14 @@
 
 //cliente
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
   previewFeatures = ["referentialIntegrity"]
 }
 
 //conexión
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider             = "postgresql"
+  url                  = env("DATABASE_URL")
   referentialIntegrity = "prisma"
 }
 
@@ -29,6 +29,8 @@ model User {
   trips        Trip[]
   useOnTrip    UsersOnTrips[]
   active       Boolean        @default(true)
+  comments     comments[]
+  rating       rating[]
 }
 
 model Trip {
@@ -78,6 +80,8 @@ model Activity {
   city              city?               @relation(fields: [cityId], references: [id])
   cityId            String?
   activitiesOnTrips activitiesOnTrips[]
+  comments          comments[]
+  rating            rating[]
 }
 
 model city {
@@ -98,6 +102,26 @@ model activitiesOnTrips {
   tripId     String
 
   @@id([activityId, tripId])
+}
+
+model comments {
+  comment    String
+  activity   Activity @relation(fields: [activityId], references: [id])
+  activityId String
+  user       User     @relation(fields: [userId], references: [id])
+  userId     String
+
+  @@id([activityId, userId])
+}
+
+model rating {
+  rating     Int
+  activity   Activity @relation(fields: [activityId], references: [id])
+  activityId String
+  user       User     @relation(fields: [userId], references: [id])
+  userId     String
+
+  @@id([activityId, userId])
 }
 
 enum availability {

@@ -139,9 +139,9 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
     }
   };
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    createTrip(input);
+    await createTrip(input);
     setInput(initialState);
     router.push("/trips");
   };

@@ -3,10 +3,14 @@ import MyCarousel from "src/components/Carousel";
 import styles from "../styles/Home.module.css";
 import { Activity, Trip } from "src/utils/interface";
 import Layout from "src/components/layout/Layout";
+
 import { useUser } from "@auth0/nextjs-auth0";
 import { useQuery } from "react-query";
 import { getOrCreateUser } from "src/utils/User";
 import { useRouter } from "next/router";
+
+import { Stack } from "@chakra-ui/react";
+
 
 interface Props {
   trips: Trip[];

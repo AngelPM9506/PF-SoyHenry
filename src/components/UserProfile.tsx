@@ -38,6 +38,8 @@ export interface UserData {
     avatar?: string;
     id?: string;
   };
+  isAdmin?: boolean;
+  active?: boolean;
 }
 
 export const UserProfile = ({ user }: UserAuth0 | any) => {

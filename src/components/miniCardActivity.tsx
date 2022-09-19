@@ -30,12 +30,13 @@ export default function MiniCardAct({ activity, cities }: any) {
           height={"160px"}
           width={"200px"}
           objectFit={"cover"}
-          src={activity.image != null ? activity.image : url}
+          src={activity?.image != null ? activity?.image : url}
+          alt={activity?.name}
         />
 
         <Stack pt={10} align={"center"}>
-          {cities.map((c: any, i: number) => {
-            if (c.city.id === activity.cityId) {
+          {cities?.map((c) => {
+            if (c.city.id === activity?.cityId) {
               return (
                 <Text
                 key={i}
@@ -49,7 +50,7 @@ export default function MiniCardAct({ activity, cities }: any) {
             }
           })}
           <Heading fontSize={"2xl"} fontFamily={"body"} fontWeight={500}>
-            {activity.name}
+            {activity?.name}
           </Heading>
         </Stack>
       </Box>

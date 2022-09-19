@@ -64,11 +64,14 @@ export default function NavBar() {
 
           <HStack spacing={8} alignItems={"center"}>
             <Box>
-              <Image
-                height={"60px"}
-                src={useColorModeValue(logo, logoNight)}
-                alt="logo"
-              />
+              <NextLink href={Links[0][0]}>
+                <Image
+                  cursor={"pointer"}
+                  height={"60px"}
+                  src={useColorModeValue(logo, logoNight)}
+                  alt="logo"
+                />
+              </NextLink>
             </Box>
           </HStack>
           <HStack
@@ -112,8 +115,20 @@ export default function NavBar() {
                   </NextLink>
                 </MenuItem>
                 <MenuItem>
+                  <NextLink href={`/user/${userDb?.data.id}`}>
+                    <Link> My Public Profile </Link>
+                  </NextLink>
+                </MenuItem>
+                <MenuItem>
                   <Link href="/api/auth/logout">Logout</Link>
                 </MenuItem>
+                {userDb?.data.isAdmin && (
+                  <MenuItem>
+                    <NextLink href={`/user/admin`}>
+                      <Link> Admin Panel </Link>
+                    </NextLink>
+                  </MenuItem>
+                )}
               </MenuList>
             </Menu>
           </Flex>

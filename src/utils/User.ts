@@ -1,5 +1,5 @@
-import axios from 'axios';
-import { UserData } from 'src/components/UserProfile';
+import axios from "axios";
+import { UserData } from "src/components/UserProfile";
 export interface UserAuth0 {
   user?: {
     name?: string;
@@ -14,14 +14,22 @@ export interface UserAuth0 {
   description?: string;
 }
 export const getOrCreateUser = async (user: UserAuth0) => {
-  const userDb: UserData = await axios.post('api/users', {
+  const userDb: UserData = await axios.post("/api/users", {
     name: user.name,
     mail: user.email,
     avatar: user.picture,
-    description: '',
+    description: "",
   });
 
   return userDb;
+};
+
+export const getUsers = async () => {
+  const userDb: UserData[] = await axios.get(
+    "http://localhost:3000/api/users/"
+  );
+
+  return userDb.data;
 };
 
 export const updateUser = async (user: UserData) => {
@@ -34,6 +42,8 @@ export const updateUser = async (user: UserData) => {
     urlFaceBook: user.urlFaceBook,
     urlInstagram: user.urlInstagram,
     keyWords: user.keyWords,
+    isAdmin: user.isAdmin,
+    active: user.active,
   });
   return userDb;
 };

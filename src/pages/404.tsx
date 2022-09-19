@@ -24,7 +24,8 @@ const NotFound = () => {
           <Image
           alt="404 image"
             objectFit={"cover"}
-            src="https://drive.google.com/uc?id=1ImjvFaYq7BOJBKlPBlxDLScoGI14VPn5"
+            src="https://i.vgy.me/zG6dQP.png"
+            alt={"Error 404 not found"}
           />
         </Box>
         <Box position={"absolute"} top={"400px"} right={"550px"}>

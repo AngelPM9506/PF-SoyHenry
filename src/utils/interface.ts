@@ -125,5 +125,7 @@ export interface Errors {
   description?: string;
   price?: string;
   cityName?: string;
+  cities?: string;
   availability?: string;
+  activitiesName?: string;
 }

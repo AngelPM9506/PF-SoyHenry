@@ -32,14 +32,14 @@ interface Props {
 function Trips({ trips }: Props) {
   const [sort, setSort] = useState<string>("desc"); // asc o desc orden
   const [wName, setName] = useState<string>(null); //para ordenar x nombre alfabeticamente
-  const [wActivity, setActivity] = useState<string>(""); //filtrar x actividad
+  const [wCity, setWcity] = useState<string>(""); //filtrar x actividad
   const [maxPrice, setMaxPrice] = useState<number>(0); // filtrar x precio
   const [sortBy, setSortBy] = useState<string>("name"); // ordenar x nombre o por precio
   const [input, setInput] = useState<string>("");
-  const [inputAct, setInputAct] = useState<string>("");
+  const [inputCity, setInputCity] = useState<string>("");
   const { data } = useQuery(
-    ["trips", wActivity, wName, maxPrice, sort, sortBy], //dependencies: React is going to re-render when one of these changes
-    () => getTrips(wActivity, wName, maxPrice, sort, sortBy)
+    ["trips", wCity, wName, maxPrice, sort, sortBy], //dependencies: React is going to re-render when one of these changes
+    () => getTrips(wCity, wName, maxPrice, sort, sortBy)
   );
   const [currentPage, setCurrentPage] = useState(1);
   const [tripsPerPage, setTripsPerPage] = useState(8);
@@ -49,8 +49,9 @@ function Trips({ trips }: Props) {
   if (sort === "Sort Order") setSort("desc");
   if (sortBy === "Sort By") setSortBy("name");
 
-  const handleActivity = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setActivity(inputAct);
+  const handleCity = () => {
+    setWcity(inputCity);
+    setInputCity("");
   };
   const handleSort = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSort(e.target.value);
@@ -68,10 +69,20 @@ function Trips({ trips }: Props) {
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInput(e.target.value);
   };
-  const handleInputActivity = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputAct(e.target.value);
+  const handleInputCity = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInputCity(e.target.value);
+  };
+  const handleLoadAll = () => {
+    setSort("desc");
+    setName(null);
+    setWcity("");
+    setMaxPrice(0);
+    setSortBy("name");
+    setInput("");
+    setInputCity("");
   };
 
+  console.log(data);
   return !data ? (
     <div>
       <h1>There are no trips yet! </h1>
@@ -89,9 +100,9 @@ function Trips({ trips }: Props) {
         <Text
           width={"1500px"}
           fontFamily={"Trebuchet MS"}
-          color={useColorModeValue("#293541", "#02b1b1")}
+          color={useColorModeValue("#293541", "white")}
         >
-          All our travelers trips
+          ALL OUR TRAVELERS TRIPS
         </Text>
         <Button
           bg={useColorModeValue("#02b1b1", "#02b1b1")}
@@ -159,17 +170,18 @@ function Trips({ trips }: Props) {
           width={"20%"}
           height={"45px"}
           justify-content={"center"}
-          onSubmit={(e) => handleActivity}
         >
           <Input
             width="200px"
             marginRight={"20px"}
-            placeholder="Type an activity ..."
-            onChange={(e) => setInputAct(e.target.value)}
+            placeholder="Type a City ..."
+            onChange={(e) => handleInputCity(e)}
           />
           <Button
             bg={useColorModeValue("#151f21", "#293541")}
             color={"white"}
+            type={"submit"}
+            onClick={handleCity}
             rounded={"md"}
             _hover={{
               transform: "translateY(-2px)",
@@ -181,14 +193,42 @@ function Trips({ trips }: Props) {
         </FormControl>
       </Box>
       <SimpleGrid minChildWidth="330px" columns={[2, null, 3]}>
-        {data
-          .slice(
-            (currentPage - 1) * tripsPerPage,
-            (currentPage - 1) * tripsPerPage + tripsPerPage
-          )
-          .map((t: Trip) => (
-            <TripCard key={t.id} props={t} />
-          ))}
+        {data.length != 0 ? (
+          data
+            .slice(
+              (currentPage - 1) * tripsPerPage,
+              (currentPage - 1) * tripsPerPage + tripsPerPage
+            )
+            .map((t: Trip) => <TripCard key={t.id} props={t} />)
+        ) : (
+          <Box
+            height={"38vh"}
+            width={"100%"}
+            justifyContent={"center"}
+            align={"center"}
+          >
+            <Text m={"15px"} textAlign={"center"} fontSize={"40px"}>
+              Sorry! There are no trips with the selected condition.
+            </Text>
+            <Button
+              fontSize={"40px"}
+              bg={useColorModeValue("#151f21", "#293541")}
+              color={"white"}
+              type={"submit"}
+              height={"60px"}
+              p={"20px"}
+              m={"25px"}
+              rounded={"md"}
+              _hover={{
+                transform: "translateY(-2px)",
+                boxShadow: "lg",
+              }}
+              onClick={handleLoadAll}
+            >
+              Load all the trips again!
+            </Button>
+          </Box>
+        )}
       </SimpleGrid>
       <Pagination
         inputPage={inputPage}

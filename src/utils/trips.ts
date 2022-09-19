@@ -2,7 +2,8 @@ import axios from "axios";
 import { QueryFunctionContext } from "react-query";
 
 export const getTrips = async (
-  wActivity?: string,
+  // wActivity?: string,
+  wCity?: string,
   wName?: string,
   maxPrice?: number,
   sort?: string,
@@ -16,11 +17,11 @@ export const getTrips = async (
   wActivity ? urlGet += `&wActivity=${wActivity}` : '';
   wName ? urlGet += `&wName=${wName}` : '';
   const trips = await axios.get(
-    `/trips?sort=${sort || ""}&sortBy=${
-      sortBy || ""
-    }&wName=${wName || ""}&wplanner=${wplanner || ""}&maxPrice=${
-      maxPrice || ""
-    }&wActivity=${wActivity || ""}`
+    `http://localhost:3000/api/trips?sort=${sort || "desc"}&sortBy=${
+      sortBy || "name"
+    }&wName=${wName || "&"}&wplanner=${wplanner || "&"}&maxPrice=${
+      maxPrice || "&"
+    }&wCity=${wCity || "&"}`
   );
   return trips.data;
 };

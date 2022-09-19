@@ -29,7 +29,12 @@ import { useRouter } from "next/router";
 import { useUser } from "@auth0/nextjs-auth0";
 import { useQuery } from "react-query";
 import { getOrCreateUser } from "src/utils/User";
-import { formControl } from "src/utils/validations";
+import {
+  formControl,
+  controlCities,
+  controlActivities,
+} from "src/utils/validations";
+import { json } from "stream/consumers";
 
 interface Props {
   activities: Activity[];
@@ -66,7 +71,10 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
   const [file, setFile] = useState<File>();
   const [nameFile, setNameFile] = useState("");
   const [errors, setErrors] = useState<Errors>({});
+  const [errorCities, setErrorCities] = useState({});
+  const [errorActivities, setErrorActivities] = useState({});
   const hiddenFileInput = useRef(null);
+  const [disable, setDisable] = useState(true);
 
   if (!isLoading && input.planner === "" && userDb?.data.id)
     setInput({ ...input, planner: userDb.data.id });
@@ -79,6 +87,24 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
 
   const handleCitiesSelect = (e: MouseEvent<HTMLButtonElement>) => {
     setInput({ ...input, cities: [...input.cities, inputCities] });
+    const errControl = formControl(input);
+    const citiesControl = controlCities({
+      ...input,
+      cities: [...input.cities, inputCities],
+    });
+    const activitiesControl = controlActivities(input);
+    if (
+      JSON.stringify(errControl) === "{}" &&
+      JSON.stringify(citiesControl) === "{}" &&
+      JSON.stringify(activitiesControl) === "{}"
+    ) {
+      setDisable(false);
+    } else {
+      setDisable(true);
+    }
+    setErrorCities(citiesControl);
+    setErrorActivities(activitiesControl);
+    setErrors(errControl);
     setInputCities("");
   };
 
@@ -87,6 +113,19 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
   }: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setInput({ ...input, [name]: value });
     const errControl = formControl({ ...input, [name]: value }, trips);
+    const citiesControl = controlCities(input);
+    const activitiesControl = controlActivities(input);
+    if (
+      JSON.stringify(errControl) === "{}" &&
+      JSON.stringify(citiesControl) === "{}" &&
+      JSON.stringify(activitiesControl) === "{}"
+    ) {
+      setDisable(false);
+    } else {
+      setDisable(true);
+    }
+    setErrorCities(citiesControl);
+    setErrorActivities(activitiesControl);
     setErrors(errControl);
   };
 
@@ -102,6 +141,25 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
         price: price,
       });
     }
+    const errControl = formControl(input);
+    const citiesControl = controlCities(input);
+    const activitiesControl = controlActivities({
+      ...input,
+      activitiesName: [...input.activitiesName, activity],
+      price: price,
+    });
+    if (
+      JSON.stringify(errControl) === "{}" &&
+      JSON.stringify(citiesControl) === "{}" &&
+      JSON.stringify(activitiesControl) === "{}"
+    ) {
+      setDisable(false);
+    } else {
+      setDisable(true);
+    }
+    setErrorCities(citiesControl);
+    setErrorActivities(activitiesControl);
+    setErrors(errControl);
   };
 
   function previewFiles(file: File) {
@@ -147,10 +205,31 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
   };
 
   const handleDelete = (activity: String) => {
+    const activityDelete = activities?.find((a) => a.name === activity);
     setInput({
       ...input,
       activitiesName: input.activitiesName?.filter((a) => a !== activity),
+      price: input.price - activityDelete.price,
     });
+    const errControl = formControl(input);
+    const citiesControl = controlCities(input);
+    const activitiesControl = controlActivities({
+      ...input,
+      activitiesName: input.activitiesName?.filter((a) => a !== activity),
+      price: input.price - activityDelete.price,
+    });
+    if (
+      JSON.stringify(errControl) === "{}" &&
+      JSON.stringify(citiesControl) === "{}" &&
+      JSON.stringify(activitiesControl) === "{}"
+    ) {
+      setDisable(false);
+    } else {
+      setDisable(true);
+    }
+    setErrorCities(citiesControl);
+    setErrorActivities(activitiesControl);
+    setErrors(errControl);
   };
 
   const handleDeleteCity = (city: String) => {
@@ -158,6 +237,24 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
       ...input,
       cities: input.cities?.filter((c) => c !== city),
     });
+    const errControl = formControl(input);
+    const citiesControl = controlCities({
+      ...input,
+      cities: input.cities?.filter((c) => c !== city),
+    });
+    const activitiesControl = controlActivities(input);
+    if (
+      JSON.stringify(errControl) === "{}" &&
+      JSON.stringify(citiesControl) === "{}" &&
+      JSON.stringify(activitiesControl) === "{}"
+    ) {
+      setDisable(false);
+    } else {
+      setDisable(true);
+    }
+    setErrorCities(citiesControl);
+    setErrorActivities(activitiesControl);
+    setErrors(errControl);
   };
 
   return (
@@ -266,6 +363,7 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
                       <Box height={"40px"}></Box>
                     )}
                   </HStack>
+                  {errorCities.cities && <p>{errorCities.cities}</p>}
                 </Center>
 
                 <FormLabel paddingLeft="2" htmlFor="initialDate" mt={2}>
@@ -314,13 +412,14 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
                   Associated activities
                 </FormLabel>
                 <Select
-                  name="activitiesName"
-                  defaultValue="title"
+                  value="disable"
+                  // name="activitiesName"
+                  // defaultValue="title"
                   mt={2}
                   icon={<ChevronDownIcon />}
                   onChange={(e) => handleSelect(e)}
                 >
-                  <option value="title" disabled>
+                  <option value="">
                     Choose the activities to enjoy on the trip...
                   </option>
                   {activities?.map((a) => {
@@ -358,8 +457,14 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
                   </SimpleGrid>
                 </Center>
               </GridItem>
+              <GridItem colSpan={5}>
+                {errorActivities.activitiesName && (
+                  <p>{errorActivities.activitiesName}</p>
+                )}
+              </GridItem>
             </Grid>
           </Center>
+
           <Center marginBottom="2%">
             <Button
               mt={"20px"}
@@ -367,6 +472,7 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
               color="primary"
               _hover={{ bg: "danger" }}
               type="submit"
+              disabled={disable}
               onClick={() =>
                 toast({
                   title: "Trip Created",

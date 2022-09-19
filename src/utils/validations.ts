@@ -40,7 +40,7 @@ export const dateCompare = (initDate: string, endDate: string) => {
   }
 };
 
-export const formControl = (input: Trip, trips: Trip[]) => {
+export const formControl = (input: Trip, trips?: Trip[]) => {
   let errors: Errors = {};
   if (!input.name || input.name.length < 1) {
     errors.name = "Please, type a name for your trip";
@@ -50,9 +50,9 @@ export const formControl = (input: Trip, trips: Trip[]) => {
     trips?.find((t) => t.name.toLowerCase() === input.name?.toLowerCase())
   ) {
     errors.name = "There is already a trip with that name";
-  } else if (!validateDates(input.initDate)) {
+  } else if (!validateDates(input.initDate) || input.initDate.length === 0) {
     errors.initDate = "Please, select the right format of the date";
-  } else if (!validateDates(input.initDate)) {
+  } else if (!validateDates(input.endDate) || input.endDate.length === 0) {
     errors.endDate = "Please, select the right format of the date";
   } else if (!dateCompare(input.initDate, input.endDate)) {
     errors.endDate = "The init date must be greater than the enn date";
@@ -60,6 +60,22 @@ export const formControl = (input: Trip, trips: Trip[]) => {
     errors.description = "Only 1000 characters are allowed";
   }
   return errors;
+};
+
+export const controlCities = (input: Trip) => {
+  let errorCities: Errors = {};
+  if (input.cities.length === 0) {
+    errorCities.cities = "Please, select at least one city";
+  }
+  return errorCities;
+};
+
+export const controlActivities = (input: Trip) => {
+  let errorActivities: Errors = {};
+  if (input.activitiesName.length === 0) {
+    errorActivities.activitiesName = " Please, select at least one activity";
+  }
+  return errorActivities;
 };
 
 export const formControlActivity = (

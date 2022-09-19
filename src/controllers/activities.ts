@@ -279,6 +279,7 @@ const ActivitiesControles = {
           userMail: mail.toString(),
         },
       }));
+    return "Feedback added";
   },
 };
 export default ActivitiesControles;

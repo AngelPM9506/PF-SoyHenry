@@ -21,14 +21,19 @@ export const UserDetail = (userDetail: UserData) => {
   const facebook: string =
     "https://i0.wp.com/www.dpabogados.com/wp-content/uploads/2016/09/facebook-logo-png-transparent-background.png?fit=1600%2C1600&ssl=1";
 
+  const tikTokPage = "https://www.tiktok.com/";
+  const instaPage = "https://www.instagram.com/";
+  const facePage = "https://es-es.facebook.com/";
+
   const arrInterests: string[] = user.keyWords.split(",");
+  const defaulHashtags: string[] = ["#trips", "#traveling", "#friends"];
 
   return (
     <>
-      <Center py={6}>
+      <Center pt={6}>
         <Heading>Meet the traveler</Heading>
       </Center>
-      <Center py={2}>
+      <Center py={2} h={"68vh"}>
         <Stack
           borderWidth="1px"
           borderRadius="lg"
@@ -39,8 +44,9 @@ export const UserDetail = (userDetail: UserData) => {
           boxShadow={"2xl"}
           padding={4}
         >
-          <Flex flex={1} bg="blue.200">
+          <Flex flex={1}>
             <Image
+              borderRadius={"xl"}
               objectFit="cover"
               boxSize="100%"
               src={user ? user.avatar : logo}
@@ -66,18 +72,31 @@ export const UserDetail = (userDetail: UserData) => {
               {user && user.description}
             </Text>
             <Stack align={"center"} justify={"center"} direction={"row"} mt={6}>
-              {arrInterests?.map((int) => {
-                return (
-                  <Badge
-                    px={2}
-                    py={1}
-                    bg={useColorModeValue("gray.50", "gray.800")}
-                    fontWeight={"400"}
-                  >
-                    {`#${int.toLowerCase()}`}
-                  </Badge>
-                );
-              })}
+              {arrInterests
+                ? arrInterests?.map((int) => {
+                    return (
+                      <Badge
+                        px={2}
+                        py={1}
+                        bg={useColorModeValue("gray.50", "gray.800")}
+                        fontWeight={"400"}
+                      >
+                        {`#${int.toLowerCase()}`}
+                      </Badge>
+                    );
+                  })
+                : defaulHashtags?.map((h) => {
+                    return (
+                      <Badge
+                        px={2}
+                        py={1}
+                        bg={useColorModeValue("gray.50", "gray.800")}
+                        fontWeight={"400"}
+                      >
+                        {`#${h.toLowerCase()}`}
+                      </Badge>
+                    );
+                  })}
             </Stack>
             <Center>
               <Stack
@@ -89,7 +108,7 @@ export const UserDetail = (userDetail: UserData) => {
                 alignItems={"center"}
               >
                 <a
-                  href={`https://www.tiktok.com/@jonajes0288?_t=8VlK29P54bt&_r=1`}
+                  href={user.urlTikTok ? user.urlTikTok : tikTokPage}
                   target="_blank"
                   rel="noreferrer"
                 >
@@ -101,7 +120,7 @@ export const UserDetail = (userDetail: UserData) => {
                   />
                 </a>
                 <a
-                  href={`https://www.instagram.com/jonathanjb88/`}
+                  href={user.urlInstagram ? user.urlInstagram : instaPage}
                   target="_blank"
                   rel="noreferrer"
                 >
@@ -113,7 +132,7 @@ export const UserDetail = (userDetail: UserData) => {
                   />
                 </a>
                 <a
-                  href={`https://www.facebook.com/jonathan.bracho.315?hc_ref=ARQiLU7zLOMEYBj7zo7TSxZbGxwic1kerRBzbasgtmvRAb4khpLlJ0HQk1J9WlOsn7Y&fref=nf`}
+                  href={user.urlFaceBook ? user.urlFaceBook : facePage}
                   target="_blank"
                   rel="noreferrer"
                 >

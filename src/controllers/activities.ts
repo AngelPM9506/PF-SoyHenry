@@ -1,4 +1,10 @@
-import { typeSort, condition, Activity, weekdays } from "src/utils/interface";
+import {
+  typeSort,
+  condition,
+  Activity,
+  weekdays,
+  createComment,
+} from "src/utils/interface";
 import prisma from "src/utils/prisma";
 import cloudinary from "src/utils/cloudinary";
 const { CLOUDINARY_PRESET_ACTIVITIES } = process.env;
@@ -21,6 +27,8 @@ type body = {
   image?: string;
   active?: any;
   comment?: String;
+  mail?: String;
+  rating?: Number;
 };
 
 type activity = {
@@ -111,8 +119,7 @@ const ActivitiesControles = {
   postActivity: async (body: body) => {
     /**Comprobar que existan los argumentos y que availability este en el enum*/
     try {
-      let { name, availability, description, price, cityName, image, comment } =
-        body;
+      let { name, availability, description, price, cityName, image } = body;
       if (!name || !availability || !description || !price || !cityName) {
         throw new Error("Missing data, try again");
       }
@@ -156,6 +163,30 @@ const ActivitiesControles = {
             include: { trip: true },
           },
           city: true,
+          comments: {
+            select: {
+              comment: true,
+              user: {
+                select: {
+                  name: true,
+                  mail: true,
+                  avatar: true,
+                },
+              },
+            },
+          },
+          rating: {
+            select: {
+              rating: true,
+              user: {
+                select: {
+                  name: true,
+                  mail: true,
+                  avatar: true,
+                },
+              },
+            },
+          },
         },
       });
       return response;
@@ -225,6 +256,27 @@ const ActivitiesControles = {
     });
     await cloudinary.uploader.destroy(response.public_id_image);
     return response;
+  },
+  patchActivity: async (body: body, query: query) => {
+    let { id } = query;
+    let { comment, mail, rating } = body;
+    if (!comment && !rating) throw "Missing data";
+    comment &&
+      (await prisma.comments.create({
+        data: {
+          comment: comment.toString(),
+          activityId: id.toString(),
+          userMail: mail.toString(),
+        },
+      }));
+    rating &&
+      (await prisma.rating.create({
+        data: {
+          rating: typeof rating === "number" ? rating : Number(rating),
+          activityId: id.toString(),
+          userMail: mail.toString(),
+        },
+      }));
   },
 };
 export default ActivitiesControles;

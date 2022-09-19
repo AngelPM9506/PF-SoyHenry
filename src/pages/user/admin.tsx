@@ -24,7 +24,7 @@ import Layout from "src/components/layout/Layout";
 import { UserData } from "src/components/UserProfile";
 import UserTable from "src/components/UserTable";
 import { getOrCreateUser, getUsers } from "src/utils/User";
-import NotFound from "src/pages/404.js";
+import NotFound from "src/pages/404.tsx";
 
 function TablesTableRow({ users }) {
   const { user, error } = useUser();

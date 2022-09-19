@@ -133,7 +133,7 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
 
   const createTrip = async (trip: Trip) => {
     try {
-      await axios.post("http://localhost:3000/api/trips", trip);
+      await axios.post("/trips", trip);
     } catch (error) {
       console.log(error);
     }

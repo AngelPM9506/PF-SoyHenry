@@ -23,7 +23,7 @@ export default async function index(req: NextApiRequest, res: NextApiResponse) {
         break;
     }
   } catch (error: any) {
-    return res.json({ status: "error", msg: error.message });
+    return res.status(410).json({ status: "error", msg: error.message });
   }
 }
 /**

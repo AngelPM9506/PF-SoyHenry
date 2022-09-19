@@ -6,6 +6,10 @@ import { myTheme } from 'src/styles/theme';
 import { useEffect, useState } from 'react';
 import { Hydrate, QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
+import axios from 'axios';
+
+axios.defaults.baseURL = process.env.REACT_APP_API || 'http://127.0.0.1:3000/api';
+
 function MyApp({ Component, pageProps }: any) {
   const queryClient = new QueryClient();
   const [showChild, setShowChild] = useState(false);

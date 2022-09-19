@@ -3,7 +3,14 @@ import MyCarousel from "src/components/Carousel";
 import styles from "../styles/Home.module.css";
 import { Activity, Trip } from "src/utils/interface";
 import Layout from "src/components/layout/Layout";
+
+import { useUser } from "@auth0/nextjs-auth0";
+import { useQuery } from "react-query";
+import { getOrCreateUser } from "src/utils/User";
+import { useRouter } from "next/router";
+
 import { Stack } from "@chakra-ui/react";
+
 
 interface Props {
   trips: Trip[];
@@ -11,6 +18,17 @@ interface Props {
 }
 
 const Home = ({ trips, activities }: Props) => {
+  const { user } = useUser();
+  const router = useRouter();
+  const { data: userDb, isLoading } = useQuery(
+    ["userDb", user],
+    () => user && getOrCreateUser(user)
+  );
+  if (isLoading || !userDb) return <div>Loading...</div>;
+  if (!userDb.data.active) {
+    router.push("/api/auth/logout");
+  }
+  console.log(userDb.data.active);
   return (
     <Layout>
       <div className={styles.container}>

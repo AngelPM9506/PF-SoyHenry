@@ -122,6 +122,13 @@ export default function NavBar() {
                 <MenuItem>
                   <Link href="/api/auth/logout">Logout</Link>
                 </MenuItem>
+                {userDb?.data.isAdmin && (
+                  <MenuItem>
+                    <NextLink href={`/user/admin`}>
+                      <Link> Admin Panel </Link>
+                    </NextLink>
+                  </MenuItem>
+                )}
               </MenuList>
             </Menu>
           </Flex>

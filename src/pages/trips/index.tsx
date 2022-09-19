@@ -205,7 +205,7 @@ function Trips({ trips }: Props) {
             height={"38vh"}
             width={"100%"}
             justifyContent={"center"}
-            align={"center"}
+            alignContent={"center"}
           >
             <Text m={"15px"} textAlign={"center"} fontSize={"40px"}>
               Sorry! There are no trips with the selected condition.
@@ -241,8 +241,8 @@ function Trips({ trips }: Props) {
   );
 }
 // export const getServerSideProps = async () => {
-//   const res = await fetch("http://localhost:3000/api/trips");
-//   const trips = await res.json();
+//   const res = await axios("/trips");
+//   const trips = await res.data;
 //   return {
 //     props: {
 //       trips: trips,

@@ -22,7 +22,6 @@ const NotFound = () => {
           overflow="hidden"
         >
           <Image
-          alt="404 image"
             objectFit={"cover"}
             src="https://i.vgy.me/zG6dQP.png"
             alt={"Error 404 not found"}

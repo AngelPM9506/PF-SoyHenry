@@ -21,6 +21,7 @@ const { CLOUDINARY_NAME } = process.env;
 import Layout from "./layout/Layout";
 
 export interface UserData {
+  user?: any;
   id?: string;
   userDetail?: any;
   name?: string;
@@ -35,8 +36,10 @@ export interface UserData {
   keyWords?: string;
   trips?: string[];
   data?: {
-    avatar?: string;
-    id?: string;
+    isAdmin?: any;
+    [x: string]: any;
+    avatar?: any;
+    id?: any;
   };
   isAdmin?: boolean;
   active?: boolean;

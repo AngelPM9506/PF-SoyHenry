@@ -10,6 +10,7 @@ import { getOrCreateUser } from "src/utils/User";
 import { useRouter } from "next/router";
 
 import { Stack } from "@chakra-ui/react";
+import axios from "axios";
 
 
 interface Props {
@@ -44,10 +45,10 @@ const Home = ({ trips, activities }: Props) => {
 };
 
 export const getServerSideProps = async () => {
-  const res = await fetch("http://localhost:3000/api/trips");
-  const trips = await res.json();
-  const response = await fetch("http://localhost:3000/api/activities");
-  const activities = await response.json();
+  const res = await axios("/trips");
+  const trips = await res.data;
+  const response = await axios("/activities");
+  const activities = await response.data;
 
   return {
     props: {

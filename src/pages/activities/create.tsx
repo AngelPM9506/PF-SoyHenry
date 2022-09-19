@@ -129,10 +129,10 @@ const CreateTrip = ({ activities, cities }: Props) => {
     router.push("/activities");
   };
 
-  const handleDeleteAv = (c) => {
+  const handleDeleteAv = (c: any) => {
     setInput({
       ...input,
-      availability: input.availability.filter((a) => a != c),
+      availability: input.availability.filter((a: any) => a != c),
     });
   };
 
@@ -279,7 +279,7 @@ const CreateTrip = ({ activities, cities }: Props) => {
                     {input.availability.length != 0 ? (
                       input.availability.map((c, index) => {
                         return (
-                          <Box marginLeft={"10px"} value={c} key={index}>
+                          <Box marginLeft={"10px"} key={index}>
                             {c}
                             <Button
                               marginLeft="2"

@@ -6,7 +6,12 @@ import { myTheme } from "src/styles/theme";
 import { useEffect, useState } from "react";
 import { Hydrate, QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
-function MyApp({ Component, pageProps }: AppProps) {
+import axios from "axios";
+
+const {AXIOS_URL_BASE} = process.env;
+axios.defaults.baseURL = AXIOS_URL_BASE || "http://127.0.0.1:3000/api"
+
+function MyApp({ Component, pageProps }: any) {
   const queryClient = new QueryClient();
   const [showChild, setShowChild] = useState(false);
 

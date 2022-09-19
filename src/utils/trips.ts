@@ -14,15 +14,10 @@ export const getTrips = async (
   sort ? urlGet += `&sort=${sort}` : '';
   sortBy ? urlGet += `&sortBy=${sortBy}` : '';
   maxPrice ? urlGet += `&maxPrice=${maxPrice}` : '';
-  wActivity ? urlGet += `&wActivity=${wActivity}` : '';
   wName ? urlGet += `&wName=${wName}` : '';
-  const trips = await axios.get(
-    `http://localhost:3000/api/trips?sort=${sort || "desc"}&sortBy=${
-      sortBy || "name"
-    }&wName=${wName || "&"}&wplanner=${wplanner || "&"}&maxPrice=${
-      maxPrice || "&"
-    }&wCity=${wCity || "&"}`
-  );
+  wCity ? urlGet += `&wCity=${wCity}` : '';
+  wplanner ? urlGet += `&wplanner=${wplanner}` : '';
+  const trips = await axios.get(urlGet);
   return trips.data;
 };
 

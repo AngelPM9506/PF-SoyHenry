@@ -30,7 +30,7 @@ export interface UserUpdate {
 export interface Activity {
   id?: string;
   name: string;
-  availability: string | string[];
+  availability: string[];
   description: string;
   price: number;
   city?: City;

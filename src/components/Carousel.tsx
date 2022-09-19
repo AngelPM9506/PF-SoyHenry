@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import React, { Component } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
@@ -37,7 +38,7 @@ const MyCarousel = ({ trips, activities }: Props) => {
       <Box p={5} mt={"20px"}>
         <Heading textAlign={"center"}>Trending Trips</Heading>
       </Box>
-      <Box width={"100%"} justifyContent={"center"} align={"center"}>
+      <Box width={"100%"} justifyContent={"center"} alignContent={"center"}>
         <Stack width={"80%"}>
           <Slider {...settings}>
             {lastTrips?.map((t) => {
@@ -77,11 +78,12 @@ const MyCarousel = ({ trips, activities }: Props) => {
                       }}
                     >
                       <Image
+                        alt="image"
                         rounded={"lg"}
                         height={230}
                         width={282}
                         objectFit={"cover"}
-                        src={t.image ? t.image : defaultpic}
+                        src={t.image ? t.image.toString() : defaultpic}
                       />
                     </Box>
                     <Stack pt={10} align={"center"}>
@@ -111,63 +113,10 @@ const MyCarousel = ({ trips, activities }: Props) => {
           </Slider>
         </Stack>
       </Box>
-<<<<<<< HEAD
-      <Slider {...settings}>
-        {lastActivities?.map((a) => {
-          const image = a.image ? a.image.toString() : defaultpic;
-          return (
-            <Center p={8} py={12} key={a.id}>
-              <Box
-                role={"group"}
-                p={6}
-                maxW={"330px"}
-                w={"full"}
-                bg={useColorMode}
-                boxShadow={"2xl"}
-                rounded={"lg"}
-                pos={"relative"}
-                zIndex={1}
-              >
-                <Box
-                  rounded={"lg"}
-                  mt={-12}
-                  pos={"relative"}
-                  height={"230px"}
-                  _after={{
-                    transition: "all .3s ease",
-                    content: '""',
-                    w: "full",
-                    h: "full",
-                    pos: "absolute",
-                    top: 5,
-                    left: 0,
-                    filter: "blur(15px)",
-                    zIndex: -1,
-                  }}
-                  _groupHover={{
-                    _after: {
-                      filter: "blur(20px)",
-                    },
-                  }}
-                >
-                  <Image 
-                  alt="image Activitie"
-                  rounded={"lg"} 
-                  height={230} 
-                  width={282} 
-                  objectFit={"cover"} 
-                  src={image} />
-                </Box>
-                <Stack pt={10} align={"center"}>
-                  <Heading
-                    fontSize={"2xl"}
-                    fontFamily={"body"}
-                    fontWeight={500}
-=======
       <Box p={5} mt={"20px"}>
         <Heading textAlign={"center"}>Trending Activities</Heading>
       </Box>
-      <Box width={"100%"} justifyContent={"center"} align={"center"}>
+      <Box width={"100%"} justifyContent={"center"} alignContent={"center"}>
         <Stack width={"80%"}>
           <Slider {...settings}>
             {lastActivities?.map((a) => {
@@ -183,7 +132,6 @@ const MyCarousel = ({ trips, activities }: Props) => {
                     rounded={"lg"}
                     pos={"relative"}
                     zIndex={1}
->>>>>>> main
                   >
                     <Box
                       rounded={"lg"}
@@ -208,11 +156,12 @@ const MyCarousel = ({ trips, activities }: Props) => {
                       }}
                     >
                       <Image
+                        alt="image"
                         rounded={"lg"}
                         height={230}
                         width={282}
                         objectFit={"cover"}
-                        src={a.image ? a.image : defaultpic}
+                        src={a.image ? a.image.toString() : defaultpic}
                       />
                     </Box>
                     <Stack pt={10} align={"center"}>

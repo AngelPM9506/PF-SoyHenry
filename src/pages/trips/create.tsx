@@ -71,8 +71,8 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
   const [file, setFile] = useState<File>();
   const [nameFile, setNameFile] = useState("");
   const [errors, setErrors] = useState<Errors>({});
-  const [errorCities, setErrorCities] = useState({});
-  const [errorActivities, setErrorActivities] = useState({});
+  const [errorCities, setErrorCities] = useState<any>({});
+  const [errorActivities, setErrorActivities] = useState<any>({});
   const hiddenFileInput = useRef(null);
   const [disable, setDisable] = useState(true);
 
@@ -504,12 +504,12 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
 };
 
 export const getServerSideProps = async () => {
-  const response = await fetch("http://localhost:3000/api/activities");
-  const activities = await response.json();
-  const res = await fetch("http://localhost:3000/api/cities");
-  const cities = await res.json();
-  const data = await fetch("http://localhost:3000/api/trips");
-  const trips = await data.json();
+  const response = await axios("/activities");
+  const activities = await response.data;
+  const res = await axios("/cities");
+  const cities = await res.data;
+  const data = await axios("/trips");
+  const trips = await data.data;
 
   return {
     props: {

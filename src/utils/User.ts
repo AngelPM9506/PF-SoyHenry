@@ -14,7 +14,7 @@ export interface UserAuth0 {
   description?: string;
 }
 export const getOrCreateUser = async (user: UserAuth0) => {
-  const userDb: UserData = await axios.post("/api/users", {
+  const userDb: UserData = await axios.post("/users", {
     name: user.name,
     mail: user.email,
     avatar: user.picture,
@@ -25,15 +25,13 @@ export const getOrCreateUser = async (user: UserAuth0) => {
 };
 
 export const getUsers = async () => {
-  const userDb: UserData[] = await axios.get(
-    "http://localhost:3000/api/users/"
-  );
+  const userDb: UserData = await axios.get("/users");
 
   return userDb.data;
 };
 
 export const updateUser = async (user: UserData) => {
-  const userDb = await axios.put(`api/users/${user.mail}`, {
+  const userDb = await axios.put(`users/${user.mail}`, {
     name: user.name,
     mail: user.mail,
     avatar: user.avatar,

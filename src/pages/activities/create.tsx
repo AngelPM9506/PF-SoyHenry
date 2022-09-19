@@ -148,7 +148,7 @@ const CreateTrip = ({ activities, cities }: Props) => {
                 rowSpan={1}
                 colSpan={1}
                 bg="none"
-                align={"center"}
+                alignContent={"center"}
                 alignSelf="center"
               >
                 <Image

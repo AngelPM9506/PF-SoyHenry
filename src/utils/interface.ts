@@ -106,6 +106,7 @@ export interface City {
     type: string;
     coordinates: Number[];
   };
+  includes: any;
 }
 
 export interface CityInDB {

@@ -21,21 +21,22 @@ const { CLOUDINARY_NAME } = process.env;
 import Layout from "./layout/Layout";
 
 export interface UserData {
+  id?: string;
   userDetail?: any;
-  name: string;
+  name?: string;
   email?: string;
   picture?: string;
-  mail: string;
-  description: string;
-  avatar: string | ArrayBuffer;
+  mail?: string;
+  description?: string;
+  avatar?: string | ArrayBuffer;
   urlTikTok?: string;
   urlFaceBook?: string;
   urlInstagram?: string;
   keyWords?: string;
   trips?: string[];
   data?: {
-    avatar: string;
-    id: string;
+    avatar?: string;
+    id?: string;
   };
 }
 

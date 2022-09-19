@@ -1,8 +1,5 @@
-import { Activity } from "@prisma/client";
 import { NextApiRequest, NextApiResponse } from "next";
 import ActivitiesControles from "src/controllers/activities";
-import { weekdays } from "src/utils/interface";
-import prisma from "src/utils/prisma";
 
 export default async function index(req: NextApiRequest, res: NextApiResponse) {
     let { method, body: { name, image, availability, description, price, active }, query: { id } } = req;

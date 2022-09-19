@@ -22,7 +22,7 @@ export const UserDetail = (userDetail: UserData) => {
   const facebook: string =
     "https://i0.wp.com/www.dpabogados.com/wp-content/uploads/2016/09/facebook-logo-png-transparent-background.png?fit=1600%2C1600&ssl=1";
 
-  const arrInterests: string[] = user.keyWords.split(",");
+  const arrInterests: string[] = user.keyWords ? user.keyWords.split(","): '';
 
   return (
     <>

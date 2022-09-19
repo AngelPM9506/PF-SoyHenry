@@ -4,7 +4,6 @@ import { UserData } from "src/components/UserProfile";
 import { cloudinaryImg } from "src/utils/cloudinaryUpload";
 import usersControllers from "src/controllers/users";
 
-
 export default async function index(req: NextApiRequest, res: NextApiResponse) {
   const {
     method,
@@ -17,16 +16,18 @@ export default async function index(req: NextApiRequest, res: NextApiResponse) {
       urlTikTok,
       urlInstagram,
       urlFaceBook,
+      isAdmin,
+      active,
     },
     query: { id },
   } = req;
 
   switch (method) {
-    case "GET":{
-      let response = await usersControllers.getUser({ id })
-      return res.json(response)
+    case "GET": {
+      let response = await usersControllers.getUser({ id });
+      return res.json(response);
     }
-    case "PUT":{
+    case "PUT": {
       let response = await usersControllers.putUser({
         name,
         description,
@@ -36,12 +37,14 @@ export default async function index(req: NextApiRequest, res: NextApiResponse) {
         urlTikTok,
         urlInstagram,
         urlFaceBook,
-      })
-      return res.json(response)
+        isAdmin,
+        active,
+      });
+      return res.json(response);
     }
-    case "DELETE":{
-      let response = await usersControllers.deleteUser({id})
-      return res.json(response)
+    case "DELETE": {
+      let response = await usersControllers.deleteUser({ id });
+      return res.json(response);
     }
     default:
       res.status(400).send("Method not supported try again");

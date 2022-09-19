@@ -1,17 +1,20 @@
 import type { NextPage } from "next";
 import { Stack, Box, Heading, Text, Button, Center } from "@chakra-ui/react";
 import ReactPlayer from "react-player";
+import { useState } from "react";
 
 const landingPage: NextPage = () => {
+  const [isplaying, setPlaying] = useState(false);
   const url =
     "https://res.cloudinary.com/mauro4202214/video/upload/v1663337043/world-travelers/videolandingpagecrop_iklwjv.mp4";
+
   return (
     <>
       <ReactPlayer
-        playing
         loop
-        width="100%"
+        width="100vw"
         height="100%"
+        object-fit={"cover"}
         top="50%"
         left="50%"
         transform="translate(-50%, -50%)"
@@ -19,8 +22,9 @@ const landingPage: NextPage = () => {
         url={url}
         controls={false}
         volume={0.3}
+        onMouseMove={(e) => e.target.play()}
+        // onMouseOver={(e) => e.target.play()}
       />
-
       <Box marginTop="-50%">
         <Stack flex={1} spacing={{ base: 5, md: 10 }}>
           <Heading
@@ -78,7 +82,7 @@ const landingPage: NextPage = () => {
                   color="#293541"
                   fontSize="24"
                   bg="#02b1b1"
-                  _hover={{ bg: "#F3B46F", color: "black" }}
+                  _hover={{ bg: "#F3B46F", color: "#293541" }}
                 >
                   LOG IN
                 </Button>

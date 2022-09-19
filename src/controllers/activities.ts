@@ -36,6 +36,23 @@ type activity = {
   include?: object;
 };
 
+type postActivity = {
+  data: {
+    name: string;
+    availability: any;
+    description: string;
+    price: number;
+    image?: string;
+    public_id_image?: string;
+    city: {
+      connect: {
+        name?: string;
+      };
+    };
+  };
+  include?: object;
+};
+
 const uploadImage = async (image: string, name: string) => {
   let resp = await cloudinary.uploader.upload(
     image,
@@ -94,35 +111,37 @@ const ActivitiesControles = {
     /**Comprobar que existan los argumentos y que availability este en el enum*/
     try {
       let { name, availability, description, price, cityName, image } = body;
-      if (
-        !name ||
-        !availability ||
-        !description ||
-        !price ||
-        !cityName ||
-        !image
-      ) {
+      if (!name || !availability || !description || !price || !cityName) {
         throw new Error("Missing data, try again");
       }
-      let uploadedImage = await uploadImage(image, name.toString());
-      let activity = {
+      let activity: postActivity = {
         data: {
           name: name.toString(),
           availability: availability,
           description: description.toString(),
           price: parseFloat(price),
-          image: uploadedImage.secure_url,
-          public_id_image: uploadedImage.public_id,
           city: { connect: { name: cityName.toString() } },
         },
         include: { city: true },
       };
+
+      if (image) {
+        let uploadedImage = await uploadImage(image, name.toString());
+        activity.data.image = uploadedImage.secure_url;
+        activity.data.public_id_image = uploadedImage.public_id;
+      } else {
+        activity.data.image =
+          "https://res.cloudinary.com/mauro4202214/image/upload/v1663527844/world-travelers/activitydefault_q9aljz.png";
+        activity.data.public_id_image =
+          "https://res.cloudinary.com/mauro4202214/image/upload/v1663527844/world-travelers/activitydefault_q9aljz.png";
+      }
       var responseP = await prisma.activity.create(activity);
       return responseP;
     } catch (error) {
       return { status: "error", error };
     }
   },
+
   getActivity: async (query: query) => {
     let { id } = query;
     try {

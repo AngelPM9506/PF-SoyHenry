@@ -13,6 +13,7 @@ import {
   Image,
   Text,
   Box,
+  HStack,
 } from "@chakra-ui/react";
 
 import { useState } from "react";
@@ -45,7 +46,7 @@ const CreateTrip = ({ activities, cities }: Props) => {
   const initialState: Activity = {
     name: "",
     cityName: "",
-    availability: "Sunday",
+    availability: [],
     description: "",
     price: 0,
     image: null,
@@ -69,6 +70,7 @@ const CreateTrip = ({ activities, cities }: Props) => {
 
   const handleCitiesSelect = (e: MouseEvent<HTMLButtonElement>) => {
     setInput({ ...input, cityName: inputCities });
+    // setInputCities("");
   };
 
   const handleChange = ({
@@ -118,13 +120,20 @@ const CreateTrip = ({ activities, cities }: Props) => {
     hiddenFileInput.current.click();
   };
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (Object.values(errors).length) return;
-    createActivity(input);
+    await createActivity(input);
     setInput(initialState);
     setErrors({});
     router.push("/activities");
+  };
+
+  const handleDeleteAv = (c) => {
+    setInput({
+      ...input,
+      availability: input.availability.filter((a) => a != c),
+    });
   };
 
   return (
@@ -167,7 +176,6 @@ const CreateTrip = ({ activities, cities }: Props) => {
                     style={{ display: "none" }}
                     accept="image/png, image/jpeg, image/gif, image/jpg, image/jfif"
                     onChange={(e) => handleImage(e)}
-                    isRequired
                   />
                   <Text color={"red"} fontWeight={700}>
                     {errors.image}
@@ -202,40 +210,43 @@ const CreateTrip = ({ activities, cities }: Props) => {
                 <FormLabel paddingLeft="2" htmlFor="city" mt={2}>
                   City
                 </FormLabel>
-                <Input
-                  list="city-choice"
-                  name="cityName"
-                  value={inputCities}
-                  placeholder="Type the city of the activity..."
-                  onChange={(e) => handleCities(e)}
-                  isRequired
-                />
-                <datalist id="city-choice">
-                  {cities
-                    ?.filter((c) => !input.city?.includes(c.name))
-                    ?.map((c, index) => (
-                      <option key={index}> {c.name} </option>
-                    ))}
-                </datalist>
+                <HStack>
+                  <Input
+                    list="city-choice"
+                    name="cityName"
+                    value={inputCities}
+                    placeholder="Type the city of the activity..."
+                    onChange={(e) => handleCities(e)}
+                    isRequired
+                  />
+                  <datalist id="city-choice">
+                    {cities
+                      ?.filter((c) => !input.city?.includes(c.name))
+                      ?.map((c, index) => (
+                        <option key={index}> {c.name} </option>
+                      ))}
+                  </datalist>
 
-                <Button
-                  mt={1}
-                  bg="highlight"
-                  color="primary"
-                  _hover={{ bg: "danger" }}
-                  onClick={(e) => handleCitiesSelect(e)}
-                >
-                  Add City
-                </Button>
+                  <Button
+                    mt={1}
+                    bg="highlight"
+                    color="primary"
+                    _hover={{ bg: "danger" }}
+                    onClick={(e) => handleCitiesSelect(e)}
+                  >
+                    Select City
+                  </Button>
+                </HStack>
                 <Box textAlign={"center"}>
                   <Text
                     display={"inline-flex"}
                     textAlign={"right"}
                     align={"center"}
-                    fontWeight={700}
-                    fontSize={"2rem"}
+                    fontSize={"lg"}
+                    pt={"5px"}
+                    fontWeight={400}
                   >
-                    {input.cityName}
+                    {input.cityName.length != 0 ? input.cityName : null}
                   </Text>
                 </Box>
                 <FormLabel paddingLeft="2" htmlFor="Availability" mt={2}>
@@ -248,10 +259,13 @@ const CreateTrip = ({ activities, cities }: Props) => {
                   onChange={(e) =>
                     setInput({
                       ...input,
-                      availability: e.target.value,
+                      availability: input.availability.includes(e.target.value)
+                        ? input.availability
+                        : [...input.availability, e.target.value],
                     })
                   }
                 >
+                  <option>Week days</option>
                   <option value={"Sunday"}>Sunday</option>
                   <option value={"Monday"}>Monday</option>
                   <option value={"Tuesday"}>Tuesday</option>
@@ -260,6 +274,30 @@ const CreateTrip = ({ activities, cities }: Props) => {
                   <option value={"Friday"}>Friday</option>
                   <option value={"Saturday"}>Saturday</option>
                 </Select>
+                <Center>
+                  <HStack marginTop={"5px"}>
+                    {input.availability.length != 0 ? (
+                      input.availability.map((c, index) => {
+                        return (
+                          <Box marginLeft={"10px"} value={c} key={index}>
+                            {c}
+                            <Button
+                              marginLeft="2"
+                              value={c}
+                              onClick={() => handleDeleteAv(c)}
+                              height={"25px"}
+                              width={"5px"}
+                            >
+                              X
+                            </Button>
+                          </Box>
+                        );
+                      })
+                    ) : (
+                      <Box height={"40px"}></Box>
+                    )}
+                  </HStack>
+                </Center>
                 <GridItem borderRadius="2xl" colSpan={5} bg="blackAlpha.100">
                   <FormLabel
                     paddingLeft="2"
@@ -292,7 +330,7 @@ const CreateTrip = ({ activities, cities }: Props) => {
               onClick={() =>
                 !Object.values(errors).length
                   ? toast({
-                      title: "Acitivity Created",
+                      title: "Activity Created",
                       description: "We've created the activity",
                       status: "success",
                       duration: 3000,

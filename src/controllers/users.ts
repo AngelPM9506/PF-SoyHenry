@@ -15,6 +15,8 @@ type body = {
   urlTikTok?: string;
   urlInstagram?: string;
   urlFaceBook?: string;
+  isAdmin?: boolean;
+  active?: boolean;
 };
 
 type query = { id?: string | string[] };
@@ -22,7 +24,7 @@ type query = { id?: string | string[] };
 let usersControllers = {
   getUsers: async () => {
     const response = await prisma.user.findMany({
-      where: { active: true },
+      // where: { active: true },
     });
     return response.length ? response : "Not exist active users";
   },
@@ -78,6 +80,8 @@ let usersControllers = {
       urlTikTok,
       urlInstagram,
       urlFaceBook,
+      isAdmin,
+      active,
     } = body;
     if (!name && !description && !mail) return "Missing data, try again";
     let user: UserData = {
@@ -89,6 +93,8 @@ let usersControllers = {
       urlInstagram,
       urlFaceBook,
       keyWords,
+      isAdmin,
+      active,
     };
 
     const userInfo = await prisma.user.findUnique({
@@ -107,6 +113,8 @@ let usersControllers = {
         urlInstagram: user.urlInstagram,
         urlFaceBook: user.urlFaceBook,
         keyWords: user.keyWords,
+        isAdmin: user.isAdmin,
+        active: user.active,
       },
     });
     console.log(response);

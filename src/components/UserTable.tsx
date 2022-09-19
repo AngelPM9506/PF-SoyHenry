@@ -4,19 +4,40 @@ import {
   Button,
   Flex,
   Input,
+  Select,
   Td,
   Text,
   Tr,
   useColorModeValue,
+  useToast,
 } from "@chakra-ui/react";
-import React from "react";
+import React, { useState } from "react";
+import { updateUser } from "src/utils/User";
 import { UserData } from "./UserProfile";
 
-function UserTable(user: UserData) {
+function UserTable({ user }: UserData) {
   const textColor = useColorModeValue("gray.700", "white");
-  const bgStatus = useColorModeValue("gray.400", "#1a202c");
-  const colorStatus = useColorModeValue("white", "gray.400");
+  const toast = useToast();
+  const [data, setData] = useState(user);
+  const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setData({
+      ...data,
+      [e.target.name]: e.target.value === "true" ? true : false,
+    });
+  };
 
+  const handleEdit = async () => {
+    await updateUser(data);
+    return toast({
+      title: "Successful change",
+      description: "State changed successfully!",
+      status: "success",
+      duration: 3000,
+      isClosable: true,
+    });
+  };
+
+  console.log(data.active);
   return (
     <Tr>
       <Td minWidth={{ sm: "250px" }} pl="0px">
@@ -37,43 +58,74 @@ function UserTable(user: UserData) {
           </Flex>
         </Flex>
       </Td>
-
       <Td>
-        <Flex direction="column">
-          <Text fontSize="md" ml={1} mb={2} color={textColor} fontWeight="bold">
-            Active
-          </Text>
-          <Input
-            fontSize="sm"
-            color="gray.400"
-            fontWeight="normal"
-            name={"active"}
-            width={"15%"}
-            value={user.active}
-          />
-        </Flex>
+        <Badge
+          bg={data.isAdmin === true ? "green.400" : "#e63946"}
+          color={data.isAdmin === true ? "white" : "#e63946"}
+          fontSize="16px"
+          p="3px 10px"
+          borderRadius="8px"
+        >
+          <Flex direction="column">
+            <Select
+              fontSize="sm"
+              color="white"
+              fontWeight="bold"
+              name={"isAdmin"}
+              value={data.isAdmin}
+              borderColor={"transparent"}
+              onChange={(e) => handleChange(e)}
+            >
+              <option value={"true"}>True</option>
+              <option value={"false"}>False</option>
+            </Select>
+          </Flex>
+        </Badge>
       </Td>
-      {/* <Td>
-      <Badge
-        bg={status === "Online" ? "green.400" : bgStatus}
-        color={status === "Online" ? "white" : colorStatus}
-        fontSize="16px"
-        p="3px 10px"
-        borderRadius="8px"
-      >
-        {status}
-      </Badge>
-    </Td> */}
+      <Td>
+        <Badge
+          bg={data.active === true ? "green.400" : "#e63946"}
+          color={data.active === true ? "white" : "#e63946"}
+          fontSize="16px"
+          p="3px 10px"
+          borderRadius="8px"
+        >
+          <Flex direction="column">
+            <Select
+              fontSize="sm"
+              color="white"
+              fontWeight="bold"
+              name={"active"}
+              value={data.active}
+              borderColor={"transparent"}
+              onChange={(e) => handleChange(e)}
+            >
+              <option value={"true"}>Active</option>
+              <option value={"false"}>Inactive</option>
+            </Select>
+          </Flex>
+        </Badge>
+      </Td>
       <Td>
         <Text fontSize="md" color={textColor} fontWeight="bold" pb=".5rem">
           {/* {date} */}
         </Text>
       </Td>
       <Td>
-        <Button p="0px" bg="transparent" variant="no-hover">
+        <Button
+          mt={8}
+          bg={useColorModeValue("#151f21", "#f4f4f4")}
+          color={useColorModeValue("#f4f4f4", "#151f21")}
+          rounded={"md"}
+          _hover={{
+            transform: "translateY(-2px)",
+            boxShadow: "lg",
+          }}
+          onClick={() => handleEdit()}
+        >
           <Text
             fontSize="md"
-            color="gray.400"
+            color={useColorModeValue("#f4f4f4", "#151f21")}
             fontWeight="bold"
             cursor="pointer"
           >
@@ -85,4 +137,4 @@ function UserTable(user: UserData) {
   );
 }
 
-export default TablesTableRow;
+export default UserTable;

@@ -42,6 +42,8 @@ export const updateUser = async (user: UserData) => {
     urlFaceBook: user.urlFaceBook,
     urlInstagram: user.urlInstagram,
     keyWords: user.keyWords,
+    isAdmin: user.isAdmin,
+    active: user.active,
   });
   return userDb;
 };

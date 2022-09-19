@@ -2,115 +2,74 @@ import { useUser } from "@auth0/nextjs-auth0";
 import {
   Avatar,
   Badge,
+  Box,
   Button,
+  Container,
   Flex,
   Input,
   Select,
   Table,
+  Tbody,
   Td,
   Text,
+  Th,
+  Thead,
   Tr,
   useColorModeValue,
 } from "@chakra-ui/react";
-import React from "react";
+import { fromPairs } from "lodash";
+import React, { useState } from "react";
 import { dehydrate, QueryClient, useQuery } from "react-query";
+import Layout from "src/components/layout/Layout";
 import { UserData } from "src/components/UserProfile";
+import UserTable from "src/components/UserTable";
 import { getOrCreateUser, getUsers } from "src/utils/User";
+import NotFound from "src/pages/404.js";
 
 function TablesTableRow({ users }) {
-  //   const { user, error } = useUser();
-  //   const { data: userDb, isLoading } = useQuery(["userDb", user], () =>
-  //     getOrCreateUser(user)
-  //   );
-  console.log(users);
+  const { user, error } = useUser();
+  const { data: userDb, isLoading } = useQuery(["userDb", user], () =>
+    getOrCreateUser(user)
+  );
+
   const textColor = useColorModeValue("gray.700", "white");
-  const bgStatus = useColorModeValue("gray.400", "#1a202c");
-  const colorStatus = useColorModeValue("white", "gray.400");
-
-  return users.map((u: UserData) => {
-    return (
-      <Table key={u.id}>
-        <Tr>
-          <Td minWidth={{ sm: "250px" }} pl="0px">
-            <Flex align="center" py=".8rem" minWidth="100%" flexWrap="nowrap">
-              <Avatar src={u.avatar} w="50px" borderRadius="12px" me="18px" />
-              <Flex direction="column">
-                <Text
-                  fontSize="md"
-                  color={textColor}
-                  fontWeight="bold"
-                  minWidth="100%"
-                >
-                  {u.name}
-                </Text>
-                <Text fontSize="sm" color="gray.400" fontWeight="normal">
-                  {u.mail}
-                </Text>
-              </Flex>
-            </Flex>
-          </Td>
-
-          <Td>
-            <Flex direction="column">
-              <Select
-                fontSize="sm"
-                color="gray.400"
-                fontWeight="normal"
-                name={"active"}
-                value={u.active}
-              >
-                <option>true</option>
-                <option>false</option>
-              </Select>
-            </Flex>
-          </Td>
-          <Td>
-            <Flex direction="column">
-              <Select
-                fontSize="sm"
-                color="gray.400"
-                fontWeight="normal"
-                name={"active"}
-                value={u.isAdmin}
-              >
-                <option>true</option>
-                <option>false</option>
-              </Select>
-            </Flex>
-          </Td>
-          {/* <Td>
-        <Badge
-          bg={status === "Online" ? "green.400" : bgStatus}
-          color={status === "Online" ? "white" : colorStatus}
-          fontSize="16px"
-          p="3px 10px"
-          borderRadius="8px"
-        >
-          {status}
-        </Badge>
-      </Td> */}
-          <Td>
-            <Text fontSize="md" color={textColor} fontWeight="bold" pb=".5rem">
-              {/* {date} */}
-            </Text>
-          </Td>
-          <Td>
-            <Button p="0px" bg="transparent" variant="no-hover">
-              <Text
-                fontSize="md"
-                color="gray.400"
-                fontWeight="bold"
-                cursor="pointer"
-              >
-                Edit
-              </Text>
-            </Button>
-          </Td>
-        </Tr>
-        ;
-      </Table>
-    );
-  });
+  const captions = ["user", "admin", "active"];
+  if (isLoading || !userDb.data) return <div>Loading...</div>;
+  if (!userDb.data.isAdmin) return <NotFound />;
+  return (
+    <Layout>
+      <Box overflowX={{ sm: "scroll", xl: "hidden" }} mt={5} ml={5}>
+        <Box p="6px 0px 22px 0px">
+          <Text fontSize="xl" color={textColor} fontWeight="bold">
+            Users Dashboard
+          </Text>
+        </Box>
+        <Table>
+          <Thead>
+            <Tr my=".8rem" pl="0px" color="gray.400" gap={5}>
+              {captions.map((c, i) => {
+                return (
+                  <Th
+                    color="gray.400"
+                    key={i}
+                    ps={i === 0 ? "10px" : null}
+                    gap={50}
+                  >
+                    {c}
+                  </Th>
+                );
+              })}
+            </Tr>
+          </Thead>
+          <Tbody>
+            {users.map((u: UserData) => {
+              return <UserTable user={u} key={u.id} />;
+            })}
+          </Tbody>
+        </Table>
+      </Box>
+    </Layout>
+  );
 }
 
 export const getServerSideProps = async () => {

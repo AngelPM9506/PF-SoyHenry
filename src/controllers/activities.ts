@@ -168,6 +168,7 @@ const ActivitiesControles = {
               comment: true,
               user: {
                 select: {
+                  id: true,
                   name: true,
                   mail: true,
                   avatar: true,
@@ -180,6 +181,7 @@ const ActivitiesControles = {
               rating: true,
               user: {
                 select: {
+                  id: true,
                   name: true,
                   mail: true,
                   avatar: true,

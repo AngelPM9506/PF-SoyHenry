@@ -73,7 +73,7 @@ export default function Footer() {
           bg={"transparent"}
           as={Stack}
           maxW={"8xl"}
-          py={4}
+          py={1}
           direction={{ base: "column", md: "row" }}
           spacing={4}
           justify={{ base: "center", md: "space-between" }}

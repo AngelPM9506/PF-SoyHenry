@@ -1,11 +1,118 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
+//cliente
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = ["referentialIntegrity"]
 }
 
+//conexión
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+  referentialIntegrity = "prisma"
+}
+
+// modelos
+model User {
+  id           String         @id @default(cuid())
+  name         String         @db.VarChar()
+  mail         String         @unique
+  description  String?        @db.Text
+  isAdmin      Boolean        @default(false)
+  avatar       String?        @db.VarChar()
+  keyWords     String?        @db.VarChar()
+  urlTikTok    String?        @db.VarChar()
+  urlFaceBook  String?        @db.VarChar()
+  urlInstagram String?        @db.VarChar()
+  trips        Trip[]
+  useOnTrip    UsersOnTrips[]
+  active       Boolean        @default(true)
+}
+
+model Trip {
+  id                String              @id @default(cuid())
+  name              String              @unique @db.VarChar()
+  initDate          DateTime            @db.Date
+  endDate           DateTime            @db.Date
+  planner           User                @relation(fields: [plannerId], references: [id])
+  plannerId         String
+  tripOnUser        UsersOnTrips[]
+  description       String              @db.Text
+  image             String?             @db.VarChar()
+  public_id_image   String?
+  price             Float
+  active            Boolean             @default(true)
+  activitiesOnTrips activitiesOnTrips[]
+  citiesOnTrips     CitiesOnTrips[]
+}
+
+model UsersOnTrips {
+  user   User   @relation(fields: [userid], references: [id])
+  userid String
+  trip   Trip   @relation(fields: [tripId], references: [id], onDelete: Cascade)
+  tripId String
+
+  @@id([userid, tripId])
+}
+
+model CitiesOnTrips {
+  city   city   @relation(fields: [cityId], references: [id], onDelete: SetNull)
+  cityId String
+  trip   Trip   @relation(fields: [tripId], references: [id], onDelete: SetNull)
+  tripId String
+
+  @@id([tripId, cityId])
+}
+
+model Activity {
+  id                String              @id @default(cuid())
+  name              String              @unique @db.VarChar()
+  availability      availability[]      @default([Saturday, Sunday])
+  image             String?             @db.VarChar()
+  public_id_image   String?
+  description       String              @db.Text
+  price             Float
+  active            Boolean?            @default(true)
+  city              city?               @relation(fields: [cityId], references: [id])
+  cityId            String?
+  activitiesOnTrips activitiesOnTrips[]
+}
+
+model city {
+  id            String          @id @default(cuid())
+  name          String          @unique @db.VarChar()
+  country       String          @db.VarChar()
+  population    Int
+  latitude      Float
+  longitude     Float
+  activity      Activity[]
+  citiesOnTrips CitiesOnTrips[]
+}
+
+model activitiesOnTrips {
+  activity   Activity @relation(fields: [activityId], references: [id])
+  activityId String
+  trip       Trip     @relation(fields: [tripId], references: [id], onDelete: Cascade)
+  tripId     String
+
+  @@id([activityId, tripId])
+}
+
+enum availability {
+  Monday
+  Tuesday
+  Wednesday
+  Thursday
+  Friday
+  Saturday
+  Sunday
+}
+
+// propuesta extra
+
+enum Roll {
+  User
+  Admin
 }

@@ -20,6 +20,7 @@ type body = {
   cityName?: string | string[];
   image?: string;
   active?: any;
+  comment?: String;
 };
 
 type activity = {
@@ -110,7 +111,8 @@ const ActivitiesControles = {
   postActivity: async (body: body) => {
     /**Comprobar que existan los argumentos y que availability este en el enum*/
     try {
-      let { name, availability, description, price, cityName, image } = body;
+      let { name, availability, description, price, cityName, image, comment } =
+        body;
       if (!name || !availability || !description || !price || !cityName) {
         throw new Error("Missing data, try again");
       }

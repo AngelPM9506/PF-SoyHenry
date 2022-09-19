@@ -105,12 +105,13 @@ model activitiesOnTrips {
 }
 
 model comments {
-  id         String   @id @default(cuid())
   comment    String
   activity   Activity @relation(fields: [activityId], references: [id])
   activityId String
-  user       User     @relation(fields: [userMail], references: [mail])
-  userMail   String
+  user       User     @relation(fields: [userId], references: [id])
+  userId     String
+
+  @@id([activityId, userId])
 }
 
 model rating {

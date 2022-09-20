@@ -24,6 +24,10 @@ export default async function index(req: NextApiRequest, res: NextApiResponse) {
                 )
                 return res.status(201).json(respPut);
             /**agregar una nueva actividad pendiente*/
+            case 'PATCH':{
+                let respPatch = await ActivitiesControles.patchActivity({comment,mail,rating},{id})
+                return res.json(respPatch)
+            }
             case 'DELETE':
                 let respDelete = await ActivitiesControles.deletActivity({ id });
                 return res.status(201).json(respDelete);

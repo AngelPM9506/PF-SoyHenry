@@ -129,3 +129,11 @@ export interface Errors {
   availability?: string;
   activitiesName?: string;
 }
+
+export type createComment = {
+  comments: {
+    connect: {
+      comment: string;
+    };
+  };
+};

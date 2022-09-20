@@ -30,7 +30,7 @@ export const ProfileDetail = (props: Props) => {
 export default ProfileDetail;
 
 export const getStaticPaths = async (context: any) => {
-  const data = await usersControllers.getUsers({});
+  const data = await usersControllers.getUsers();
   const users = await data;
   const paths = users.map((u: any) => {
     const id = u.id;

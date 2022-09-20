@@ -23,10 +23,9 @@ type query = { id?: string | string[] };
 
 let usersControllers = {
   getUsers: async () => {
-    const response = await prisma.user.findMany({
-      // where: { active: true },
-    });
-    return response.length ? response : ["Not exist active users"];
+    const response = await prisma.user.findMany();
+    // return response.length ? response : ["Not exist active users"];
+    return response;
   },
 
   postUser: async (body: body) => {

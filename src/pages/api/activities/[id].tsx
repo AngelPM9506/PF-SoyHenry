@@ -1,11 +1,15 @@
-import { Activity } from "@prisma/client";
 import { NextApiRequest, NextApiResponse } from "next";
+import NextCors from "nextjs-cors";
 import ActivitiesControles from "src/controllers/activities";
-import { weekdays } from "src/utils/interface";
-import prisma from "src/utils/prisma";
 
 export default async function index(req: NextApiRequest, res: NextApiResponse) {
-    let { method, body: { name, image, availability, description, price, active,comment,mail,rating }, query: { id } } = req;
+    await NextCors(req, res, {
+        // Options
+        methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
+        origin: '*',
+        optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
+      });
+    let { method, body: { name, image, availability, description, price, active }, query: { id } } = req;
     try {
         switch (method) {
             /**obtener tuna sola actividad */

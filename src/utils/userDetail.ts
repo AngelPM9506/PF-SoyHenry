@@ -1,5 +1,7 @@
+import axios from "axios";
+
 export const getUserDetail = async (id: string) => {
-  const res = await fetch(`http://localhost:3000/api/users/${id}`);
-  const profileDetail = await res.json();
+  const res = await axios(`/users/${id}`);
+  const profileDetail = await res.data;
   return profileDetail;
 };

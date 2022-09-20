@@ -28,6 +28,7 @@ import { getOrCreateUser } from "src/utils/User";
 import { formControlActivity } from "src/utils/validations";
 import { createActivity, getActivities } from "src/utils/activities";
 import { getCities } from "src/utils/cities";
+import ActivitiesControles from "src/controllers/activities";
 
 interface Props {
   activities: Activity[];
@@ -129,10 +130,10 @@ const CreateTrip = ({ activities, cities }: Props) => {
     router.push("/activities");
   };
 
-  const handleDeleteAv = (c) => {
+  const handleDeleteAv = (c: any) => {
     setInput({
       ...input,
-      availability: input.availability.filter((a) => a != c),
+      availability: input.availability.filter((a: any) => a != c),
     });
   };
 
@@ -157,7 +158,7 @@ const CreateTrip = ({ activities, cities }: Props) => {
                 rowSpan={1}
                 colSpan={1}
                 bg="none"
-                align={"center"}
+                alignContent={"center"}
                 alignSelf="center"
               >
                 <Image
@@ -279,7 +280,7 @@ const CreateTrip = ({ activities, cities }: Props) => {
                     {input.availability.length != 0 ? (
                       input.availability.map((c, index) => {
                         return (
-                          <Box marginLeft={"10px"} value={c} key={index}>
+                          <Box marginLeft={"10px"} key={index}>
                             {c}
                             <Button
                               marginLeft="2"
@@ -356,7 +357,7 @@ const CreateTrip = ({ activities, cities }: Props) => {
 
 export const getServerSideProps = async () => {
   const cities = await getCities();
-  const activities = await getActivities();
+  const activities = await ActivitiesControles.getActivities({});
   return {
     props: {
       cities: cities,

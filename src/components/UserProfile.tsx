@@ -35,9 +35,9 @@ export interface UserData {
   data?: {
     avatar: string;
     id: string;
+    active?: boolean;
   };
   isAdmin?: boolean;
-  active?: boolean;
 }
 
 export const UserProfile = ({ user }: UserAuth0 | any) => {

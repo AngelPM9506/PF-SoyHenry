@@ -11,7 +11,7 @@ export const getActivities = async (
   sort?: string,
   sortBy?: string
 ) => {
-  let urlGet = `${NEXT_URL}/activities?`;
+  let urlGet = `/activities?`;
   sort ? (urlGet += `&sort=${sort}`) : "";
   wCity ? (urlGet += `&wCity=${wCity}`) : "";
   wName ? (urlGet += `&wName=${wName}`) : "";
@@ -24,7 +24,7 @@ export const getActivities = async (
 export const getActivitiesId = async (
   id: QueryFunctionContext<string[], any>
 ) => {
-  const activity = await axios.get(`${NEXT_URL}/activities/${id}`);
+  const activity = await axios.get(`/activities/${id}`);
   return activity.data;
 };
 

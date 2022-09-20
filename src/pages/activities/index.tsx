@@ -16,6 +16,7 @@ import { ActivityFilters } from "../../components/ActivityFilters";
 import Layout from "src/components/layout/Layout";
 import NextLink from "next/link";
 import ActivitiesControles from "src/controllers/activities";
+import axios from "axios";
 interface Props {
   activities: Activity[];
 }
@@ -30,6 +31,7 @@ const Activities = ({ activities }: Props) => {
     ["activities", city, name, maxPrice, sort, sortBy], //dependencies: React is going to re-render when one of these changes
     () => getActivities(city, name, maxPrice, sort, sortBy)
   );
+  //const data = activities;
   const cities = activities.map((a) => a.city.name);
   const citiesUnique: string[] = Array.from(new Set(cities)).sort(); // remove duplicates, sort alphabetically
   if (city === "All Cities") setCity(undefined);
@@ -106,7 +108,7 @@ const Activities = ({ activities }: Props) => {
           setInput={setInput}
         />
         <SimpleGrid minChildWidth="330px" spacing={2}>
-          {data.map((a: Activity) => (
+          {data.map((a: any) => (
             <ActivityCard key={a.id} props={a} />
           ))}
         </SimpleGrid>
@@ -115,16 +117,28 @@ const Activities = ({ activities }: Props) => {
   );
 };
 
-export const getServerSideProps = async () => {
-  const queryClient = new QueryClient(); //https://tanstack.com/query/v4/docs/guides/ssr
+// export const getServerSideProps = async () => {
+//   const queryClient = new QueryClient(); //https://tanstack.com/query/v4/docs/guides/ssr
 
-  await queryClient.prefetchQuery( await ActivitiesControles.getActivities({}));
-  const activities = await ActivitiesControles.getActivities({});
+//   await queryClient.prefetchQuery(await ActivitiesControles.getActivities({}));
+//   const activities = await ActivitiesControles.getActivities({});
+//   return {
+//     props: {
+//       activities: activities,
+//       dehydratedState: dehydrate(queryClient),
+//     },
+//   };
+// };
+
+export const getServerSideProps = async () => {
+  const response = await axios.get("/activities");
+  const activities = await response.data;
+
   return {
     props: {
       activities: activities,
-      dehydratedState: dehydrate(queryClient),
     },
   };
 };
+
 export default Activities;

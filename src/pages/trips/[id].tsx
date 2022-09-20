@@ -40,7 +40,7 @@ export async function getStaticPaths(context: any) {
 
 export async function getStaticProps({ params }: any) {
   const { id } = params;
-  const trip = await TripsControllers.getTrip({ id });
+  const trip = JSON.parse(JSON.stringify(await TripsControllers.getTrip({ id })));
   return {
     props: {
       trip,

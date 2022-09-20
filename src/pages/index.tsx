@@ -99,7 +99,7 @@ const landingPage: NextPage = () => {
 };
 
 export const getServerSideProps = async () => {
-  const response = await axios("/hello");
+  const response = await axios.get("/hello");
   const dataCities = await response.data;
   return {
     props: {

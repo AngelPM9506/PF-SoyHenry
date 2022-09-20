@@ -17,11 +17,10 @@ export default function Detail(props: Props) {
   const { data, isLoading, error } = useQuery(
     ["propsId"],
     () => getActivitiesId(props.id),
-    {
-      initialData: props.activity,
-    }
   );
-
+if (!data) {
+  return <div>No Data</div>
+}
   return (
     <Layout>
       {<ActivityDetail data={data} isLoading={isLoading} error={error} />}
@@ -44,7 +43,7 @@ export async function getStaticPaths(context: any) {
 export async function getStaticProps({ params }: any) {
   const { id } = params;
 
-  const activity = await ActivitiesControles.getActivity({ id });
+  const activity = JSON.parse(JSON.stringify(await ActivitiesControles.getActivity({ id })));
   return {
     props: {
       activity,

@@ -11,7 +11,6 @@ import { useRouter } from "next/router";
 
 import { Stack } from "@chakra-ui/react";
 
-
 interface Props {
   trips: Trip[];
   activities: Activity[];
@@ -28,7 +27,7 @@ const Home = ({ trips, activities }: Props) => {
   if (!userDb.data.active) {
     router.push("/api/auth/logout");
   }
-  console.log(userDb.data.active);
+
   return (
     <Layout>
       <div className={styles.container}>

@@ -8,6 +8,19 @@ export const validateName = (name: string) => {
   );
 };
 
+export const oneKeyWord = (keyWord: string) => {
+  return /^[a-zA-Z]{0,10}$/.test(keyWord);
+};
+
+export const valKeyWord = (input: string) => {
+  let errors: Errors = {};
+  if (!oneKeyWord(input)) {
+    errors.keyWords =
+      "Please, type one word at a time, numbers and symbols are not allowed";
+  }
+  return errors;
+};
+
 export const validateImgUrl = (url: string) => {
   return /^https?:\/\/.+\.(jpg|jpeg|png|webp|avif|gif|svg)$/.test(url);
 };

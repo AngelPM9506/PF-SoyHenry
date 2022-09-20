@@ -44,7 +44,7 @@ export const getStaticPaths = async (context: any) => {
 
 export const getStaticProps = async ({ params }: any) => {
   const { id } = params;
-  const res = await usersControllers.getUser({ id });
+  const res = await usersControllers.getUser({ id: id.toString() });
   const user = await res;
   return {
     props: {

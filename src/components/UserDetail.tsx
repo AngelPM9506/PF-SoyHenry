@@ -26,7 +26,7 @@ export const UserDetail = (userDetail: UserData) => {
   const facePage = "https://es-es.facebook.com/";
 
   const arrInterests: string[] = user.keyWords.split(",");
-  const defaulHashtags: string[] = ["#trips", "#traveling", "#friends"];
+  const defaulHashtags: string[] = ["trips", "traveling", "friends"];
 
   return (
     <>
@@ -72,7 +72,7 @@ export const UserDetail = (userDetail: UserData) => {
               {user && user.description}
             </Text>
             <Stack align={"center"} justify={"center"} direction={"row"} mt={6}>
-              {arrInterests
+              {arrInterests[0] !== ""
                 ? arrInterests?.map((int) => {
                     return (
                       <Badge

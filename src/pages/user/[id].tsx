@@ -5,6 +5,7 @@ import Layout from "src/components/layout/Layout";
 // import UserDetail from "src/components/userDetail";
 import UserDetail from "src/components/UserDetail";
 import axios from "axios";
+import usersControllers from "src/controllers/users";
 
 export interface Props {
   userPath: UserData;
@@ -18,7 +19,7 @@ export const ProfileDetail = (props: Props) => {
   );
 
   if (isLoading) return <div>Loading...</div>;
-  console.log(userDetail);  
+  console.log(userDetail);
   return (
     <Layout>
       <UserDetail userDetail={userDetail} />
@@ -29,9 +30,9 @@ export const ProfileDetail = (props: Props) => {
 export default ProfileDetail;
 
 export const getStaticPaths = async (context: any) => {
-  const data = await axios("/users");
-  const users = await data.data;
-  const paths = users.map((u: UserData) => {
+  const data = await usersControllers.getUsers();
+  const users = await data;
+  const paths = users.map((u: any) => {
     const id = u.id;
     return { params: { id } };
   });
@@ -43,8 +44,8 @@ export const getStaticPaths = async (context: any) => {
 
 export const getStaticProps = async ({ params }: any) => {
   const { id } = params;
-  const res = await axios(`/users/${id}`);
-  const user = await res.data;
+  const res = await usersControllers.getUser({ id });
+  const user = await res;
   return {
     props: {
       userPath: user,

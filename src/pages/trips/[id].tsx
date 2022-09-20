@@ -4,6 +4,7 @@ import Layout from "../../components/layout/Layout";
 import TripDetail from "../../components/TripDetail";
 import { QueryFunctionContext, useQuery } from "react-query";
 import { getTripId, getTrips } from "src/utils/trips";
+import TripsControllers from "src/controllers/trips";
 
 interface Props {
   id: QueryFunctionContext<string[], any>;
@@ -26,8 +27,8 @@ export default function Detail(props: Props) {
 }
 
 export async function getStaticPaths(context: any) {
-  const allTrips = await getTrips();
-  const paths = allTrips.map((t: Trip) => {
+  const allTrips = await TripsControllers.getTrips({});
+  const paths = allTrips.map((t: any) => {
     const id = t.id;
     return { params: { id } };
   });
@@ -39,7 +40,7 @@ export async function getStaticPaths(context: any) {
 
 export async function getStaticProps({ params }: any) {
   const { id } = params;
-  const trip = await getTripId(id);
+  const trip = await TripsControllers.getTrip({ id });
   return {
     props: {
       trip,

@@ -28,6 +28,7 @@ import { getOrCreateUser } from "src/utils/User";
 import { formControlActivity } from "src/utils/validations";
 import { createActivity, getActivities } from "src/utils/activities";
 import { getCities } from "src/utils/cities";
+import ActivitiesControles from "src/controllers/activities";
 
 interface Props {
   activities: Activity[];
@@ -356,7 +357,7 @@ const CreateTrip = ({ activities, cities }: Props) => {
 
 export const getServerSideProps = async () => {
   const cities = await getCities();
-  const activities = await getActivities();
+  const activities = await ActivitiesControles.getActivities({});
   return {
     props: {
       cities: cities,

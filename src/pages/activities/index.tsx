@@ -15,6 +15,7 @@ import { useQuery, dehydrate, QueryClient } from "react-query";
 import { ActivityFilters } from "../../components/ActivityFilters";
 import Layout from "src/components/layout/Layout";
 import NextLink from "next/link";
+import ActivitiesControles from "src/controllers/activities";
 interface Props {
   activities: Activity[];
 }
@@ -117,8 +118,8 @@ const Activities = ({ activities }: Props) => {
 export const getServerSideProps = async () => {
   const queryClient = new QueryClient(); //https://tanstack.com/query/v4/docs/guides/ssr
 
-  await queryClient.prefetchQuery(["activities"], await getActivities());
-  const activities = await getActivities();
+  await queryClient.prefetchQuery( await ActivitiesControles.getActivities({}));
+  const activities = await ActivitiesControles.getActivities({});
   return {
     props: {
       activities: activities,

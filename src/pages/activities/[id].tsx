@@ -6,6 +6,7 @@ import Layout from "../../components/layout/Layout";
 import { getActivities, getActivitiesId } from "src/utils/activities";
 import { QueryFunctionContext, useQuery } from "react-query";
 import ActivityDetail from "src/components/ActivityDetail";
+import ActivitiesControles from "src/controllers/activities";
 
 interface Props {
   id: QueryFunctionContext<string[], any>;
@@ -29,8 +30,8 @@ export default function Detail(props: Props) {
 }
 
 export async function getStaticPaths(context: any) {
-  const activities = await getActivities();
-  const paths = activities.map((a: Activity) => {
+  const activities = await ActivitiesControles.getActivities({});
+  const paths = activities.map((a: any) => {
     const id = a.id;
     return { params: { id } };
   });
@@ -43,7 +44,7 @@ export async function getStaticPaths(context: any) {
 export async function getStaticProps({ params }: any) {
   const { id } = params;
 
-  const activity = await getActivitiesId(id);
+  const activity = await ActivitiesControles.getActivity({ id });
   return {
     props: {
       activity,

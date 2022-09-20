@@ -26,7 +26,7 @@ let usersControllers = {
     const response = await prisma.user.findMany({
       // where: { active: true },
     });
-    return response.length ? response : "Not exist active users";
+    return response.length ? response : ["Not exist active users"];
   },
 
   postUser: async (body: body) => {

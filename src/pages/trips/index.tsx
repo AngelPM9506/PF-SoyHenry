@@ -24,6 +24,7 @@ import {
 import Layout from "../../components/layout/Layout";
 import { BsArrowDownUp } from "react-icons/bs";
 import { MdLabelImportantOutline } from "react-icons/md";
+import TripsControllers from "src/controllers/trips";
 
 interface Props {
   trips: Trip[];
@@ -253,8 +254,8 @@ function Trips({ trips }: Props) {
 export const getServerSideProps = async () => {
   const queryClient = new QueryClient();
 
-  await queryClient.prefetchQuery(["trips"], await getTrips());
-  const trips = await getTrips();
+  await queryClient.prefetchQuery( await TripsControllers.getTrips({}));
+  const trips = await TripsControllers.getTrips({});
   return {
     props: {
       trips: trips,

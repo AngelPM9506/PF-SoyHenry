@@ -20,16 +20,20 @@ import { FaInstagram, FaTwitter, FaYoutube } from "react-icons/fa";
 import { MdLocalShipping } from "react-icons/md";
 import { MinusIcon } from "@chakra-ui/icons";
 import MiniCardAct from "./miniCardActivity";
-import { City } from "src/utils/interface";
+import { City, User } from "src/utils/interface";
 import { Key } from "react";
 import { QueryFunctionContext, useQuery } from "react-query";
-import { Trip } from "src/interfaces/Trip";
+
 import { TimeLine } from "./TimeLineTrip";
 import { TripDescription } from "./TripDescription";
+import { AvatarCarousel } from "./carouselAvatars";
 
 interface Props {
   id: QueryFunctionContext<string[], any>;
   cities: City[];
+}
+interface Users {
+  users: User[];
 }
 
 export default function TripDetail({ data, isLoading, error }: any) {
@@ -195,7 +199,17 @@ export default function TripDetail({ data, isLoading, error }: any) {
               borderWidth={"1.5px"}
               color={"#293541"}
             />
+            <Box>
+              <AvatarCarousel props={data.tripOnUser} />
+            </Box>
+            <Divider
+              orientation="horizontal"
+              width={"80%"}
+              borderWidth={"1.5px"}
+              color={"#293541"}
+            />
           </Box>
+
           <TimeLine data={data} />
         </Box>
       </VStack>

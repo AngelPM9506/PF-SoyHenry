@@ -15,7 +15,7 @@ export default async function handler(
 
   switch (method) {
     case 'GET':
-      const response = cities.filter((city: City) => city.country === 'AR');
+      const response = cities.filter((city: City) => city.country === 'AR' && city.population >200000);
       let citiesCreatedInDB = response.map((c: City) => ({
         name: c.name,
         country: c.country,

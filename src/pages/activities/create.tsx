@@ -28,6 +28,7 @@ import { getOrCreateUser } from "src/utils/User";
 import { formControlActivity } from "src/utils/validations";
 import { createActivity, getActivities } from "src/utils/activities";
 import { getCities } from "src/utils/cities";
+import NotFound from "../404";
 
 interface Props {
   activities: Activity[];
@@ -135,7 +136,8 @@ const CreateTrip = ({ activities, cities }: Props) => {
       availability: input.availability.filter((a) => a != c),
     });
   };
-
+  if (isLoading || !userDb.data) return <div>Loading...</div>;
+  if (!userDb.data.isAdmin) return <NotFound />;
   return (
     <Layout>
       <Center marginTop="1%">

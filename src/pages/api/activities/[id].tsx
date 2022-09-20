@@ -5,7 +5,7 @@ import { weekdays } from "src/utils/interface";
 import prisma from "src/utils/prisma";
 
 export default async function index(req: NextApiRequest, res: NextApiResponse) {
-    let { method, body: { name, image, availability, description, price, active }, query: { id } } = req;
+    let { method, body: { name, image, availability, description, price, active,comment,mail,rating }, query: { id } } = req;
     try {
         switch (method) {
             /**obtener tuna sola actividad */
@@ -20,6 +20,10 @@ export default async function index(req: NextApiRequest, res: NextApiResponse) {
                 )
                 return res.status(201).json(respPut);
             /**agregar una nueva actividad pendiente*/
+            case 'PATCH':{
+                let respPatch = await ActivitiesControles.patchActivity({comment,mail,rating},{id})
+                return res.json(respPatch)
+            }
             case 'DELETE':
                 let respDelete = await ActivitiesControles.deletActivity({ id });
                 return res.status(201).json(respDelete);

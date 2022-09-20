@@ -2,6 +2,8 @@ import axios from "axios";
 import { QueryFunctionContext } from "react-query";
 import { getCityById } from "./cities";
 import { Activity, CityInDB } from "./interface";
+export const NEXT_URL =
+  process.env.NEXT_PUBLIC_FRONTEND_URL || "http://localhost:3000";
 export const getActivities = async (
   wCity?: string,
   wName?: string,
@@ -9,12 +11,12 @@ export const getActivities = async (
   sort?: string,
   sortBy?: string
 ) => {
-  let urlGet = '/activities?';
-  sort ? urlGet += `&sort=${sort}` : '';
-  wCity ? urlGet += `&wCity=${wCity}` : '';
-  wName ? urlGet += `&wName=${wName}` : '';
-  maxPrice ? urlGet += `&maxPrice=${maxPrice}` : '';
-  sortBy ? urlGet += `&sortBy=${sortBy}` : '';
+  let urlGet = `${NEXT_URL}/activities?`;
+  sort ? (urlGet += `&sort=${sort}`) : "";
+  wCity ? (urlGet += `&wCity=${wCity}`) : "";
+  wName ? (urlGet += `&wName=${wName}`) : "";
+  maxPrice ? (urlGet += `&maxPrice=${maxPrice}`) : "";
+  sortBy ? (urlGet += `&sortBy=${sortBy}`) : "";
   const activities = await axios.get(urlGet);
   return activities.data;
 };
@@ -22,9 +24,7 @@ export const getActivities = async (
 export const getActivitiesId = async (
   id: QueryFunctionContext<string[], any>
 ) => {
-  const activity = await axios.get(
-    `/activities/${id}`
-  );
+  const activity = await axios.get(`${NEXT_URL}/activities/${id}`);
   return activity.data;
 };
 

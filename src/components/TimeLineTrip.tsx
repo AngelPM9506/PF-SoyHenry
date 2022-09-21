@@ -23,10 +23,15 @@ import { useRouter } from 'next/router'
 import { useUser } from "@auth0/nextjs-auth0";
 import { useQuery } from "react-query";
 import { getOrCreateUser } from "src/utils/User";
+import { useRef, useEffect, useState} from "react";
+import usersControllers from "src/controllers/users";
+import searchUser from "src/utils/searchUserOnTrip";
 
 export const TimeLine = ({ data }: any) => {
 	const router = useRouter()
 	const { user, error } = useUser();
+	const [userOnTrip, setUserOnTrip] = useState(false);
+	
 
 	const { data: userDb, isLoading } = useQuery(
 	  ["userDb", user],
@@ -44,6 +49,14 @@ export const TimeLine = ({ data }: any) => {
 
 		router.push(response.data.links ? response.data.links[1].href : '/trips')
 	}
+
+	useEffect(() => {
+		async function a() {
+			const bool = await searchUser(data.id, userDb?.data.id);
+			setUserOnTrip(bool)
+		}
+		a();
+	}, [data.id, userDb])
 
 	return (
 		<Stack width={"100%"} align={"center"}>
@@ -99,11 +112,10 @@ export const TimeLine = ({ data }: any) => {
 							bg: "#F3B46F",
 							color: "#293541",
 						}}
+						disabled={userOnTrip}
 					>
 						Pay and Join the trip!
 					</Button>
-				{/* <NextLink href={"/pasarella"}>
-				</NextLink> */}
 			</Stack>
 		</Stack>
 	);

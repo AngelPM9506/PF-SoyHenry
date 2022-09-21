@@ -27,7 +27,12 @@ export default async function Payment(req: NextApiRequest, res: NextApiResponse)
 	try {
 		switch (method) {
 			case 'POST': {
-				const exist = await prisma.usersOnTrips.findMany({where: {userid: userID.toString()}})
+				const exist = await prisma.usersOnTrips.findFirst({
+					where: {
+						userid: userID.toString(),
+						tripId: id.toString()
+					}
+				})
 				if(exist) {
 					return res.json('user exist in trips');
 				} else {

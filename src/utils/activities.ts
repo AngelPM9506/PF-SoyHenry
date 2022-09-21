@@ -2,8 +2,6 @@ import axios from "axios";
 import { QueryFunctionContext } from "react-query";
 import { getCityById } from "./cities";
 import { Activity, CityInDB } from "./interface";
-export const NEXT_URL =
-  process.env.NEXT_PUBLIC_FRONTEND_URL || "http://localhost:3000";
 export const getActivities = async (
   wCity?: string,
   wName?: string,
@@ -11,7 +9,7 @@ export const getActivities = async (
   sort?: string,
   sortBy?: string
 ) => {
-  let urlGet = `/activities?`;
+  let urlGet = `/api/activities?`;
   sort ? (urlGet += `&sort=${sort}`) : "";
   wCity ? (urlGet += `&wCity=${wCity}`) : "";
   wName ? (urlGet += `&wName=${wName}`) : "";
@@ -24,7 +22,7 @@ export const getActivities = async (
 export const getActivitiesId = async (
   id: QueryFunctionContext<string[], any>
 ) => {
-  const activity = await axios.get(`/activities/${id}`);
+  const activity = await axios.get(`/api/activities/${id}`);
   return activity.data;
 };
 
@@ -37,7 +35,7 @@ export const createActivity = async ({
   price,
 }: Activity) => {
   try {
-    const activity = await axios.post("/activities", {
+    const activity = await axios.post("/api/activities", {
       name,
       image,
       cityName,
@@ -45,6 +43,8 @@ export const createActivity = async ({
       description,
       price,
     });
+    console.log(activity);
+    console.log(activity.data);
     return activity.data;
   } catch (err) {
     console.error(err);

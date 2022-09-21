@@ -191,7 +191,7 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
 
   const createTrip = async (trip: Trip) => {
     try {
-      await axios.post("/trips", trip);
+      await axios.post("/api/trips", trip);
     } catch (error) {
       console.log(error);
     }
@@ -510,7 +510,6 @@ export const getServerSideProps = async () => {
   const cities = await res.data;
   const data = await axios("/trips");
   const trips = await data.data;
-
   return {
     props: {
       activities: activities,

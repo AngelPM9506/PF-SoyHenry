@@ -12,6 +12,9 @@ import {
   Center,
   useToast,
   Textarea,
+  SimpleGrid,
+  IconButton,
+  HStack,
 } from "@chakra-ui/react";
 import React, { ChangeEvent, SetStateAction, useState, useEffect } from "react";
 import { updateUser, UserAuth0, getOrCreateUser } from "src/utils/User";
@@ -19,6 +22,8 @@ import { Cloudinary } from "@cloudinary/url-gen";
 import { useQuery, useQueryClient } from "react-query";
 const { CLOUDINARY_NAME } = process.env;
 import Layout from "./layout/Layout";
+import { valKeyWord } from "src/utils/validations";
+import { Errors } from "src/utils/interface";
 
 export interface UserData {
   user?: any;
@@ -59,6 +64,9 @@ export const UserProfile = ({ user }: UserAuth0 | any) => {
 
   const [data, setData] = useState(defaultData);
   const [image, setImage] = useState<string | ArrayBuffer>();
+  const [inputKeyWords, setInputKeyWords] = useState("");
+  const [errors, setErrors] = useState<Errors>({});
+  const [keyWords, setKeyWords] = useState<string[]>([]);
   const [file, setFile] = useState<File>();
   const [nameFile, setNameFile] = useState("");
   const queryClient = useQueryClient();
@@ -72,6 +80,25 @@ export const UserProfile = ({ user }: UserAuth0 | any) => {
     setData((prev) => {
       return { ...prev, [e.target.id]: e.target.value };
     });
+  };
+
+  const handleChangeKeyWords = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInputKeyWords(e.target.value);
+    const keyErrors = valKeyWord(e.target.value);
+    setErrors(keyErrors);
+  };
+
+  const handleKeyWords = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.keyCode === 13) {
+      e.preventDefault();
+      setKeyWords([...keyWords, inputKeyWords]);
+      setInputKeyWords("");
+    }
+  };
+
+  const addKeyWords = () => {
+    setKeyWords([...keyWords, inputKeyWords]);
+    setInputKeyWords("");
   };
 
   function previewFiles(file: File) {
@@ -97,12 +124,23 @@ export const UserProfile = ({ user }: UserAuth0 | any) => {
     hiddenFileInput.current.click();
   };
 
+  const myKeyWords = (keyWords: string[]): string => {
+    return keyWords.toString();
+  };
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     updateUser({
       ...data,
       avatar: image,
+      keyWords: myKeyWords(keyWords),
     });
+    setKeyWords([]);
+  };
+
+  const handleDelete = (keyWord: string) => {
+    const filterWords = keyWords?.filter((k) => k !== keyWord);
+    setKeyWords(filterWords);
   };
 
   const toast = useToast();
@@ -196,15 +234,45 @@ export const UserProfile = ({ user }: UserAuth0 | any) => {
                 />
               </FormControl>
               <FormControl id="keyWords">
-                <FormLabel p={2}>Keywords</FormLabel>
-                <Input
-                  placeholder="Beach, Mountains, Europe, South America"
-                  _placeholder={{ color: "gray.500" }}
-                  onChange={(e) => handleChange(e)}
-                  value={data.keyWords}
-                  type="text"
-                />
+                <FormLabel p={2}>Interests</FormLabel>
+                <HStack>
+                  <Input
+                    placeholder="Type an interest..."
+                    _placeholder={{ color: "gray.500" }}
+                    onChange={(e) => handleChangeKeyWords(e)}
+                    onKeyDown={(e) => handleKeyWords(e)}
+                    value={inputKeyWords}
+                    type="text"
+                  />
+                  <Button
+                    bg="blackAlpha.200"
+                    color="white"
+                    _hover={{ bg: "blackAlpha.300" }}
+                    onClick={addKeyWords}
+                  >
+                    ADD
+                  </Button>
+                </HStack>
               </FormControl>
+              <Center>
+                {keyWords &&
+                  keyWords.map((k, index) => {
+                    return (
+                      <GridItem p={2} key={index}>
+                        {k}
+                        <Button
+                          marginLeft="2"
+                          onClick={() => handleDelete(k)}
+                          height={"25px"}
+                          width={"5px"}
+                        >
+                          X
+                        </Button>
+                      </GridItem>
+                    );
+                  })}
+                {errors && <p> {errors.keyWords} </p>}
+              </Center>
             </GridItem>
 
             <GridItem borderRadius="2xl" colSpan={5} bg="blackAlpha.100">

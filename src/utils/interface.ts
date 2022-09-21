@@ -29,12 +29,12 @@ export interface UserUpdate {
 
 export interface Activity {
   id?: string;
-  name: string;
-  availability: string[];
-  description: string;
-  price: number;
+  name?: string;
+  availability?: string[];
+  description?: string;
+  price?: number;
   city?: City;
-  cityName: string;
+  cityName?: string;
   image?: string | ArrayBuffer;
   active?: boolean;
 }

@@ -8,6 +8,7 @@ const nextConfig = {
   images: {
     domains: ["lh3.googleusercontent.com"],
   },
+  pageExtensions: ['tsx', 'ts']
 };
 
 module.exports = nextConfig;

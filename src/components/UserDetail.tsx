@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import {
   Badge,
   Center,
@@ -46,6 +47,7 @@ export const UserDetail = (userDetail: UserData) => {
         >
           <Flex flex={1}>
             <Image
+              alt="image user"
               borderRadius={"xl"}
               objectFit="cover"
               boxSize="100%"

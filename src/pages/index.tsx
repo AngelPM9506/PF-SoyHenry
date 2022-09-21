@@ -1,13 +1,14 @@
 import type { NextPage } from "next";
 import { Stack, Box, Heading, Text, Button, Center } from "@chakra-ui/react";
 import ReactPlayer from "react-player";
-import { useState } from "react";
+import axios from "axios";
 
 const landingPage: NextPage = () => {
-  const [isplaying, setPlaying] = useState(false);
   const url =
     "https://res.cloudinary.com/mauro4202214/video/upload/v1663337043/world-travelers/videolandingpagecrop_iklwjv.mp4";
-
+  const play = (event: any) => {
+    event.target.play();
+  };
   return (
     <>
       <ReactPlayer
@@ -18,12 +19,14 @@ const landingPage: NextPage = () => {
         top="50%"
         left="50%"
         transform="translate(-50%, -50%)"
-        zIndex="-1"
+        // zIndex="-1"
         url={url}
         controls={false}
         volume={0.3}
-        onMouseMove={(e) => e.target.play()}
-        // onMouseOver={(e) => e.target.play()}
+        onMouseMove={play}
+        playsinline
+        muted
+        onMouseOver={(e: any) => e.target.play()}
       />
       <Box marginTop="-50%">
         <Stack flex={1} spacing={{ base: 5, md: 10 }}>
@@ -96,8 +99,8 @@ const landingPage: NextPage = () => {
 };
 
 export const getServerSideProps = async () => {
-  const response = await fetch("http://localhost:3000/api/hello");
-  const dataCities = await response.json();
+  const response = await axios.get("/hello");
+  const dataCities = await response.data;
   return {
     props: {
       cities: dataCities,

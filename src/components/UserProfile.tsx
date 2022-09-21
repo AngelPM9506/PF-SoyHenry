@@ -26,20 +26,25 @@ import { valKeyWord } from "src/utils/validations";
 import { Errors } from "src/utils/interface";
 
 export interface UserData {
-  name: string;
+  user?: any;
+  id?: string;
+  userDetail?: any;
+  name?: string;
   email?: string;
   picture?: string;
-  mail: string;
-  description: string;
-  avatar: string | ArrayBuffer;
+  mail?: string;
+  description?: string;
+  avatar?: string | ArrayBuffer;
   urlTikTok?: string;
   urlFaceBook?: string;
   urlInstagram?: string;
   keyWords?: string;
   trips?: string[];
   data?: {
-    avatar: string;
-    id: string;
+    isAdmin?: any;
+    [x: string]: any;
+    avatar?: any;
+    id?: any;
   };
   isAdmin?: boolean;
   active?: boolean;
@@ -164,7 +169,7 @@ export const UserProfile = ({ user }: UserAuth0 | any) => {
               rowSpan={1}
               colSpan={1}
               bg="none"
-              align="center"
+              alignContent="center"
               alignSelf="center"
             >
               <FormControl id="userName">

@@ -25,6 +25,10 @@ interface Props {
   activities: Activity[];
 }
 
+export const upPrice = (price: number) => {
+  return Math.floor(price + (price * 30) / 100);
+};
+
 const MyCarousel = ({ trips, activities }: Props) => {
   const defaultpic: string =
     "https://res.cloudinary.com/mauro4202214/image/upload/v1663331567/world-travelers/defaultimagetrip_j90ewc.png";
@@ -33,10 +37,6 @@ const MyCarousel = ({ trips, activities }: Props) => {
   const lastActivities = activities?.reverse().slice(0, 13);
 
   const useColorMode = useColorModeValue("white", "gray.800");
-
-  const upPrice = (price: number) => {
-    return Math.floor(price + (price * 30) / 100);
-  };
 
   return (
     <>

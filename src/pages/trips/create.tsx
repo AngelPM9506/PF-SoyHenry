@@ -13,11 +13,21 @@ import {
   List,
   ListItem,
   ListIcon,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
   useToast,
   Image,
   HStack,
+  Text,
+  useDisclosure,
   Box,
   Stack,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import { ChevronDownIcon, CheckCircleIcon } from "@chakra-ui/icons";
 import { useState } from "react";
@@ -34,6 +44,8 @@ import {
   controlCities,
   controlActivities,
 } from "src/utils/validations";
+import { upPrice } from "src/components/Carousel";
+import NextLink from "next/link";
 
 interface Props {
   activities: Activity[];
@@ -48,6 +60,9 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
     ["userDb", user],
     () => user && getOrCreateUser(user)
   );
+
+  const url =
+    "https://res.cloudinary.com/mauro4202214/image/upload/v1663527844/world-travelers/activitydefault_q9aljz.png";
 
   const initialState: Trip = {
     name: "",
@@ -130,7 +145,10 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
 
   const handleSelect = ({
     target: { value },
-  }: ChangeEvent<HTMLSelectElement>) => {
+  }: MouseEvent<HTMLButtonElement>) => {
+    console.log({
+      target: { value },
+    });
     const activity = value.split("|")[0];
     const price = Number(value.split("|")[1]) + Number(input.price);
     if (!input.activitiesName.includes(activity)) {
@@ -256,6 +274,18 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
     setErrorActivities(activitiesControl);
     setErrors(errControl);
   };
+
+  const OverlayTwo = () => (
+    <ModalOverlay
+      bg="none"
+      backdropFilter="auto"
+      backdropInvert="80%"
+      backdropBlur="2px"
+    />
+  );
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [overlay, setOverlay] = useState(<OverlayTwo />);
 
   return (
     <Layout>
@@ -396,6 +426,7 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
                 />
                 {errors.endDate && <p>{errors.endDate}</p>}
               </GridItem>
+
               <GridItem borderRadius="2xl" colSpan={5} bg="blackAlpha.100">
                 <FormLabel
                   paddingLeft="2"
@@ -417,51 +448,141 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
                 <FormLabel paddingLeft="2" htmlFor="activitiesName" mt={2}>
                   Associated activities
                 </FormLabel>
-                <Select
-                  value="disable"
-                  // name="activitiesName"
-                  // defaultValue="title"
-                  mt={2}
-                  icon={<ChevronDownIcon />}
-                  onChange={(e) => handleSelect(e)}
+
+                <Button
+                  ml="4"
+                  onClick={() => {
+                    setOverlay(<OverlayTwo />);
+                    onOpen();
+                  }}
                 >
-                  <option value="">
-                    Choose the activities to enjoy on the trip...
-                  </option>
-                  {activities?.map((a) => {
-                    if (input.cities.includes(a.city.name)) {
-                      return (
-                        <option key={a.id} value={a.name + "|" + a.price}>
-                          {a.name + "   $" + a.price}
+                  Plase, select your activities
+                </Button>
+                <Modal
+                  size={"6xl"}
+                  isCentered
+                  isOpen={isOpen}
+                  onClose={onClose}
+                >
+                  {overlay}
+                  <ModalContent>
+                    <ModalHeader>Select the activities</ModalHeader>
+                    <ModalCloseButton />
+                    <ModalBody>
+                      <Center>
+                        {activities?.map((act) => {
+                          if (input.cities.includes(act.city.name)) {
+                            return (
+                              <Box
+                                key={act.id}
+                                role={"group"}
+                                p={6}
+                                maxW={"330px"}
+                                bg={useColorModeValue("white", "gray.800")}
+                                boxShadow={"2xl"}
+                                rounded={"lg"}
+                                pos={"relative"}
+                                zIndex={1}
+                                margin={2}
+                              >
+                                <Image
+                                  rounded={"md"}
+                                  height={"100px"}
+                                  width={"100px"}
+                                  objectFit={"cover"}
+                                  src={
+                                    act?.image != null
+                                      ? act?.image.toString()
+                                      : url
+                                  }
+                                  alt={act?.name}
+                                />
+
+                                <Stack
+                                  pt={2}
+                                  display={"flex"}
+                                  alignItems={"center"}
+                                >
+                                  <Text
+                                    fontSize={"md"}
+                                    fontFamily={"body"}
+                                    fontWeight={100}
+                                  >
+                                    {act?.name}
+                                  </Text>
+                                  <Text fontWeight={100} fontSize={"lg"}>
+                                    {`$${act?.price}`}
+                                  </Text>
+                                  <Text
+                                    textDecoration={"line-through"}
+                                    color={"#F3B46F"}
+                                  >
+                                    {`$${upPrice(act?.price)}`}
+                                  </Text>
+                                  <NextLink href={`/activities/${act.id}`}>
+                                    <Button size={"xs"}>+Info</Button>
+                                  </NextLink>
+                                  <Button
+                                    onClick={(e) => handleSelect(e)}
+                                    size={"sm"}
+                                  >
+                                    Add
+                                  </Button>
+                                </Stack>
+                              </Box>
+                            );
+                          }
+                        })}
+                      </Center>
+                      {/* <Select
+                        value="disable"
+                        mt={2}
+                        icon={<ChevronDownIcon />}
+                        onChange={(e) => handleSelect(e)}
+                      >
+                        <option value="">
+                          Choose the activities to enjoy on the trip...
                         </option>
-                      );
-                    }
-                  })}
-                </Select>
-                <Center>
-                  <SimpleGrid
-                    marginTop={"10px"}
-                    marginBottom={"5px"}
-                    columns={7}
-                    spacing={3}
-                  >
-                    {input.activitiesName?.map((a, index) => {
-                      return (
-                        <GridItem key={index}>
-                          {a}
-                          <Button
-                            marginLeft="2"
-                            onClick={() => handleDelete(a)}
-                            height={"25px"}
-                            width={"5px"}
-                          >
-                            X
-                          </Button>
-                        </GridItem>
-                      );
-                    })}
-                  </SimpleGrid>
-                </Center>
+                        {activities?.map((a) => {
+                          if (input.cities.includes(a.city.name)) {
+                            return (
+                              <option key={a.id} value={a.name + "|" + a.price}>
+                                {a.name + "   $" + a.price}
+                              </option>
+                            );
+                          }
+                        })}
+                      </Select>
+                      <Center>
+                        <SimpleGrid
+                          marginTop={"10px"}
+                          marginBottom={"5px"}
+                          columns={7}
+                          spacing={3}
+                        >
+                          {input.activitiesName?.map((a, index) => {
+                            return (
+                              <GridItem key={index}>
+                                {a}
+                                <Button
+                                  marginLeft="2"
+                                  onClick={() => handleDelete(a)}
+                                  height={"25px"}
+                                  width={"5px"}
+                                >
+                                  X
+                                </Button>
+                              </GridItem>
+                            );
+                          })}
+                        </SimpleGrid>
+                      </Center> */}
+                    </ModalBody>
+                    <ModalFooter>
+                      <Button onClick={onClose}>Close</Button>
+                    </ModalFooter>
+                  </ModalContent>
+                </Modal>
               </GridItem>
               <GridItem colSpan={5}>
                 {errorActivities.activitiesName && (

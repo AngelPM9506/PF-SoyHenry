@@ -45,7 +45,7 @@ model Trip {
   image             String?             @db.VarChar()
   public_id_image   String?
   price             Float
-  active            Boolean             @default(true)
+  active            Boolean             @default(false)
   activitiesOnTrips activitiesOnTrips[]
   citiesOnTrips     CitiesOnTrips[]
 }

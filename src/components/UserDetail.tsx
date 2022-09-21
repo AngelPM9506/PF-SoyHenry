@@ -26,8 +26,8 @@ export const UserDetail = (userDetail: UserData) => {
   const instaPage = "https://www.instagram.com/";
   const facePage = "https://es-es.facebook.com/";
 
-  const arrInterests: string[] = user.keyWords ? user.keyWords.split(",") : '';
-  const defaulHashtags: string[] = ["#trips", "#traveling", "#friends"];
+  const arrInterests: string[] = user.keyWords.split(",");
+  const defaulHashtags: string[] = ["trips", "traveling", "friends"];
 
   return (
     <>
@@ -74,33 +74,33 @@ export const UserDetail = (userDetail: UserData) => {
               {user && user.description}
             </Text>
             <Stack align={"center"} justify={"center"} direction={"row"} mt={6}>
-              {arrInterests
-                ? arrInterests?.map((int, i) => {
-                  return (
-                    <Badge
-                      key={i}
-                      px={2}
-                      py={1}
-                      bg={useColorModeValue("gray.50", "gray.800")}
-                      fontWeight={"400"}
-                    >
-                      {`#${int.toLowerCase()}`}
-                    </Badge>
-                  );
-                })
-                : defaulHashtags?.map((h, i) => {
-                  return (
-                    <Badge
-                      key={i}
-                      px={2}
-                      py={1}
-                      bg={useColorModeValue("gray.50", "gray.800")}
-                      fontWeight={"400"}
-                    >
-                      {`#${h.toLowerCase()}`}
-                    </Badge>
-                  );
-                })}
+              {arrInterests[0] !== ""
+                ? arrInterests?.map((int, index) => {
+                    return (
+                      <Badge
+                        key={index}
+                        px={2}
+                        py={1}
+                        bg={useColorModeValue("gray.50", "gray.800")}
+                        fontWeight={"400"}
+                      >
+                        {`#${int.toLowerCase()}`}
+                      </Badge>
+                    );
+                  })
+                : defaulHashtags?.map((h, index) => {
+                    return (
+                      <Badge
+                        key={index}
+                        px={2}
+                        py={1}
+                        bg={useColorModeValue("gray.50", "gray.800")}
+                        fontWeight={"400"}
+                      >
+                        {`#${h.toLowerCase()}`}
+                      </Badge>
+                    );
+                  })}
             </Stack>
             <Center>
               <Stack

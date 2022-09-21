@@ -34,7 +34,6 @@ import {
   controlCities,
   controlActivities,
 } from "src/utils/validations";
-import { json } from "stream/consumers";
 
 interface Props {
   activities: Activity[];
@@ -199,6 +198,7 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    console.log(input);
     await createTrip(input);
     setInput(initialState);
     router.push("/trips");
@@ -281,12 +281,18 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
                 alignContent="center"
                 alignSelf="center"
               >
-                <Image
-                  src={`${image}`}
-                  fallbackSrc="https://via.placeholder.com/150"
-                  alt="img"
-                  boxSize="200px"
-                />
+                <Box
+                  display={"flex"}
+                  alignItems={"center"}
+                  justifyContent={"center"}
+                >
+                  <Image
+                    src={`${image}`}
+                    fallbackSrc="https://via.placeholder.com/150"
+                    alt="img"
+                    boxSize="200px"
+                  />
+                </Box>
                 <Center>
                   <Button onClick={(event) => handleClick(event)} mt="20px">
                     Change Trip Image

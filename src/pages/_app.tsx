@@ -8,7 +8,7 @@ import { Hydrate, QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import axios from "axios";
 
-axios.defaults.baseURL = process.env.NEXT_PUBLIC_AXIOS_URL_BASE;
+axios.defaults.baseURL = process.env.AXIOS_URL_BASE;
 
 function MyApp({ Component, pageProps }: any) {
   const queryClient = new QueryClient();

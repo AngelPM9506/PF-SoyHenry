@@ -20,19 +20,29 @@ import NextLink from "next/link";
 import CardTimeLine from "./CardTimeLine";
 import axios from "axios";
 import { useRouter } from 'next/router'
+import { useUser } from "@auth0/nextjs-auth0";
+import { useQuery } from "react-query";
+import { getOrCreateUser } from "src/utils/User";
 
 export const TimeLine = ({ data }: any) => {
 	const router = useRouter()
+	const { user, error } = useUser();
+
+	const { data: userDb, isLoading } = useQuery(
+	  ["userDb", user],
+	  () => user && getOrCreateUser(user)
+	);
 
 	const payTrip = async () => {
 		// console.log(data)
 		const response = await axios.post('/api/payment/paypal', {
 			id: data.id,
 			description: data.name,
-			price: data.price
+			price: data.price,
+			userID: userDb?.data.id
 		})
 
-		router.push(response.data.links[1].href)
+		router.push(response.data.links ? response.data.links[1].href : '/trips')
 	}
 
 	return (

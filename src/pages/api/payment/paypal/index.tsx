@@ -23,39 +23,44 @@ const getCredentials = async() => {
 }
 
 export default async function Payment(req: NextApiRequest, res: NextApiResponse) {
-	const { method, body: {price, description, id}, query: {token, tripID} } = req;
+	const { method, body: {price, description, id, userID}, query: {token, tripID} } = req;
 	try {
 		switch (method) {
 			case 'POST': {
-				const order = {
-					intent: 'CAPTURE',
-					purchase_units: [
-						{
-							amount: {
-								currency_code: 'USD',
-								value: price 
+				const exist = await prisma.usersOnTrips.findMany({where: {userid: userID.toString()}})
+				if(exist) {
+					return res.json('user exist in trips');
+				} else {
+					const order = {
+						intent: 'CAPTURE',
+						purchase_units: [
+							{
+								amount: {
+									currency_code: 'USD',
+									value: price 
+								},
+								description: description
 							},
-							description: description
-						},
-					],
-					application_context: {
-						brand_name: "worldtravelers.com",
-						landing_page: "LOGIN",
-						user_action: "PAY_NOW",
-						return_url: `http://localhost:3000/api/payment/paypal?tripID=${id}`,
-						cancel_url: `http://localhost:3000/trips/${id}`,
+						],
+						application_context: {
+							brand_name: "worldtravelers.com",
+							landing_page: "LOGIN",
+							user_action: "PAY_NOW",
+							return_url: `http://localhost:3000/api/payment/paypal?tripID=${id}`,
+							cancel_url: `http://localhost:3000/trips/${id}`,
+						}
 					}
-				}
 
-				const token = await getCredentials();
-		
-				const response = await axios.post(`${PAYPAL_API}/v2/checkout/orders`, order, {
-					headers: {
-						Authorization: `Bearer ${token.data.access_token}`
-					}
-				})
-				
-				return res.json(response.data)
+					const token = await getCredentials();
+			
+					const response = await axios.post(`${PAYPAL_API}/v2/checkout/orders`, order, {
+						headers: {
+							Authorization: `Bearer ${token.data.access_token}`
+						}
+					})
+					
+					return res.json(response.data)
+				}
 			}
 
 			case 'GET': {

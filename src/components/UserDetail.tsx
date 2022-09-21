@@ -75,9 +75,10 @@ export const UserDetail = (userDetail: UserData) => {
             </Text>
             <Stack align={"center"} justify={"center"} direction={"row"} mt={6}>
               {arrInterests[0] !== ""
-                ? arrInterests?.map((int) => {
+                ? arrInterests?.map((int, index) => {
                     return (
                       <Badge
+                        key={index}
                         px={2}
                         py={1}
                         bg={useColorModeValue("gray.50", "gray.800")}
@@ -87,9 +88,10 @@ export const UserDetail = (userDetail: UserData) => {
                       </Badge>
                     );
                   })
-                : defaulHashtags?.map((h) => {
+                : defaulHashtags?.map((h, index) => {
                     return (
                       <Badge
+                        key={index}
                         px={2}
                         py={1}
                         bg={useColorModeValue("gray.50", "gray.800")}

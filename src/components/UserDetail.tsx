@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import {
   Badge,
   Center,
@@ -26,7 +27,7 @@ export const UserDetail = (userDetail: UserData) => {
   const facePage = "https://es-es.facebook.com/";
 
   const arrInterests: string[] = user.keyWords.split(",");
-  const defaulHashtags: string[] = ["#trips", "#traveling", "#friends"];
+  const defaulHashtags: string[] = ["trips", "traveling", "friends"];
 
   return (
     <>
@@ -46,6 +47,7 @@ export const UserDetail = (userDetail: UserData) => {
         >
           <Flex flex={1}>
             <Image
+              alt="image user"
               borderRadius={"xl"}
               objectFit="cover"
               boxSize="100%"
@@ -72,10 +74,11 @@ export const UserDetail = (userDetail: UserData) => {
               {user && user.description}
             </Text>
             <Stack align={"center"} justify={"center"} direction={"row"} mt={6}>
-              {arrInterests
-                ? arrInterests?.map((int) => {
+              {arrInterests[0] !== ""
+                ? arrInterests?.map((int, index) => {
                     return (
                       <Badge
+                        key={index}
                         px={2}
                         py={1}
                         bg={useColorModeValue("gray.50", "gray.800")}
@@ -85,9 +88,10 @@ export const UserDetail = (userDetail: UserData) => {
                       </Badge>
                     );
                   })
-                : defaulHashtags?.map((h) => {
+                : defaulHashtags?.map((h, index) => {
                     return (
                       <Badge
+                        key={index}
                         px={2}
                         py={1}
                         bg={useColorModeValue("gray.50", "gray.800")}

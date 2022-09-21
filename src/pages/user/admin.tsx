@@ -24,9 +24,9 @@ import Layout from "src/components/layout/Layout";
 import { UserData } from "src/components/UserProfile";
 import UserTable from "src/components/UserTable";
 import { getOrCreateUser, getUsers } from "src/utils/User";
-import NotFound from "src/pages/404.js";
+import NotFound from "src/pages/404";
 
-function TablesTableRow({ users }) {
+function TablesTableRow({ users }: any) {
   const { user, error } = useUser();
   const { data: userDb, isLoading } = useQuery(["userDb", user], () =>
     getOrCreateUser(user)

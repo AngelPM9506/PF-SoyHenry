@@ -6,7 +6,7 @@ export interface Trip {
   initDate: string;
   cities?: string[];
   endDate: string;
-  planner?: { avatar?: string; id?: string };
+  planner?: { avatar?: string; id?: string } | any;
   tripOnUser?: Object[];
   description: string;
   activitiesName: string[];
@@ -30,7 +30,7 @@ export interface UserUpdate {
 export interface Activity {
   id?: string;
   name: string;
-  availability: string | string[];
+  availability: string[];
   description: string;
   price: number;
   city?: City;
@@ -106,6 +106,7 @@ export interface City {
     type: string;
     coordinates: Number[];
   };
+  includes: any;
 }
 
 export interface CityInDB {
@@ -127,6 +128,7 @@ export interface Errors {
   cities?: string;
   availability?: string;
   activitiesName?: string;
+  keyWords?: string;
 }
 
 export type createComment = {

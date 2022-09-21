@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import React, { Component } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
@@ -31,6 +32,8 @@ const MyCarousel = ({ trips, activities }: Props) => {
   const lastTrips = trips?.reverse().slice(0, 13);
   const lastActivities = activities?.reverse().slice(0, 13);
 
+  const useColorMode = useColorModeValue("white", "gray.800");
+
   const upPrice = (price: number) => {
     return Math.floor(price + (price * 30) / 100);
   };
@@ -40,7 +43,12 @@ const MyCarousel = ({ trips, activities }: Props) => {
       <Box p={5} mt={"20px"}>
         <Heading textAlign={"center"}>Trending Trips</Heading>
       </Box>
-      <Box width={"100%"} justifyContent={"center"} align={"center"}>
+      <Box
+        width={"100%"}
+        display={"flex"}
+        justifyContent={"center"}
+        alignItems={"center"}
+      >
         <Stack width={"80%"}>
           <Slider {...settings}>
             {lastTrips?.map((t) => {
@@ -80,6 +88,7 @@ const MyCarousel = ({ trips, activities }: Props) => {
                       }}
                     >
                       <Image
+                        alt="image"
                         rounded={"lg"}
                         height={230}
                         width={282}
@@ -138,8 +147,9 @@ const MyCarousel = ({ trips, activities }: Props) => {
       <Box
         height={"550px"}
         width={"100%"}
+        display={"flex"}
         justifyContent={"center"}
-        align={"center"}
+        alignItems={"center"}
       >
         <Stack width={"80%"}>
           <Slider {...settings}>
@@ -180,6 +190,7 @@ const MyCarousel = ({ trips, activities }: Props) => {
                       }}
                     >
                       <Image
+                        alt="image"
                         rounded={"lg"}
                         height={230}
                         width={282}

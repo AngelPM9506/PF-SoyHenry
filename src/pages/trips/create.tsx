@@ -34,7 +34,6 @@ import {
   controlCities,
   controlActivities,
 } from "src/utils/validations";
-import { json } from "stream/consumers";
 
 interface Props {
   activities: Activity[];
@@ -71,8 +70,8 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
   const [file, setFile] = useState<File>();
   const [nameFile, setNameFile] = useState("");
   const [errors, setErrors] = useState<Errors>({});
-  const [errorCities, setErrorCities] = useState({});
-  const [errorActivities, setErrorActivities] = useState({});
+  const [errorCities, setErrorCities] = useState<any>({});
+  const [errorActivities, setErrorActivities] = useState<any>({});
   const hiddenFileInput = useRef(null);
   const [disable, setDisable] = useState(true);
 
@@ -191,7 +190,7 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
 
   const createTrip = async (trip: Trip) => {
     try {
-      await axios.post("http://localhost:3000/api/trips", trip);
+      await axios.post("/api/trips", trip);
     } catch (error) {
       console.log(error);
     }
@@ -199,6 +198,7 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    console.log(input);
     await createTrip(input);
     setInput(initialState);
     router.push("/trips");
@@ -278,15 +278,21 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
                 rowSpan={1}
                 colSpan={1}
                 bg="none"
-                align="center"
+                alignContent="center"
                 alignSelf="center"
               >
-                <Image
-                  src={`${image}`}
-                  fallbackSrc="https://via.placeholder.com/150"
-                  alt="img"
-                  boxSize="200px"
-                />
+                <Box
+                  display={"flex"}
+                  alignItems={"center"}
+                  justifyContent={"center"}
+                >
+                  <Image
+                    src={`${image}`}
+                    fallbackSrc="https://via.placeholder.com/150"
+                    alt="img"
+                    boxSize="200px"
+                  />
+                </Box>
                 <Center>
                   <Button onClick={(event) => handleClick(event)} mt="20px">
                     Change Trip Image
@@ -504,13 +510,12 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
 };
 
 export const getServerSideProps = async () => {
-  const response = await fetch("http://localhost:3000/api/activities");
-  const activities = await response.json();
-  const res = await fetch("http://localhost:3000/api/cities");
-  const cities = await res.json();
-  const data = await fetch("http://localhost:3000/api/trips");
-  const trips = await data.json();
-
+  const response = await axios("/activities");
+  const activities = await response.data;
+  const res = await axios("/cities");
+  const cities = await res.data;
+  const data = await axios("/trips");
+  const trips = await data.data;
   return {
     props: {
       activities: activities,

@@ -1,10 +1,17 @@
 import { NextApiRequest, NextApiResponse } from "next"
+import NextCors from "nextjs-cors";
 import TripsControllers from 'src/controllers/trips'
 
 export default async function index(
     req: NextApiRequest,
     res: NextApiResponse
 ) {
+    await NextCors(req, res, {
+        // Options
+        methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
+        origin: '*',
+        optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
+      });
     const {
         method,
         body: { name, initDate, endDate, planner, description, price, activitiesName, image, cities },

@@ -1,4 +1,10 @@
-import { typeSort, condition, Activity, weekdays } from "src/utils/interface";
+import {
+  typeSort,
+  condition,
+  Activity,
+  weekdays,
+  createComment,
+} from "src/utils/interface";
 import prisma from "src/utils/prisma";
 import cloudinary from "src/utils/cloudinary";
 const { CLOUDINARY_PRESET_ACTIVITIES } = process.env;
@@ -20,6 +26,9 @@ type body = {
   cityName?: string | string[];
   image?: string;
   active?: any;
+  comment?: String;
+  mail?: String;
+  rating?: Number;
 };
 
 type activity = {
@@ -154,6 +163,32 @@ const ActivitiesControles = {
             include: { trip: true },
           },
           city: true,
+          comments: {
+            select: {
+              comment: true,
+              user: {
+                select: {
+                  id: true,
+                  name: true,
+                  mail: true,
+                  avatar: true,
+                },
+              },
+            },
+          },
+          rating: {
+            select: {
+              rating: true,
+              user: {
+                select: {
+                  id: true,
+                  name: true,
+                  mail: true,
+                  avatar: true,
+                },
+              },
+            },
+          },
         },
       });
       return response;
@@ -223,6 +258,28 @@ const ActivitiesControles = {
     });
     await cloudinary.uploader.destroy(response.public_id_image);
     return response;
+  },
+  patchActivity: async (body: body, query: query) => {
+    let { id } = query;
+    let { comment, mail, rating } = body;
+    if (!comment && !rating) throw "Missing data";
+    comment &&
+      (await prisma.comments.create({
+        data: {
+          comment: comment.toString(),
+          activityId: id.toString(),
+          userMail: mail.toString(),
+        },
+      }));
+    rating &&
+      (await prisma.rating.create({
+        data: {
+          rating: typeof rating === "number" ? rating : Number(rating),
+          activityId: id.toString(),
+          userMail: mail.toString(),
+        },
+      }));
+    return "Feedback added";
   },
 };
 export default ActivitiesControles;

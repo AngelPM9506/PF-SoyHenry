@@ -4,6 +4,9 @@ import Layout from "../../components/layout/Layout";
 import TripDetail from "../../components/TripDetail";
 import { QueryFunctionContext, useQuery } from "react-query";
 import { getTripId, getTrips } from "src/utils/trips";
+import TripsControllers from "src/controllers/trips";
+import axios from "axios";
+import { GetServerSideProps } from "next/types";
 
 interface Props {
   id: QueryFunctionContext<string[], any>;
@@ -25,25 +28,39 @@ export default function Detail(props: Props) {
   );
 }
 
-export async function getStaticPaths(context: any) {
-  const allTrips = await getTrips();
-  const paths = allTrips.map((t: Trip) => {
-    const id = t.id;
-    return { params: { id } };
-  });
-  return {
-    paths,
-    fallback: false,
-  };
-}
+// export async function getStaticPaths(context: any) {
+//   const allTrips = await TripsControllers.getTrips({});
+//   const paths = allTrips.map((t: any) => {
+//     const id = t.id;
+//     return { params: { id } };
+//   });
+//   return {
+//     paths,
+//     fallback: false,
+//   };
+// }
 
-export async function getStaticProps({ params }: any) {
-  const { id } = params;
-  const trip = await getTripId(id);
+// export async function getStaticProps({ params }: any) {
+//   const { id } = params;
+//   const trip = JSON.parse(
+//     JSON.stringify(await TripsControllers.getTrip({ id }))
+//   );
+//   return {
+//     props: {
+//       trip,
+//       id,
+//     },
+//   };
+// }
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const { id } = context.query;
+  const response = await axios.get(`/trips/${id}`);
+  const trip = response.data;
   return {
     props: {
-      trip,
-      id,
+      trip: trip,
+      id: id,
     },
   };
-}
+};

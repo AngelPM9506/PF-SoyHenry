@@ -8,9 +8,10 @@ import { useUser } from "@auth0/nextjs-auth0";
 import { useQuery } from "react-query";
 import { getOrCreateUser } from "src/utils/User";
 import { useRouter } from "next/router";
-
+import { useState, useEffect } from "react";
 import { Stack } from "@chakra-ui/react";
-
+import axios from "axios";
+import { UserData } from "src/components/UserProfile";
 
 interface Props {
   trips: Trip[];
@@ -24,11 +25,10 @@ const Home = ({ trips, activities }: Props) => {
     ["userDb", user],
     () => user && getOrCreateUser(user)
   );
-  if (isLoading || !userDb) return <div>Loading...</div>;
+  if (!userDb) return <div>Loading...</div>;
   if (!userDb.data.active) {
     router.push("/api/auth/logout");
   }
-  console.log(userDb.data.active);
   return (
     <Layout>
       <div className={styles.container}>
@@ -44,10 +44,10 @@ const Home = ({ trips, activities }: Props) => {
 };
 
 export const getServerSideProps = async () => {
-  const res = await fetch("http://localhost:3000/api/trips");
-  const trips = await res.json();
-  const response = await fetch("http://localhost:3000/api/activities");
-  const activities = await response.json();
+  const res = await axios("/trips");
+  const trips = await res.data;
+  const response = await axios("/activities");
+  const activities = await response.data;
 
   return {
     props: {

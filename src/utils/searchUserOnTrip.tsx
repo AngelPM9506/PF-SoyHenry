@@ -1,13 +1,9 @@
-import prisma from './prisma'
+import axios from 'axios';
 
-const searchUser = async(idTrip:string, idUser:string) =>{
-    const searchUser = await prisma.usersOnTrips.findFirst({
-        where:{
-            userid:idUser,
-            tripId:idTrip
-        }
-    })
-    return searchUser ? true : false
+const searchUser = async(idTrip:string, idUser:string) => {
+    const searchUser = await axios.get(`/api/users?id=${idUser}&tripID=${idTrip}`);
+
+    return searchUser.data;
 }
 
 export default searchUser;

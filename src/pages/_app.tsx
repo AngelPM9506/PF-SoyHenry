@@ -9,7 +9,7 @@ import { ReactQueryDevtools } from "react-query/devtools";
 import axios from "axios";
 
 const {AXIOS_URL_BASE} = process.env;
-axios.defaults.baseURL = AXIOS_URL_BASE || "http://127.0.0.1:3000/api"
+axios.defaults.baseURL = AXIOS_URL_BASE;
 
 function MyApp({ Component, pageProps }: any) {
   const queryClient = new QueryClient();

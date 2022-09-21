@@ -6,56 +6,64 @@ import {
   Text,
   Stack,
   Image,
+  Button,
 } from "@chakra-ui/react";
+import { Activity } from "src/utils/interface";
+import { upPrice } from "src/components/Carousel";
 import NextLink from "next/link";
-import { useQuery } from "react-query";
-import { VerticalTimelineElement } from "react-vertical-timeline-component";
-import { MdOutlineTripOrigin } from "react-icons/md";
 
-const url = "https://drive.google.com/uc?id=1_6Nlg2YJEROqakx47LjLzuLjhLifPJ5t";
+interface Props {
+  associatedAct: Activity[];
+}
 
-export default function MiniCardAct({ activity, cities }: any) {
+const url =
+  "https://res.cloudinary.com/mauro4202214/image/upload/v1663527844/world-travelers/activitydefault_q9aljz.png";
+
+export const ModalActivities = ({ associatedAct }: Props) => {
   return (
     <Center>
-      <Box
-        role={"group"}
-        p={6}
-        maxW={"330px"}
-        bg={useColorModeValue("white", "gray.800")}
-        boxShadow={"2xl"}
-        rounded={"lg"}
-        pos={"relative"}
-        zIndex={1}
-      >
-        <Image
-          rounded={"lg"}
-          height={"160px"}
-          width={"200px"}
-          objectFit={"cover"}
-          src={activity?.image != null ? activity?.image : url}
-          alt={activity?.name}
-        />
+      {associatedAct &&
+        associatedAct.map((act) => (
+          <Box
+            key={act.id}
+            role={"group"}
+            p={6}
+            maxW={"330px"}
+            bg={useColorModeValue("white", "gray.800")}
+            boxShadow={"2xl"}
+            rounded={"lg"}
+            pos={"relative"}
+            zIndex={1}
+            margin={2}
+          >
+            <Image
+              rounded={"md"}
+              height={"100px"}
+              width={"100px"}
+              objectFit={"cover"}
+              src={act?.image != null ? act?.image.toString() : url}
+              alt={act?.name}
+            />
 
-        <Stack pt={10} align={"center"}>
-          {cities?.map((c: any, i: number) => {
-            if (c.city.id === activity?.cityId) {
-              return (
-                <Text
-                key={i}
-                  color={"gray.500"}
-                  fontSize={"sm"}
-                  textTransform={"uppercase"}
-                >
-                  {c.city.name}
-                </Text>
-              );
-            }
-          })}
-          <Heading fontSize={"2xl"} fontFamily={"body"} fontWeight={500}>
-            {activity?.name}
-          </Heading>
-        </Stack>
-      </Box>
+            <Stack pt={2} display={"flex"} alignItems={"center"}>
+              <Text fontSize={"md"} fontFamily={"body"} fontWeight={100}>
+                {act?.name}
+              </Text>
+              <Text fontWeight={100} fontSize={"lg"}>
+                {`$${act?.price}`}
+              </Text>
+              <Text textDecoration={"line-through"} color={"#F3B46F"}>
+                {`$${upPrice(act?.price)}`}
+              </Text>
+              <NextLink href={`/activities/${act.id}`}>
+                <Button size={"xs"}>+Info</Button>
+              </NextLink>
+              <Button size={"sm"}>Add</Button>
+            </Stack>
+          </Box>
+        ))}
     </Center>
   );
-}
+};
+
+export default ModalActivities;

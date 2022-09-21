@@ -55,7 +55,6 @@ model UsersOnTrips {
   userid String
   trip   Trip   @relation(fields: [tripId], references: [id], onDelete: Cascade)
   tripId String
-  payed Boolean     @default(false)
 
   @@id([userid, tripId])
 }

@@ -23,7 +23,7 @@ const getCredentials = async() => {
 }
 
 export default async function Payment(req: NextApiRequest, res: NextApiResponse) {
-	const { method, body: {price, description, id}, query: {token} } = req;
+	const { method, body: {price, description, id}, query: {token, tripID} } = req;
 	try {
 		switch (method) {
 			case 'POST': {
@@ -42,7 +42,7 @@ export default async function Payment(req: NextApiRequest, res: NextApiResponse)
 						brand_name: "worldtravelers.com",
 						landing_page: "LOGIN",
 						user_action: "PAY_NOW",
-						return_url: `http://localhost:3000/api/payment/paypal`,
+						return_url: `http://localhost:3000/api/payment/paypal?tripID=${id}`,
 						cancel_url: `http://localhost:3000/trips/${id}`,
 					}
 				}
@@ -54,13 +54,12 @@ export default async function Payment(req: NextApiRequest, res: NextApiResponse)
 						Authorization: `Bearer ${token.data.access_token}`
 					}
 				})
-
-				console.log(response.data);
+				
 				return res.json(response.data)
 			}
 
 			case 'GET': {
-
+				console.log(tripID);
 				const credentials = await getCredentials();
 				const response = await axios.post(`${PAYPAL_API}/v2/checkout/orders/${token}/capture`, {}, {
 					headers: {
@@ -69,28 +68,25 @@ export default async function Payment(req: NextApiRequest, res: NextApiResponse)
 				})
 				const mail: string = response.data.payment_source.paypal.email_address;	
 
-				if(response.status.toString() === "COMPLETED") {
+				if(response.data.status.toString() === "COMPLETED") {
                     const response = await prisma.trip.update({
-						where: { id: id.toString() },
+						where: { id: tripID.toString() },
 						data: {
 							active: true
 						}
 					})
 					const user = await prisma.user.findFirst({where: {mail: mail.toString()}})
-					const updateUser = await prisma.usersOnTrips.update({
-						where: {userid: user.id.toString()},
+					const userInTrip = await prisma.usersOnTrips.create({
 						data: {
-							state: true
+							userid: user.id,
+							tripId: tripID.toString(),
 						}
 					})
 
-					res.redirect(`http://localhost:3000/home`)
+					return res.redirect(`http://localhost:3000/trips/${tripID}`)
 				} else {
-					res.redirect(`http://localhost:3000/404`)
+					return res.redirect(`http://localhost:3000/404`)
 				}
-
-				// return res.redirect(`http://localhost:3000/trips`);
-				// return res.json(response.data);
 			}
 
 			default:

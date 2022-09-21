@@ -34,10 +34,11 @@ export default function MiniCardAct({ activity, cities }: any) {
         />
 
         <Stack pt={10} align={"center"}>
-          {cities?.map((c) => {
+          {cities?.map((c: any, i: number) => {
             if (c.city.id === activity?.cityId) {
               return (
                 <Text
+                key={i}
                   color={"gray.500"}
                   fontSize={"sm"}
                   textTransform={"uppercase"}

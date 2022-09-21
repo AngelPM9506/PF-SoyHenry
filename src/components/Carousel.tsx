@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import React, { Component } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
@@ -26,6 +27,8 @@ const MyCarousel = ({ trips, activities }: Props) => {
   const lastTrips = trips?.reverse().slice(0, 13);
   const lastActivities = activities?.reverse().slice(0, 13);
 
+  const useColorMode = useColorModeValue("white", "gray.800");
+
   const upPrice = (price: number) => {
     return Math.floor(price + (price * 30) / 100);
   };
@@ -35,7 +38,7 @@ const MyCarousel = ({ trips, activities }: Props) => {
       <Box p={5} mt={"20px"}>
         <Heading textAlign={"center"}>Trending Trips</Heading>
       </Box>
-      <Box width={"100%"} justifyContent={"center"} align={"center"}>
+      <Box width={"100%"} justifyContent={"center"} alignContent={"center"}>
         <Stack width={"80%"}>
           <Slider {...settings}>
             {lastTrips?.map((t) => {
@@ -75,11 +78,12 @@ const MyCarousel = ({ trips, activities }: Props) => {
                       }}
                     >
                       <Image
+                        alt="image"
                         rounded={"lg"}
                         height={230}
                         width={282}
                         objectFit={"cover"}
-                        src={t.image ? t.image : defaultpic}
+                        src={t.image ? t.image.toString() : defaultpic}
                       />
                     </Box>
                     <Stack pt={10} align={"center"}>
@@ -112,7 +116,7 @@ const MyCarousel = ({ trips, activities }: Props) => {
       <Box p={5} mt={"20px"}>
         <Heading textAlign={"center"}>Trending Activities</Heading>
       </Box>
-      <Box width={"100%"} justifyContent={"center"} align={"center"}>
+      <Box width={"100%"} justifyContent={"center"} alignContent={"center"}>
         <Stack width={"80%"}>
           <Slider {...settings}>
             {lastActivities?.map((a) => {
@@ -152,11 +156,12 @@ const MyCarousel = ({ trips, activities }: Props) => {
                       }}
                     >
                       <Image
+                        alt="image"
                         rounded={"lg"}
                         height={230}
                         width={282}
                         objectFit={"cover"}
-                        src={a.image ? a.image : defaultpic}
+                        src={a.image ? a.image.toString() : defaultpic}
                       />
                     </Box>
                     <Stack pt={10} align={"center"}>

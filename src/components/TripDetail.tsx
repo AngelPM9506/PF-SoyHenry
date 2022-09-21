@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import {
   Box,
   chakra,
@@ -173,8 +174,9 @@ export default function TripDetail({ data, isLoading, error }: any) {
           </Text>
           <SimpleGrid ml={"20px"} mr={"20px"} columns={5} spacing={2}>
             {data.activitiesOnTrips.length != 0 ? (
-              data.activitiesOnTrips.map((activity: any) => (
+              data.activitiesOnTrips.map((activity: any, i: number) => (
                 <MiniCardAct
+                Key={i}
                   activity={activity.activity}
                   cities={data.citiesOnTrips}
                 />

@@ -6,7 +6,11 @@ import { myTheme } from "src/styles/theme";
 import { useEffect, useState } from "react";
 import { Hydrate, QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
-function MyApp({ Component, pageProps }: AppProps) {
+import axios from "axios";
+
+axios.defaults.baseURL = process.env.AXIOS_URL_BASE;
+
+function MyApp({ Component, pageProps }: any) {
   const queryClient = new QueryClient();
   const [showChild, setShowChild] = useState(false);
 

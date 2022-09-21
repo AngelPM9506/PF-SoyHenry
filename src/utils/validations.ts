@@ -19,7 +19,7 @@ export const validateDescription = (description: string) => {
 };
 
 export const validatePrice = (price: number) => {
-  return /^[0-9]*\.?[0-9]*$/.test(price);
+  return /^[0-9]*\.?[0-9]*$/.test(price.toString());
 };
 
 export const validateDates = (date: string) => {

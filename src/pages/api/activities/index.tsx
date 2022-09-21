@@ -1,7 +1,14 @@
-import { NextApiRequest, NextApiResponse } from 'next';
-import ActivitiesControles from 'src/controllers/activities'
+import { NextApiRequest, NextApiResponse } from "next";
+import NextCors from "nextjs-cors";
+import ActivitiesControles from "src/controllers/activities";
 
 export default async function index(req: NextApiRequest, res: NextApiResponse) {
+  await NextCors(req, res, {
+    // Options
+    methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE"],
+    origin: "*",
+    optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
+  });
   let {
     method,
     body: { name, availability, description, price, cityName, image },
@@ -10,20 +17,33 @@ export default async function index(req: NextApiRequest, res: NextApiResponse) {
   try {
     switch (method) {
       /**obtener todos las actividades */
-      case 'GET':
-        let repGet = await ActivitiesControles.getActivities({ wName, sort, sortBy, wCity, maxPrice });
+      case "GET":
+        let repGet = await ActivitiesControles.getActivities({
+          wName,
+          sort,
+          sortBy,
+          wCity,
+          maxPrice,
+        });
         return res.status(200).json(repGet);
 
       /**agregar una nueva actividad */
-      case 'POST':
-        let repPost = await ActivitiesControles.postActivity({ name, availability, description, price, cityName, image });
+      case "POST":
+        let repPost = await ActivitiesControles.postActivity({
+          name,
+          availability,
+          description,
+          price,
+          cityName,
+          image,
+        });
         return res.status(201).json(repPost);
       default:
-        res.status(400).send('Metohd not supported try again');
+        res.status(400).send("Method not supported try again");
         break;
     }
   } catch (error: any) {
-    return res.json({ status: "error", msg: error.message });
+    return res.status(410).json({ status: "error", msg: error.message });
   }
 }
 /**

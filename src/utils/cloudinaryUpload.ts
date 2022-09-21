@@ -2,7 +2,7 @@ import cloudinary from "src/utils/cloudinary";
 import { toNamespacedPath } from "path";
 import { UserData } from "src/components/UserProfile";
 const { CLOUDINARY_PRESET_AVATARS } = process.env;
-export const cloudinaryImg = async (user) => {
+export const cloudinaryImg = async (user: UserData) => {
   const uploadImage = await cloudinary.uploader.upload(
     user.avatar,
     {

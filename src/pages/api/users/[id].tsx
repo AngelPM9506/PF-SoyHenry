@@ -3,8 +3,15 @@ import prisma from "src/utils/prisma";
 import { UserData } from "src/components/UserProfile";
 import { cloudinaryImg } from "src/utils/cloudinaryUpload";
 import usersControllers from "src/controllers/users";
+import NextCors from "nextjs-cors";
 
 export default async function index(req: NextApiRequest, res: NextApiResponse) {
+  await NextCors(req, res, {
+    // Options
+    methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
+    origin: '*',
+    optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
+  });
   const {
     method,
     body: {

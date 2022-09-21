@@ -20,14 +20,11 @@ export const getOrCreateUser = async (user: UserAuth0) => {
     avatar: user.picture,
     description: "",
   });
-
   return userDb;
 };
 
 export const getUsers = async () => {
-  const userDb: UserData[] = await axios.get(
-    "http://localhost:3000/api/users/"
-  );
+  const userDb: UserData = await axios.get("/api/users");
 
   return userDb.data;
 };

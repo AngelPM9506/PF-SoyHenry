@@ -9,20 +9,20 @@ export const getActivities = async (
   sort?: string,
   sortBy?: string
 ) => {
-  const activities = await axios.get(
-    `http://localhost:3000/api/activities?sort=${sort || "desc"}&sortBy=${
-      sortBy || "name"
-    }&wCity=${wCity || "&"}&wName=${wName || "&"}&maxPrice=${maxPrice || "&"}`
-  );
+  let urlGet = `/api/activities?`;
+  sort ? (urlGet += `&sort=${sort}`) : "";
+  wCity ? (urlGet += `&wCity=${wCity}`) : "";
+  wName ? (urlGet += `&wName=${wName}`) : "";
+  maxPrice ? (urlGet += `&maxPrice=${maxPrice}`) : "";
+  sortBy ? (urlGet += `&sortBy=${sortBy}`) : "";
+  const activities = await axios.get(urlGet);
   return activities.data;
 };
 
 export const getActivitiesId = async (
   id: QueryFunctionContext<string[], any>
 ) => {
-  const activity = await axios.get(
-    `http://localhost:3000/api/activities/${id}`
-  );
+  const activity = await axios.get(`/api/activities/${id}`);
   return activity.data;
 };
 
@@ -35,7 +35,7 @@ export const createActivity = async ({
   price,
 }: Activity) => {
   try {
-    const activity = await axios.post("http://localhost:3000/api/activities/", {
+    const activity = await axios.post("/api/activities", {
       name,
       image,
       cityName,
@@ -43,6 +43,8 @@ export const createActivity = async ({
       description,
       price,
     });
+    console.log(activity);
+    console.log(activity.data);
     return activity.data;
   } catch (err) {
     console.error(err);

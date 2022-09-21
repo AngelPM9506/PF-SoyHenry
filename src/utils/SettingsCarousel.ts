@@ -5,6 +5,7 @@ export var settings = {
   slidesToShow: 3,
   slidesToScroll: 1,
   initialSlide: 0,
+  adaptiveHeight: true,
   responsive: [
     {
       breakpoint: 1024,

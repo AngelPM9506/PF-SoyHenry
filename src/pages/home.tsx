@@ -29,6 +29,7 @@ const Home = ({ trips, activities }: Props) => {
   if (!userDb.data.active) {
     router.push("/api/auth/logout");
   }
+
   return (
     <Layout>
       <div className={styles.container}>

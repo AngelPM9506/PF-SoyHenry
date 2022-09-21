@@ -6,7 +6,7 @@ export interface Trip {
   initDate: string;
   cities?: string[];
   endDate: string;
-  planner?: string;
+  planner?: { avatar?: string; id?: string } | any;
   tripOnUser?: Object[];
   description: string;
   activitiesName: string[];

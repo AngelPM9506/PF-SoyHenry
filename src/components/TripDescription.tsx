@@ -1,12 +1,12 @@
 import { Box, Button } from "@chakra-ui/react";
-import { memo, ReactNode, useState } from "react";
+import { useState } from "react";
 
 interface Props {
   noOfLines?: number;
   children: string;
 }
 
-export const TripDescription = memo(({ noOfLines = 4, children }: Props) => {
+export const TripDescription = ({ noOfLines = 4, children }: Props) => {
   console.log(children);
   const [expandedCount, setExpandedCount] = useState(noOfLines);
 
@@ -29,4 +29,4 @@ export const TripDescription = memo(({ noOfLines = 4, children }: Props) => {
       </Button>
     </Box>
   );
-});
+};

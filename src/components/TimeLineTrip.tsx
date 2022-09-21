@@ -32,13 +32,14 @@ export const TimeLine = ({ data }: any) => {
         boxShadow={"0px 5px   white"}
       >
         <Text textAlign={"center"} fontWeight={"bold"} fontSize={"2xl"}>
-          Trip's itinerary
+          Trips itinerary
         </Text>
       </Box>
       <VerticalTimeline>
         {data.activitiesOnTrips.length != 0 ? (
           data.activitiesOnTrips.map((activity: any) => (
             <CardTimeLine
+              key={activity.id}
               activity={activity.activity}
               cities={data.citiesOnTrips}
             />

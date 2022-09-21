@@ -71,6 +71,7 @@ export default function TripDetail({ data, isLoading, error }: any) {
             width={"40px"}
             marginRight={"10px"}
             src={location}
+            alt={"icon"}
           />
           {data.name}
         </Heading>
@@ -131,17 +132,7 @@ export default function TripDetail({ data, isLoading, error }: any) {
               }
             >
               <VStack alignItems={"left"} spacing={{ base: 4, sm: 6 }}>
-                <TripDescription children={data.description} />
-                {/* <Text
-                  textAlign={"left"}
-                  color={useColorModeValue("gray.500", "gray.400")}
-                  fontSize={"xl"}
-                  fontWeight={"300"}
-                  paddingRight={"30px"}
-                  minHeight={"150px"}
-                >
-                  {data.description}
-                </Text> */}
+                <TripDescription>{data.description}</TripDescription>
               </VStack>
               <Box>
                 <Text
@@ -193,7 +184,7 @@ export default function TripDetail({ data, isLoading, error }: any) {
           justifyContent={"center"}
           marginLeft={"10px"}
         >
-          <Box width={"100%"} align={"center"} mt={"10px"} mb={"10px"}>
+          <Box width={"100%"} mt={"10px"} mb={"10px"}>
             {/* <Divider
               orientation="horizontal"
               width={"80%"}

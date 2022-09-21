@@ -39,10 +39,11 @@ export default function CardTimeLine({ activity, cities }: any) {
             {activity?.name}
           </Heading>
 
-          {cities?.map((c) => {
+          {cities?.map((c: any) => {
             if (c.city.id === activity?.cityId) {
               return (
                 <Text
+                  key={c.city.name}
                   font-size={"15px"}
                   paddingBottom={"15px"}
                   color={"#293541"}

@@ -193,21 +193,21 @@ export default function TripDetail({ data, isLoading, error }: any) {
           marginLeft={"10px"}
         >
           <Box width={"100%"} align={"center"} mt={"10px"} mb={"10px"}>
-            <Divider
+            {/* <Divider
               orientation="horizontal"
               width={"80%"}
               borderWidth={"1.5px"}
               color={"#293541"}
-            />
+            /> */}
             <Box>
               <AvatarCarousel props={data.tripOnUser} />
             </Box>
-            <Divider
+            {/* <Divider
               orientation="horizontal"
               width={"80%"}
               borderWidth={"1.5px"}
               color={"#293541"}
-            />
+            /> */}
           </Box>
 
           <TimeLine data={data} />

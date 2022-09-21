@@ -128,6 +128,7 @@ export interface Errors {
   cities?: string;
   availability?: string;
   activitiesName?: string;
+  keyWords?: string;
 }
 
 export type createComment = {

@@ -2,7 +2,6 @@ import { useUser } from "@auth0/nextjs-auth0";
 import { UserProfile } from "src/components/UserProfile";
 import { useQuery } from "react-query";
 import { getOrCreateUser } from "src/utils/User";
-import Nav from "src/components/layout/Nav";
 import Layout from "src/components/layout/Layout";
 
 export default function Profile() {

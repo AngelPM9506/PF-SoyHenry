@@ -8,7 +8,7 @@ const landingPage: NextPage = () => {
     "https://res.cloudinary.com/mauro4202214/video/upload/v1663337043/world-travelers/videolandingpagecrop_iklwjv.mp4";
   const play = (event: any) => {
     event.target.play();
-  }
+  };
   return (
     <>
       <ReactPlayer
@@ -23,10 +23,10 @@ const landingPage: NextPage = () => {
         url={url}
         controls={false}
         volume={0.3}
-        //onMouseMove={play}
+        onMouseMove={play}
         playsinline
         muted
-      // onMouseOver={(e) => e.target.play()}
+        onMouseOver={(e: any) => e.target.play()}
       />
       <Box marginTop="-50%">
         <Stack flex={1} spacing={{ base: 5, md: 10 }}>

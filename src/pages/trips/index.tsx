@@ -40,13 +40,14 @@ function Trips({ trips }: Props) {
   const [input, setInput] = useState<string>("");
   const [inputCity, setInputCity] = useState<string>("");
   const { data } = useQuery(
-    ["trips", wCity, wName, maxPrice, sort, sortBy], //dependencies: React is going to re-render when one of these changes
+    ["trips", wCity, wName, maxPrice, sort, sortBy],
+    //dependencies: React is going to re-render when one of these changes
     () => getTrips(wCity, wName, maxPrice, sort, sortBy)
   );
   //const data = trips;
   const [currentPage, setCurrentPage] = useState(1);
   const [tripsPerPage, setTripsPerPage] = useState(8);
-  const max = Math.ceil((data ?data.length: trips) / tripsPerPage);
+  const max = Math.ceil((data ? data.length : trips) / tripsPerPage);
   const [inputPage, setInputPage] = useState(1);
 
   if (sort === "Sort Order") setSort("desc");
@@ -85,7 +86,6 @@ function Trips({ trips }: Props) {
     setInputCity("");
   };
 
-  console.log(data);
   return !data ? (
     <div>
       <h1>There are no trips yet! </h1>
@@ -267,7 +267,7 @@ function Trips({ trips }: Props) {
 // };
 
 export const getServerSideProps = async () => {
-  const res = await axios("/trips");
+  const res = await axios.get("/trips");
   const trips = await res.data;
 
   return {

@@ -15,12 +15,11 @@ import {
   Box,
   HStack,
 } from "@chakra-ui/react";
-
+import axios from "axios";
 import { useState } from "react";
-import { Trip, Activity, City, Errors } from "src/utils/interface";
+import { Activity, City, Errors } from "src/utils/interface";
 import { ChangeEvent, FormEvent, MouseEvent, useRef } from "react";
 import Layout from "src/components/layout/Layout";
-
 import { useRouter } from "next/router";
 import { useUser } from "@auth0/nextjs-auth0";
 import { useQuery } from "react-query";
@@ -33,17 +32,14 @@ import ActivitiesControles from "src/controllers/activities";
 interface Props {
   activities: Activity[];
   cities: City[];
-  trips: Trip[];
 }
 
-const CreateTrip = ({ activities, cities }: Props) => {
+const CreateActivity = ({ activities, cities }: Props) => {
   const { user } = useUser();
-
   const { data: userDb, isLoading } = useQuery(
     ["userDb", user],
     () => user && getOrCreateUser(user)
   );
-
   const initialState: Activity = {
     name: "",
     cityName: "",
@@ -62,7 +58,6 @@ const CreateTrip = ({ activities, cities }: Props) => {
   const [nameFile, setNameFile] = useState("");
   const [errors, setErrors] = useState<Errors>({});
   const hiddenFileInput = useRef(null);
-  console.log(input);
   const handleCities = ({
     target: { value },
   }: ChangeEvent<HTMLInputElement>) => {
@@ -356,8 +351,12 @@ const CreateTrip = ({ activities, cities }: Props) => {
 };
 
 export const getServerSideProps = async () => {
-  const cities = await getCities();
-  const activities = await ActivitiesControles.getActivities({});
+  const response = await axios("/activities");
+  const activities = await response.data;
+  const res = await axios("/cities");
+  const cities = await res.data;
+  // const cities = await getCities();
+  // const activities = await ActivitiesControles.getActivities({});
   return {
     props: {
       cities: cities,
@@ -366,4 +365,4 @@ export const getServerSideProps = async () => {
   };
 };
 
-export default CreateTrip;
+export default CreateActivity;

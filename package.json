@@ -11,6 +11,7 @@
     "studioDB": "npx prisma studio"
   },
   "dependencies": {
+    "@auth0/auth0-react": "^1.11.0",
     "@auth0/nextjs-auth0": "^1.9.1",
     "@chakra-ui/alert": "^2.0.9",
     "@chakra-ui/icons": "^2.0.9",

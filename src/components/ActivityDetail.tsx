@@ -23,6 +23,7 @@ import { MdLocalShipping } from "react-icons/md";
 import { MinusIcon } from "@chakra-ui/icons";
 import { City, CityInDB } from "src/utils/interface";
 import NextLink from "next/link";
+import { Reviews } from "./reviews/reviews";
 
 export default function ActivityDetail({ data, isLoading, error }: any) {
   if (isLoading) return <div>Loading...</div>;
@@ -151,14 +152,11 @@ export default function ActivityDetail({ data, isLoading, error }: any) {
               </Button>
             </NextLink>
           </Stack>
-
-          <Stack
-            direction="row"
-            alignItems="center"
-            justifyContent={"center"}
-          ></Stack>
         </Stack>
       </SimpleGrid>
+      <Box display={"flex"} alignItems={"center"} justifyContent={"center"}>
+        <Reviews />
+      </Box>
     </Container>
   );
 }

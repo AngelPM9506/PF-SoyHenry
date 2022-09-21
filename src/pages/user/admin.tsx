@@ -25,16 +25,17 @@ import Layout from "src/components/layout/Layout";
 import { UserData } from "src/components/UserProfile";
 import UserTable from "src/components/UserTable";
 import { getOrCreateUser, getUsers } from "src/utils/User";
-import NotFound from "src/pages/404.tsx";
 import NextLink from "next/link";
+import NotFound from "src/pages/404";
 
-function TablesTableRow({ users }) {
+function TablesTableRow({ users }: any) {
   const { user, error } = useUser();
   const { data: userDb, isLoading } = useQuery(["userDb", user], () =>
     getOrCreateUser(user)
   );
 
   const textColor = useColorModeValue("gray.700", "white");
+  const background = useColorModeValue("#02b1b1", "#02b1b1");
   const captions = ["user", "admin", "active"];
   if (isLoading || !userDb.data) return <div>Loading...</div>;
   if (!userDb.data.isAdmin) return <NotFound />;
@@ -49,11 +50,10 @@ function TablesTableRow({ users }) {
             </Text>
           </Box>
           <Button
-            // eslint-disable-next-line react-hooks/rules-of-hooks
             position={"absolute"}
             right={0}
             mr={10}
-            bg={useColorModeValue("#02b1b1", "#02b1b1")}
+            bg={background}
             color={"white"}
             rounded={"md"}
             padding={"20px"}

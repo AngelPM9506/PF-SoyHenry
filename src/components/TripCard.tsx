@@ -58,6 +58,7 @@ export function TripCard({ props }: any) {
               objectFit={"cover"}
               src={props.image ? props.image : defaultpic}
               boxShadow={"0px 10px 13px -7px #000000"}
+              alt='image card Trip'
             />
           </Box>
           <Stack marginTop={"0px"} height={"80px"} align={"center"}>

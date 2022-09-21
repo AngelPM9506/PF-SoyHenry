@@ -5,13 +5,21 @@ import {
 } from "react-icons/bs";
 import React from "react";
 
+type pagination = {
+  currentPage: any ;
+setCurrentPage: Function ;
+max: number;
+inputPage: any;
+setInputPage: Function;
+}
+
 export default function Pagination({
   currentPage,
   setCurrentPage,
   max,
   inputPage,
   setInputPage,
-}) {
+}: pagination) {
   const nextPage = () => {
     setInputPage(parseInt(currentPage) + 1);
     setCurrentPage(parseInt(currentPage) + 1);
@@ -21,7 +29,7 @@ export default function Pagination({
     setCurrentPage(parseInt(currentPage) - 1);
   };
 
-  const onKeyDown = (e) => {
+  const onKeyDown = (e: any) => {
     if (e.keyCode === 13) {
       if (
         parseInt(e.target.value) < 1 ||
@@ -36,7 +44,7 @@ export default function Pagination({
     }
   };
 
-  const onChange = (e) => {
+  const onChange = (e: any) => {
     setInputPage(e.target.value);
   };
 

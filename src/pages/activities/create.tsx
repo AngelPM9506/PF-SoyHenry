@@ -15,12 +15,11 @@ import {
   Box,
   HStack,
 } from "@chakra-ui/react";
-
+import axios from "axios";
 import { useState } from "react";
-import { Trip, Activity, City, Errors } from "src/utils/interface";
+import { Activity, City, Errors } from "src/utils/interface";
 import { ChangeEvent, FormEvent, MouseEvent, useRef } from "react";
 import Layout from "src/components/layout/Layout";
-
 import { useRouter } from "next/router";
 import { useUser } from "@auth0/nextjs-auth0";
 import { useQuery } from "react-query";
@@ -29,21 +28,20 @@ import { formControlActivity } from "src/utils/validations";
 import { createActivity, getActivities } from "src/utils/activities";
 import { getCities } from "src/utils/cities";
 import NotFound from "../404";
+import ActivitiesControles from "src/controllers/activities";
+
 
 interface Props {
   activities: Activity[];
   cities: City[];
-  trips: Trip[];
 }
 
-const CreateTrip = ({ activities, cities }: Props) => {
+const CreateActivity = ({ activities, cities }: Props) => {
   const { user } = useUser();
-
   const { data: userDb, isLoading } = useQuery(
     ["userDb", user],
     () => user && getOrCreateUser(user)
   );
-
   const initialState: Activity = {
     name: "",
     cityName: "",
@@ -62,7 +60,6 @@ const CreateTrip = ({ activities, cities }: Props) => {
   const [nameFile, setNameFile] = useState("");
   const [errors, setErrors] = useState<Errors>({});
   const hiddenFileInput = useRef(null);
-  console.log(input);
   const handleCities = ({
     target: { value },
   }: ChangeEvent<HTMLInputElement>) => {
@@ -130,10 +127,10 @@ const CreateTrip = ({ activities, cities }: Props) => {
     router.push("/activities");
   };
 
-  const handleDeleteAv = (c) => {
+  const handleDeleteAv = (c: any) => {
     setInput({
       ...input,
-      availability: input.availability.filter((a) => a != c),
+      availability: input.availability.filter((a: any) => a != c),
     });
   };
   if (isLoading || !userDb.data) return <div>Loading...</div>;
@@ -159,7 +156,7 @@ const CreateTrip = ({ activities, cities }: Props) => {
                 rowSpan={1}
                 colSpan={1}
                 bg="none"
-                align={"center"}
+                alignContent={"center"}
                 alignSelf="center"
               >
                 <Image
@@ -281,7 +278,7 @@ const CreateTrip = ({ activities, cities }: Props) => {
                     {input.availability.length != 0 ? (
                       input.availability.map((c, index) => {
                         return (
-                          <Box marginLeft={"10px"} value={c} key={index}>
+                          <Box marginLeft={"10px"} key={index}>
                             {c}
                             <Button
                               marginLeft="2"
@@ -357,8 +354,12 @@ const CreateTrip = ({ activities, cities }: Props) => {
 };
 
 export const getServerSideProps = async () => {
-  const cities = await getCities();
-  const activities = await getActivities();
+  const response = await axios("/activities");
+  const activities = await response.data;
+  const res = await axios("/cities");
+  const cities = await res.data;
+  // const cities = await getCities();
+  // const activities = await ActivitiesControles.getActivities({});
   return {
     props: {
       cities: cities,
@@ -367,4 +368,4 @@ export const getServerSideProps = async () => {
   };
 };
 
-export default CreateTrip;
+export default CreateActivity;

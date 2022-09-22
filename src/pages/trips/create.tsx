@@ -216,7 +216,7 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
         urlMsg: 'See your trip here'
       }
     }).catch(error => console.log(error));
-    router.push("/trips")
+    router.push(`/trips/${tripCreated.id}`);
   };
 
   const handleDelete = (activity: String) => {

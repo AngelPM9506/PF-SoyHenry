@@ -25,6 +25,8 @@ import { UserData } from "src/components/UserProfile";
 import UserTable from "src/components/UserTable";
 import { getOrCreateUser, getUsers } from "src/utils/User";
 import NotFound from "src/pages/404";
+import Loading from 'src/components/Loading';
+
 
 function TablesTableRow({ users }: any) {
   const { user, error } = useUser();
@@ -34,7 +36,7 @@ function TablesTableRow({ users }: any) {
 
   const textColor = useColorModeValue("gray.700", "white");
   const captions = ["user", "admin", "active"];
-  if (isLoading || !userDb.data) return <div>Loading...</div>;
+  if (isLoading || !userDb.data) return <Loading/>;
   if (!userDb.data.isAdmin) return <NotFound />;
   return (
     <Layout>

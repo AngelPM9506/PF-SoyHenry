@@ -28,6 +28,8 @@ import { QueryFunctionContext, useQuery } from "react-query";
 import { TimeLine } from "./TimeLineTrip";
 import { TripDescription } from "./TripDescription";
 import { AvatarCarousel } from "./carouselAvatars";
+import Loading from 'src/components/Loading'
+
 
 interface Props {
   id: QueryFunctionContext<string[], any>;
@@ -42,7 +44,7 @@ export default function TripDetail({ data, isLoading, error }: any) {
     "https://drive.google.com/uc?id=1w5WnrjO9EbDHxa8B7h9oedYuk0SgQWBL";
   const iday = data.initDate.slice(0, 10).split("").reverse().join("");
   const eday = data.endDate.slice(0, 10).split("").reverse().join("");
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <Loading/>;
   if (error) return <div>{error.message}</div>;
   return (
     <Container maxW={"7xl"}>

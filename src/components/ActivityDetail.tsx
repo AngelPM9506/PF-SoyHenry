@@ -23,9 +23,10 @@ import { MdLocalShipping } from "react-icons/md";
 import { MinusIcon } from "@chakra-ui/icons";
 import { City, CityInDB } from "src/utils/interface";
 import NextLink from "next/link";
+import Loading from 'src/components/Loading'
 
 export default function ActivityDetail({ data, isLoading, error }: any) {
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <Loading/>;
   if (error) return <div>{error.message}</div>;
   console.log(data.city);
   return (

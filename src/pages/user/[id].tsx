@@ -5,7 +5,7 @@ import Layout from "src/components/layout/Layout";
 // import UserDetail from "src/components/userDetail";
 import UserDetail from "src/components/UserDetail";
 import axios from "axios";
-import usersControllers from "src/controllers/users";
+import Loading from 'src/components/Loading'
 import { GetServerSideProps } from "next/types";
 
 export interface Props {
@@ -19,7 +19,7 @@ export const ProfileDetail = (props: Props) => {
     () => props.id && getUserDetail(props.id)
   );
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <Loading/>;
   console.log(userDetail);
   return (
     <Layout>

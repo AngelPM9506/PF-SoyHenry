@@ -29,6 +29,8 @@ type body = {
   comment?: String;
   mail?: String;
   rating?: Number;
+  ID?: String;
+  idFeedback?: String;
 };
 
 type activity = {
@@ -163,27 +165,16 @@ const ActivitiesControles = {
             include: { trip: true },
           },
           city: true,
-          comments: {
+          feedbacks: {
             select: {
+              id: true,
+              userMail: true,
               comment: true,
-              user: {
-                select: {
-                  id: true,
-                  name: true,
-                  mail: true,
-                  avatar: true,
-                },
-              },
-            },
-          },
-          rating: {
-            select: {
               rating: true,
-              user: {
+              User: {
                 select: {
-                  id: true,
                   name: true,
-                  mail: true,
+                  id: true,
                   avatar: true,
                 },
               },
@@ -197,12 +188,38 @@ const ActivitiesControles = {
     }
   },
   putActivity: async (body: body, query: query) => {
-    let { name, image, availability, description, price, active } = body;
+    let {
+      name,
+      image,
+      availability,
+      description,
+      price,
+      active,
+      idFeedback,
+      comment,
+    } = body;
     let { id } = query;
     try {
       /**Si no existe ningun valor retorna un error*/
-      if (!name && !image && !availability && !description && !price && !active)
+      if (
+        !name &&
+        !image &&
+        !availability &&
+        !description &&
+        !price &&
+        !active &&
+        !idFeedback &&
+        !comment
+      ) {
         throw new Error("Missing data, try again");
+      }
+      if (idFeedback) {
+        await prisma.feedback.update({
+          where: { id: idFeedback.toString() },
+          data: { comment: comment.toString() },
+        });
+        return "Updated succefully";
+      }
       let toUpActivity = await prisma.activity.findUnique({
         where: { id: id.toString() },
       });
@@ -251,34 +268,34 @@ const ActivitiesControles = {
       return error;
     }
   },
-  deletActivity: async (query: query) => {
+  deletActivity: async (body: body, query: query) => {
     let { id } = query;
-    let response = await prisma.activity.delete({
-      where: { id: id.toString() },
-    });
-    await cloudinary.uploader.destroy(response.public_id_image);
-    return response;
+    let { idFeedback } = body;
+    if (idFeedback) {
+      await prisma.feedback.delete({
+        where: { id: idFeedback.toString() },
+      });
+      return "The feedback was delete succefully";
+    } else {
+      let response = await prisma.activity.delete({
+        where: { id: id.toString() },
+      });
+      await cloudinary.uploader.destroy(response.public_id_image);
+      return response;
+    }
   },
   patchActivity: async (body: body, query: query) => {
     let { id } = query;
     let { comment, mail, rating } = body;
     if (!comment && !rating) throw "Missing data";
-    comment &&
-      (await prisma.comments.create({
-        data: {
-          comment: comment.toString(),
-          activityId: id.toString(),
-          userMail: mail.toString(),
-        },
-      }));
-    rating &&
-      (await prisma.rating.create({
-        data: {
-          rating: typeof rating === "number" ? rating : Number(rating),
-          activityId: id.toString(),
-          userMail: mail.toString(),
-        },
-      }));
+    await prisma.feedback.create({
+      data: {
+        comment: comment.toString(),
+        rating: Number(rating),
+        activityId: id.toString(),
+        userMail: mail.toString(),
+      },
+    });
     return "Feedback added";
   },
 };

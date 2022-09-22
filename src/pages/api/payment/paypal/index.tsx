@@ -2,7 +2,7 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 // import prisma from "src/utils/prisma";
 import axios from "axios";
 import prisma from "src/utils/prisma";
-const { PAYPAL_API, PAYPAL_API_CLIENT, PAYPAL_API_SECRET } = process.env;
+const { PAYPAL_API, PAYPAL_API_CLIENT, PAYPAL_API_SECRET, PAYPAL_URL } = process.env;
 
 
 const getCredentials = async() => {
@@ -27,7 +27,12 @@ export default async function Payment(req: NextApiRequest, res: NextApiResponse)
 	try {
 		switch (method) {
 			case 'POST': {
-				const exist = await prisma.usersOnTrips.findMany({where: {userid: userID.toString()}})
+				const exist = await prisma.usersOnTrips.findFirst({
+					where: {
+						userid: userID.toString(),
+						tripId: id.toString()
+					}
+				})
 				if(exist) {
 					return res.json('user exist in trips');
 				} else {
@@ -46,8 +51,8 @@ export default async function Payment(req: NextApiRequest, res: NextApiResponse)
 							brand_name: "worldtravelers.com",
 							landing_page: "LOGIN",
 							user_action: "PAY_NOW",
-							return_url: `http://localhost:3000/api/payment/paypal?tripID=${id}`,
-							cancel_url: `http://localhost:3000/trips/${id}`,
+							return_url: `${PAYPAL_URL}/api/payment/paypal?tripID=${id}`,
+							cancel_url: `${PAYPAL_URL}/trips/${id}`,
 						}
 					}
 
@@ -88,9 +93,9 @@ export default async function Payment(req: NextApiRequest, res: NextApiResponse)
 						}
 					})
 
-					return res.redirect(`http://localhost:3000/trips/${tripID}`)
+					return res.redirect(`${PAYPAL_URL}/trips/${tripID}`)
 				} else {
-					return res.redirect(`http://localhost:3000/404`)
+					return res.redirect(`${PAYPAL_URL}/404`)
 				}
 			}
 

@@ -4,6 +4,7 @@ import {
   createActivities,
   createCity,
   createUsers,
+  activeDate,
 } from "src/utils/interface";
 const { CLOUDINARY_PRESET_TRIPS } = process.env;
 import cloudinary from "src/utils/cloudinary";
@@ -27,7 +28,7 @@ type body = {
   planner?: string;
   description?: string;
   price?: number;
-  activitiesName?: string[];
+  activitiesName?: activeDate[];
   image?: string;
   cities?: string[];
   active?: any;
@@ -173,25 +174,21 @@ const TripsControllers = {
     let initialDate = new Date(initDate);
     let finishDate = new Date(endDate);
 
-    // idPartaker,
-    // (idPartaker && !Array.isArray(idPartaker)) ||
-    // let createUsers: createUsers[] = idPartaker ? idPartaker.map((idP: string) => {
-    //     return {
-    //         user: {
-    //             connect: {
-    //                 id: idP.toString()
-    //             }
-    //         }
-    //     }
-    // }) : [];
-    // tripOnUser: { create: createUsers },
-    // tripOnUser: {
-    //     include: { user: true, trip: true }
-    // },
+    // let addDates = actDate.map((date) => {
+    //   return { actDate: date };
+    // });
 
     let createActivities: createActivities[] = activitiesName
-      ? activitiesName.map((nameAct: string) => {
-          return { activity: { connect: { name: nameAct } } };
+      ? activitiesName.map((nameAct: activeDate) => {
+          let newDate = new Date(nameAct.actDate);
+          return {
+            actDate: newDate,
+            activity: {
+              connect: {
+                name: nameAct.name,
+              },
+            },
+          };
         })
       : [];
 
@@ -236,10 +233,8 @@ const TripsControllers = {
 
     try {
       const response = await prisma.trip.create(condition);
-      //console.log(response);
       return response;
     } catch (error) {
-      //console.log(error);
       return error;
     }
 
@@ -298,8 +293,16 @@ const TripsControllers = {
         : [];
 
     let createActivities: createActivities[] = activitiesName
-      ? activitiesName.map((nameAct: string) => {
-          return { activity: { connect: { name: nameAct } } };
+      ? activitiesName.map((nameAct: activeDate) => {
+          let newDate = new Date(nameAct.actDate);
+          return {
+            actDate: newDate,
+            activity: {
+              connect: {
+                name: nameAct.name,
+              },
+            },
+          };
         })
       : [];
 
@@ -363,8 +366,16 @@ const TripsControllers = {
         })
       : [];
     let createActivities: createActivities[] = activitiesName
-      ? activitiesName.map((nameAct: string) => {
-          return { activity: { connect: { name: nameAct } } };
+      ? activitiesName.map((nameAct: activeDate) => {
+          let newDate = new Date(nameAct.actDate);
+          return {
+            actDate: newDate,
+            activity: {
+              connect: {
+                name: nameAct.name,
+              },
+            },
+          };
         })
       : [];
     let createCities: createCity[] = cities

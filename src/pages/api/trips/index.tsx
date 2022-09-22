@@ -14,7 +14,7 @@ export default async function index(
       });
     const {
         method,
-        body: { name, initDate, endDate, planner, description, price, activitiesName, image, cities },
+        body: { name, initDate, endDate, planner, description, price, activitiesName, image, cities,actDate },
         query: { wName, sort, sortBy, wActivity, wplanner, wCity, maxPrice }
     } = req;
     try {
@@ -26,7 +26,7 @@ export default async function index(
                 return res.json(response);
             }
             case 'POST': {
-                let args = { name, initDate, endDate, planner, description, price, activitiesName, image, cities }
+                let args = { name, initDate, endDate, planner, description, price, activitiesName, image, cities,actDate }
                 const response = await TripsControllers.postTrip(args)
                 return res.json(response)
             }

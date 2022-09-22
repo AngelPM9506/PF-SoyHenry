@@ -100,6 +100,7 @@ model activitiesOnTrips {
   activityId String
   trip       Trip     @relation(fields: [tripId], references: [id], onDelete: Cascade)
   tripId     String
+  actDate    DateTime @db.Date
 
   @@id([activityId, tripId])
 }

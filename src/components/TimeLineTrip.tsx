@@ -15,6 +15,11 @@ import {
 	Box,
 	StackDivider,
 	useColorModeValue,
+	Alert,
+	AlertIcon,
+	AlertTitle,
+	AlertDescription,
+	Tooltip
 } from "@chakra-ui/react";
 import NextLink from "next/link";
 import CardTimeLine from "./CardTimeLine";
@@ -60,6 +65,25 @@ export const TimeLine = ({ data }: any) => {
 
 	return (
 		<Stack width={"100%"} align={"center"}>
+			{
+				userOnTrip ? 	<Alert
+										status='success'
+										variant='subtle'
+										flexDirection='column'
+										alignItems='center'
+										justifyContent='center'
+										textAlign='center'
+										height='150px'
+									>
+										<AlertIcon boxSize='40px' mr={0} />
+										<AlertTitle mt={4} mb={1} fontSize='lg'>
+											{
+												`Ya estas registrado y tu pago fue acreditado para ${data.name}!`
+											}
+										</AlertTitle>
+								</Alert>
+				: null
+			}
 			<StackDivider borderColor={useColorModeValue("gray.200", "gray.600")} />
 			<Box
 				bgColor={"#02b1b1"}
@@ -92,31 +116,61 @@ export const TimeLine = ({ data }: any) => {
 					icon={<MdOutlineTripOrigin />}
 				/>
 			</VerticalTimeline>
-			<Stack alignItems={"center"} justifyContent={"center"}>
-					<Button
-						rounded={"lg"}
-						w={"100%"}
-						pb={"2px"}
-						mb={"10px"}
-						mt={"0px"}
-						size={"lg"}
-						py={"8"}
-						bg={useColorModeValue("gray.900", "gray.50")}
-						color={useColorModeValue("white", "gray.900")}
-						textTransform={"uppercase"}
-						fontSize={"xl"}
-						onClick={() => payTrip()}
-						_hover={{
-							transform: "translateY(-2px)",
-							boxShadow: "lg",
-							bg: "#F3B46F",
-							color: "#293541",
-						}}
-						disabled={userOnTrip}
-					>
-						Pay and Join the trip!
-					</Button>
-			</Stack>
+			{
+				userOnTrip ? 	<Stack alignItems={"center"} justifyContent={"center"}>
+									<Tooltip hasArrow label='Ya has pagado y te encuentras en este viaje!'>
+										<Button
+											isDisabled
+											rounded={"lg"}
+											w={"100%"}
+											pb={"2px"}
+											mb={"10px"}
+											mt={"0px"}
+											size={"lg"}
+											py={"8"}
+											bg={useColorModeValue("gray.900", "gray.50")}
+											color={useColorModeValue("white", "gray.900")}
+											textTransform={"uppercase"}
+											fontSize={"xl"}
+											onClick={() => payTrip()}
+											_hover={{
+												transform: "translateY(-2px)",
+												boxShadow: "lg",
+												bg: "#F3B46F",
+												color: "#293541",
+											}}
+										>
+											Pay and Join the trip!
+										</Button>
+									</Tooltip>
+								</Stack> 
+				:
+								<Stack alignItems={"center"} justifyContent={"center"}>
+										<Button
+											rounded={"lg"}
+											w={"100%"}
+											pb={"2px"}
+											mb={"10px"}
+											mt={"0px"}
+											size={"lg"}
+											py={"8"}
+											bg={useColorModeValue("gray.900", "gray.50")}
+											color={useColorModeValue("white", "gray.900")}
+											textTransform={"uppercase"}
+											fontSize={"xl"}
+											onClick={() => payTrip()}
+											_hover={{
+												transform: "translateY(-2px)",
+												boxShadow: "lg",
+												bg: "#F3B46F",
+												color: "#293541",
+											}}
+											disabled={userOnTrip}
+										>
+											Pay and Join the trip!
+										</Button>
+								</Stack>
+			}
 		</Stack>
 	);
 };

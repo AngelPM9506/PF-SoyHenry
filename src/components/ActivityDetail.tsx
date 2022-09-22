@@ -155,7 +155,12 @@ export default function ActivityDetail({ data, isLoading, error }: any) {
         </Stack>
       </SimpleGrid>
       <Box display={"flex"} alignItems={"center"} justifyContent={"center"}>
-        <Reviews />
+        <Reviews
+          comments={data.activity.comments}
+          ratings={data.activity.rating}
+          users={data.users}
+          id={data.id}
+        />
       </Box>
     </Container>
   );

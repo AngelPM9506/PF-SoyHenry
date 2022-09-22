@@ -18,7 +18,7 @@ export interface User {
   name: string;
   mail: string;
   avatar: string;
-  description: string;
+  description?: string;
 }
 
 export interface UserUpdate {
@@ -137,3 +137,14 @@ export type createComment = {
     };
   };
 };
+
+export interface Comment {
+  comment?: string;
+  user?: User;
+  date?: string;
+}
+
+export interface Rating {
+  rating: Number;
+  user?: User;
+}

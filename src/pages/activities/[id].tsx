@@ -1,17 +1,17 @@
 import { Box } from "@chakra-ui/react";
-import { Activity } from "src/utils/interface";
+import { Activity, User } from "src/utils/interface";
 import axios from "axios";
 import Layout from "../../components/layout/Layout";
 
-import { getActivities, getActivitiesId } from "src/utils/activities";
+import { getActivitiesId } from "src/utils/activities";
 import { QueryFunctionContext, useQuery } from "react-query";
 import ActivityDetail from "src/components/ActivityDetail";
-import ActivitiesControles from "src/controllers/activities";
 import { GetServerSideProps } from "next/types";
 
 interface Props {
   id: QueryFunctionContext<string[], any>;
   activity: Activity;
+  users: User[];
 }
 
 export default function Detail(props: Props) {
@@ -56,9 +56,12 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const { id } = context.query;
   const response = await axios.get(`/activities/${id}`);
   const activity = response.data;
+  const res = await axios.get("/users");
+  const users = res.data;
   return {
     props: {
       activity: activity,
+      users: users,
       id: id,
     },
   };

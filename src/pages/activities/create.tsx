@@ -36,6 +36,7 @@ interface Props {
 
 const CreateActivity = ({ activities, cities }: Props) => {
   const { user } = useUser();
+  console.log(user);
   const { data: userDb, isLoading } = useQuery(
     ["userDb", user],
     () => user && getOrCreateUser(user)

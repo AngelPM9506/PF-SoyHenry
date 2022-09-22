@@ -19,7 +19,7 @@ export default async function index(req: NextApiRequest, res: NextApiResponse) {
             /**agregar una nueva actividad */
             case 'PUT':
                 let respPut = await ActivitiesControles.putActivity(
-                    { name, image, availability, description, price, active },
+                    { name, image, availability, description, price, active,idFeedback,comment },
                     { id }
                 )
                 return res.status(201).json(respPut);

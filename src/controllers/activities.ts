@@ -188,12 +188,38 @@ const ActivitiesControles = {
     }
   },
   putActivity: async (body: body, query: query) => {
-    let { name, image, availability, description, price, active } = body;
+    let {
+      name,
+      image,
+      availability,
+      description,
+      price,
+      active,
+      idFeedback,
+      comment,
+    } = body;
     let { id } = query;
     try {
       /**Si no existe ningun valor retorna un error*/
-      if (!name && !image && !availability && !description && !price && !active)
+      if (
+        !name &&
+        !image &&
+        !availability &&
+        !description &&
+        !price &&
+        !active &&
+        !idFeedback &&
+        !comment
+      ) {
         throw new Error("Missing data, try again");
+      }
+      if (idFeedback) {
+        await prisma.feedback.update({
+          where: { id: idFeedback.toString() },
+          data: { comment: comment.toString() },
+        });
+        return "Updated succefully";
+      }
       let toUpActivity = await prisma.activity.findUnique({
         where: { id: id.toString() },
       });

@@ -203,7 +203,7 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
     //console.log(input)
     let tripCreated = await createTrip(input)
     setInput(initialState)
-    //console.log(tripCreated);
+    console.log(tripCreated);
     await axios.post('/api/mail', {
       mail: userDb.data.mail,
       subject: `Trip ${input.name} has been create successfuly thanks to use WORLD TRAVELERS`,

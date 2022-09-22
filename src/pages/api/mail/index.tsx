@@ -177,9 +177,9 @@ const mail = async (req: NextApiRequest, res: NextApiResponse) => {
                             <main class="contenedor">
                                 <!--Logo-->
                                 <section class="head-contenedor">
-                                    <article class="title" >
+                                    <!--article class="title" >
                                         <h1 style="margin: 0 50px 0 0">Notifications</h1>
-                                    </article>
+                                    </article-->
                                     <picture >
                                         <img style="max-height:70px;width: auto;" src="https://res.cloudinary.com/mauro4202214/image/upload/v1663871810/world-travelers/logo_notificaciones_ekosej.png" alt="Logo">
                                     </picture>

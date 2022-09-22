@@ -74,7 +74,6 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
     endDate: "",
     description: "",
     activitiesName: [],
-    actDate: [],
     planner: "",
     price: 0,
     image: null,
@@ -95,6 +94,15 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
   const [disable, setDisable] = useState(true);
   const [actDate, setActDate] = useState("");
   const [isDisabled, setIsDisabled] = useState(true);
+
+  // const notAvailableDays = [1, 2, 6];
+  // const dateDisabled = (date: Date) => {
+  //   console.log("llega date --> ", date);
+  //   const day = date.getDay();
+  //   console.log("tengo day para ver si está --> ", day);
+  //   return notAvailableDays.includes(day);
+  // };
+  // console.log(dateDisabled(new Date(input.initDate)));
 
   if (!isLoading && input.planner === "" && userDb?.data.id)
     setInput({ ...input, planner: userDb.data.id });
@@ -166,11 +174,14 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
   const handleSelect = (act: Activity) => {
     const activity = act.name;
     const price = Number(act.price) + Number(input.price);
-    if (!input.activitiesName.includes(activity)) {
+    const foundAct = input.activitiesName.find((act) => act.name === activity);
+    if (!foundAct) {
       setInput({
         ...input,
-        activitiesName: [...input.activitiesName, activity],
-        actDate: [...input.actDate, actDate],
+        activitiesName: [
+          ...input.activitiesName,
+          { name: activity, actDate: actDate },
+        ],
         price: price,
       });
     }
@@ -178,7 +189,10 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
     const citiesControl = controlCities(input);
     const activitiesControl = controlActivities({
       ...input,
-      activitiesName: [...input.activitiesName, activity],
+      activitiesName: [
+        ...input.activitiesName,
+        { name: activity, actDate: actDate },
+      ],
       price: price,
     });
     if (
@@ -241,14 +255,14 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
     const activityDelete = activities?.find((a) => a.name === activity);
     setInput({
       ...input,
-      activitiesName: input.activitiesName?.filter((a) => a !== activity),
+      activitiesName: input.activitiesName?.filter((a) => a.name !== activity),
       price: input.price - activityDelete.price,
     });
     const errControl = formControl(input);
     const citiesControl = controlCities(input);
     const activitiesControl = controlActivities({
       ...input,
-      activitiesName: input.activitiesName?.filter((a) => a !== activity),
+      activitiesName: input.activitiesName?.filter((a) => a.name !== activity),
       price: input.price - activityDelete.price,
     });
     if (
@@ -446,6 +460,7 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
                     End date
                   </FormLabel>
                   <Input
+                    min={new Date().toISOString().split("T")[0]}
                     name="endDate"
                     placeholder="Select the ending date of the trip..."
                     size="md"
@@ -637,10 +652,10 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
                               return (
                                 <>
                                   <GridItem key={index}>
-                                    {a}
+                                    {a.name}
                                     <Button
                                       marginLeft="2"
-                                      onClick={() => handleDelete(a)}
+                                      onClick={() => handleDelete(a.name)}
                                       height={"25px"}
                                       width={"5px"}
                                     >

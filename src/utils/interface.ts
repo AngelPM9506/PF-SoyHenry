@@ -9,8 +9,7 @@ export interface Trip {
   planner?: { avatar?: string; id?: string } | any;
   tripOnUser?: Object[];
   description: string;
-  activitiesName: string[];
-  actDate: string[];
+  activitiesName: { name: string; actDate: string }[];
   image?: string | ArrayBuffer;
   price?: number;
 }

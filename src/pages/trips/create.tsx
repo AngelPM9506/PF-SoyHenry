@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import {
   FormControl,
   FormLabel,
@@ -43,9 +44,11 @@ import {
   formControl,
   controlCities,
   controlActivities,
+  valActDateFormat,
 } from "src/utils/validations";
 import { upPrice } from "src/components/Carousel";
 import NextLink from "next/link";
+import { eslint } from "next.config";
 
 interface Props {
   activities: Activity[];
@@ -71,6 +74,7 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
     endDate: "",
     description: "",
     activitiesName: [],
+    actDate: [],
     planner: "",
     price: 0,
     image: null,
@@ -89,6 +93,7 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
   const [errorActivities, setErrorActivities] = useState<any>({});
   const hiddenFileInput = useRef(null);
   const [disable, setDisable] = useState(true);
+  const [actDate, setActDate] = useState("");
 
   if (!isLoading && input.planner === "" && userDb?.data.id)
     setInput({ ...input, planner: userDb.data.id });
@@ -99,27 +104,40 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
     setInputCities(value);
   };
 
-  const handleCitiesSelect = (e: MouseEvent<HTMLButtonElement>) => {
-    setInput({ ...input, cities: [...input.cities, inputCities] });
-    const errControl = formControl(input);
-    const citiesControl = controlCities({
-      ...input,
-      cities: [...input.cities, inputCities],
-    });
-    const activitiesControl = controlActivities(input);
-    if (
-      JSON.stringify(errControl) === "{}" &&
-      JSON.stringify(citiesControl) === "{}" &&
-      JSON.stringify(activitiesControl) === "{}"
-    ) {
-      setDisable(false);
-    } else {
-      setDisable(true);
+  const handleActDate = ({
+    target: { value },
+  }: ChangeEvent<HTMLInputElement>) => {
+    setActDate(value);
+    const errActDate = valActDateFormat(value);
+    if (errActDate) {
+      setErrorActivities(errActDate);
     }
-    setErrorCities(citiesControl);
-    setErrorActivities(activitiesControl);
-    setErrors(errControl);
-    setInputCities("");
+  };
+
+  const handleCitiesSelect = (e: MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    if (inputCities !== "") {
+      setInput({ ...input, cities: [...input.cities, inputCities] });
+      const errControl = formControl(input);
+      const citiesControl = controlCities({
+        ...input,
+        cities: [...input.cities, inputCities],
+      });
+      const activitiesControl = controlActivities(input);
+      if (
+        JSON.stringify(errControl) === "{}" &&
+        JSON.stringify(citiesControl) === "{}" &&
+        JSON.stringify(activitiesControl) === "{}"
+      ) {
+        setDisable(false);
+      } else {
+        setDisable(true);
+      }
+      setErrorCities(citiesControl);
+      setErrorActivities(activitiesControl);
+      setErrors(errControl);
+      setInputCities("");
+    }
   };
 
   const handleChange = ({
@@ -143,18 +161,14 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
     setErrors(errControl);
   };
 
-  const handleSelect = ({
-    target: { value },
-  }: MouseEvent<HTMLButtonElement>) => {
-    console.log({
-      target: { value },
-    });
-    const activity = value.split("|")[0];
-    const price = Number(value.split("|")[1]) + Number(input.price);
+  const handleSelect = (act: Activity) => {
+    const activity = act.name;
+    const price = Number(act.price) + Number(input.price);
     if (!input.activitiesName.includes(activity)) {
       setInput({
         ...input,
         activitiesName: [...input.activitiesName, activity],
+        actDate: [...input.actDate, actDate],
         price: price,
       });
     }
@@ -216,7 +230,6 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(input);
     await createTrip(input);
     setInput(initialState);
     router.push("/trips");
@@ -317,6 +330,7 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
                   justifyContent={"center"}
                 >
                   <Image
+                    borderRadius={"2xl"}
                     src={`${image}`}
                     fallbackSrc="https://via.placeholder.com/150"
                     alt="img"
@@ -369,12 +383,10 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
                     marginLeft={"10px"}
                     mt={1}
                     width={"80px"}
-                    bg="highlight"
-                    color="primary"
-                    _hover={{ bg: "danger" }}
+                    fontSize={"xs"}
                     onClick={(e) => handleCitiesSelect(e)}
                   >
-                    +
+                    ADD CITY
                   </Button>
                 </HStack>
                 <Center>
@@ -451,15 +463,16 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
 
                 <Button
                   ml="4"
+                  disabled={input.initDate === "" || input.endDate === ""}
                   onClick={() => {
                     setOverlay(<OverlayTwo />);
                     onOpen();
                   }}
                 >
-                  Plase, select your activities
+                  Click to open the Associated Activities
                 </Button>
                 <Modal
-                  size={"6xl"}
+                  size={"5xl"}
                   isCentered
                   isOpen={isOpen}
                   onClose={onClose}
@@ -469,90 +482,119 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
                     <ModalHeader>Select the activities</ModalHeader>
                     <ModalCloseButton />
                     <ModalBody>
-                      <Center>
-                        {activities?.map((act) => {
-                          if (input.cities.includes(act.city.name)) {
-                            return (
-                              <Box
-                                key={act.id}
-                                role={"group"}
-                                p={6}
-                                maxW={"330px"}
-                                bg={useColorModeValue("white", "gray.800")}
-                                boxShadow={"2xl"}
-                                rounded={"lg"}
-                                pos={"relative"}
-                                zIndex={1}
-                                margin={2}
-                              >
-                                <Image
-                                  rounded={"md"}
-                                  height={"100px"}
-                                  width={"100px"}
-                                  objectFit={"cover"}
-                                  src={
-                                    act?.image != null
-                                      ? act?.image.toString()
-                                      : url
-                                  }
-                                  alt={act?.name}
-                                />
+                      <Box display={"flex"} flexDirection={"row"}>
+                        <Center>
+                          <SimpleGrid columns={7} spacing={1}>
+                            {activities?.map((act) => {
+                              if (input.cities.includes(act.city.name)) {
+                                return (
+                                  <Box
+                                    key={act.id}
+                                    role={"group"}
+                                    p={2}
+                                    width={"100%"}
+                                    bg={useColorModeValue("white", "gray.800")}
+                                    boxShadow={"2xl"}
+                                    rounded={"lg"}
+                                    zIndex={1}
+                                    margin={2}
+                                  >
+                                    <Center>
+                                      <Image
+                                        rounded={"md"}
+                                        height={"80px"}
+                                        width={"80px"}
+                                        objectFit={"cover"}
+                                        src={
+                                          act?.image != null
+                                            ? act?.image.toString()
+                                            : url
+                                        }
+                                        alt={act?.name}
+                                      />
+                                    </Center>
 
-                                <Stack
-                                  pt={2}
-                                  display={"flex"}
-                                  alignItems={"center"}
-                                >
-                                  <Text
-                                    fontSize={"md"}
-                                    fontFamily={"body"}
-                                    fontWeight={100}
-                                  >
-                                    {act?.name}
-                                  </Text>
-                                  <Text fontWeight={100} fontSize={"lg"}>
-                                    {`$${act?.price}`}
-                                  </Text>
-                                  <Text
-                                    textDecoration={"line-through"}
-                                    color={"#F3B46F"}
-                                  >
-                                    {`$${upPrice(act?.price)}`}
-                                  </Text>
-                                  <NextLink href={`/activities/${act.id}`}>
-                                    <Button size={"xs"}>+Info</Button>
-                                  </NextLink>
-                                  <Button
-                                    onClick={(e) => handleSelect(e)}
-                                    size={"sm"}
-                                  >
-                                    Add
-                                  </Button>
-                                </Stack>
-                              </Box>
-                            );
-                          }
-                        })}
-                      </Center>
-                      {/* <Select
-                        value="disable"
-                        mt={2}
-                        icon={<ChevronDownIcon />}
-                        onChange={(e) => handleSelect(e)}
-                      >
-                        <option value="">
-                          Choose the activities to enjoy on the trip...
-                        </option>
-                        {activities?.map((a) => {
-                          if (input.cities.includes(a.city.name)) {
-                            return (
-                              <option key={a.id} value={a.name + "|" + a.price}>
-                                {a.name + "   $" + a.price}
-                              </option>
-                            );
-                          }
-                        })}
-                      </Select>
+                                    <Stack
+                                      pt={1}
+                                      display={"flex"}
+                                      alignItems={"center"}
+                                    >
+                                      <Text
+                                        noOfLines={1}
+                                        textAlign={"center"}
+                                        fontSize={"md"}
+                                        fontFamily={"body"}
+                                        fontWeight={70}
+                                      >
+                                        {act?.name}
+                                      </Text>
+                                      <Box
+                                        display={"flex"}
+                                        flexDirection={"row"}
+                                        alignItems={"center"}
+                                      >
+                                        <Text
+                                          p={1}
+                                          fontWeight={70}
+                                          fontSize={"md"}
+                                        >
+                                          {`$${act?.price}`}
+                                        </Text>
+                                        <Text
+                                          textDecoration={"line-through"}
+                                          color={"#F3B46F"}
+                                        >
+                                          {`$${upPrice(act?.price)}`}
+                                        </Text>
+                                      </Box>
+                                      <GridItem>
+                                        <FormLabel fontSize={"xs"}>
+                                          Choose a date
+                                        </FormLabel>
+                                        <Input
+                                          size={"xs"}
+                                          type={"date"}
+                                          min={input.initDate}
+                                          max={input.endDate}
+                                          onChange={(e) => handleActDate(e)}
+                                        />
+                                      </GridItem>
+                                      <GridItem>
+                                        {errorActivities && (
+                                          <p>{errorActivities.date}</p>
+                                        )}
+                                      </GridItem>
+                                      <Box
+                                        display={"flex"}
+                                        flexDirection={"row"}
+                                        alignItems={"center"}
+                                        justifyContent={"space-between"}
+                                      >
+                                        <NextLink
+                                          href={`/activities/${act.id}`}
+                                        >
+                                          <Button margin={1} size={"xs"}>
+                                            +Info
+                                          </Button>
+                                        </NextLink>
+                                        <Button
+                                          margin={1}
+                                          onClick={() => {
+                                            handleSelect(act);
+                                          }}
+                                          size={"xs"}
+                                        >
+                                          Add
+                                        </Button>
+                                      </Box>
+                                    </Stack>
+                                  </Box>
+                                );
+                              }
+                            })}
+                          </SimpleGrid>
+                        </Center>
+                      </Box>
                       <Center>
                         <SimpleGrid
                           marginTop={"10px"}
@@ -562,21 +604,23 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
                         >
                           {input.activitiesName?.map((a, index) => {
                             return (
-                              <GridItem key={index}>
-                                {a}
-                                <Button
-                                  marginLeft="2"
-                                  onClick={() => handleDelete(a)}
-                                  height={"25px"}
-                                  width={"5px"}
-                                >
-                                  X
-                                </Button>
-                              </GridItem>
+                              <>
+                                <GridItem key={index}>
+                                  {a}
+                                  <Button
+                                    marginLeft="2"
+                                    onClick={() => handleDelete(a)}
+                                    height={"25px"}
+                                    width={"5px"}
+                                  >
+                                    X
+                                  </Button>
+                                </GridItem>
+                              </>
                             );
                           })}
                         </SimpleGrid>
-                      </Center> */}
+                      </Center>
                     </ModalBody>
                     <ModalFooter>
                       <Button onClick={onClose}>Close</Button>
@@ -612,17 +656,6 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
             >
               CREATE AND POST
             </Button>
-            {input.price ? (
-              <Button
-                mt={"20px"}
-                marginLeft="1%"
-                bg="highlight"
-                color="primary"
-                _hover={{ bg: "danger" }}
-              >
-                {`PAY $${input.price}`}
-              </Button>
-            ) : null}
           </Center>
         </FormControl>
       </form>

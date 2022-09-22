@@ -118,7 +118,7 @@ export const TimeLine = ({ data }: any) => {
 			</VerticalTimeline>
 			{
 				userOnTrip ? 	<Stack alignItems={"center"} justifyContent={"center"}>
-									<Tooltip hasArrow label='Ya has pagado y te encuentras en este viaje!'>
+									<Tooltip hasArrow placement='auto' label='Ya has pagado y te encuentras en este viaje!'>
 										<Button
 											isDisabled
 											rounded={"lg"}

@@ -60,16 +60,6 @@ export const dateCompare = (initDate: string, endDate: string) => {
   }
 };
 
-export const dateNow = (date: string) => {
-  const date1 = new Date(date);
-  const now = new Date();
-  if (date1 < now) {
-    return false;
-  } else {
-    return true;
-  }
-};
-
 export const formControl = (input: Trip, trips?: Trip[]) => {
   let errors: Errors = {};
   if (!input.name || input.name.length < 1) {
@@ -80,11 +70,7 @@ export const formControl = (input: Trip, trips?: Trip[]) => {
     trips?.find((t) => t.name.toLowerCase() === input.name?.toLowerCase())
   ) {
     errors.name = "There is already a trip with that name";
-  } else if (
-    !validateDates(input.initDate) ||
-    input.initDate.length === 0 ||
-    !dateNow(input.initDate)
-  ) {
+  } else if (!validateDates(input.initDate) || input.initDate.length === 0) {
     errors.initDate =
       "Please, select the right format of the date, can't be in the past";
   } else if (!validateDates(input.endDate) || input.endDate.length === 0) {

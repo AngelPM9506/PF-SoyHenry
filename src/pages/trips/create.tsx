@@ -433,6 +433,7 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
                     placeholder="Select the initial date of the trip..."
                     size="md"
                     type="date"
+                    min={new Date().toISOString().split("T")[0]}
                     onChange={(e) => handleChange(e)}
                   />
                   {errors.initDate && (

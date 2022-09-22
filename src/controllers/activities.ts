@@ -29,6 +29,7 @@ type body = {
   comment?: String;
   mail?: String;
   rating?: Number;
+  ID?: String;
 };
 
 type activity = {
@@ -163,27 +164,16 @@ const ActivitiesControles = {
             include: { trip: true },
           },
           city: true,
-          comments: {
+          feedbacks: {
             select: {
+              id: true,
+              userMail: true,
               comment: true,
-              user: {
-                select: {
-                  id: true,
-                  name: true,
-                  mail: true,
-                  avatar: true,
-                },
-              },
-            },
-          },
-          rating: {
-            select: {
               rating: true,
-              user: {
+              User: {
                 select: {
-                  id: true,
                   name: true,
-                  mail: true,
+                  id: true,
                   avatar: true,
                 },
               },
@@ -263,22 +253,14 @@ const ActivitiesControles = {
     let { id } = query;
     let { comment, mail, rating } = body;
     if (!comment && !rating) throw "Missing data";
-    comment &&
-      (await prisma.comments.create({
-        data: {
-          comment: comment.toString(),
-          activityId: id.toString(),
-          userMail: mail.toString(),
-        },
-      }));
-    rating &&
-      (await prisma.rating.create({
-        data: {
-          rating: typeof rating === "number" ? rating : Number(rating),
-          activityId: id.toString(),
-          userMail: mail.toString(),
-        },
-      }));
+    await prisma.feedback.create({
+      data: {
+        comment: comment.toString(),
+        rating: Number(rating),
+        activityId: id.toString(),
+        userMail: mail.toString(),
+      },
+    });
     return "Feedback added";
   },
 };

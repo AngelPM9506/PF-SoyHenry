@@ -1,7 +1,7 @@
 import axios from "axios";
 import { QueryFunctionContext } from "react-query";
 import { getCityById } from "./cities";
-import { Activity, CityInDB } from "./interface";
+import { Activity, CityInDB, Comment, Rating } from "./interface";
 export const getActivities = async (
   wCity?: string,
   wName?: string,
@@ -46,6 +46,27 @@ export const createActivity = async ({
     console.log(activity);
     console.log(activity.data);
     return activity.data;
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+export interface Props {
+  comment: string;
+  mail: string;
+  rating: number;
+  id: string;
+}
+
+export const patchActivity = async ({ comment, mail, rating, id }: Props) => {
+  try {
+    const commentRating = await axios.patch(`/api/activities/${id}`, {
+      comment,
+      mail,
+      rating,
+    });
+
+    return commentRating.data;
   } catch (err) {
     console.error(err);
   }

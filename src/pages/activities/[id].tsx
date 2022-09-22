@@ -4,20 +4,29 @@ import axios from "axios";
 import Layout from "../../components/layout/Layout";
 
 import { getActivitiesId } from "src/utils/activities";
+import { getUsers } from "src/utils/User";
 import { QueryFunctionContext, useQuery } from "react-query";
 import ActivityDetail from "src/components/ActivityDetail";
 import { GetServerSideProps } from "next/types";
+import { useUser } from "@auth0/nextjs-auth0";
 
 interface Props {
   id: QueryFunctionContext<string[], any>;
   activity: Activity;
-  users: User[];
 }
 
 export default function Detail(props: Props) {
-  const { data, isLoading, error } = useQuery(["propsId"], () =>
-    getActivitiesId(props.id)
-  );
+  const { data, isLoading, error } = useQuery(["propsId"], async () => {
+    const activity = await getActivitiesId(props.id);
+    const id = props.id;
+    return {
+      activity: activity,
+      id: id,
+    };
+  });
+  if (isLoading) {
+    return <div>Is loading...</div>;
+  }
   if (!data) {
     return <div>No Data</div>;
   }

@@ -18,6 +18,7 @@ export interface User {
   id?: string;
   name: string;
   mail: string;
+  email?: string;
   avatar: string;
   description?: string;
 }
@@ -142,7 +143,6 @@ export type createComment = {
 export interface Comment {
   comment?: string;
   user?: User;
-  date?: string;
 }
 
 export interface Rating {

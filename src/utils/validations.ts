@@ -1,4 +1,4 @@
-import moment from "moment";
+import moment, { now } from "moment";
 import { Activity, Trip } from "src/utils/interface";
 import { Errors } from "src/utils/interface";
 
@@ -40,10 +40,17 @@ export const validateDates = (date: string) => {
   return result;
 };
 
+export const valActDateFormat = (date: string) => {
+  let errors: Errors = {};
+  if (!validateDates(date)) {
+    errors.date = "Please, type a valid date";
+  }
+  return errors;
+};
+
 export const dateCompare = (initDate: string, endDate: string) => {
   const date1 = new Date(initDate);
   const date2 = new Date(endDate);
-
   if (date1 < date2) {
     return true;
   } else if (date1 > date2) {
@@ -64,11 +71,12 @@ export const formControl = (input: Trip, trips?: Trip[]) => {
   ) {
     errors.name = "There is already a trip with that name";
   } else if (!validateDates(input.initDate) || input.initDate.length === 0) {
-    errors.initDate = "Please, select the right format of the date";
+    errors.initDate =
+      "Please, select the right format of the date, can't be in the past";
   } else if (!validateDates(input.endDate) || input.endDate.length === 0) {
     errors.endDate = "Please, select the right format of the date";
   } else if (!dateCompare(input.initDate, input.endDate)) {
-    errors.endDate = "The init date must be greater than the enn date";
+    errors.endDate = "The init date must be greater than the end date";
   } else if (!validateDescription) {
     errors.description = "Only 1000 characters are allowed";
   }

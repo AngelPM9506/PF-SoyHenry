@@ -34,6 +34,7 @@ import {
   controlCities,
   controlActivities,
 } from "src/utils/validations";
+// import sendMail from "src/utils/mail";
 
 interface Props {
   activities: Activity[];
@@ -198,10 +199,20 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(input);
-    await createTrip(input);
-    setInput(initialState);
-    router.push("/trips");
+    console.log(input)
+    await createTrip(input)
+    setInput(initialState)
+    await axios.post('/api/mail', {
+      mail: userDb.data.mail,
+      subject: `Trip ${input.name} has been create successfuly thanks to use WORLD TRAVELERS`,
+      message: `Your Trip: ${input.name} has been create successfuly thanks to use WORLD TRAVELERS`,
+      html: {
+        title: 'Trip created successfuly',
+        actionName: input.name,
+        text: `Your Trip ${input.name} has been created `
+      }
+    }).catch(error => console.log(error));
+    router.push("/trips")
   };
 
   const handleDelete = (activity: String) => {

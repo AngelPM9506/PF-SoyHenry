@@ -9,7 +9,7 @@ export default async function index(req: NextApiRequest, res: NextApiResponse) {
         origin: '*',
         optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
       });
-    let { method, body: { name, image, availability, description, price, active, comment, mail, rating }, query: { id } } = req;
+    let { method, body: { name, image, availability, description, price, active, comment, mail, rating,idFeedback}, query: { id } } = req;
     try {
         switch (method) {
             /**obtener tuna sola actividad */
@@ -29,7 +29,7 @@ export default async function index(req: NextApiRequest, res: NextApiResponse) {
                 return res.json(respPatch)
             }
             case 'DELETE':
-                let respDelete = await ActivitiesControles.deletActivity({ id });
+                let respDelete = await ActivitiesControles.deletActivity({idFeedback},{ id });
                 return res.status(201).json(respDelete);
             default:
                 res.status(400).send('Metohd not supported try again')

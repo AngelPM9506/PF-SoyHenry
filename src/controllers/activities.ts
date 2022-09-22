@@ -30,6 +30,7 @@ type body = {
   mail?: String;
   rating?: Number;
   ID?: String;
+  idFeedback?: String;
 };
 
 type activity = {
@@ -241,13 +242,21 @@ const ActivitiesControles = {
       return error;
     }
   },
-  deletActivity: async (query: query) => {
+  deletActivity: async (body: body, query: query) => {
     let { id } = query;
-    let response = await prisma.activity.delete({
-      where: { id: id.toString() },
-    });
-    await cloudinary.uploader.destroy(response.public_id_image);
-    return response;
+    let { idFeedback } = body;
+    if (idFeedback) {
+      await prisma.feedback.delete({
+        where: { id: idFeedback.toString() },
+      });
+      return "The feedback was delete succefully";
+    } else {
+      let response = await prisma.activity.delete({
+        where: { id: id.toString() },
+      });
+      await cloudinary.uploader.destroy(response.public_id_image);
+      return response;
+    }
   },
   patchActivity: async (body: body, query: query) => {
     let { id } = query;

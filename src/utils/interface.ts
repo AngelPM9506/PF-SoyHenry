@@ -66,11 +66,17 @@ export type createUsers = {
 };
 
 export type createActivities = {
+  actDate: Date;
   activity: {
     connect: {
       name: string;
     };
   };
+};
+
+export type activeDate = {
+  actDate: string;
+  name: string;
 };
 
 export type createCity = {

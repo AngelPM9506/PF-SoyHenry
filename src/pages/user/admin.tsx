@@ -27,16 +27,32 @@ import UserTable from "src/components/UserTable";
 import { getOrCreateUser, getUsers } from "src/utils/User";
 import NextLink from "next/link";
 import NotFound from "src/pages/404";
+import ActivitiesControles from "src/controllers/activities";
+import ActivityTable from "src/components/ActivityTable";
+import { Activity } from "src/utils/interface";
+import { ActivityDashboard } from "src/components/ActivityDashboard";
+import { UserDashboard } from "src/components/UserDashboard";
+import usersControllers from "src/controllers/users";
 
-function TablesTableRow({ users }: any) {
+function TablesTableRow({
+  users,
+  activities,
+}: {
+  activities: Activity[];
+  users: UserData[];
+}) {
   const { user, error } = useUser();
   const { data: userDb, isLoading } = useQuery(["userDb", user], () =>
     getOrCreateUser(user)
   );
-
+  const [active, setActive] = useState(true);
   const textColor = useColorModeValue("gray.700", "white");
-  const background = useColorModeValue("#02b1b1", "#02b1b1");
-  const captions = ["user", "admin", "active"];
+  const handleSection = (
+    e: React.MouseEvent<HTMLParagraphElement, MouseEvent>
+  ) => {
+    if ((e.target as HTMLElement).id === "users") return setActive(true);
+    setActive(false);
+  };
   if (isLoading || !userDb.data) return <div>Loading...</div>;
   if (!userDb.data.isAdmin) return <NotFound />;
   return (
@@ -44,53 +60,33 @@ function TablesTableRow({ users }: any) {
       <Layout>
         <Box></Box>
         <Box overflowX={{ sm: "scroll", xl: "hidden" }} mt={5} ml={5}>
-          <Box p="6px 0px 22px 0px">
-            <Text fontSize="xl" color={textColor} fontWeight="bold">
+          <Box p="6px 0px 22px 0px" display={"inline-flex"} gap={10}>
+            <Text
+              fontSize="xl"
+              color={active ? textColor : "gray"}
+              fontWeight="bold"
+              id="users"
+              onClick={(e) => handleSection(e)}
+              cursor="pointer"
+            >
               Users Dashboard
             </Text>
+            <Text
+              id="activities"
+              fontSize="xl"
+              color={!active ? textColor : "gray"}
+              fontWeight="bold"
+              onClick={(e) => handleSection(e)}
+              cursor="pointer"
+            >
+              Activities Dashboard
+            </Text>
           </Box>
-          <Button
-            position={"absolute"}
-            right={0}
-            mr={10}
-            bg={background}
-            color={"white"}
-            rounded={"md"}
-            padding={"20px"}
-            _hover={{
-              transform: "translateY(-2px)",
-              boxShadow: "lg",
-              bg: "#F3B46F",
-              color: "black",
-            }}
-          >
-            <NextLink href="/activities/create">
-              <Link>Create Activity</Link>
-            </NextLink>
-          </Button>
-          <Table>
-            <Thead>
-              <Tr my=".8rem" pl="0px" color="gray.400" gap={5}>
-                {captions.map((c, i) => {
-                  return (
-                    <Th
-                      color="gray.400"
-                      key={i}
-                      ps={i === 0 ? "10px" : null}
-                      gap={50}
-                    >
-                      {c}
-                    </Th>
-                  );
-                })}
-              </Tr>
-            </Thead>
-            <Tbody>
-              {users.map((u: UserData) => {
-                return <UserTable user={u} key={u.id} />;
-              })}
-            </Tbody>
-          </Table>
+          {active ? (
+            <UserDashboard users={users} />
+          ) : (
+            <ActivityDashboard activities={activities} />
+          )}
         </Box>
       </Layout>
     </>
@@ -100,11 +96,14 @@ function TablesTableRow({ users }: any) {
 export const getServerSideProps = async () => {
   //   const queryClient = new QueryClient(); //https://tanstack.com/query/v4/docs/guides/ssr
 
-  const users = await getUsers();
-
+  const users = JSON.parse(JSON.stringify(await usersControllers.getUsers()));
+  const activities = JSON.parse(
+    JSON.stringify(await ActivitiesControles.getActivities({}))
+  );
   return {
     props: {
       users: users,
+      activities: activities,
     },
   };
 };

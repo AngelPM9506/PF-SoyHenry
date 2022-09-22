@@ -50,3 +50,28 @@ export const createActivity = async ({
     console.error(err);
   }
 };
+export const editActivity = async ({
+  id,
+  name,
+  image,
+  availability,
+  description,
+  price,
+  active,
+}: Activity) => {
+  const activity = await axios.put(`/api/activities/${id}`, {
+    name,
+    image,
+    active,
+    availability,
+    description,
+    price,
+  });
+
+  return activity.data;
+};
+
+export const deleteActivity = async (id: string) => {
+  const activity = await axios.delete(`/api/activities/${id}`);
+  return activity.data;
+};

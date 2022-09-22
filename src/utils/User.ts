@@ -24,7 +24,7 @@ export const getOrCreateUser = async (user: UserAuth0) => {
 };
 
 export const getUsers = async () => {
-  const userDb: UserData = await axios.get("/api/users");
+  const userDb: UserData = await axios.get("/users");
 
   return userDb.data;
 };

@@ -30,7 +30,6 @@ import { getCities } from "src/utils/cities";
 import NotFound from "../404";
 import ActivitiesControles from "src/controllers/activities";
 
-
 interface Props {
   activities: Activity[];
   cities: City[];
@@ -133,8 +132,8 @@ const CreateActivity = ({ activities, cities }: Props) => {
       availability: input.availability.filter((a: any) => a != c),
     });
   };
-  if (isLoading || !userDb.data) return <div>Loading...</div>;
-  if (!userDb.data.isAdmin) return <NotFound />;
+  if (isLoading || !userDb?.data) return <div>Loading...</div>;
+  if (!userDb?.data.isAdmin) return <NotFound />;
   return (
     <Layout>
       <Center marginTop="1%">

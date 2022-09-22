@@ -7,6 +7,7 @@ import {
   Select,
   Td,
   Text,
+  Textarea,
   Tr,
   useColorModeValue,
   useToast,
@@ -19,7 +20,11 @@ function UserTable({ user }: UserData) {
   const textColor = useColorModeValue("gray.700", "white");
   const toast = useToast();
   const [data, setData] = useState(user);
-  const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleChange = (
+    e:
+      | React.ChangeEvent<HTMLSelectElement>
+      | React.ChangeEvent<HTMLTextAreaElement>
+  ) => {
     setData({
       ...data,
       [e.target.name]: e.target.value === "true" ? true : false,
@@ -37,9 +42,8 @@ function UserTable({ user }: UserData) {
     });
   };
 
-  console.log(data.active);
   return (
-    <Tr>
+    <Tr key={user.id}>
       <Td minWidth={{ sm: "250px" }} pl="0px">
         <Flex align="center" py=".8rem" minWidth="100%" flexWrap="nowrap">
           <Avatar src={user.avatar} w="50px" borderRadius="12px" me="18px" />
@@ -107,9 +111,17 @@ function UserTable({ user }: UserData) {
         </Badge>
       </Td>
       <Td>
-        <Text fontSize="md" color={textColor} fontWeight="bold" pb=".5rem">
-          {/* {date} */}
-        </Text>
+        <Flex direction="column">
+          <Textarea
+            fontSize="sm"
+            color="black"
+            name={"description"}
+            value={data.description}
+            borderColor={"black"}
+            onChange={(e) => handleChange(e)}
+            bg={"white"}
+          ></Textarea>
+        </Flex>
       </Td>
       <Td>
         <Button

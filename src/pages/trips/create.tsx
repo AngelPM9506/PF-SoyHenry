@@ -191,7 +191,8 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
 
   const createTrip = async (trip: Trip) => {
     try {
-      await axios.post("/api/trips", trip);
+      let resp = await axios.post("/api/trips", trip);
+      return resp.data;
     } catch (error) {
       console.log(error);
     }
@@ -199,9 +200,10 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(input)
-    await createTrip(input)
+    //console.log(input)
+    let tripCreated = await createTrip(input)
     setInput(initialState)
+    //console.log(tripCreated);
     await axios.post('/api/mail', {
       mail: userDb.data.mail,
       subject: `Trip ${input.name} has been create successfuly thanks to use WORLD TRAVELERS`,
@@ -209,7 +211,9 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
       html: {
         title: 'Trip created successfuly',
         actionName: input.name,
-        text: `Your Trip ${input.name} has been created `
+        text: `Your Trip ${input.name} has been created`,
+        url: `/trips/${tripCreated.id}`,
+        urlMsg: 'See your trip here'
       }
     }).catch(error => console.log(error));
     router.push("/trips")

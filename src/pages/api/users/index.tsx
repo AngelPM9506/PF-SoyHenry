@@ -13,12 +13,17 @@ export default async function index(req: NextApiRequest, res: NextApiResponse) {
   });
   const {
     method,
-    body: { name, mail, description, avatar },
+    body: { name, mail, description, avatar }, query: {id, tripID}
   } = req;
   switch (method) {
     case "GET": {
-      let response = await usersControllers.getUsers();
-      return res.json(response);
+      if(!tripID || !id) {
+        let response = await usersControllers.getUsers();
+        return res.json(response);
+      } else {
+        let response = await usersControllers.searchUser(tripID.toString(), id.toString());
+        return res.json(response);
+      }
     }
     case "POST":
       let response = await usersControllers.postUser({

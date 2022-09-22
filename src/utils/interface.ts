@@ -6,7 +6,7 @@ export interface Trip {
   initDate: string;
   cities?: string[];
   endDate: string;
-  planner?: string;
+  planner?: { avatar?: string; id?: string } | any;
   tripOnUser?: Object[];
   description: string;
   activitiesName: string[];
@@ -68,11 +68,17 @@ export type createUsers = {
 };
 
 export type createActivities = {
+  actDate: Date;
   activity: {
     connect: {
       name: string;
     };
   };
+};
+
+export type activeDate = {
+  actDate: string;
+  name: string;
 };
 
 export type createCity = {
@@ -130,6 +136,7 @@ export interface Errors {
   cities?: string;
   availability?: string;
   activitiesName?: string;
+  keyWords?: string;
 }
 
 export type createComment = {

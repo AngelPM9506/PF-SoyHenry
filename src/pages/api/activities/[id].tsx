@@ -21,6 +21,7 @@ export default async function index(req: NextApiRequest, res: NextApiResponse) {
       comment,
       mail,
       rating,
+      idFeedback,
     },
     query: { id },
   } = req;
@@ -33,22 +34,32 @@ export default async function index(req: NextApiRequest, res: NextApiResponse) {
       /**agregar una nueva actividad */
       case "PUT":
         let respPut = await ActivitiesControles.putActivity(
-          { name, image, availability, description, price, active },
+          {
+            name,
+            image,
+            availability,
+            description,
+            price,
+            active,
+            idFeedback,
+            comment,
+          },
           { id }
         );
         return res.status(201).json(respPut);
       /**agregar una nueva actividad pendiente*/
       case "PATCH": {
-        let respPatch = await ActivitiesControles.patchActivity({
-          comment,
-          mail,
-          rating,
-          id,
-        });
+        let respPatch = await ActivitiesControles.patchActivity(
+          { comment, mail, rating },
+          { id }
+        );
         return res.json(respPatch);
       }
       case "DELETE":
-        let respDelete = await ActivitiesControles.deletActivity({ id });
+        let respDelete = await ActivitiesControles.deletActivity(
+          { idFeedback },
+          { id }
+        );
         return res.status(201).json(respDelete);
       default:
         res.status(400).send("Metohd not supported try again");

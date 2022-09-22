@@ -74,8 +74,7 @@ const TripsControllers = {
 
     let orderBy: typeSort[] = [];
     let sortfrom: typeSort = {};
-    /**
-     * http://127.0.0.1:3000/api/trips?sort=asc&sortBy=price&wName=10&wplanner=cl7z6as0h01100cqiw589yste&maxPrice=7&wActivity=uno&wCity=Mex*/
+    /**http://127.0.0.1:3000/api/trips?sort=asc&sortBy=price&wName=10&wplanner=cl7z6as0h01100cqiw589yste&maxPrice=7&wActivity=uno&wCity=Mex*/
     let sortName: string = sortBy ? sortBy.toString().toLowerCase() : "name";
     sortfrom[sortName] = sort ? sort.toString().toLowerCase() : "desc";
     orderBy.push(sortfrom);
@@ -98,48 +97,25 @@ const TripsControllers = {
 
     wplanner
       ? (condition.where = {
-          ...condition.where,
-          planner: { is: { id: wplanner.toString() } },
-        })
-      : "";
+        ...condition.where,
+        planner: { is: { id: wplanner.toString() } },
+      }) : "";
     wActivity
       ? (condition.where = {
-          ...condition.where,
-          activitiesOnTrips: {
-            some: {
-              activity: {
-                is: {
-                  name: {
-                    contains: wActivity.toString(),
-                  },
-                },
-              },
-            },
-          },
-        })
-      : "";
+        ...condition.where,
+        activitiesOnTrips: { some: { activity: { is: { name: { contains: wActivity.toString(), }, }, }, }, },
+      }) : "";
     wCity
       ? (condition.where = {
-          citiesOnTrips: {
-            some: {
-              city: {
-                is: {
-                  name: {
-                    contains: wCity.toString(),
-                  },
-                },
-              },
-            },
-          },
-        })
-      : "";
+        ...condition.where,
+        citiesOnTrips: { some: { city: { is: { name: { contains: wCity.toString(), }, }, }, }, },
+      }) : "";
 
     maxPrice
       ? (condition.where = {
-          ...condition.where,
-          price: { lte: parseFloat(maxPrice.toString()) },
-        })
-      : "";
+        ...condition.where,
+        price: { lte: parseFloat(maxPrice.toString()) },
+      }) : "";
 
     const response = await prisma.trip.findMany(condition);
     return response;
@@ -194,8 +170,8 @@ const TripsControllers = {
 
     let createCities: createCity[] = cities
       ? cities.map((nameCity: string) => {
-          return { city: { connect: { name: nameCity.toString() } } };
-        })
+        return { city: { connect: { name: nameCity.toString() } } };
+      })
       : [];
 
     let condition: postCondition = {
@@ -288,8 +264,8 @@ const TripsControllers = {
     let createUsers: createUsers[] =
       idPartaker && Array.isArray(idPartaker)
         ? idPartaker.map((idP: string) => {
-            return { user: { connect: { id: idP.toString() } } };
-          })
+          return { user: { connect: { id: idP.toString() } } };
+        })
         : [];
 
     let createActivities: createActivities[] = activitiesName
@@ -308,8 +284,8 @@ const TripsControllers = {
 
     let createCities: createCity[] = cities
       ? cities.map((nameCity: string) => {
-          return { city: { connect: { name: nameCity.toString() } } };
-        })
+        return { city: { connect: { name: nameCity.toString() } } };
+      })
       : [];
 
     let trip = await prisma.trip.findUnique({ where: { id: id.toString() } });
@@ -362,8 +338,8 @@ const TripsControllers = {
     }
     let createUsers: createUsers[] = idPartaker
       ? idPartaker.map((idP: Object) => {
-          return { user: { connect: { id: idP.toString() } } };
-        })
+        return { user: { connect: { id: idP.toString() } } };
+      })
       : [];
     let createActivities: createActivities[] = activitiesName
       ? activitiesName.map((nameAct: activeDate) => {
@@ -380,8 +356,8 @@ const TripsControllers = {
       : [];
     let createCities: createCity[] = cities
       ? cities.map((City: string) => {
-          return { city: { connect: { name: City.toString() } } };
-        })
+        return { city: { connect: { name: City.toString() } } };
+      })
       : [];
 
     let condition = {

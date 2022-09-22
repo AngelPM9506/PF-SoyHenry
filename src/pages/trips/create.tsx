@@ -48,7 +48,6 @@ import {
 } from "src/utils/validations";
 import { upPrice } from "src/components/Carousel";
 import NextLink from "next/link";
-import { eslint } from "next.config";
 
 interface Props {
   activities: Activity[];
@@ -95,14 +94,19 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
   const [actDate, setActDate] = useState("");
   const [isDisabled, setIsDisabled] = useState(true);
 
-  // const notAvailableDays = [1, 2, 6];
-  // const dateDisabled = (date: Date) => {
-  //   console.log("llega date --> ", date);
-  //   const day = date.getDay();
-  //   console.log("tengo day para ver si está --> ", day);
-  //   return notAvailableDays.includes(day);
-  // };
-  // console.log(dateDisabled(new Date(input.initDate)));
+  const arrWorkingDays = (availability: string[]) => {
+    const arr: number[] = [];
+    availability.forEach((d) => {
+      if (d === "Monday") arr.push(1);
+      if (d === "Tuesday") arr.push(2);
+      if (d === "Wednesday") arr.push(3);
+      if (d === "Thursday") arr.push(4);
+      if (d === "Friday") arr.push(5);
+      if (d === "Saturday") arr.push(6);
+      if (d === "Sunday") arr.push(0);
+    });
+    return arr;
+  };
 
   if (!isLoading && input.planner === "" && userDb?.data.id)
     setInput({ ...input, planner: userDb.data.id });
@@ -113,9 +117,7 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
     setInputCities(value);
   };
 
-  const handleActDate = ({
-    target: { value },
-  }: ChangeEvent<HTMLInputElement>) => {
+  const handleActDate = ({ target: { value } }: any) => {
     setActDate(value);
     setIsDisabled(false);
     const errActDate = valActDateFormat(value);
@@ -593,13 +595,18 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
                                           <FormLabel fontSize={"xs"}>
                                             Choose a date
                                           </FormLabel>
-                                          <Input
+                                          <>
+                                            {console.log(
+                                              arrWorkingDays(act.availability)
+                                            )}
+                                          </>
+                                          {/* <Input
                                             size={"xs"}
                                             type={"date"}
                                             min={input.initDate}
                                             max={input.endDate}
                                             onChange={(e) => handleActDate(e)}
-                                          />
+                                          /> */}
                                         </GridItem>
                                         <GridItem>
                                           {errorActivities && (

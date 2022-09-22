@@ -86,12 +86,24 @@ export default async function Payment(req: NextApiRequest, res: NextApiResponse)
 						}
 					})
 					const user = await prisma.user.findFirst({where: {mail: mail.toString()}})
+					const trip = await prisma.trip.findFirst({where: {id: tripID.toString()}})
 					const userInTrip = await prisma.usersOnTrips.create({
 						data: {
 							userid: user.id,
 							tripId: tripID.toString(),
 						}
 					})
+
+					await axios.post(`${PAYPAL_URL}/api/mail`, {
+						mail: user.mail,
+						subject: `Trip ${trip.name} has been payed successfuly thanks to use WORLD TRAVELERS`,
+						message: `Your Trip: ${trip.name} has been payed successfuly thanks to use WORLD TRAVELERS`,
+						html: {
+						  title: 'Trip payed successfuly',
+						  actionName: trip.name,
+						  text: `Your Trip ${trip.name} has been payed, enjoy your trip`
+						}
+					}).catch(error => console.log(error));
 
 					return res.redirect(`${PAYPAL_URL}/trips/${tripID}`)
 				} else {

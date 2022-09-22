@@ -29,6 +29,7 @@ type body = {
   comment?: String;
   mail?: String;
   rating?: Number;
+  id?: string | string[];
 };
 
 type activity = {
@@ -259,9 +260,8 @@ const ActivitiesControles = {
     await cloudinary.uploader.destroy(response.public_id_image);
     return response;
   },
-  patchActivity: async (body: body, query: query) => {
-    let { id } = query;
-    let { comment, mail, rating } = body;
+  patchActivity: async (body: body) => {
+    let { comment, mail, rating, id } = body;
     if (!comment && !rating) throw "Missing data";
     comment &&
       (await prisma.comments.create({

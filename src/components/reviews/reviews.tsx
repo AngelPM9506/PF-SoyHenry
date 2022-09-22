@@ -10,6 +10,7 @@ import {
   Avatar,
 } from "@chakra-ui/react";
 import { useState } from "react";
+import useRouter from "next/router";
 import StarRatings from "react-star-ratings";
 import { FiSend, FiDelete } from "react-icons/fi";
 import { ImCancelCircle } from "react-icons/im";
@@ -54,15 +55,13 @@ export const Reviews = ({ comments, ratings, users, id }: Props) => {
   };
 
   const handleSubmit = () => {
-    ActivitiesControles.patchActivity(
-      {
-        comment: comment,
-        mail: userloged.mail,
-        // date:actualDate,
-        rating: rating,
-      },
-      id
-    );
+    ActivitiesControles.patchActivity({
+      comment: comment,
+      mail: userloged.mail,
+      rating: rating,
+      id: id,
+      //hablar con santino para que llegue Id por query
+    });
   };
 
   // const handleEdit = () => {
@@ -100,9 +99,9 @@ export const Reviews = ({ comments, ratings, users, id }: Props) => {
       {/* COMENTARIOS YA EXISTENTES : */}
 
       <Box>
-        {comments?.map((comment) => {
+        {comments?.map((comment, index) => {
           return (
-            <FormControl width={"100%"}>
+            <FormControl key={index} width={"100%"}>
               <HStack
                 justifyContent={"left"}
                 alignItems={"center"}
@@ -144,7 +143,7 @@ export const Reviews = ({ comments, ratings, users, id }: Props) => {
                         border={"1px"}
                         borderColor={"#293541"}
                         vertical-align={"top"}
-                        onChange={(e) => handleInputEdit(e)}
+                        onChange={(e: any) => handleInputEdit(e)}
                         value={commentEdit}
                       ></Input>
                     </VStack>
@@ -248,7 +247,7 @@ export const Reviews = ({ comments, ratings, users, id }: Props) => {
                   borderColor={"#293541"}
                   vertical-align={"top"}
                   placeholder="Write here your comment about this activity..."
-                  onChange={(e) => {
+                  onChange={(e: any) => {
                     handleInput(e);
                   }}
                 ></Input>

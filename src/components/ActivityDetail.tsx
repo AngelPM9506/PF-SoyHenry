@@ -17,7 +17,7 @@ import {
 } from "@chakra-ui/react";
 import NextLink from "next/link";
 import Loading from "src/components/Loading";
-import Reviews from "./reviews/Reviews";
+import Reviews from "src/components/reviews/Reviews";
 export default function ActivityDetail({ data, isLoading, error }: any) {
   if (isLoading) return <Loading />;
   if (error) return <div>{error.message}</div>;

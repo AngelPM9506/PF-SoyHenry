@@ -23,6 +23,7 @@ export default async function index(req: NextApiRequest, res: NextApiResponse) {
       rating,
       idFeedback,
     },
+
     query: { id },
   } = req;
   try {
@@ -62,10 +63,10 @@ export default async function index(req: NextApiRequest, res: NextApiResponse) {
         );
         return res.status(201).json(respDelete);
       default:
-        res.status(400).send("Metohd not supported try again");
+        res.status(400).send("Method not supported try again");
         break;
     }
   } catch (error) {
-    return res.status(400).json({ stastus: "error", error });
+    return res.status(400).json({ status: "error", error });
   }
 }

@@ -14,65 +14,71 @@ import { FiSend, FiDelete } from "react-icons/fi";
 import { ImCancelCircle } from "react-icons/im";
 import { GrEdit } from "react-icons/gr";
 import NextLink from "next/link";
-import { Comment, Rating, User } from "../../utils/interface";
+import { Comment, User } from "../../utils/interface";
 import { useUser } from "@auth0/nextjs-auth0";
-import { patchActivity } from "../../utils/activities";
+import {
+  patchActivity,
+  deleteComment,
+  editComment,
+} from "../../utils/activities";
 
 interface Props {
-  comments: Comment[];
-  ratings: Rating[];
+  feedbacks: Comment[];
   id: string;
 }
 
-export const Reviews = ({ comments, ratings, id }: Props) => {
+export const Reviews = ({ feedbacks, id }: Props) => {
   const { user } = useUser();
   if (!user) {
     return <div>is Loading...</div>;
   }
-
-  const mycom = comments?.find((c) => c.user.mail === user.email);
+  const mycom = feedbacks?.find((c) => c.userMail === user.email);
   const mycomment = mycom?.comment;
+  const myrating = mycom?.rating;
 
   const [rating, setRating] = useState(5);
+  const [ratingEdit, setRatingEdit] = useState(myrating);
   const [comment, setComment] = useState("");
-  const [commentEdit, setCommentEdit] = useState(mycomment ? mycomment : "");
+  const [commentEdit, setCommentEdit] = useState(mycomment);
 
-  // const handleInput = (e: any) => {
-  //   setComment(e.target.value);
-  // };
-  // const handleInputEdit = (e: any) => {
-  //   setCommentEdit(e.target.value);
-  // };
+  const handleInput = (e: any) => {
+    setComment(e.target.value);
+  };
+  const handleInputEdit = (e: any) => {
+    setCommentEdit(e.target.value);
+  };
 
-  // const handleSubmit = async (e: any) => {
-  //   e.preventDefault();
-  //   await patchActivity({
-  //     comment: comment,
-  //     mail: user.email,
-  //     rating: rating,
-  //     id: id,
-  //   });
-  // };
+  const handleSubmit = async (e: any) => {
+    e.preventDefault();
+    await patchActivity({
+      comment: comment,
+      mail: user.email,
+      rating: rating,
+      id: id,
+    });
+    setRating(5);
+    setComment("");
+  };
 
-  // const handleEdit = () => {
-  //   ActivitiesControles.patchComment({
-  //     comment:comment,
-  //     mail:user.email,
-  //     rating:rating
-  //   },id)};
-  // }
-  // const handleDelete = () => {
-  //   ActivitiesControles.deletecomment({
-  //     comment:comment,
-  //     mail:user.email,
-  //     rating:rating
-  //   },id)};
+  const handleEdit = async () => {
+    const idFeedback = mycom.id;
+    await editComment({
+      id: id,
+      comment: commentEdit,
+      idFeedback: idFeedback,
+    });
+  };
 
-  // const handleCancelComment = () => {
-  //   setRating(5);
-  //   setComment("");
-  // };
+  const handleDelete = async () => {
+    const idFeedback = mycom.id;
+    console.log(id, idFeedback);
+    await deleteComment(idFeedback, id);
+  };
 
+  const handleCancelComment = () => {
+    setRating(5);
+    setComment("");
+  };
   return (
     <Box
       width={"90%"}
@@ -87,7 +93,7 @@ export const Reviews = ({ comments, ratings, id }: Props) => {
       padding={"10px"}
     >
       <Box>
-        {comments?.map((comment, index) => {
+        {feedbacks?.map((comment, index) => {
           return (
             <FormControl key={index} width={"100%"}>
               <HStack
@@ -98,25 +104,25 @@ export const Reviews = ({ comments, ratings, id }: Props) => {
                 ml={"22px"}
               >
                 {/* <Text>{comment.date}</Text> */}
-                {/* <Text>{comment.user.name}</Text>
-                <NextLink href={`/user/${comment.user.id}`}>
-                  <Avatar src={comment.user.avatar} />
-                </NextLink> */}
-                {/* <Box width={"200px"} height={"60px"} pt={"15px"}>
-          <StarRatings
-            rating={ratingId}
-            starRatedColor="#F3B46F"
-            changeRating={(e) => setRating(e)}
-            numberOfStars={5}
-            starDimension={"25px"}
-            starHoverColor={"#293541"}
-            starSpacing={"3px"}
-            name="rating"
-          />
-        </Box> */}
+                <Text>{comment.User.name}</Text>
+                <NextLink href={`/user/${comment.User.id}`}>
+                  <Avatar src={comment.User.avatar} />
+                </NextLink>
+                <Box width={"200px"} height={"60px"} pt={"15px"}>
+                  <StarRatings
+                    rating={ratingEdit}
+                    starRatedColor="#F3B46F"
+                    changeRating={(e) => setRatingEdit(e)}
+                    numberOfStars={5}
+                    starDimension={"25px"}
+                    starHoverColor={"#293541"}
+                    starSpacing={"3px"}
+                    name="rating"
+                  />
+                </Box>
               </HStack>
               <HStack width={"100%"} display={"flex"} justifyContent={"center"}>
-                {comment.user.mail === user.mail ? (
+                {comment.User.mail === user.mail ? (
                   <Box>
                     <VStack
                       width={"100%"}
@@ -131,7 +137,7 @@ export const Reviews = ({ comments, ratings, id }: Props) => {
                         border={"1px"}
                         borderColor={"#293541"}
                         vertical-align={"top"}
-                        // onChange={(e: any) => handleInputEdit(e)}
+                        onChange={(e: any) => handleInputEdit(e)}
                         value={commentEdit}
                       ></Input>
                     </VStack>
@@ -151,6 +157,9 @@ export const Reviews = ({ comments, ratings, id }: Props) => {
                         width={"100px"}
                         fontSize={"xl"}
                         marginBottom={"15px"}
+                        onClick={() => {
+                          handleEdit();
+                        }}
                       >
                         Save changes
                       </Button>
@@ -162,6 +171,7 @@ export const Reviews = ({ comments, ratings, id }: Props) => {
                         variant="outline"
                         width={"100px"}
                         fontSize={"xl"}
+                        onClick={() => handleDelete()}
                       >
                         Delete Comment
                       </Button>
@@ -217,7 +227,7 @@ export const Reviews = ({ comments, ratings, id }: Props) => {
                 <StarRatings
                   rating={rating}
                   starRatedColor="#F3B46F"
-                  // changeRating={(e) => setRating(e)}
+                  changeRating={(e) => setRating(e)}
                   numberOfStars={5}
                   starDimension={"25px"}
                   starHoverColor={"#293541"}
@@ -237,9 +247,10 @@ export const Reviews = ({ comments, ratings, id }: Props) => {
                   borderColor={"#293541"}
                   vertical-align={"top"}
                   placeholder="Write here your comment about this activity..."
-                  // onChange={(e: any) => {
-                  //   handleInput(e);
-                  // }}
+                  value={comment}
+                  onChange={(e: any) => {
+                    handleInput(e);
+                  }}
                 ></Input>
               </VStack>
               <VStack
@@ -258,7 +269,7 @@ export const Reviews = ({ comments, ratings, id }: Props) => {
                   width={"160px"}
                   fontSize={"xl"}
                   marginBottom={"15px"}
-                  // onClick={(e) => handleSubmit(e)}
+                  onClick={(e) => handleSubmit(e)}
                 >
                   Comment
                 </Button>
@@ -270,7 +281,7 @@ export const Reviews = ({ comments, ratings, id }: Props) => {
                   variant="outline"
                   width={"160px"}
                   fontSize={"xl"}
-                  // onClick={() => handleCancelComment()}
+                  onClick={() => handleCancelComment()}
                 >
                   Cancel
                 </Button>

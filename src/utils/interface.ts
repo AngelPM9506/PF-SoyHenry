@@ -39,6 +39,8 @@ export interface Activity {
   cityName: string;
   image?: string | ArrayBuffer;
   active?: boolean;
+  idFeedback?: string;
+  comment?: string;
 }
 
 export type typeSort = {
@@ -148,11 +150,9 @@ export type createComment = {
 };
 
 export interface Comment {
+  id: string;
   comment?: string;
-  user?: User;
-}
-
-export interface Rating {
-  rating: Number;
-  user?: User;
+  rating?: number;
+  User?: User;
+  userMail?: string;
 }

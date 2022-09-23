@@ -1,7 +1,6 @@
 import axios from "axios";
 import { QueryFunctionContext } from "react-query";
-import { getCityById } from "./cities";
-import { Activity, CityInDB, Comment, Rating } from "./interface";
+import { Activity } from "./interface";
 export const getActivities = async (
   wCity?: string,
   wName?: string,
@@ -70,4 +69,26 @@ export const patchActivity = async ({ comment, mail, rating, id }: Props) => {
   } catch (err) {
     console.error(err);
   }
+};
+
+export interface propsEdit {
+  id: string;
+  idFeedback: string;
+  comment: string;
+}
+
+export const editComment = async ({ id, idFeedback, comment }: propsEdit) => {
+  const activity = await axios.put(`/api/activities/${id}`, {
+    idFeedback,
+    comment,
+  });
+
+  return activity.data;
+};
+
+export const deleteComment = async (id: string, idFeedback: string) => {
+  const comment = await axios.delete(`/api/activities/${id}`, {
+    data: { idFeedback: idFeedback },
+  });
+  return comment.data;
 };

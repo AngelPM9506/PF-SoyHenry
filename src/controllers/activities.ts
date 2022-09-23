@@ -284,8 +284,9 @@ const ActivitiesControles = {
       return response;
     }
   },
-  patchActivity: async (body: body) => {
-    let { comment, mail, rating, id } = body;
+  patchActivity: async (body: body, query: query) => {
+    let { id } = query;
+    let { comment, mail, rating } = body;
     if (!comment && !rating) throw "Missing data";
     await prisma.feedback.create({
       data: {

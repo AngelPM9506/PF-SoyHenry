@@ -9,7 +9,7 @@ export interface Trip {
   planner?: { avatar?: string; id?: string } | any;
   tripOnUser?: Object[];
   description: string;
-  activitiesName: string[];
+  activitiesName: { name: string; actDate: string }[];
   image?: string | ArrayBuffer;
   price?: number;
 }
@@ -31,12 +31,12 @@ export interface UserUpdate {
 
 export interface Activity {
   id?: string;
-  name: string;
-  availability: string[];
-  description: string;
-  price: number;
+  name?: string;
+  availability?: string[];
+  description?: string;
+  price?: number;
   city?: City;
-  cityName: string;
+  cityName?: string;
   image?: string | ArrayBuffer;
   active?: boolean;
   idFeedback?: string;
@@ -132,6 +132,7 @@ export interface Errors {
   image?: string;
   initDate?: string;
   endDate?: string;
+  date?: string;
   description?: string;
   price?: string;
   cityName?: string;

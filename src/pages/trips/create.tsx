@@ -46,6 +46,7 @@ import {
   controlActivities,
   valActDateFormat,
 } from "src/utils/validations";
+// import sendMail from "src/utils/mail";
 import { upPrice } from "src/components/Carousel";
 import NextLink from "next/link";
 

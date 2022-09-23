@@ -1,6 +1,6 @@
 export var settings = {
   dots: true,
-  infinite: true,
+  infinite: false,
   speed: 500,
   slidesToShow: 6,
   slidesToScroll: 1,
@@ -18,7 +18,7 @@ export var settings = {
     {
       breakpoint: 600,
       settings: {
-        slidesToShow: 2,
+        slidesToShow: 1,
         slidesToScroll: 1,
         initialSlide: 2,
       },

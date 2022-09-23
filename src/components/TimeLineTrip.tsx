@@ -47,7 +47,6 @@ export const TimeLine = ({ data }: any) => {
     }
   });
 
-  console.log("data", data);
   const router = useRouter();
   const { user, error } = useUser();
   const [userOnTrip, setUserOnTrip] = useState(false);
@@ -114,6 +113,7 @@ export const TimeLine = ({ data }: any) => {
             <CardTimeLine
               key={activity.id}
               activity={activity.activity}
+              actDate={activity.actDate}
               cities={data.citiesOnTrips}
             />
           ))

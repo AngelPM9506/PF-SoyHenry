@@ -26,7 +26,7 @@ interface Props {
   feedbacks: Comment[];
   id: string;
 }
-export const Reviews = ({ feedbacks, id }: Props) => {
+const Reviews = ({ feedbacks, id }: Props) => {
   const logofoto =
     "https://res.cloudinary.com/mauro4202214/image/upload/v1663331567/world-travelers/favicon.ico_c8ryjz.png";
   const { user } = useUser();
@@ -375,3 +375,5 @@ export const Reviews = ({ feedbacks, id }: Props) => {
     </Box>
   );
 };
+
+export default Reviews;

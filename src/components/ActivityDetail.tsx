@@ -17,9 +17,10 @@ import {
 } from "@chakra-ui/react";
 import NextLink from "next/link";
 import { Reviews } from "./reviews/reviews";
+import Loading from "src/components/Loading";
 
 export default function ActivityDetail({ data, isLoading, error }: any) {
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <Loading />;
   if (error) return <div>{error.message}</div>;
   return (
     <Container maxW={"7xl"}>

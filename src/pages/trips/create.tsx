@@ -46,6 +46,7 @@ import {
   controlActivities,
   valActDateFormat,
 } from "src/utils/validations";
+// import sendMail from "src/utils/mail";
 import { upPrice } from "src/components/Carousel";
 import NextLink from "next/link";
 
@@ -249,10 +250,8 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    //console.log(input)
     let tripCreated = await createTrip(input);
     setInput(initialState);
-    console.log(tripCreated);
     await axios
       .post("/api/mail", {
         mail: userDb.data.mail,
@@ -612,11 +611,11 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
                                           <FormLabel fontSize={"xs"}>
                                             Choose a date
                                           </FormLabel>
-                                          <>
+                                          {/* <>
                                             {console.log(
                                               arrWorkingDays(act.availability)
                                             )}
-                                          </>
+                                          </> */}
                                           <Input
                                             size={"xs"}
                                             type={"date"}

@@ -25,6 +25,7 @@ import Layout from "../../components/layout/Layout";
 import { BsArrowDownUp } from "react-icons/bs";
 import { MdLabelImportantOutline } from "react-icons/md";
 import TripsControllers from "src/controllers/trips";
+import Loading from 'src/components/Loading'
 import axios from "axios";
 
 interface Props {
@@ -87,9 +88,7 @@ function Trips({ trips }: Props) {
   };
 
   return !data ? (
-    <div>
-      <h1>There are no trips yet! </h1>
-    </div>
+    <Loading/>
   ) : (
     <Layout>
       <Heading

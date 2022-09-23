@@ -12,6 +12,7 @@ export interface Trip {
   activitiesName: { name: string; actDate: string }[];
   image?: string | ArrayBuffer;
   price?: number;
+  active?: boolean;
 }
 
 export interface User {

@@ -29,9 +29,6 @@ interface Props {
 
 export const Reviews = ({ feedbacks, id }: Props) => {
   const { user } = useUser();
-  if (!user) {
-    return <div>is Loading...</div>;
-  }
   const mycom = feedbacks?.find((c) => c.userMail === user.email);
   const mycomment = mycom?.comment;
   const myrating = mycom?.rating;
@@ -79,6 +76,9 @@ export const Reviews = ({ feedbacks, id }: Props) => {
     setRating(5);
     setComment("");
   };
+  if (!user) {
+    return <div>is Loading...</div>;
+  }
   return (
     <Box
       width={"90%"}
@@ -293,5 +293,3 @@ export const Reviews = ({ feedbacks, id }: Props) => {
     </Box>
   );
 };
-
-//EN OTRO COMPONENTE IRA LAS ESTRELLITAS DEL RAITING PROMEDIO...

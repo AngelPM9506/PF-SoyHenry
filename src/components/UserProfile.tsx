@@ -89,7 +89,7 @@ export const UserProfile = ({ user }: UserAuth0 | any) => {
   };
 
   const handleKeyWords = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.keyCode === 13) {
+    if (e.keyCode === 13 && inputKeyWords !== "") {
       e.preventDefault();
       setKeyWords([...keyWords, inputKeyWords]);
       setInputKeyWords("");
@@ -97,7 +97,9 @@ export const UserProfile = ({ user }: UserAuth0 | any) => {
   };
 
   const addKeyWords = () => {
-    setKeyWords([...keyWords, inputKeyWords]);
+    if (inputKeyWords !== "") {
+      setKeyWords([...keyWords, inputKeyWords]);
+    }
     setInputKeyWords("");
   };
 

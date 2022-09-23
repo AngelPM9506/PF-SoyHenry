@@ -20,7 +20,7 @@ import {
 import { FaInstagram, FaTwitter, FaYoutube } from "react-icons/fa";
 import { MdLocalShipping } from "react-icons/md";
 import { MinusIcon } from "@chakra-ui/icons";
-import MiniCardAct from "./miniCardActivity";
+
 import { City, User } from "src/utils/interface";
 import { Key } from "react";
 import { QueryFunctionContext, useQuery } from "react-query";

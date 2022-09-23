@@ -101,7 +101,7 @@ export const AvatarCarousel = (props: any) => {
                               rounded={"100%"}
                               objectFit={"cover"}
                               src={a.user.avatar ? a.user.avatar : defaultpic}
-                              alt={a.user.name}
+                              alt={"user avatar"}
                             />
                             <Text textAlign={"center"} width={"max-content"}>
                               {a.user.name}

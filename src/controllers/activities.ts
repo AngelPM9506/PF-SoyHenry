@@ -168,6 +168,7 @@ const ActivitiesControles = {
           feedbacks: {
             select: {
               id: true,
+              feedbackDate:true,
               userMail: true,
               comment: true,
               rating: true,

@@ -120,6 +120,11 @@ export default function NavBar() {
                   </NextLink>
                 </MenuItem>
                 <MenuItem>
+                  <NextLink href={`/user/my-trips`}>
+                    <Link> My Trips </Link>
+                  </NextLink>
+                </MenuItem>
+                <MenuItem>
                   <Link href="/api/auth/logout">Logout</Link>
                 </MenuItem>
                 {userDb?.data.isAdmin && (

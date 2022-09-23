@@ -94,16 +94,16 @@ export default async function Payment(req: NextApiRequest, res: NextApiResponse)
 						}
 					})
 
-					await axios.post(`${PAYPAL_URL}/api/mail`, {
-						mail: user.mail,
-						subject: `Trip ${trip.name} has been payed successfuly thanks to use WORLD TRAVELERS`,
-						message: `Your Trip: ${trip.name} has been payed successfuly thanks to use WORLD TRAVELERS`,
-						html: {
-						  title: 'Trip payed successfuly',
-						  actionName: trip.name,
-						  text: `Your Trip ${trip.name} has been payed, enjoy your trip`
-						}
-					}).catch(error => console.log(error));
+					// await axios.post(`${PAYPAL_URL}/api/mail`, {
+					// 	mail: user.mail,
+					// 	subject: `Trip ${trip.name} has been payed successfuly thanks to use WORLD TRAVELERS`,
+					// 	message: `Your Trip: ${trip.name} has been payed successfuly thanks to use WORLD TRAVELERS`,
+					// 	html: {
+					// 	  title: 'Trip payed successfuly',
+					// 	  actionName: trip.name,
+					// 	  text: `Your Trip ${trip.name} has been payed, enjoy your trip`
+					// 	}
+					// }).catch(error => console.log(error));
 
 					return res.redirect(`${PAYPAL_URL}/trips/${tripID}`)
 				} else {

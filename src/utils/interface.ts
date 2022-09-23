@@ -16,10 +16,12 @@ export interface Trip {
 }
 
 export interface User {
+  id?: string;
   name: string;
   mail: string;
+  email?: string;
   avatar: string;
-  description: string;
+  description?: string;
 }
 
 export interface UserUpdate {
@@ -38,6 +40,8 @@ export interface Activity {
   cityName?: string;
   image?: string | ArrayBuffer;
   active?: boolean;
+  idFeedback?: string;
+  comment?: string;
 }
 
 export type typeSort = {
@@ -146,3 +150,12 @@ export type createComment = {
     };
   };
 };
+
+export interface Comment {
+  id: string;
+  comment?: string;
+  rating?: number;
+  User?: User;
+  userMail?: string;
+  feedbackDate?: string;
+}

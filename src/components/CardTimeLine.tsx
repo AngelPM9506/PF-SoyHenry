@@ -7,7 +7,8 @@ import { MdOutlineTripOrigin } from "react-icons/md";
 const url =
   "https://res.cloudinary.com/mauro4202214/image/upload/v1663527844/world-travelers/activitydefault_q9aljz.png";
 
-export default function CardTimeLine({ activity, cities }: any) {
+export default function CardTimeLine({ activity, actDate, cities }: any) {
+  const date = actDate.slice(0, 10).split("-").reverse().join("/");
   return (
     <VerticalTimelineElement
       className="vertical-timeline-element--work"
@@ -16,7 +17,7 @@ export default function CardTimeLine({ activity, cities }: any) {
         color: "white",
       }}
       contentArrowStyle={{ borderRight: "7px solid #D1DFE3" }}
-      date="20/07/2022"
+      date={date}
       iconStyle={{ background: "#293541", color: "#02b1b1" }}
       icon={<MdOutlineTripOrigin />}
     >
@@ -55,7 +56,7 @@ export default function CardTimeLine({ activity, cities }: any) {
           })}
           <NextLink href={`/activities/${activity.id}`}>
             <Button bg={"#02b1b1"} color={"#293541"}>
-              see more info of this activity
+              More Info
             </Button>
           </NextLink>
         </VStack>

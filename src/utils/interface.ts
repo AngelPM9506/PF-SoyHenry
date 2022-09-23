@@ -156,4 +156,5 @@ export interface Comment {
   rating?: number;
   User?: User;
   userMail?: string;
+  feedbackDate?: string;
 }

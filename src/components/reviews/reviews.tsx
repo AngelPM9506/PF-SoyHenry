@@ -29,15 +29,25 @@ interface Props {
 
 export const Reviews = ({ feedbacks, id }: Props) => {
   const { user } = useUser();
-  const mycom = feedbacks?.find((c) => c.userMail === user.email);
-  const mycomment = mycom?.comment;
-  const myrating = mycom?.rating;
 
   const [rating, setRating] = useState(5);
-  const [ratingEdit, setRatingEdit] = useState(myrating);
+  const [ratingEdit, setRatingEdit] = useState(0);
   const [comment, setComment] = useState("");
-  const [commentEdit, setCommentEdit] = useState(mycomment);
+  const [commentEdit, setCommentEdit] = useState("");
 
+  if (!user) {
+    return <div>is Loading...</div>;
+  }
+  const mycom = feedbacks?.find((c) => {
+    c.userMail === user.email;
+  });
+  console.log(mycom);
+  const mycomment = mycom?.comment;
+  const myrating = mycom?.rating;
+  if (mycomment) {
+    setRatingEdit(myrating);
+    setCommentEdit(mycomment);
+  }
   const handleInput = (e: any) => {
     setComment(e.target.value);
   };
@@ -68,7 +78,6 @@ export const Reviews = ({ feedbacks, id }: Props) => {
 
   const handleDelete = async () => {
     const idFeedback = mycom.id;
-    console.log(id, idFeedback);
     await deleteComment(idFeedback, id);
   };
 
@@ -76,9 +85,7 @@ export const Reviews = ({ feedbacks, id }: Props) => {
     setRating(5);
     setComment("");
   };
-  if (!user) {
-    return <div>is Loading...</div>;
-  }
+
   return (
     <Box
       width={"90%"}
@@ -103,8 +110,22 @@ export const Reviews = ({ feedbacks, id }: Props) => {
                 height={"60px"}
                 ml={"22px"}
               >
-                {/* <Text>{comment.date}</Text> */}
-                <Text>{comment.User.name}</Text>
+                <Text>
+                  {comment.feedbackDate
+                    .slice(0, 10)
+                    .split("-")
+                    .reverse()
+                    .join("/")}
+                </Text>
+                <Text
+                  width={"max-content"}
+                  color={"#293541"}
+                  fontSize={"2xl"}
+                  fontWeight={"bold"}
+                  paddingRight={"50px"}
+                >
+                  {comment.User.name}
+                </Text>
                 <NextLink href={`/user/${comment.User.id}`}>
                   <Avatar src={comment.User.avatar} />
                 </NextLink>
@@ -122,7 +143,7 @@ export const Reviews = ({ feedbacks, id }: Props) => {
                 </Box>
               </HStack>
               <HStack width={"100%"} display={"flex"} justifyContent={"center"}>
-                {comment.User.mail === user.mail ? (
+                {comment.userMail === user.mail ? (
                   <Box>
                     <VStack
                       width={"100%"}

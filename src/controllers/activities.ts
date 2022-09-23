@@ -16,6 +16,7 @@ type query = {
   sortBy?: string | string[];
   wCity?: string | string[];
   maxPrice?: string | string[];
+  idFeedback?: String;
 };
 
 type body = {
@@ -171,6 +172,7 @@ const ActivitiesControles = {
               userMail: true,
               comment: true,
               rating: true,
+              feedbackDate: true,
               User: {
                 select: {
                   name: true,
@@ -188,17 +190,9 @@ const ActivitiesControles = {
     }
   },
   putActivity: async (body: body, query: query) => {
-    let {
-      name,
-      image,
-      availability,
-      description,
-      price,
-      active,
-      idFeedback,
-      comment,
-    } = body;
-    let { id } = query;
+    let { name, image, availability, description, price, active, comment } =
+      body;
+    let { id, idFeedback } = query;
     try {
       /**Si no existe ningun valor retorna un error*/
       if (
@@ -268,9 +262,8 @@ const ActivitiesControles = {
       return error;
     }
   },
-  deletActivity: async (body: body, query: query) => {
-    let { id } = query;
-    let { idFeedback } = body;
+  deletActivity: async (query: query) => {
+    let { id, idFeedback } = query;
     if (idFeedback) {
       await prisma.feedback.delete({
         where: { id: idFeedback.toString() },

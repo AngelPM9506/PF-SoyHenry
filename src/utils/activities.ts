@@ -88,7 +88,7 @@ export const editComment = async ({ id, idFeedback, comment }: propsEdit) => {
 
 export const deleteComment = async (id: string, idFeedback: string) => {
   const comment = await axios.delete(`/api/activities/${id}`, {
-    data: { idFeedback: idFeedback },
+    params: idFeedback,
   });
   return comment.data;
 };

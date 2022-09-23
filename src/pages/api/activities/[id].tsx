@@ -21,10 +21,9 @@ export default async function index(req: NextApiRequest, res: NextApiResponse) {
       comment,
       mail,
       rating,
-      idFeedback,
     },
 
-    query: { id },
+    query: { id, idFeedback },
   } = req;
   try {
     switch (method) {
@@ -34,6 +33,7 @@ export default async function index(req: NextApiRequest, res: NextApiResponse) {
         return res.status(200).json(respGet);
       /**agregar una nueva actividad */
       case "PUT":
+        let idfeedb = idFeedback.toString();
         let respPut = await ActivitiesControles.putActivity(
           {
             name,
@@ -42,10 +42,9 @@ export default async function index(req: NextApiRequest, res: NextApiResponse) {
             description,
             price,
             active,
-            idFeedback,
             comment,
           },
-          { id }
+          { id, idFeedback: idfeedb }
         );
         return res.status(201).json(respPut);
       /**agregar una nueva actividad pendiente*/
@@ -57,10 +56,11 @@ export default async function index(req: NextApiRequest, res: NextApiResponse) {
         return res.json(respPatch);
       }
       case "DELETE":
-        let respDelete = await ActivitiesControles.deletActivity(
-          { idFeedback },
-          { id }
-        );
+        let idfeed = idFeedback.toString();
+        let respDelete = await ActivitiesControles.deletActivity({
+          id,
+          idFeedback: idfeed,
+        });
         return res.status(201).json(respDelete);
       default:
         res.status(400).send("Method not supported try again");

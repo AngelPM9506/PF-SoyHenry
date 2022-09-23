@@ -190,8 +190,16 @@ const ActivitiesControles = {
     }
   },
   putActivity: async (body: body, query: query) => {
-    let { name, image, availability, description, price, active, comment } =
-      body;
+    let {
+      name,
+      image,
+      availability,
+      description,
+      price,
+      active,
+      comment,
+      rating,
+    } = body;
     let { id, idFeedback } = query;
     try {
       /**Si no existe ningun valor retorna un error*/
@@ -210,7 +218,7 @@ const ActivitiesControles = {
       if (idFeedback) {
         await prisma.feedback.update({
           where: { id: idFeedback.toString() },
-          data: { comment: comment.toString() },
+          data: { comment: comment.toString(), rating: Number(rating) },
         });
         return "Updated succefully";
       }

@@ -54,7 +54,7 @@ export const Reviews = ({ feedbacks, id }: Props) => {
     setCommentEdit(e.target.value);
   };
   const handleRatingEdit = (e: any) => {
-    setRatingEdit(e.target.value);
+    setRatingEdit(e);
   };
 
   const handleSubmit = async (e: any) => {
@@ -81,7 +81,7 @@ export const Reviews = ({ feedbacks, id }: Props) => {
 
   const handleDelete = async () => {
     const idFeedback = mycomment.id;
-    await deleteComment(idFeedback, id);
+    await deleteComment(id, idFeedback);
   };
 
   const handleCancelComment = () => {
@@ -200,7 +200,7 @@ export const Reviews = ({ feedbacks, id }: Props) => {
                         variant="outline"
                         width={"100px"}
                         fontSize={"xl"}
-                        onClick={() => handleDelete()}
+                        onClick={handleDelete}
                       >
                         Delete Comment
                       </Button>

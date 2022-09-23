@@ -43,6 +43,7 @@ export default async function index(req: NextApiRequest, res: NextApiResponse) {
             price,
             active,
             comment,
+            rating,
           },
           { id, idFeedback: idfeedb }
         );

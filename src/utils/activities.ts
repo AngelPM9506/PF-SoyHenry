@@ -84,18 +84,20 @@ export const editComment = async ({
   comment,
   rating,
 }: propsEdit) => {
-  const activity = await axios.put(`/api/activities/${id}`, {
-    idFeedback,
-    comment,
-    rating,
-  });
+  const activity = await axios.put(
+    `/api/activities/${id}?idFeedback=${idFeedback}`,
+    {
+      comment,
+      rating,
+    }
+  );
 
   return activity.data;
 };
 
 export const deleteComment = async (id: string, idFeedback: string) => {
-  const comment = await axios.delete(`/api/activities/${id}`, {
-    params: idFeedback,
-  });
+  const comment = await axios.delete(
+    `/api/activities/${id}?idFeedback=${idFeedback}`
+  );
   return comment.data;
 };

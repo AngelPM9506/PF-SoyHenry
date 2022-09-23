@@ -7,7 +7,7 @@ export interface Trip {
   cities?: string[];
   endDate: string;
   planner?: { avatar?: string; id?: string } | any;
-  tripOnUser?: Object[];
+  tripOnUser?: { trip: Trip; user: User }[];
   description: string;
   activitiesName: { name: string; actDate: string }[];
   image?: string | ArrayBuffer;

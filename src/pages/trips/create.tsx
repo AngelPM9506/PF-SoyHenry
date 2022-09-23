@@ -250,21 +250,23 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     //console.log(input)
-    let tripCreated = await createTrip(input)
-    setInput(initialState)
+    let tripCreated = await createTrip(input);
+    setInput(initialState);
     console.log(tripCreated);
-    await axios.post('/api/mail', {
-      mail: userDb.data.mail,
-      subject: `Trip ${input.name} has been create successfuly thanks to use WORLD TRAVELERS`,
-      message: `Your Trip: ${input.name} has been create successfuly thanks to use WORLD TRAVELERS`,
-      html: {
-        title: 'Trip created successfuly',
-        actionName: input.name,
-        text: `Your Trip ${input.name} has been created`,
-        url: `/trips/${tripCreated.id}`,
-        urlMsg: 'See your trip here'
-      }
-    }).catch(error => console.log(error));
+    await axios
+      .post("/api/mail", {
+        mail: userDb.data.mail,
+        subject: `Trip ${input.name} has been create successfuly thanks to use WORLD TRAVELERS`,
+        message: `Your Trip: ${input.name} has been create successfuly thanks to use WORLD TRAVELERS`,
+        html: {
+          title: "Trip created successfuly",
+          actionName: input.name,
+          text: `Your Trip ${input.name} has been created`,
+          url: `/trips/${tripCreated.id}`,
+          urlMsg: "See your trip here",
+        },
+      })
+      .catch((error) => console.log(error));
     router.push(`/trips/${tripCreated.id}`);
   };
 
@@ -615,13 +617,13 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
                                               arrWorkingDays(act.availability)
                                             )}
                                           </>
-                                          {/* <Input
+                                          <Input
                                             size={"xs"}
                                             type={"date"}
                                             min={input.initDate}
                                             max={input.endDate}
                                             onChange={(e) => handleActDate(e)}
-                                          /> */}
+                                          />
                                         </GridItem>
                                         <GridItem>
                                           {errorActivities && (

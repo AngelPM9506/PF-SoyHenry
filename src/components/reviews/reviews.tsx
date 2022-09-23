@@ -26,9 +26,8 @@ interface Props {
   feedbacks: Comment[];
   id: string;
 }
-
 export const Reviews = ({ feedbacks, id }: Props) => {
-  const logo =
+  const logofoto =
     "https://res.cloudinary.com/mauro4202214/image/upload/v1663331567/world-travelers/favicon.ico_c8ryjz.png";
   const { user } = useUser();
 
@@ -132,7 +131,9 @@ export const Reviews = ({ feedbacks, id }: Props) => {
                     {comment.User.name}
                   </Text>
                   <NextLink href={`/user/${comment.User.id}`}>
-                    <Avatar src={comment.User.avatar} />
+                    <Avatar
+                      src={comment.User.avatar ? comment.User.avatar : logofoto}
+                    />
                   </NextLink>
                   <Box width={"200px"} height={"60px"} pt={"15px"}>
                     <StarRatings
@@ -236,7 +237,9 @@ export const Reviews = ({ feedbacks, id }: Props) => {
                     {comment.User.name}
                   </Text>
                   <NextLink href={`/user/${comment.User.id}`}>
-                    <Avatar src={comment.User.avatar} />
+                    <Avatar
+                      src={comment.User.avatar ? comment.User.avatar : logofoto}
+                    />
                   </NextLink>
                   <Box width={"200px"} height={"60px"} pt={"15px"}>
                     <StarRatings

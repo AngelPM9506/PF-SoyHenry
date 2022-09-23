@@ -28,6 +28,8 @@ interface Props {
 }
 
 export const Reviews = ({ feedbacks, id }: Props) => {
+  const logo =
+    "https://res.cloudinary.com/mauro4202214/image/upload/v1663331567/world-travelers/favicon.ico_c8ryjz.png";
   const { user } = useUser();
 
   const [rating, setRating] = useState(5);
@@ -35,24 +37,24 @@ export const Reviews = ({ feedbacks, id }: Props) => {
   const [comment, setComment] = useState("");
   const [commentEdit, setCommentEdit] = useState("");
 
-  if (!user) {
+  if (!user || !feedbacks) {
     return <div>is Loading...</div>;
   }
-  const mycom = feedbacks?.find((c) => {
-    c.userMail === user.email;
-  });
-  console.log(mycom);
-  const mycomment = mycom?.comment;
-  const myrating = mycom?.rating;
-  if (mycomment) {
-    setRatingEdit(myrating);
-    setCommentEdit(mycomment);
+
+  const mycomment = feedbacks.find((c) => c.userMail === user.email);
+  if (mycomment && commentEdit === "") {
+    setRatingEdit(mycomment.rating);
+    setCommentEdit(mycomment.comment);
   }
+
   const handleInput = (e: any) => {
     setComment(e.target.value);
   };
   const handleInputEdit = (e: any) => {
     setCommentEdit(e.target.value);
+  };
+  const handleRatingEdit = (e: any) => {
+    setRatingEdit(e.target.value);
   };
 
   const handleSubmit = async (e: any) => {
@@ -68,16 +70,17 @@ export const Reviews = ({ feedbacks, id }: Props) => {
   };
 
   const handleEdit = async () => {
-    const idFeedback = mycom.id;
+    const idFeedback = mycomment.id;
     await editComment({
       id: id,
       comment: commentEdit,
       idFeedback: idFeedback,
+      rating: ratingEdit,
     });
   };
 
   const handleDelete = async () => {
-    const idFeedback = mycom.id;
+    const idFeedback = mycomment.id;
     await deleteComment(idFeedback, id);
   };
 
@@ -85,13 +88,12 @@ export const Reviews = ({ feedbacks, id }: Props) => {
     setRating(5);
     setComment("");
   };
-
   return (
     <Box
-      width={"90%"}
+      width={"100%"}
       mt={"30px"}
       mb={"30px"}
-      bg={"#e7eff1"}
+      bg={"RGBA(209,223,227,0.25)"}
       display={"flex"}
       flexDirection={"column"}
       justifyContent={"center"}
@@ -99,51 +101,57 @@ export const Reviews = ({ feedbacks, id }: Props) => {
       rounded={"xl"}
       padding={"10px"}
     >
+      {/* ACA ABAJO LOS COMENTARIOS RENDERIZADOS  */}
+
       <Box>
-        {feedbacks?.map((comment, index) => {
-          return (
-            <FormControl key={index} width={"100%"}>
-              <HStack
-                justifyContent={"left"}
-                alignItems={"center"}
-                width={"100%"}
-                height={"60px"}
-                ml={"22px"}
-              >
-                <Text>
-                  {comment.feedbackDate
-                    .slice(0, 10)
-                    .split("-")
-                    .reverse()
-                    .join("/")}
-                </Text>
-                <Text
-                  width={"max-content"}
-                  color={"#293541"}
-                  fontSize={"2xl"}
-                  fontWeight={"bold"}
-                  paddingRight={"50px"}
+        {feedbacks.map((comment, index) =>
+          comment === mycomment ? (
+            <Box>
+              <FormControl key={index} width={"100%"}>
+                <HStack
+                  justifyContent={"left"}
+                  alignItems={"center"}
+                  width={"100%"}
+                  height={"60px"}
+                  ml={"22px"}
                 >
-                  {comment.User.name}
-                </Text>
-                <NextLink href={`/user/${comment.User.id}`}>
-                  <Avatar src={comment.User.avatar} />
-                </NextLink>
-                <Box width={"200px"} height={"60px"} pt={"15px"}>
-                  <StarRatings
-                    rating={ratingEdit}
-                    starRatedColor="#F3B46F"
-                    changeRating={(e) => setRatingEdit(e)}
-                    numberOfStars={5}
-                    starDimension={"25px"}
-                    starHoverColor={"#293541"}
-                    starSpacing={"3px"}
-                    name="rating"
-                  />
-                </Box>
-              </HStack>
-              <HStack width={"100%"} display={"flex"} justifyContent={"center"}>
-                {comment.userMail === user.mail ? (
+                  <Text>
+                    {comment.feedbackDate
+                      .slice(0, 10)
+                      .split("-")
+                      .reverse()
+                      .join("/")}
+                  </Text>
+                  <Text
+                    width={"max-content"}
+                    color={"#293541"}
+                    fontSize={"2xl"}
+                    fontWeight={"bold"}
+                    paddingRight={"50px"}
+                  >
+                    {comment.User.name}
+                  </Text>
+                  <NextLink href={`/user/${comment.User.id}`}>
+                    <Avatar src={comment.User.avatar} />
+                  </NextLink>
+                  <Box width={"200px"} height={"60px"} pt={"15px"}>
+                    <StarRatings
+                      rating={ratingEdit}
+                      starRatedColor="#F3B46F"
+                      changeRating={(e: any) => handleRatingEdit(e)}
+                      numberOfStars={5}
+                      starDimension={"25px"}
+                      starHoverColor={"#293541"}
+                      starSpacing={"3px"}
+                      name="rating"
+                    />
+                  </Box>
+                </HStack>
+                <HStack
+                  width={"100%"}
+                  display={"flex"}
+                  justifyContent={"center"}
+                >
                   <Box>
                     <VStack
                       width={"100%"}
@@ -198,33 +206,83 @@ export const Reviews = ({ feedbacks, id }: Props) => {
                       </Button>
                     </VStack>
                   </Box>
-                ) : (
-                  <VStack
-                    width={"100%"}
-                    marginBottom={"20px"}
-                    marginLeft={"20px"}
+                </HStack>
+              </FormControl>
+            </Box>
+          ) : (
+            <Box>
+              <FormControl key={index} width={"100%"}>
+                <HStack
+                  justifyContent={"left"}
+                  alignItems={"center"}
+                  width={"100%"}
+                  height={"60px"}
+                  ml={"22px"}
+                >
+                  <Text>
+                    {comment.feedbackDate
+                      .slice(0, 10)
+                      .split("-")
+                      .reverse()
+                      .join("/")}
+                  </Text>
+                  <Text
+                    width={"max-content"}
+                    color={"#293541"}
+                    fontSize={"2xl"}
+                    fontWeight={"bold"}
+                    paddingRight={"50px"}
                   >
-                    <Input
+                    {comment.User.name}
+                  </Text>
+                  <NextLink href={`/user/${comment.User.id}`}>
+                    <Avatar src={comment.User.avatar} />
+                  </NextLink>
+                  <Box width={"200px"} height={"60px"} pt={"15px"}>
+                    <StarRatings
+                      rating={comment.rating}
+                      starRatedColor="#F3B46F"
+                      numberOfStars={5}
+                      starDimension={"25px"}
+                      starHoverColor={"#293541"}
+                      starSpacing={"3px"}
+                      name="rating"
+                    />
+                  </Box>
+                </HStack>
+                <HStack
+                  width={"100%"}
+                  display={"flex"}
+                  justifyContent={"center"}
+                >
+                  <Box>
+                    <VStack
                       width={"100%"}
-                      height={"100px"}
-                      textColor={"#293541"}
-                      backgroundColor={"#e7eff1"}
-                      border={"1px"}
-                      borderColor={"#293541"}
-                      vertical-align={"top"}
+                      marginBottom={"20px"}
+                      marginLeft={"20px"}
                     >
-                      {comment.comment}
-                    </Input>
-                  </VStack>
-                )}
-              </HStack>
-            </FormControl>
-          );
-        })}
+                      <Input
+                        width={"100%"}
+                        height={"100px"}
+                        textColor={"#293541"}
+                        backgroundColor={"#e7eff1"}
+                        border={"1px"}
+                        borderColor={"#293541"}
+                        vertical-align={"top"}
+                        value={comment.comment}
+                      ></Input>
+                    </VStack>
+                  </Box>
+                </HStack>
+              </FormControl>
+            </Box>
+          )
+        )}
       </Box>
+      {/* ACA ABAJO EL FORMULARIO DE CREACION DE COMENTARIO !  */}
 
       {mycomment ? (
-        <Box>.</Box>
+        <Box></Box>
       ) : (
         <Box rounded={"xl"} width={"90%"} bgColor={"#D1DFE3"}>
           <FormControl width={"100%"}>

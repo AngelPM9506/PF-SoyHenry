@@ -56,7 +56,7 @@ export default function CardTimeLine({ activity, actDate, cities }: any) {
           })}
           <NextLink href={`/activities/${activity.id}`}>
             <Button bg={"#02b1b1"} color={"#293541"}>
-              see more info of this activity
+              More Info
             </Button>
           </NextLink>
         </VStack>

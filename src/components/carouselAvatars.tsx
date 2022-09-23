@@ -16,11 +16,11 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { settings } from "src/utils/AvatarCarousel";
+import NextLink from "next/link";
 
 export const AvatarCarousel = (props: any) => {
   const defaultpic: string =
     "https://res.cloudinary.com/mauro4202214/image/upload/v1663331567/world-travelers/favicon.ico_c8ryjz.png";
-  console.log(props);
 
   return (
     <>
@@ -87,16 +87,26 @@ export const AvatarCarousel = (props: any) => {
                           },
                         }}
                       >
-                        <Image
-                          height={"80px"}
-                          width={"80px"}
-                          rounded={"100%"}
-                          objectFit={"cover"}
-                          src={a.user.avatar ? a.user.avatar : defaultpic}
-                        />
-                        <Text textAlign={"center"} width={"max-content"}>
-                          {a.user.name}
-                        </Text>
+                        <NextLink href={`/user/${a.user.id}`}>
+                          <Box
+                            display={"flex"}
+                            justifyContent={"center"}
+                            alignItems={"center"}
+                            flexDirection={"column"}
+                            cursor={"pointer"}
+                          >
+                            <Image
+                              height={"80px"}
+                              width={"80px"}
+                              rounded={"100%"}
+                              objectFit={"cover"}
+                              src={a.user.avatar ? a.user.avatar : defaultpic}
+                            />
+                            <Text textAlign={"center"} width={"max-content"}>
+                              {a.user.name}
+                            </Text>
+                          </Box>
+                        </NextLink>
                       </VStack>
                     </Box>
                   </Center>

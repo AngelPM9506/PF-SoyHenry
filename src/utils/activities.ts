@@ -75,12 +75,19 @@ export interface propsEdit {
   id: string;
   idFeedback: string;
   comment: string;
+  rating: number;
 }
 
-export const editComment = async ({ id, idFeedback, comment }: propsEdit) => {
+export const editComment = async ({
+  id,
+  idFeedback,
+  comment,
+  rating,
+}: propsEdit) => {
   const activity = await axios.put(`/api/activities/${id}`, {
     idFeedback,
     comment,
+    rating,
   });
 
   return activity.data;

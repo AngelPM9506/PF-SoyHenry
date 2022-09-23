@@ -16,7 +16,7 @@ import {
   ListItem,
 } from "@chakra-ui/react";
 import NextLink from "next/link";
-import { Reviews } from "./reviews/reviews";
+import { Reviews } from "./reviews/Reviews";
 import Loading from "src/components/Loading";
 
 export default function ActivityDetail({ data, isLoading, error }: any) {

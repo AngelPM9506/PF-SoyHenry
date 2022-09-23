@@ -17,7 +17,7 @@ import {
 } from "@chakra-ui/react";
 import NextLink from "next/link";
 import Loading from "src/components/Loading";
-import Reviews from "src/components/reviews/Reviews";
+// import Reviews from "src/components/reviews/Reviews";
 export default function ActivityDetail({ data, isLoading, error }: any) {
   if (isLoading) return <Loading />;
   if (error) return <div>{error.message}</div>;
@@ -147,7 +147,7 @@ export default function ActivityDetail({ data, isLoading, error }: any) {
         </Stack>
       </SimpleGrid>
       <Box display={"flex"} alignItems={"center"} justifyContent={"center"}>
-        <Reviews feedbacks={data.activity.feedbacks} id={data.id} />
+        {/* <Reviews feedbacks={data.activity.feedbacks} id={data.id} /> */}
       </Box>
     </Container>
   );

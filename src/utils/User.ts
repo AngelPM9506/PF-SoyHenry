@@ -24,7 +24,7 @@ export const getOrCreateUser = async (user: UserAuth0) => {
 };
 
 export const getUsers = async () => {
-  const userDb: UserData = await axios.get("/api/users");
+  const userDb: UserData = await axios.get("/users");
 
   return userDb.data;
 };
@@ -43,4 +43,10 @@ export const updateUser = async (user: UserData) => {
     active: user.active,
   });
   return userDb;
+};
+
+export const getUsersById = async (id: string) => {
+  const userDb: UserData = await axios.get(`/api/users/${id}`);
+
+  return userDb.data;
 };

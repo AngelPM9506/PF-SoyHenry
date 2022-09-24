@@ -39,8 +39,11 @@ export const UserDetail = ({ userDetail, trips }: Props) => {
   const tikTokPage = "https://www.tiktok.com/";
   const instaPage = "https://www.instagram.com/";
   const facePage = "https://es-es.facebook.com/";
-  const arrInterests: string[] = user?.keyWords.split(",");
+
   const defaulHashtags: string[] = ["trips", "traveling", "friends"];
+  const arrInterests: string[] = user.keyWords
+    ? user.keyWords.split(",")
+    : defaulHashtags;
 
   const myCreatedActiveTrips = trips?.filter(
     (trip) => trip.planner.id === user?.id && trip.active === true
@@ -98,33 +101,19 @@ export const UserDetail = ({ userDetail, trips }: Props) => {
                 direction={"row"}
                 mt={6}
               >
-                {arrInterests !== undefined && arrInterests[0] !== ""
-                  ? arrInterests?.map((int, index) => {
-                      return (
-                        <Badge
-                          key={index}
-                          px={2}
-                          py={1}
-                          bg={useColorModeValue("gray.50", "gray.800")}
-                          fontWeight={"400"}
-                        >
-                          {`#${int.toLowerCase()}`}
-                        </Badge>
-                      );
-                    })
-                  : defaulHashtags?.map((h, index) => {
-                      return (
-                        <Badge
-                          key={index}
-                          px={2}
-                          py={1}
-                          bg={useColorModeValue("gray.50", "gray.800")}
-                          fontWeight={"400"}
-                        >
-                          {`#${h.toLowerCase()}`}
-                        </Badge>
-                      );
-                    })}
+                {arrInterests?.map((int, index) => {
+                  return (
+                    <Badge
+                      key={index}
+                      px={2}
+                      py={1}
+                      bg={useColorModeValue("gray.50", "gray.800")}
+                      fontWeight={"400"}
+                    >
+                      {`#${int.toLowerCase()}`}
+                    </Badge>
+                  );
+                })}
               </Stack>
 
               <Center>

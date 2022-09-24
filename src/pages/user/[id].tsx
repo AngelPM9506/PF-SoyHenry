@@ -4,6 +4,7 @@ import { getUserDetail } from "src/utils/userDetail";
 import Layout from "src/components/layout/Layout";
 import UserDetail from "src/components/UserDetail";
 import axios from "axios";
+import Loading from 'src/components/Loading'
 import { GetServerSideProps } from "next/types";
 import { Trip } from "src/utils/interface";
 
@@ -19,8 +20,7 @@ export const ProfileDetail = (props: Props) => {
     () => props.id && getUserDetail(props.id)
   );
 
-  if (isLoading) return <div>Loading...</div>;
-
+  if (isLoading) return <Loading/>;
   return (
     <Layout>
       <UserDetail trips={props.trips} userDetail={userDetail} />

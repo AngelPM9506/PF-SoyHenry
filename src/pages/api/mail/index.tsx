@@ -18,10 +18,12 @@ const mail = async (req: NextApiRequest, res: NextApiResponse) => {
                         rejectUnauthorized: false
                     }
                 });
+
                 /**boton para la redireccion
                  * logo 
                  * estilos
                  */
+
                 let mailData = {
                     from: MAIL_FROM,
                     to: mail,

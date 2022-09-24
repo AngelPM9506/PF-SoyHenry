@@ -1,5 +1,6 @@
 import axios from "axios";
 import { QueryFunctionContext } from "react-query";
+import { Trip } from "./interface";
 
 export const getTrips = async (
   // wActivity?: string,
@@ -23,5 +24,29 @@ export const getTrips = async (
 
 export const getTripId = async (id: QueryFunctionContext<string[], any>) => {
   const trip = await axios.get(`/api/trips/${id}`);
+  return trip.data;
+};
+
+export const editTrip = async ({
+  id,
+  name,
+  image,
+  description,
+  active,
+  activitiesName,
+}: Trip) => {
+  const trip = await axios.put(`/api/trips/${id}`, {
+    name,
+    image,
+    active,
+    description,
+    activitiesName,
+  });
+
+  return trip.data;
+};
+
+export const deleteTrip = async (id: string) => {
+  const trip = await axios.delete(`/api/trips/${id}`);
   return trip.data;
 };

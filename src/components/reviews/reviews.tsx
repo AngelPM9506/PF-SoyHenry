@@ -123,9 +123,7 @@ const Reviews = ({ feedbacks, id }: Props) => {
       rounded={"xl"}
       padding={"10px"}
     >
-      {/* ACA ABAJO LOS COMENTARIOS RENDERIZADOS  */}
-
-      <Box
+      {/* <Box
         width={"100%"}
         display={"flex"}
         flexDirection={"column"}
@@ -442,7 +440,7 @@ const Reviews = ({ feedbacks, id }: Props) => {
             </HStack>
           </FormControl>
         </Box>
-      )}
+      )} */}
     </Box>
   );
 };

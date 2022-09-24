@@ -222,6 +222,7 @@ const mail = async (req: NextApiRequest, res: NextApiResponse) => {
                         console.log(resp);                        
                         resp = "Email sended";
                     }
+                    /**si funciona en local y con base de datos railway que pasa en vercel? */
                 });
                 return res.status(200).json({ status: 'success', response: resp });
             default:

@@ -49,12 +49,18 @@ import {
 // import sendMail from "src/utils/mail";
 import { upPrice } from "src/components/Carousel";
 import NextLink from "next/link";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import getDay from "date-fns/getDay";
+import { chakra } from "@chakra-ui/react";
 
 interface Props {
   activities: Activity[];
   cities: City[];
   trips: Trip[];
 }
+
+const MyDataPicker = chakra(DatePicker);
 
 const CreateTrip = ({ activities, cities, trips }: Props) => {
   const { user, error } = useUser();
@@ -93,7 +99,7 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
   const hiddenFileInput = useRef(null);
   const [disable, setDisable] = useState(true);
   const [actDate, setActDate] = useState("");
-  const [isDisabled, setIsDisabled] = useState(true);
+  const [isDisabled, setIsDisabled] = useState([]);
 
   const arrWorkingDays = (availability: string[]) => {
     const arr: number[] = [];
@@ -109,6 +115,12 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
     return arr;
   };
 
+  const ableDays = (date: any, availability: string[]) => {
+    const availableDays = arrWorkingDays(availability);
+    const day = date.getDay(date);
+    return availableDays.includes(day);
+  };
+
   if (!isLoading && input.planner === "" && userDb?.data.id)
     setInput({ ...input, planner: userDb.data.id });
 
@@ -118,10 +130,10 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
     setInputCities(value);
   };
 
-  const handleActDate = ({ target: { value } }: any) => {
-    setActDate(value);
-    setIsDisabled(false);
-    const errActDate = valActDateFormat(value);
+  const handleActDate = (date: any, id: string) => {
+    setActDate(date);
+    setIsDisabled((prevState) => [...prevState, id]);
+    const errActDate = valActDateFormat(date);
     if (errActDate) {
       setErrorActivities(errActDate);
     }
@@ -187,6 +199,7 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
         ],
         price: price,
       });
+      setIsDisabled([]);
     }
     const errControl = formControl(input);
     const citiesControl = controlCities(input);
@@ -250,6 +263,7 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    console.log(input.activitiesName);
     let tripCreated = await createTrip(input);
     setInput(initialState);
     await axios
@@ -544,6 +558,7 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
                             <SimpleGrid columns={7} spacing={1}>
                               {activities?.map((act) => {
                                 if (input.cities.includes(act.city.name)) {
+                                  const id = act.id;
                                   return (
                                     <Box
                                       key={act.id}
@@ -611,17 +626,20 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
                                           <FormLabel fontSize={"xs"}>
                                             Choose a date
                                           </FormLabel>
-                                          {/* <>
-                                            {console.log(
-                                              arrWorkingDays(act.availability)
-                                            )}
-                                          </> */}
-                                          <Input
-                                            size={"xs"}
-                                            type={"date"}
-                                            min={input.initDate}
-                                            max={input.endDate}
-                                            onChange={(e) => handleActDate(e)}
+                                          <MyDataPicker
+                                            onChange={(date) =>
+                                              handleActDate(date, id)
+                                            }
+                                            filterDate={(date) =>
+                                              ableDays(date, act.availability)
+                                            }
+                                            placeholderText="Select a date..."
+                                            withPortal
+                                            portalId="root"
+                                            width={"100%"}
+                                            borderRadius={"md"}
+                                            minDate={new Date(input.initDate)}
+                                            maxDate={new Date(input.endDate)}
                                           />
                                         </GridItem>
                                         <GridItem>
@@ -645,11 +663,11 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
                                             </Button>
                                           </NextLink>
                                           <Button
-                                            disabled={isDisabled}
+                                            id={id}
+                                            disabled={!isDisabled.includes(id)}
                                             margin={1}
                                             onClick={() => {
                                               handleSelect(act);
-                                              setIsDisabled(true);
                                             }}
                                             size={"xs"}
                                           >

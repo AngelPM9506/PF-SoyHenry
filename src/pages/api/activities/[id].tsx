@@ -25,6 +25,7 @@ export default async function index(req: NextApiRequest, res: NextApiResponse) {
 
     query: { id, idFeedback },
   } = req;
+
   try {
     switch (method) {
       /**obtener tuna sola actividad */
@@ -33,7 +34,7 @@ export default async function index(req: NextApiRequest, res: NextApiResponse) {
         return res.status(200).json(respGet);
       /**agregar una nueva actividad */
       case "PUT":
-        let idfeedb = idFeedback.toString();
+        let idFeedb = idFeedback ? idFeedback.toString() : undefined;
         let respPut = await ActivitiesControles.putActivity(
           {
             name,
@@ -45,7 +46,7 @@ export default async function index(req: NextApiRequest, res: NextApiResponse) {
             comment,
             rating,
           },
-          { id, idFeedback: idfeedb }
+          { id, idFeedback: idFeedb }
         );
         return res.status(201).json(respPut);
       /**agregar una nueva actividad pendiente*/

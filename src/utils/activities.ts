@@ -67,6 +67,8 @@ export const editActivity = async ({
     description,
     price,
   });
+
+  return activity.data;
 };
 
 export interface Props {

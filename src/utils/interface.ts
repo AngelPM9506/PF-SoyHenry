@@ -125,6 +125,7 @@ export interface CityInDB {
 }
 
 export interface Errors {
+  [x: string]: string;
   name?: string;
   image?: string;
   initDate?: string;
@@ -146,3 +147,24 @@ export type createComment = {
     };
   };
 };
+
+export type contact = {
+  [x: string]: string;
+  name: string;
+  surname: string;
+  subject: string;
+  email: string;
+  whatsapp: string;
+  message: string;
+  userId?: string;
+}
+
+export type newContact = {
+  name: string;
+  surname: string;
+  subject: string;
+  email: string;
+  whatsapp: string;
+  message: string;
+  userId: string;
+}

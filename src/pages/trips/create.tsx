@@ -148,7 +148,7 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
         ...input,
         cities: [...input.cities, inputCities],
       });
-      const activitiesControl = controlActivities(input);
+      const activitiesControl: any = controlActivities(input);
       if (
         JSON.stringify(errControl) === "{}" &&
         JSON.stringify(citiesControl) === "{}" &&
@@ -263,7 +263,6 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(input.activitiesName);
     let tripCreated = await createTrip(input);
     setInput(initialState);
     await axios
@@ -280,7 +279,24 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
         },
       })
       .catch((error) => console.log(error));
-    router.push(`/trips/${tripCreated.id}`);
+    if (tripCreated) {
+      toast({
+        title: "Trip Created",
+        description: "We've created your trip",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
+      router.push(`/trips/${tripCreated.id}`);
+    } else {
+      toast({
+        title: "Trip not created",
+        description: "We could not create your trip",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+    }
   };
 
   const handleDelete = (activity: String) => {
@@ -733,15 +749,6 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
                 _hover={{ bg: "danger" }}
                 type="submit"
                 disabled={disable}
-                onClick={() =>
-                  toast({
-                    title: "Trip Created",
-                    description: "We've created your trip",
-                    status: "success",
-                    duration: 3000,
-                    isClosable: true,
-                  })
-                }
               >
                 CREATE AND POST
               </Button>

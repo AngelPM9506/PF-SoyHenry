@@ -30,6 +30,7 @@ model User {
   useOnTrip    UsersOnTrips[]
   active       Boolean        @default(true)
   feedbaks     feedback[]
+  contact      contact[]
 }
 
 model Trip {
@@ -112,6 +113,18 @@ model feedback {
   User         User?     @relation(fields: [userMail], references: [mail])
   userMail     String?
   feedbackDate DateTime? @default(now())
+}
+
+model contact {
+  id       String  @id @default(cuid())
+  name     String
+  surname  String
+  subject  String
+  email    String
+  whatsapp String
+  message  String
+  User     User?   @relation(fields: [userId], references: [id])
+  userId   String? 
 }
 
 // model comments {

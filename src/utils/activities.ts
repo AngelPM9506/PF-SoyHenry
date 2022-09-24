@@ -50,6 +50,25 @@ export const createActivity = async ({
   }
 };
 
+export const editActivity = async ({
+  id,
+  name,
+  image,
+  availability,
+  description,
+  price,
+  active,
+}: Activity) => {
+  const activity = await axios.put(`/api/activities/${id}`, {
+    name,
+    image,
+    active,
+    availability,
+    description,
+    price,
+  });
+};
+
 export interface Props {
   comment: string;
   mail: string;
@@ -95,9 +114,15 @@ export const editComment = async ({
   return activity.data;
 };
 
+export const deleteActivity = async (id: string) => {
+  const activity = await axios.delete(`/api/activities/${id}`);
+  return activity.data;
+};
+
 export const deleteComment = async (id: string, idFeedback: string) => {
   const comment = await axios.delete(
     `/api/activities/${id}?idFeedback=${idFeedback}`
   );
+
   return comment.data;
 };

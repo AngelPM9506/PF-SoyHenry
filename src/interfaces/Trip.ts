@@ -1,4 +1,5 @@
 export interface Trip {
+  citiesOnTrips: any;
   id: String;
   name: String;
   initDate: string;

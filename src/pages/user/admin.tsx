@@ -37,9 +37,7 @@ import usersControllers from "src/controllers/users";
 import { TripDashboard } from "src/components/TripDashboard";
 import TripsControllers from "src/controllers/trips";
 
-import Loading from 'src/components/Loading';
-
-
+import Loading from "src/components/Loading";
 
 import { getCities } from "src/utils/cities";
 
@@ -71,8 +69,9 @@ function TablesTableRow({
     if ((e.target as HTMLElement).id === "trips") return setActive("trips");
   };
 
+  const captions = ["user", "admin", "active"];
 
-  if (isLoading || !userDb.data) return <Loading/>;
+  if (isLoading || !userDb.data) return <Loading />;
 
   if (!userDb.data.isAdmin) return <NotFound />;
   return (
@@ -116,7 +115,9 @@ function TablesTableRow({
           {active === "activities" && (
             <ActivityDashboard activities={activities} />
           )}
-          {active === "trips" && <TripDashboard trips={trips} activities={activities}/>}
+          {active === "trips" && (
+            <TripDashboard trips={trips} activities={activities} />
+          )}
         </Box>
       </Layout>
     </>
@@ -131,7 +132,7 @@ export const getServerSideProps = async () => {
     JSON.stringify(await ActivitiesControles.getActivities({}))
   );
   const trips = JSON.parse(JSON.stringify(await TripsControllers.getTrips({})));
-  const cities = await getCities()
+  const cities = await getCities();
   return {
     props: {
       users: users,

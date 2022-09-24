@@ -67,8 +67,7 @@ export const editActivity = async ({
     description,
     price,
   });
-
-}
+};
 
 export interface Props {
   comment: string;
@@ -112,19 +111,18 @@ export const editComment = async ({
     }
   );
 
-
   return activity.data;
 };
-
 
 export const deleteActivity = async (id: string) => {
   const activity = await axios.delete(`/api/activities/${id}`);
   return activity.data;
-}
+};
 
 export const deleteComment = async (id: string, idFeedback: string) => {
   const comment = await axios.delete(
     `/api/activities/${id}?idFeedback=${idFeedback}`
   );
-  return comment.data 
-}
+
+  return comment.data;
+};

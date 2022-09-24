@@ -26,11 +26,9 @@ import { useQuery } from "react-query";
 import { getOrCreateUser } from "src/utils/User";
 import { formControlActivity } from "src/utils/validations";
 import { createActivity, getActivities } from "src/utils/activities";
-
 import { getCities } from "src/utils/cities";
 import NotFound from "../404";
 import ActivitiesControles from "src/controllers/activities";
-
 
 interface Props {
   activities: Activity[];

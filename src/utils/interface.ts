@@ -22,7 +22,6 @@ export interface Trip {
     tripId?: string;
   }[];
   citiesOnTrips?: { city: CityInDB }[];
-
 }
 
 export interface User {

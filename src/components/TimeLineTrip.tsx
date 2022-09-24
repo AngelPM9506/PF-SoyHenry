@@ -90,7 +90,7 @@ export const TimeLine = ({ data }: any) => {
         >
           <AlertIcon boxSize="40px" mr={0} />
           <AlertTitle mt={4} mb={1} fontSize="lg">
-            {`Ya estas registrado y tu pago fue acreditado para ${data.name}!`}
+            {`You are already register in this trip and your payment was succesfully process for ${data.name}!`}
           </AlertTitle>
         </Alert>
       ) : null}

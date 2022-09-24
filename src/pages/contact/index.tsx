@@ -9,11 +9,12 @@ import {
   Input,
   Textarea,
   Button,
-  Text
+  Text,
+  useToast
 } from "@chakra-ui/react";
 import Layout from "src/components/layout/Layout";
 import Head from "next/head";
-import { FormEvent, useState } from "react";
+import React, { FormEvent, useState } from "react";
 import { contact, Errors, newContact, typeSort } from "src/utils/interface";
 import styles from './contac.module.css';
 import axios from "axios";
@@ -43,6 +44,8 @@ const Contact = () => {
     () => user && getOrCreateUser(user)
   );
   const router = useRouter();
+  const toast = useToast();
+  const toastIdRef: any = React.useRef()
   /**funciones de ayuda */
   /**onchange input */
   const setChangeInputs = (event: any) => {
@@ -71,6 +74,31 @@ const Contact = () => {
     if (!input.message || input.message === '') { error.message = 'Message is required'; }
     return error;
   }
+  /**create or update toast */
+  const makeToast = (mesage: string, bgColor: string, stat: "error" | "info" | "success") => {
+    if (!toastIdRef.current) {
+      toastIdRef.current = toast({
+        status: stat,
+        title: "Contact message",
+        description: mesage,
+        position: "bottom-right",
+        containerStyle: {
+          background: bgColor,
+          borderRadius: "2xl"
+        }
+      });
+    } else {
+      toast.update(toastIdRef.current, {
+        status: stat,
+        title: "Contact message",
+        description: mesage,
+        containerStyle: {
+          background: bgColor,
+          borderRadius: "2xl"
+        }
+      });
+    }
+  }
   /**on submit */
   const sendContact = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -83,9 +111,10 @@ const Contact = () => {
       dataCount = 'user unloged'
     }
     if (JSON.stringify(errors) === '{}') {
+      makeToast('Sending your message', '#D1DFE3', 'info');
       await axios.post('/api/contact', { ...input, userId: userDb ? userDb.data.id : null })
       await axios.post("/api/mail", {
-        mail: 'admin@google.com',
+        mail: 'pruebaspf2022@outlook.com',
         subject: input.subject,
         message: input.message,
         html: {
@@ -100,14 +129,19 @@ const Contact = () => {
             ${dataCount}
             `,
           url: `/`,
-          urlMsg: "See your trip here",
+          urlMsg: "See more here",
         },
-      }).catch((error) => console.log(error));
-      setInput(contact);
-      setAlert({ msg: 'Contact message sent successfully' });
-      setTimeout(() => {
-        router.push('/user/profile');
-      }, 2000);
+      })
+        .then(resp => {
+          //console.log(resp);
+          makeToast('Your message was sent correctly','#02b1b1','success');
+        })
+        .catch((error) => {
+          makeToast('Can not send your message, try again later', '#F3B46F', 'error');
+        });
+      //setInput(contact);
+      //setAlert({ msg: 'Contact message sent successfully' });
+      setTimeout(() => { router.push('/user/profile'); }, 2000);
     }
   }
 
@@ -130,13 +164,13 @@ const Contact = () => {
                 templateRows={'repeat(6, 1fr)'} templateColumns={'repeat(5,1fr)'}
                 gap={'10px'} padding={'10px'}>
                 <GridItem borderRadius={'2xl'} padding={'20px'} rowSpan={5} colSpan={5} bg={'blackAlpha.100'}>
-                  {alert.msg &&
+                  {/*alert.msg &&
                     <Text bg={'#02b1b1'} textAlign={'center'}
                       padding={'10px'} borderRadius={'2xl'}
                       marginBottom={'10px'} color={'#293541'}
                       fontWeight={'semibold'} fontSize={'20px'}>
                       {alert.msg}
-                    </Text>}
+                  </Text>*/}
                   <div className={campo}>
                     <FormLabel flex={'0 0 125px'} htmlFor="name" padding={'0 0 0 20px'} margin={'0'}>Name:</FormLabel>
                     <div>

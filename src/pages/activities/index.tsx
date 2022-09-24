@@ -15,7 +15,7 @@ import { useQuery, dehydrate, QueryClient } from "react-query";
 import { ActivityFilters } from "../../components/ActivityFilters";
 import Layout from "src/components/layout/Layout";
 import NextLink from "next/link";
-import ActivitiesControles from "src/controllers/activities";
+import Loading from 'src/components/Loading'
 import axios from "axios";
 interface Props {
   activities: Activity[];
@@ -57,7 +57,7 @@ const Activities = ({ activities }: Props) => {
     setInput(e.target.value);
   };
 
-  if (isLoading) return <div>isLoading...</div>;
+  if (isLoading) return <Loading/>;
   return !data ? (
     <div>
       <Layout>
@@ -69,26 +69,6 @@ const Activities = ({ activities }: Props) => {
       <Layout>
         <Center>
           <Heading margin={"40px"} marginBottom={5} display={"flex"}>
-            <Button
-              // eslint-disable-next-line react-hooks/rules-of-hooks
-              position={"absolute"}
-              right={0}
-              mr={10}
-              bg={useColorModeValue("#02b1b1", "#02b1b1")}
-              color={"white"}
-              rounded={"md"}
-              padding={"20px"}
-              _hover={{
-                transform: "translateY(-2px)",
-                boxShadow: "lg",
-                bg: "#F3B46F",
-                color: "black",
-              }}
-            >
-              <NextLink href="/activities/create">
-                <Link>Create Activity</Link>
-              </NextLink>
-            </Button>
             DISCOVER OUR ACTIVITIES
           </Heading>
         </Center>

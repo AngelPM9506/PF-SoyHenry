@@ -24,3 +24,11 @@ a {
     background: black;
   }
 }
+
+.ant-table-thead .ant-table-cell{
+  background-color: #857C7E;
+}
+
+.ant-table-tbody {
+  background-color: #C9C3C5;
+}

@@ -13,124 +13,112 @@ import {
   Stack,
   AvatarGroup,
   Avatar,
+  VStack,
 } from "@chakra-ui/react";
 import { settings } from "src/utils/AvatarCarousel";
-import { User } from "../utils/interface";
-
-interface Props {
-  users: User[];
-}
+import NextLink from "next/link";
 
 export const AvatarCarousel = (props: any) => {
   const defaultpic: string =
     "https://res.cloudinary.com/mauro4202214/image/upload/v1663331567/world-travelers/favicon.ico_c8ryjz.png";
 
   return (
-    <Box>
-      <Text
-        fontSize={{ base: "16px", lg: "18px" }}
-        color={useColorModeValue("#F3B46F", "#F3B46F")}
-        fontWeight={"500"}
-        textTransform={"uppercase"}
-        textAlign={"left"}
-        ml={"10px"}
-        mb={"30px"}
-        height={"10px"}
-      >
-        Meet the Travelers that are already in this trip !
-      </Text>
-      <Box ml={"20px"}>
-        <AvatarGroup size="lg" max={3} spacing={-2}>
-          <Avatar
-            border={"none"}
-            name="Ryan Florence"
-            src="https://bit.ly/ryan-florence"
-          />
-          <Avatar
-            border={"none"}
-            name="Segun Adebayo"
-            src="https://bit.ly/sage-adebayo"
-          />
-          <Avatar
-            border={"none"}
-            name="Kent Dodds"
-            src="https://bit.ly/kent-c-dodds"
-          />
-          <Avatar
-            border={"none"}
-            name="Prosper Otemuyiwa"
-            src="https://bit.ly/prosper-baba"
-          />
-          <Avatar
-            border={"none"}
-            name="Christian Nwamba"
-            src="https://bit.ly/code-beast"
-          />
-        </AvatarGroup>
+    <>
+      <Box p={5} mt={"5px"}>
+        <Text
+          fontSize={{ base: "16px", lg: "18px" }}
+          color={useColorModeValue("#F3B46F", "#F3B46F")}
+          fontWeight={"500"}
+          textTransform={"uppercase"}
+          textAlign={"center"}
+          ml={"10px"}
+          mb={"5px"}
+          height={"10px"}
+        >
+          Meet the Travelers that are already in this trip !
+        </Text>
       </Box>
-    </Box>
+      {props.length < 1 ? (
+        <Box width={"100%"} textAlign={"center"} fontSize={"lg"} mb={"30px"}>
+          No travelers on this trip yet, join and be the first one!
+        </Box>
+      ) : (
+        <Box
+          height={"160px"}
+          width={"100%"}
+          display={"flex"}
+          justifyContent={"center"}
+          alignItems={"center"}
+        >
+          <Stack width={"75%"} height={"100%"}>
+            <Slider {...settings}>
+              {props.props.map((a: any) => {
+                return (
+                  <Center marginBottom={"15px"} key={a.user.id}>
+                    <Box
+                      role={"group"}
+                      p={6}
+                      maxW={"330px"}
+                      w={"full"}
+                      rounded={"lg"}
+                      pos={"relative"}
+                      zIndex={1}
+                    >
+                      <VStack
+                        rounded={"lg"}
+                        pos={"relative"}
+                        display={"flex"}
+                        justifyContent={"center"}
+                        alignItems={"center"}
+                        _after={{
+                          transition: "all .3s ease",
+                          content: '""',
+                          w: "full",
+                          h: "full",
+                          pos: "absolute",
+                          top: 5,
+                          left: 0,
+                          filter: "blur(15px)",
+                          zIndex: -1,
+                        }}
+                        _groupHover={{
+                          _after: {
+                            filter: "blur(20px)",
+                          },
+                        }}
+                      >
+                        <NextLink href={`/user/${a.user.id}`}>
+                          <Box
+                            display={"flex"}
+                            justifyContent={"center"}
+                            alignItems={"center"}
+                            flexDirection={"column"}
+                            cursor={"pointer"}
+                          >
+                            <Image
+                              height={"80px"}
+                              width={"80px"}
+                              rounded={"100%"}
+                              objectFit={"cover"}
+                              src={a.user.avatar ? a.user.avatar : defaultpic}
+                              alt={"user avatar"}
+                            />
+                            <Text textAlign={"center"} width={"max-content"}>
+                              {a.user.name}
+                            </Text>
+                          </Box>
+                        </NextLink>
+                      </VStack>
+                    </Box>
+                  </Center>
+                );
+              })}
+            </Slider>
+          </Stack>
+        </Box>
+      )}
+    </>
   );
-
-  //   return (
-  //     <>
-  //       <Box p={5} mt={"20px"}>
-  //         <Heading textAlign={"center"}>Users </Heading>
-  //       </Box>
-  //       <Box width={"100%"} justifyContent={"center"} align={"center"}>
-  //         <Stack width={"80%"}>
-  //           <Slider {...settings}>
-  //             {props?.map((a) => {
-  //               return (
-  //                 <Center p={8} py={12} key={a.id}>
-  //                   <Box
-  //                     role={"group"}
-  //                     p={6}
-  //                     maxW={"330px"}
-  //                     w={"full"}
-  //                     rounded={"lg"}
-  //                     pos={"relative"}
-  //                     zIndex={1}
-  //                   >
-  //                     <Box
-  //                       rounded={"lg"}
-  //                       mt={-12}
-  //                       pos={"relative"}
-  //                       height={"230px"}
-  //                       _after={{
-  //                         transition: "all .3s ease",
-  //                         content: '""',
-  //                         w: "full",
-  //                         h: "full",
-  //                         pos: "absolute",
-  //                         top: 5,
-  //                         left: 0,
-  //                         filter: "blur(15px)",
-  //                         zIndex: -1,
-  //                       }}
-  //                       _groupHover={{
-  //                         _after: {
-  //                           filter: "blur(20px)",
-  //                         },
-  //                       }}
-  //                     >
-  //                       <Image
-  //                         rounded={"100%"}
-  //                         height={230}
-  //                         width={282}
-  //                         objectFit={"cover"}
-  //                         src={a.image ? a.image : defaultpic}
-  //                       />
-  //                       <Text>Nombre</Text>
-  //                     </Box>
-  //                   </Box>
-  //                 </Center>
-  //               );
-  //             })}
-  //           </Slider>
-  //         </Stack>
-  //       </Box>
-  //     </>
-  //   );
 
   // return (
   //   <>

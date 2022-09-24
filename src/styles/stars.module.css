@@ -1,0 +1,50 @@
+.wrapper {
+  position: relative;
+  display: inline-block;
+  border: none;
+  font-size: 14px;
+  margin: 50px auto;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.Input {
+  border: 0;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  position: absolute !important;
+  clip: rect(1px 1px 1px 1px);
+  clip: rect(1px, 1px, 1px, 1px);
+  opacity: 0;
+}
+
+.Label {
+  position: relative;
+  float: right;
+  color: #c8c8c8;
+}
+
+.Label:before {
+  margin: 5px;
+  content: "\f005";
+  font-family: FontAwesome;
+  display: inline-block;
+  font-size: 1.5em;
+  color: #ccc;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+}
+
+.Input:checked ~ .Label:before {
+  color: #ffc107;
+}
+
+.Label:hover ~ .Label:before {
+  color: #ffdb70;
+}
+
+.Label:hover:before {
+  color: #ffc107;
+}

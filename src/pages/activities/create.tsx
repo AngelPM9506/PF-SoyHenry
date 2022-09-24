@@ -30,6 +30,7 @@ import { getCities } from "src/utils/cities";
 import NotFound from "../404";
 import ActivitiesControles from "src/controllers/activities";
 
+
 interface Props {
   activities: Activity[];
   cities: City[];
@@ -357,8 +358,7 @@ export const getServerSideProps = async () => {
   const activities = await response.data;
   const res = await axios("/cities");
   const cities = await res.data;
-  // const cities = await getCities();
-  // const activities = await ActivitiesControles.getActivities({});
+
   return {
     props: {
       cities: cities,

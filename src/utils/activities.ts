@@ -1,7 +1,6 @@
 import axios from "axios";
 import { QueryFunctionContext } from "react-query";
-import { getCityById } from "./cities";
-import { Activity, CityInDB } from "./interface";
+import { Activity } from "./interface";
 export const getActivities = async (
   wCity?: string,
   wName?: string,
@@ -50,6 +49,7 @@ export const createActivity = async ({
     console.error(err);
   }
 };
+
 export const editActivity = async ({
   id,
   name,
@@ -68,10 +68,60 @@ export const editActivity = async ({
     price,
   });
 
+
+export interface Props {
+  comment: string;
+  mail: string;
+  rating: number;
+  id: string;
+}
+
+export const patchActivity = async ({ comment, mail, rating, id }: Props) => {
+  try {
+    const commentRating = await axios.patch(`/api/activities/${id}`, {
+      comment,
+      mail,
+      rating,
+    });
+
+    return commentRating.data;
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+export interface propsEdit {
+  id: string;
+  idFeedback: string;
+  comment: string;
+  rating: number;
+}
+
+export const editComment = async ({
+  id,
+  idFeedback,
+  comment,
+  rating,
+}: propsEdit) => {
+  const activity = await axios.put(
+    `/api/activities/${id}?idFeedback=${idFeedback}`,
+    {
+      comment,
+      rating,
+    }
+  );
   return activity.data;
 };
+
 
 export const deleteActivity = async (id: string) => {
   const activity = await axios.delete(`/api/activities/${id}`);
   return activity.data;
+
+export const deleteComment = async (id: string, idFeedback: string) => {
+  const comment = await axios.delete(
+    `/api/activities/${id}?idFeedback=${idFeedback}`
+  );
+  return comment.data;
+
 };

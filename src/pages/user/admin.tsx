@@ -27,6 +27,7 @@ import UserTable from "src/components/UserTable";
 import { getOrCreateUser, getUsers } from "src/utils/User";
 import NextLink from "next/link";
 import NotFound from "src/pages/404";
+
 import ActivitiesControles from "src/controllers/activities";
 import ActivityTable from "src/components/ActivityTable";
 import { Activity, CityInDB, Trip } from "src/utils/interface";
@@ -35,6 +36,10 @@ import { UserDashboard } from "src/components/UserDashboard";
 import usersControllers from "src/controllers/users";
 import { TripDashboard } from "src/components/TripDashboard";
 import TripsControllers from "src/controllers/trips";
+
+import Loading from 'src/components/Loading';
+
+
 
 import { getCities } from "src/utils/cities";
 
@@ -56,6 +61,7 @@ function TablesTableRow({
   const [active, setActive] = useState("users");
 
   const textColor = useColorModeValue("gray.700", "white");
+
   const handleSection = (
     e: React.MouseEvent<HTMLParagraphElement, MouseEvent>
   ) => {
@@ -65,6 +71,10 @@ function TablesTableRow({
     if ((e.target as HTMLElement).id === "trips") return setActive("trips");
   };
   if (isLoading || !userDb.data) return <div>Loading...</div>;
+
+  const captions = ["user", "admin", "active"];
+  if (isLoading || !userDb.data) return <Loading/>;
+
   if (!userDb.data.isAdmin) return <NotFound />;
   return (
     <>

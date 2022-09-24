@@ -7,6 +7,8 @@ import {
   Text,
   VStack,
   Avatar,
+  Textarea,
+  useToast,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import StarRatings from "react-star-ratings";
@@ -30,11 +32,11 @@ const Reviews = ({ feedbacks, id }: Props) => {
   const logofoto =
     "https://res.cloudinary.com/mauro4202214/image/upload/v1663331567/world-travelers/favicon.ico_c8ryjz.png";
   const { user } = useUser();
-
   const [rating, setRating] = useState(5);
   const [ratingEdit, setRatingEdit] = useState(0);
   const [comment, setComment] = useState("");
   const [commentEdit, setCommentEdit] = useState("");
+  const toast = useToast();
 
   if (!user || !feedbacks) {
     return <div>is Loading...</div>;
@@ -66,6 +68,13 @@ const Reviews = ({ feedbacks, id }: Props) => {
     });
     setRating(5);
     setComment("");
+    toast({
+      title: "Comment posted!",
+      description: "Thank you! Now other travelers can read your opinion.",
+      status: "success",
+      duration: 3000,
+      isClosable: true,
+    });
   };
 
   const handleEdit = async () => {
@@ -76,11 +85,25 @@ const Reviews = ({ feedbacks, id }: Props) => {
       idFeedback: idFeedback,
       rating: ratingEdit,
     });
+    toast({
+      title: "Comment edited!",
+      description: "Thank you! Your changes have been succesfully updated.",
+      status: "success",
+      duration: 3000,
+      isClosable: true,
+    });
   };
 
   const handleDelete = async () => {
     const idFeedback = mycomment.id;
     await deleteComment(id, idFeedback);
+    toast({
+      title: "Comment deleted!",
+      description: "Thank you! Your comment is deleted.",
+      status: "success",
+      duration: 3000,
+      isClosable: true,
+    });
   };
 
   const handleCancelComment = () => {
@@ -102,39 +125,50 @@ const Reviews = ({ feedbacks, id }: Props) => {
     >
       {/* ACA ABAJO LOS COMENTARIOS RENDERIZADOS  */}
 
-      <Box>
+      <Box
+        width={"100%"}
+        display={"flex"}
+        flexDirection={"column"}
+        justifyContent={"center"}
+        alignItems={"center"}
+      >
         {feedbacks.map((comment, index) =>
           comment === mycomment ? (
-            <Box>
+            <Box rounded={"xl"} width={"90%"} bgColor={"#D1DFE3"} mb={"10px"}>
               <FormControl key={index} width={"100%"}>
                 <HStack
-                  justifyContent={"left"}
+                  justifyContent={"space-between"}
                   alignItems={"center"}
                   width={"100%"}
                   height={"60px"}
                   ml={"22px"}
                 >
-                  <Text>
-                    {comment.feedbackDate
-                      .slice(0, 10)
-                      .split("-")
-                      .reverse()
-                      .join("/")}
-                  </Text>
-                  <Text
-                    width={"max-content"}
-                    color={"#293541"}
-                    fontSize={"2xl"}
-                    fontWeight={"bold"}
-                    paddingRight={"50px"}
-                  >
-                    {comment.User.name}
-                  </Text>
                   <NextLink href={`/user/${comment.User.id}`}>
-                    <Avatar
-                      src={comment.User.avatar ? comment.User.avatar : logofoto}
-                    />
+                    <Box
+                      display={"flex"}
+                      flexDirection={"row"}
+                      justifyContent={"left"}
+                      alignItems={"center"}
+                      width={"30%"}
+                    >
+                      <Avatar
+                        src={
+                          comment.User.avatar ? comment.User.avatar : logofoto
+                        }
+                      />
+                      <Text
+                        pl={"10px"}
+                        width={"max-content"}
+                        color={"#293541"}
+                        fontSize={"2xl"}
+                        fontWeight={"bold"}
+                        paddingRight={"50px"}
+                      >
+                        {comment.User.name}
+                      </Text>
+                    </Box>
                   </NextLink>
+
                   <Box width={"200px"} height={"60px"} pt={"15px"}>
                     <StarRatings
                       rating={ratingEdit}
@@ -147,100 +181,117 @@ const Reviews = ({ feedbacks, id }: Props) => {
                       name="rating"
                     />
                   </Box>
-                </HStack>
-                <HStack
-                  width={"100%"}
-                  display={"flex"}
-                  justifyContent={"center"}
-                >
-                  <Box>
-                    <VStack
-                      width={"100%"}
-                      marginBottom={"20px"}
-                      marginLeft={"20px"}
-                    >
-                      <Input
-                        width={"100%"}
-                        height={"100px"}
-                        textColor={"#293541"}
-                        backgroundColor={"#e7eff1"}
-                        border={"1px"}
-                        borderColor={"#293541"}
-                        vertical-align={"top"}
-                        onChange={(e: any) => handleInputEdit(e)}
-                        value={commentEdit}
-                      ></Input>
-                    </VStack>
-                    <VStack
-                      padding={"10px"}
-                      display={"flex"}
-                      justifyContent={"space-between"}
-                      height={"100%"}
-                      paddingBottom={"25px"}
-                    >
-                      <Button
-                        rightIcon={<GrEdit />}
-                        textColor="#293541"
-                        fontWeight={"bold"}
-                        backgroundColor={"#F3B46F"}
-                        variant="outline"
-                        width={"100px"}
-                        fontSize={"xl"}
-                        marginBottom={"15px"}
-                        onClick={() => {
-                          handleEdit();
-                        }}
-                      >
-                        Save changes
-                      </Button>
-                      <Button
-                        rightIcon={<FiDelete />}
-                        textColor="#293541"
-                        fontWeight={"bold"}
-                        backgroundColor={"#4b647c"}
-                        variant="outline"
-                        width={"100px"}
-                        fontSize={"xl"}
-                        onClick={handleDelete}
-                      >
-                        Delete Comment
-                      </Button>
-                    </VStack>
-                  </Box>
-                </HStack>
-              </FormControl>
-            </Box>
-          ) : (
-            <Box>
-              <FormControl key={index} width={"100%"}>
-                <HStack
-                  justifyContent={"left"}
-                  alignItems={"center"}
-                  width={"100%"}
-                  height={"60px"}
-                  ml={"22px"}
-                >
-                  <Text>
+                  <Text
+                    width={"max-content"}
+                    color={"#293541"}
+                    fontSize={"xl"}
+                    fontWeight={"bold"}
+                    paddingRight={"50px"}
+                  >
                     {comment.feedbackDate
                       .slice(0, 10)
                       .split("-")
                       .reverse()
                       .join("/")}
                   </Text>
-                  <Text
-                    width={"max-content"}
-                    color={"#293541"}
-                    fontSize={"2xl"}
-                    fontWeight={"bold"}
-                    paddingRight={"50px"}
+                </HStack>
+                <HStack
+                  width={"100%"}
+                  display={"flex"}
+                  justifyContent={"center"}
+                >
+                  <VStack
+                    width={"100%"}
+                    marginBottom={"20px"}
+                    marginLeft={"20px"}
                   >
-                    {comment.User.name}
-                  </Text>
+                    <Textarea
+                      fontSize={"xl"}
+                      width={"100%"}
+                      height={"100px"}
+                      textColor={"#293541"}
+                      backgroundColor={"#e7eff1"}
+                      border={"1px"}
+                      borderColor={"#293541"}
+                      vertical-align={"top"}
+                      onChange={(e: any) => handleInputEdit(e)}
+                      value={commentEdit}
+                    ></Textarea>
+                  </VStack>
+                  <VStack
+                    padding={"10px"}
+                    display={"flex"}
+                    justifyContent={"space-between"}
+                    height={"100%"}
+                    paddingBottom={"25px"}
+                  >
+                    <Button
+                      rightIcon={<GrEdit />}
+                      textColor="#293541"
+                      fontWeight={"bold"}
+                      backgroundColor={"#F3B46F"}
+                      variant="outline"
+                      width={"160px"}
+                      fontSize={"md"}
+                      marginBottom={"15px"}
+                      onClick={() => {
+                        handleEdit();
+                      }}
+                    >
+                      Save changes
+                    </Button>
+                    <Button
+                      rightIcon={<FiDelete />}
+                      textColor="#293541"
+                      fontWeight={"bold"}
+                      backgroundColor={"#4b647c"}
+                      variant="outline"
+                      width={"160px"}
+                      fontSize={"md"}
+                      onClick={handleDelete}
+                    >
+                      Delete Comment
+                    </Button>
+                  </VStack>
+                </HStack>
+              </FormControl>
+            </Box>
+          ) : (
+            <Box rounded={"xl"} width={"90%"} bgColor={"#D1DFE3"} mb={"10px"}>
+              <FormControl key={index} width={"100%"}>
+                <HStack
+                  justifyContent={"space-between"}
+                  alignItems={"center"}
+                  width={"100%"}
+                  height={"60px"}
+                  ml={"22px"}
+                >
                   <NextLink href={`/user/${comment.User.id}`}>
-                    <Avatar
-                      src={comment.User.avatar ? comment.User.avatar : logofoto}
-                    />
+                    <Box
+                      display={"flex"}
+                      flexDirection={"row"}
+                      justifyContent={"left"}
+                      alignItems={"center"}
+                      width={"30%"}
+                    >
+                      <Avatar
+                        src={
+                          comment.User.avatar ? comment.User.avatar : logofoto
+                        }
+                      />
+                      <Text
+                        pl={"10px"}
+                        width={"max-content"}
+                        color={"#293541"}
+                        fontSize={"2xl"}
+                        fontWeight={"bold"}
+                        paddingRight={"50px"}
+                      >
+                        {comment.User.name}
+                      </Text>
+                    </Box>
                   </NextLink>
+
                   <Box width={"200px"} height={"60px"} pt={"15px"}>
                     <StarRatings
                       rating={comment.rating}
@@ -252,38 +303,57 @@ const Reviews = ({ feedbacks, id }: Props) => {
                       name="rating"
                     />
                   </Box>
+                  <Text
+                    width={"max-content"}
+                    color={"#293541"}
+                    fontSize={"xl"}
+                    fontWeight={"bold"}
+                    paddingRight={"50px"}
+                  >
+                    {comment.feedbackDate
+                      .slice(0, 10)
+                      .split("-")
+                      .reverse()
+                      .join("/")}
+                  </Text>
                 </HStack>
                 <HStack
                   width={"100%"}
                   display={"flex"}
                   justifyContent={"center"}
                 >
-                  <Box>
-                    <VStack
+                  <VStack
+                    width={"100%"}
+                    marginBottom={"20px"}
+                    marginLeft={"20px"}
+                  >
+                    <Textarea
+                      webkit-user-select={"none"}
                       width={"100%"}
-                      marginBottom={"20px"}
-                      marginLeft={"20px"}
-                    >
-                      <Input
-                        width={"100%"}
-                        height={"100px"}
-                        textColor={"#293541"}
-                        backgroundColor={"#e7eff1"}
-                        border={"1px"}
-                        borderColor={"#293541"}
-                        vertical-align={"top"}
-                        value={comment.comment}
-                      ></Input>
-                    </VStack>
-                  </Box>
+                      height={"100px"}
+                      textColor={"#293541"}
+                      backgroundColor={"#e7eff1"}
+                      fontSize={"xl"}
+                      border={"1px"}
+                      borderColor={"#293541"}
+                      vertical-align={"top"}
+                      value={comment.comment}
+                      _hover={{ border: "1px", borderColor: "#293541" }}
+                    ></Textarea>
+                  </VStack>
+                  <VStack
+                    padding={"10px"}
+                    display={"flex"}
+                    justifyContent={"space-between"}
+                    height={"100%"}
+                    paddingBottom={"25px"}
+                  ></VStack>
                 </HStack>
               </FormControl>
             </Box>
           )
         )}
       </Box>
-      {/* ACA ABAJO EL FORMULARIO DE CREACION DE COMENTARIO !  */}
-
       {mycomment ? (
         <Box></Box>
       ) : (
@@ -320,7 +390,8 @@ const Reviews = ({ feedbacks, id }: Props) => {
             </HStack>
             <HStack width={"100%"} display={"flex"} justifyContent={"center"}>
               <VStack width={"100%"} marginBottom={"20px"} marginLeft={"20px"}>
-                <Input
+                <Textarea
+                  fontSize={"xl"}
                   width={"100%"}
                   height={"100px"}
                   textColor={"#293541"}
@@ -333,7 +404,7 @@ const Reviews = ({ feedbacks, id }: Props) => {
                   onChange={(e: any) => {
                     handleInput(e);
                   }}
-                ></Input>
+                ></Textarea>
               </VStack>
               <VStack
                 padding={"10px"}

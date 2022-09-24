@@ -16,13 +16,9 @@ import { FiSend, FiDelete } from "react-icons/fi";
 import { ImCancelCircle } from "react-icons/im";
 import { GrEdit } from "react-icons/gr";
 import NextLink from "next/link";
-import { Comment, User } from "../../utils/interface";
+import { Comment, User } from "../utils/interface";
 import { useUser } from "@auth0/nextjs-auth0";
-import {
-  patchActivity,
-  deleteComment,
-  editComment,
-} from "../../utils/activities";
+import { patchActivity, deleteComment, editComment } from "../utils/activities";
 
 interface Props {
   feedbacks: Comment[];
@@ -123,7 +119,7 @@ const Reviews = ({ feedbacks, id }: Props) => {
       rounded={"xl"}
       padding={"10px"}
     >
-      {/* <Box
+      <Box
         width={"100%"}
         display={"flex"}
         flexDirection={"column"}
@@ -440,7 +436,7 @@ const Reviews = ({ feedbacks, id }: Props) => {
             </HStack>
           </FormControl>
         </Box>
-      )} */}
+      )}
     </Box>
   );
 };

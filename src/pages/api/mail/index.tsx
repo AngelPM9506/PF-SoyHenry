@@ -215,8 +215,13 @@ const mail = async (req: NextApiRequest, res: NextApiResponse) => {
                 }
                 let resp;
                 await transporter.sendMail(mailData, (error: any, resp: any) => {
-                    if (error) throw new Error("Fail to send email");
-                    else resp = "Email sended"
+                    if (error) {
+                        console.log(error);
+                        throw new Error("Fail to send email");
+                    } else {
+                        console.log(resp);                        
+                        resp = "Email sended";
+                    }
                 });
                 return res.status(200).json({ status: 'success', response: resp });
             default:

@@ -28,31 +28,6 @@ export default function Detail(props: Props) {
   );
 }
 
-// export async function getStaticPaths(context: any) {
-//   const allTrips = await TripsControllers.getTrips({});
-//   const paths = allTrips.map((t: any) => {
-//     const id = t.id;
-//     return { params: { id } };
-//   });
-//   return {
-//     paths,
-//     fallback: false,
-//   };
-// }
-
-// export async function getStaticProps({ params }: any) {
-//   const { id } = params;
-//   const trip = JSON.parse(
-//     JSON.stringify(await TripsControllers.getTrip({ id }))
-//   );
-//   return {
-//     props: {
-//       trip,
-//       id,
-//     },
-//   };
-// }
-
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { id } = context.query;
   const response = await axios.get(`/trips/${id}`);

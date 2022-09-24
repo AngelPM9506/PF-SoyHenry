@@ -12,6 +12,8 @@ import { useState, useEffect } from "react";
 import { Stack } from "@chakra-ui/react";
 import axios from "axios";
 import { UserData } from "src/components/UserProfile";
+import Loading from 'src/components/Loading'
+
 
 interface Props {
   trips: Trip[];
@@ -25,10 +27,11 @@ const Home = ({ trips, activities }: Props) => {
     ["userDb", user],
     () => user && getOrCreateUser(user)
   );
-  if (!userDb) return <div>Loading...</div>;
+  if (!userDb) return <Loading/>;
   if (!userDb.data.active) {
     router.push("/api/auth/logout");
   }
+
   return (
     <Layout>
       <div className={styles.container}>

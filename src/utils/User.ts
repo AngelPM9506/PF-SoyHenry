@@ -44,3 +44,9 @@ export const updateUser = async (user: UserData) => {
   });
   return userDb;
 };
+
+export const getUsersById = async (id: string) => {
+  const userDb: UserData = await axios.get(`/api/users/${id}`);
+
+  return userDb.data;
+};

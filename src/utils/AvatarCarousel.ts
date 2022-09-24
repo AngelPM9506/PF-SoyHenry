@@ -1,11 +1,10 @@
 export var settings = {
   dots: true,
-  infinite: true,
+  infinite: false,
   speed: 500,
-  slidesToShow: 3,
+  slidesToShow: 6,
   slidesToScroll: 1,
   initialSlide: 0,
-  adaptiveHeight: true,
   responsive: [
     {
       breakpoint: 1024,
@@ -19,7 +18,7 @@ export var settings = {
     {
       breakpoint: 600,
       settings: {
-        slidesToShow: 2,
+        slidesToShow: 1,
         slidesToScroll: 1,
         initialSlide: 2,
       },

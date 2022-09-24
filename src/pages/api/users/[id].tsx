@@ -26,7 +26,7 @@ export default async function index(req: NextApiRequest, res: NextApiResponse) {
       isAdmin,
       active,
     },
-    query: { id },
+    query: { id, tripID },
   } = req;
 
   switch (method) {

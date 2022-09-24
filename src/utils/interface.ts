@@ -8,11 +8,11 @@ export interface Trip {
   name: string;
   initDate?: string;
   cities?: string[];
-  endDate?: string;
-  planner?: UserData;
+  endDate: string;
+  planner?: { avatar?: string; id?: string } | any;
   tripOnUser?: Object[];
   description: string;
-  activitiesName?: string[];
+  activitiesName: { name: string; actDate: string }[];
   image?: string | ArrayBuffer;
   price?: number;
   active?: boolean;
@@ -22,13 +22,16 @@ export interface Trip {
     tripId?: string;
   }[];
   citiesOnTrips?: { city: CityInDB }[];
+
 }
 
 export interface User {
+  id?: string;
   name: string;
   mail: string;
+  email?: string;
   avatar: string;
-  description: string;
+  description?: string;
 }
 
 export interface UserUpdate {
@@ -39,14 +42,16 @@ export interface UserUpdate {
 
 export interface Activity {
   id?: string;
-  name: string;
-  availability: string[];
-  description: string;
-  price: number;
+  name?: string;
+  availability?: string[];
+  description?: string;
+  price?: number;
   city?: City;
-  cityName: string;
+  cityName?: string;
   image?: string | ArrayBuffer;
   active?: boolean;
+  idFeedback?: string;
+  comment?: string;
 }
 
 export type typeSort = {
@@ -76,11 +81,17 @@ export type createUsers = {
 };
 
 export type createActivities = {
+  actDate: Date;
   activity: {
     connect: {
       name: string;
     };
   };
+};
+
+export type activeDate = {
+  actDate: string;
+  name: string;
 };
 
 export type createCity = {
@@ -133,12 +144,14 @@ export interface Errors {
   image?: string;
   initDate?: string;
   endDate?: string;
+  date?: string;
   description?: string;
   price?: string;
   cityName?: string;
   cities?: string;
   availability?: string;
   activitiesName?: string;
+  keyWords?: string;
 }
 
 export type createComment = {
@@ -148,3 +161,12 @@ export type createComment = {
     };
   };
 };
+
+export interface Comment {
+  id: string;
+  comment?: string;
+  rating?: number;
+  User?: User;
+  userMail?: string;
+  feedbackDate?: string;
+}

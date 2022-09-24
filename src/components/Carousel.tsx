@@ -12,13 +12,22 @@ import {
   Center,
   useColorModeValue,
   Stack,
+  Button,
+  Wrap,
+  WrapItem,
+  Avatar,
 } from "@chakra-ui/react";
 import { settings } from "src/utils/SettingsCarousel";
+import NextLink from "next/link";
 
 interface Props {
   trips: Trip[];
   activities: Activity[];
 }
+
+export const upPrice = (price: number) => {
+  return Math.floor(price + (price * 30) / 100);
+};
 
 const MyCarousel = ({ trips, activities }: Props) => {
   const defaultpic: string =
@@ -29,16 +38,17 @@ const MyCarousel = ({ trips, activities }: Props) => {
 
   const useColorMode = useColorModeValue("white", "gray.800");
 
-  const upPrice = (price: number) => {
-    return Math.floor(price + (price * 30) / 100);
-  };
-
   return (
     <>
       <Box p={5} mt={"20px"}>
         <Heading textAlign={"center"}>Trending Trips</Heading>
       </Box>
-      <Box width={"100%"} justifyContent={"center"} alignContent={"center"}>
+      <Box
+        width={"100%"}
+        display={"flex"}
+        justifyContent={"center"}
+        alignItems={"center"}
+      >
         <Stack width={"80%"}>
           <Slider {...settings}>
             {lastTrips?.map((t) => {
@@ -49,7 +59,7 @@ const MyCarousel = ({ trips, activities }: Props) => {
                     p={6}
                     maxW={"330px"}
                     w={"full"}
-                    bg={useColorModeValue("white", "#4b647c")}
+                    bg={useColorModeValue("#D1DFE3", "blackAlpha.400")}
                     boxShadow={"2xl"}
                     rounded={"lg"}
                     pos={"relative"}
@@ -86,7 +96,7 @@ const MyCarousel = ({ trips, activities }: Props) => {
                         src={t.image ? t.image.toString() : defaultpic}
                       />
                     </Box>
-                    <Stack pt={10} align={"center"}>
+                    <Stack pt={4} align={"center"}>
                       <Heading
                         fontSize={"2xl"}
                         fontFamily={"body"}
@@ -98,14 +108,32 @@ const MyCarousel = ({ trips, activities }: Props) => {
                         <Text fontWeight={800} fontSize={"xl"}>
                           {`$${t.price}`}
                         </Text>
-                        <Text
-                          textDecoration={"line-through"}
-                          color={"gray.600"}
-                        >
+                        <Text textDecoration={"line-through"} color={"#F3B46F"}>
                           {`$${upPrice(t.price)}`}
                         </Text>
                       </Stack>
+                      <NextLink href={`/trips/${t.id}`}>
+                        <Button>+Info</Button>
+                      </NextLink>
                     </Stack>
+                    <Wrap>
+                      <Box
+                        display={"flex"}
+                        flexDirection={"column"}
+                        justifyContent={"center"}
+                      >
+                        <Text fontSize={"sm"}>Planner</Text>
+                        <WrapItem>
+                          <NextLink href={`/user/${t.planner.id}`}>
+                            <Avatar
+                              cursor={"pointer"}
+                              name="Trip Planner"
+                              src={t.planner ? t.planner.avatar : defaultpic}
+                            />
+                          </NextLink>
+                        </WrapItem>
+                      </Box>
+                    </Wrap>
                   </Box>
                 </Center>
               );
@@ -116,7 +144,13 @@ const MyCarousel = ({ trips, activities }: Props) => {
       <Box p={5} mt={"20px"}>
         <Heading textAlign={"center"}>Trending Activities</Heading>
       </Box>
-      <Box width={"100%"} justifyContent={"center"} alignContent={"center"}>
+      <Box
+        height={"550px"}
+        width={"100%"}
+        display={"flex"}
+        justifyContent={"center"}
+        alignItems={"center"}
+      >
         <Stack width={"80%"}>
           <Slider {...settings}>
             {lastActivities?.map((a) => {
@@ -127,7 +161,7 @@ const MyCarousel = ({ trips, activities }: Props) => {
                     p={6}
                     maxW={"330px"}
                     w={"full"}
-                    bg={useColorModeValue("white", "#4b647c")}
+                    bg={useColorModeValue("#D1DFE3", "blackAlpha.400")}
                     boxShadow={"2xl"}
                     rounded={"lg"}
                     pos={"relative"}
@@ -163,6 +197,12 @@ const MyCarousel = ({ trips, activities }: Props) => {
                         objectFit={"cover"}
                         src={a.image ? a.image.toString() : defaultpic}
                       />
+
+                      <Stack p={2} direction={"row"} justifyContent="center">
+                        <Text fontWeight={200} fontSize={"lg"}>
+                          {a.city.name}
+                        </Text>
+                      </Stack>
                     </Box>
                     <Stack pt={10} align={"center"}>
                       <Heading
@@ -176,13 +216,13 @@ const MyCarousel = ({ trips, activities }: Props) => {
                         <Text fontWeight={800} fontSize={"xl"}>
                           {`$${a.price}`}
                         </Text>
-                        <Text
-                          textDecoration={"line-through"}
-                          color={"gray.600"}
-                        >
+                        <Text textDecoration={"line-through"} color={"#F3B46F"}>
                           {`$${upPrice(a.price)}`}
                         </Text>
                       </Stack>
+                      <NextLink href={`/activities/${a.id}`}>
+                        <Button>+Info</Button>
+                      </NextLink>
                     </Stack>
                   </Box>
                 </Center>

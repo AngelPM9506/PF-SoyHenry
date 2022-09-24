@@ -15,7 +15,7 @@ import { useQuery, dehydrate, QueryClient } from "react-query";
 import { ActivityFilters } from "../../components/ActivityFilters";
 import Layout from "src/components/layout/Layout";
 import NextLink from "next/link";
-import ActivitiesControles from "src/controllers/activities";
+import Loading from 'src/components/Loading'
 import axios from "axios";
 interface Props {
   activities: Activity[];
@@ -57,7 +57,7 @@ const Activities = ({ activities }: Props) => {
     setInput(e.target.value);
   };
 
-  if (isLoading) return <div>isLoading...</div>;
+  if (isLoading) return <Loading/>;
   return !data ? (
     <div>
       <Layout>

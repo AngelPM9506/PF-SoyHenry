@@ -15,32 +15,34 @@ import {
   useColorModeValue,
   useToast,
   Link,
+  useDisclosure,
 } from "@chakra-ui/react";
-import {
-  Select as ReactSelect,
-  useChakraSelectProps,
-} from "chakra-react-select";
-import React, { SetStateAction, useEffect, useState } from "react";
-import { deleteActivity, editActivity } from "src/utils/activities";
-import { Activity } from "src/utils/interface";
-import { updateUser } from "src/utils/User";
-import { UserData } from "./UserProfile";
+
+import React, { useState } from "react";
+
+import { Activity, Trip } from "src/utils/interface";
+
 import NextLink from "next/link";
+import { deleteTrip, editTrip } from "src/utils/trips";
 import { ModalTextarea } from "./ModalEditableTextarea";
+
 type Props = {
-  activity: Activity;
+  trip: Trip;
+  activities: Activity[];
 };
 
-function ActivityTable({ activity }: Props) {
+function TripTable({ trip, activities }: Props) {
+  const cities = trip.citiesOnTrips.map((c) => c.city.name);
+  //   const citiesUnique: string[] = Array.from(new Set(cities)).sort(); // remove duplicates, sort alphabetically
+  //   const currActivities = trip.activitiesOnTrips.map((a) => a.activity.name);
+  //   const activitiesUnique: string[] = Array.from(new Set(currActivities)).sort();
+
   const textColor = useColorModeValue("gray.700", "white");
 
   const toast = useToast();
-  const avaFormated = activity.availability.map((d) => ({
-    value: d,
-    label: d,
-  }));
-  const [data, setData] = useState({ ...activity });
-  const [value, setValue] = useState(avaFormated);
+
+  const [data, setData] = useState<Trip>(trip);
+
   const [changed, setChanged] = useState("false");
   const handleChange = (
     e:
@@ -48,38 +50,22 @@ function ActivityTable({ activity }: Props) {
       | React.ChangeEvent<HTMLTextAreaElement>
       | React.ChangeEvent<HTMLInputElement>
   ) => {
+    if (e.target.name === "active") {
+      return setData({
+        ...data,
+        active: e.target.value === "true" ? true : false,
+      });
+    }
     setData({
       ...data,
       [e.target.name]: e.target.value,
     });
   };
 
-  const handleActive = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setData({
-      ...data,
-      active: e.target.value === "true" ? true : false,
-    });
-  };
-
-  const handleAvailability = (
-    option: SetStateAction<{ value: string; label: string }[]>
-  ) => {
-    setValue(option);
-  };
-
-  const availability = [
-    { value: "Monday", label: "Monday", color: "#FF8B00" },
-    { value: "Tuesday", label: "Tuesday", color: "#FF8B00" },
-    { value: "Wednesday", label: "Wednesday", color: "#FF8B00" },
-    { value: "Thursday", label: "Thursday", color: "#FF8B00" },
-    { value: "Friday", label: "Friday", color: "#FF8B00" },
-    { value: "Saturday", label: "Saturday", color: "#FF8B00" },
-    { value: "Sunday", label: "Sunday", color: "#FF8B00" },
-  ];
-
   const handleEdit = async () => {
-    const avaValue = value.map((a) => a.value);
-    await editActivity({ ...data, availability: avaValue });
+    await editTrip({
+      ...data,
+    });
     return toast({
       title: "Successful change",
       description: "State changed successfully!",
@@ -90,10 +76,10 @@ function ActivityTable({ activity }: Props) {
   };
 
   const handleDelete = async () => {
-    await deleteActivity(data.id);
+    await deleteTrip(data.id);
     return toast({
       title: "Successful delete",
-      description: "Activity deleted successfully!",
+      description: "trip deleted successfully!",
       status: "success",
       duration: 3000,
       isClosable: true,
@@ -105,13 +91,13 @@ function ActivityTable({ activity }: Props) {
       <Td minWidth={{ sm: "250px" }} pl="0px">
         <Flex align="center" py=".8rem" minWidth="100%" flexWrap="nowrap">
           <Avatar
-            src={activity.image as string}
+            src={data.image as string}
             w="50px"
             borderRadius="12px"
             me="18px"
           />
           <Flex direction="column">
-            <NextLink href={`/activities/${activity.id}`}>
+            <NextLink href={`/trips/${data.id}`}>
               <Link>
                 <Text
                   fontSize="md"
@@ -119,30 +105,122 @@ function ActivityTable({ activity }: Props) {
                   fontWeight="bold"
                   minWidth="100%"
                 >
-                  {activity.name}
+                  {data.name}
+                </Text>
+              </Link>
+            </NextLink>
+            {data.citiesOnTrips.map((c) => {
+              return (
+                <Text
+                  fontSize="sm"
+                  color="gray.400"
+                  fontWeight="normal"
+                  key={c.city.id}
+                >
+                  {c.city.name}
+                </Text>
+              );
+            })}
+          </Flex>
+        </Flex>
+      </Td>
+      <Td pl="0px">
+        <Flex align="center" py=".8rem" minWidth="100%" flexWrap="nowrap">
+          <Avatar
+            src={data.planner.avatar as string}
+            w="50px"
+            borderRadius="12px"
+            me="18px"
+          />
+          <Flex direction="column">
+            <NextLink href={`/user/${data.plannerId}`}>
+              <Link>
+                <Text
+                  fontSize="md"
+                  color={textColor}
+                  fontWeight="bold"
+                  minWidth="100%"
+                >
+                  {data.planner.name}
                 </Text>
               </Link>
             </NextLink>
             <Text fontSize="sm" color="gray.400" fontWeight="normal">
-              {activity.city.name}, {activity.city.country}
+              {data.planner.mail}
             </Text>
           </Flex>
         </Flex>
       </Td>
       <Td>
-        <Flex direction="column">
-          <Input
-            w={100}
+        {data.activitiesOnTrips.map((a) => {
+          return (
+            <Flex direction="column" key={a.activityId}>
+              <NextLink href={`/activities/${a.activityId}`}>
+                <Link>
+                  <Text fontSize="sm" color={textColor} fontWeight="bold">
+                    {a.activity.name}
+                  </Text>
+                </Link>
+              </NextLink>
+            </Flex>
+          );
+        })}
+
+        {/* <FormControl>
+            <ReactSelect
+              id="activity"
+              name="activity"
+              options={allActFormated}
+              closeMenuOnSelect={false}
+              size="sm"
+              onChange={(e: any) => handleActivities(e)}
+              value={value}
+              colorScheme={"blue"}
+              isMulti
+            />
+          </FormControl>
+        */}
+      </Td>
+      <Td>
+        <Flex direction="column" textAlign={"center"}>
+          <Text
+            w={79}
             fontSize="sm"
             color={textColor}
             fontWeight="bold"
-            name={"price"}
-            value={data.price}
-            onChange={(e) => handleChange(e)}
-          />
+            borderColor={textColor}
+            border="solid 1px"
+            borderRadius={10}
+            p={2}
+          >
+            {data.price}
+          </Text>
         </Flex>
       </Td>
       <Td>
+        <Badge
+          bg={data.active === true ? "green.400" : "#e63946"}
+          color={data.active === true ? "white" : "#e63946"}
+          borderRadius="8px"
+        >
+          <Flex direction="column">
+            <Select
+              fontSize="sm"
+              color="white"
+              fontWeight="bold"
+              name={"active"}
+              value={data.active.toString()}
+              borderColor={"transparent"}
+              onChange={(e) => handleChange(e)}
+              w={95}
+            >
+              <option value={"true"}>Active</option>
+              <option value={"false"}>Inactive</option>
+            </Select>
+          </Flex>
+        </Badge>
+      </Td>
+      {/* <Td>
         <Flex direction="column">
           <FormControl>
             <ReactSelect
@@ -158,31 +236,7 @@ function ActivityTable({ activity }: Props) {
             />
           </FormControl>
         </Flex>
-      </Td>
-      <Td>
-        <Badge
-          bg={data.active === true ? "green.400" : "#e63946"}
-          color={data.active === true ? "white" : "#e63946"}
-          fontSize="16px"
-          p="3px 10px"
-          borderRadius="8px"
-        >
-          <Flex direction="column">
-            <Select
-              fontSize="sm"
-              color="white"
-              fontWeight="bold"
-              name={"active"}
-              value={data.active.toString()}
-              borderColor={"transparent"}
-              onChange={(e) => handleActive(e)}
-            >
-              <option value={"true"}>Active</option>
-              <option value={"false"}>Inactive</option>
-            </Select>
-          </Flex>
-        </Badge>
-      </Td>
+      </Td> */}
       <Td>
         <Flex direction="column">
           {/* <Textarea
@@ -192,7 +246,7 @@ function ActivityTable({ activity }: Props) {
             value={data.description}
             onChange={(e) => handleChange(e)}
             bg={"white"}
-          ></Textarea> */}
+          /> */}
           <ModalTextarea
             title={"Description"}
             name={"description"}
@@ -201,6 +255,7 @@ function ActivityTable({ activity }: Props) {
           />
         </Flex>
       </Td>
+
       <Td>
         <Button
           bg={useColorModeValue("#151f21", "#f4f4f4")}
@@ -247,4 +302,4 @@ function ActivityTable({ activity }: Props) {
   );
 }
 
-export default ActivityTable;
+export default TripTable;

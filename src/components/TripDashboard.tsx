@@ -14,65 +14,69 @@ import {
   Tr,
   useColorModeValue,
 } from "@chakra-ui/react";
-import React, { SetStateAction, useEffect, useState } from "react";
-import { Activity } from "src/utils/interface";
-import ActivityTable from "./ActivityTable";
-import NextLink from "next/link";
+import React, { useState } from "react";
+import { Activity, Trip } from "src/utils/interface";
+
+
 import Pagination from "./pagination";
-import { Select as ReactSelect } from "chakra-react-select";
-export const ActivityDashboard = ({
+
+
+import TripTable from "./TripTable";
+export const TripDashboard = ({
+  trips,
   activities,
 }: {
+  trips: Trip[];
   activities: Activity[];
 }) => {
   const captions = [
-    "activity",
+    "trip",
+    "planner",
+    "activities",
     "price",
-    "availability",
     "active",
     "description",
     "edit",
     "delete",
   ];
-  const cities = activities.map((a) => a.city.name);
-  const citiesUnique: string[] = Array.from(new Set(cities)).sort(); // remove duplicates, sort alphabetically
+
   const background = useColorModeValue("#02b1b1", "#02b1b1");
   const textColor = useColorModeValue("gray.700", "white");
-  const [data, setData] = useState(activities);
+  const [data, setData] = useState(trips);
   const [city, setCity] = useState(undefined);
   const [sort, setSort] = useState<string>(undefined);
-  const [availability, setAvailability] = useState(undefined);
+  const [activity, setActivity] = useState(undefined);
   const [active, setActive] = useState(undefined);
   const [currentPage, setCurrentPage] = useState(1);
-  const [activitiesPerPage, setActivitiesPerPage] = useState(5);
-  const max = Math.ceil(data.length / activitiesPerPage);
+  const [tripsPerPage, setTripsPerPage] = useState(5);
+  const max = Math.ceil(data.length / tripsPerPage);
   const [inputPage, setInputPage] = useState(1);
+  const cities = trips.flatMap((t) => t.citiesOnTrips.map((c) => c.city.name));
+  const citiesUnique: string[] = Array.from(new Set(cities)).sort(); // remove duplicates, sort alphabetically
+  const actOnTrips = trips.flatMap((t) =>
+    t.activitiesOnTrips.map((a) => a.activity.name)
+  );
+  const activitiesUnique: string[] = Array.from(new Set(actOnTrips)).sort();
+ 
 
-  const handleActivitiesPerPage = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setActivitiesPerPage(Number(e.target.value));
+  const handleTripsPerPage = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setTripsPerPage(Number(e.target.value));
   };
   const handleCities = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setCity(e.target.value);
-    if (!e.target.value) setAvailability(undefined);
-    if (availability) {
-      return setData(
-        e.target.value
-          ? activities.filter(
-              (c) =>
-                c.city.name === city &&
-                activities.filter((a) =>
-                  a.availability.includes(e.target.value)
-                )
-            )
-          : activities
-      );
-    }
-    setData(
+    setActive(undefined);
+    setActivity(undefined);
+    return setData(
       e.target.value
-        ? activities.filter((a) => a.city.name === e.target.value)
-        : activities
+        ? trips.filter((t) =>
+            t.citiesOnTrips
+              .map((c) => c.city.name)
+              .find((c) => c === e.target.value)
+          )
+        : trips
     );
   };
+
   const handleSort = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSort(e.target.value);
     if (e.target.value === "asc") {
@@ -82,23 +86,31 @@ export const ActivityDashboard = ({
       return setData(data.sort((a, b) => b.price - a.price));
     }
   };
-  const handleAvailability = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setAvailability(e.target.value);
-    if (!e.target.value) setActive(undefined);
+  const handleActivities = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setActivity(e.target.value);
     if (city) {
       return setData(
         e.target.value
-          ? activities.filter(
-              (a) =>
-                a.availability.includes(e.target.value) && a.city.name === city
+          ? trips.filter(
+              (t) =>
+                t.activitiesOnTrips
+                  .map((a) => a.activity.name)
+                  .find((a) => a === e.target.value) &&
+                t.citiesOnTrips.map((c) => c.city.name).find((c) => c === city)
             )
-          : activities.filter((a) => a.city.name === city)
+          : trips.filter((t) =>
+              t.citiesOnTrips.map((c) => c.city.name).find((c) => c === city)
+            )
       );
     }
     return setData(
       e.target.value
-        ? activities.filter((a) => a.availability.includes(e.target.value))
-        : activities
+        ? trips.filter((t) =>
+            t.activitiesOnTrips
+              .map((a) => a.activity.name)
+              .find((a) => a === e.target.value)
+          )
+        : trips
     );
   };
 
@@ -106,46 +118,41 @@ export const ActivityDashboard = ({
     if (e.target.value === "true") {
       return setData(
         city
-          ? data.filter((a) => a.active === true && a.city.name === city)
-          : data.filter((a) => a.active === true)
+          ? trips.filter(
+              (t) =>
+                t.citiesOnTrips.find((c) => c.city.name === city) &&
+                t.active === true
+            )
+          : trips.filter((a) => a.active === true)
       );
     }
     if (e.target.value === "false") {
       return setData(
         city
-          ? data.filter((a) => a.active === false && a.city.name === city)
-          : data.filter((a) => a.active === false)
+          ? trips.filter(
+              (t) =>
+                t.citiesOnTrips.find((c) => c.city.name === city) &&
+                t.active === false
+            )
+          : trips.filter((a) => a.active === false)
       );
     }
-    setData(city ? data.filter((a) => a.city.name === city) : activities);
+    setData(
+      city
+        ? trips.filter((t) =>
+            t.citiesOnTrips.map((c) => c.city.name).find((c) => c === city)
+          )
+        : trips
+    );
   };
   return (
     <>
-      <Button
-        position={"absolute"}
-        right={0}
-        mr={10}
-        bg={background}
-        color={"white"}
-        rounded={"md"}
-        padding={"20px"}
-        _hover={{
-          transform: "translateY(-2px)",
-          boxShadow: "lg",
-          bg: "#F3B46F",
-          color: "black",
-        }}
-      >
-        <NextLink href="/activities/create">
-          <Link>Create Activity</Link>
-        </NextLink>
-      </Button>
       <Box
         textAlign={"center"}
+        key={activity}
         display={"inline-flex"}
         gap={5}
         mb={5}
-        key={availability}
       >
         <Select
           width={250}
@@ -179,17 +186,15 @@ export const ActivityDashboard = ({
         </Select>
         <Select
           width={250}
-          value={availability}
-          onChange={(e) => handleAvailability(e)}
-          placeholder={"Filter by Availability"}
+          placeholder="Filter By Activity"
+          value={activity}
+          onChange={(e) => handleActivities(e)}
         >
-          <option value={"Monday"}>Monday</option>
-          <option value={"Tuesday"}>Tueday</option>
-          <option value={"Wednesday"}>Wednesday</option>
-          <option value={"Thursday"}>Thursday</option>
-          <option value={"Friday"}>Friday</option>
-          <option value={"Saturday"}>Saturday</option>
-          <option value={"Sunday"}>Sunday</option>
+          {activitiesUnique.map((a: string, i: number) => (
+            <option key={i} value={a}>
+              {a}
+            </option>
+          ))}
         </Select>
       </Box>
       <Table>
@@ -210,23 +215,23 @@ export const ActivityDashboard = ({
             })}
           </Tr>
         </Thead>
-        <Tbody key={activitiesPerPage}>
+        <Tbody key={tripsPerPage}>
           {data
             .slice(
-              (currentPage - 1) * activitiesPerPage,
-              (currentPage - 1) * activitiesPerPage + activitiesPerPage
+              (currentPage - 1) * tripsPerPage,
+              (currentPage - 1) * tripsPerPage + tripsPerPage
             )
-            .map((a: Activity) => {
-              return <ActivityTable activity={a} key={a.id} />;
+            .map((t: Trip, i: number) => {
+              return <TripTable trip={t} key={t.id} activities={activities} />;
             })}
         </Tbody>
       </Table>
       <Center>
         <Flex gap={50}>
           <Select
-            value={activitiesPerPage}
-            name={"activitiesPerPage"}
-            onChange={(e) => handleActivitiesPerPage(e)}
+            value={tripsPerPage}
+            name={"tripsPerPage"}
+            onChange={(e) => handleTripsPerPage(e)}
             w={130}
             mt={8}
           >

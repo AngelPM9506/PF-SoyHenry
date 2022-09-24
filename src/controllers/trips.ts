@@ -318,7 +318,7 @@ const TripsControllers = {
       },
       data: {
         description: description ? description : trip.description,
-        active: trip.active ? false : true,
+        active: active,
         image: trip.image,
         public_id_image: trip.public_id_image,
         tripOnUser: { create: createUsers },

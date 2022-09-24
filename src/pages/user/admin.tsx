@@ -29,29 +29,40 @@ import NextLink from "next/link";
 import NotFound from "src/pages/404";
 import ActivitiesControles from "src/controllers/activities";
 import ActivityTable from "src/components/ActivityTable";
-import { Activity } from "src/utils/interface";
+import { Activity, CityInDB, Trip } from "src/utils/interface";
 import { ActivityDashboard } from "src/components/ActivityDashboard";
 import { UserDashboard } from "src/components/UserDashboard";
 import usersControllers from "src/controllers/users";
+import { TripDashboard } from "src/components/TripDashboard";
+import TripsControllers from "src/controllers/trips";
+
+import { getCities } from "src/utils/cities";
 
 function TablesTableRow({
   users,
   activities,
+  trips,
+  cities,
 }: {
   activities: Activity[];
   users: UserData[];
+  trips: Trip[];
+  cities: CityInDB[];
 }) {
   const { user, error } = useUser();
   const { data: userDb, isLoading } = useQuery(["userDb", user], () =>
     getOrCreateUser(user)
   );
-  const [active, setActive] = useState(true);
+  const [active, setActive] = useState("users");
+
   const textColor = useColorModeValue("gray.700", "white");
   const handleSection = (
     e: React.MouseEvent<HTMLParagraphElement, MouseEvent>
   ) => {
-    if ((e.target as HTMLElement).id === "users") return setActive(true);
-    setActive(false);
+    if ((e.target as HTMLElement).id === "users") return setActive("users");
+    if ((e.target as HTMLElement).id === "activities")
+      return setActive("activities");
+    if ((e.target as HTMLElement).id === "trips") return setActive("trips");
   };
   if (isLoading || !userDb.data) return <div>Loading...</div>;
   if (!userDb.data.isAdmin) return <NotFound />;
@@ -63,7 +74,7 @@ function TablesTableRow({
           <Box p="6px 0px 22px 0px" display={"inline-flex"} gap={10}>
             <Text
               fontSize="xl"
-              color={active ? textColor : "gray"}
+              color={active === "users" ? textColor : "gray"}
               fontWeight="bold"
               id="users"
               onClick={(e) => handleSection(e)}
@@ -74,19 +85,29 @@ function TablesTableRow({
             <Text
               id="activities"
               fontSize="xl"
-              color={!active ? textColor : "gray"}
+              color={active === "activities" ? textColor : "gray"}
               fontWeight="bold"
               onClick={(e) => handleSection(e)}
               cursor="pointer"
             >
               Activities Dashboard
             </Text>
+            <Text
+              fontSize="xl"
+              color={active === "trips" ? textColor : "gray"}
+              fontWeight="bold"
+              id="trips"
+              onClick={(e) => handleSection(e)}
+              cursor="pointer"
+            >
+              Trips Dashboard
+            </Text>
           </Box>
-          {active ? (
-            <UserDashboard users={users} />
-          ) : (
+          {active === "users" && <UserDashboard users={users} />}
+          {active === "activities" && (
             <ActivityDashboard activities={activities} />
           )}
+          {active === "trips" && <TripDashboard trips={trips} activities={activities}/>}
         </Box>
       </Layout>
     </>
@@ -100,10 +121,14 @@ export const getServerSideProps = async () => {
   const activities = JSON.parse(
     JSON.stringify(await ActivitiesControles.getActivities({}))
   );
+  const trips = JSON.parse(JSON.stringify(await TripsControllers.getTrips({})));
+  const cities = await getCities()
   return {
     props: {
       users: users,
       activities: activities,
+      trips: trips,
+      cities: cities,
     },
   };
 };

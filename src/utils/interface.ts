@@ -1,17 +1,27 @@
 import { type } from "os";
+import { UserData } from "src/components/UserProfile";
 
 export interface Trip {
+  activityId?: string;
+  plannerId?: string;
   id?: string;
   name: string;
-  initDate: string;
+  initDate?: string;
   cities?: string[];
-  endDate: string;
-  planner?: string;
+  endDate?: string;
+  planner?: UserData;
   tripOnUser?: Object[];
   description: string;
-  activitiesName: string[];
+  activitiesName?: string[];
   image?: string | ArrayBuffer;
   price?: number;
+  active?: boolean;
+  activitiesOnTrips?: {
+    activityId?: string;
+    activity: Activity;
+    tripId?: string;
+  }[];
+  citiesOnTrips?: { city: CityInDB }[];
 }
 
 export interface User {
@@ -110,6 +120,7 @@ export interface City {
 }
 
 export interface CityInDB {
+  id: string;
   name: string;
   country: string;
   population: number;

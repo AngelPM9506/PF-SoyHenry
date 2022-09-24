@@ -57,7 +57,7 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
     endDate: "",
     description: "",
     activitiesName: [],
-    planner: "",
+    planner: {},
     price: 0,
     image: null,
   };

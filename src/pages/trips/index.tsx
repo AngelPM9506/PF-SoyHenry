@@ -25,8 +25,11 @@ import Layout from "../../components/layout/Layout";
 import { BsArrowDownUp } from "react-icons/bs";
 import { MdLabelImportantOutline } from "react-icons/md";
 import TripsControllers from "src/controllers/trips";
-import Loading from 'src/components/Loading'
+import Loading from "src/components/Loading";
 import axios from "axios";
+import { BannedAlert } from "src/components/Banned";
+import { useUser } from "@auth0/nextjs-auth0";
+import { getOrCreateUser } from "src/utils/User";
 
 interface Props {
   trips: Trip[];
@@ -40,10 +43,16 @@ function Trips({ trips }: Props) {
   const [sortBy, setSortBy] = useState<string>("name"); // ordenar x nombre o por precio
   const [input, setInput] = useState<string>("");
   const [inputCity, setInputCity] = useState<string>("");
-  const { data } = useQuery(
+  const { data, isLoading } = useQuery(
     ["trips", wCity, wName, maxPrice, sort, sortBy],
     //dependencies: React is going to re-render when one of these changes
     () => getTrips(wCity, wName, maxPrice, sort, sortBy)
+  );
+  const { user, error } = useUser();
+
+  const { data: userDb } = useQuery(
+    ["userDb", user],
+    () => user && getOrCreateUser(user)
   );
   //const data = trips;
   const [currentPage, setCurrentPage] = useState(1);
@@ -86,9 +95,11 @@ function Trips({ trips }: Props) {
     setInput("");
     setInputCity("");
   };
-
-  return !data ? (
-    <Loading/>
+  if (!isLoading && userDb && !userDb.data.active) {
+    return <BannedAlert />;
+  }
+  return isLoading ? (
+    <Loading />
   ) : (
     <Layout>
       <Heading

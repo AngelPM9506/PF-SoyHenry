@@ -118,6 +118,7 @@ export const editComment = async ({
 
 export const deleteActivity = async (id: string) => {
   const activity = await axios.delete(`/api/activities/${id}`);
+
   return activity.data;
 };
 

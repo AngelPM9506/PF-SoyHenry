@@ -15,8 +15,11 @@ import { useQuery, dehydrate, QueryClient } from "react-query";
 import { ActivityFilters } from "../../components/ActivityFilters";
 import Layout from "src/components/layout/Layout";
 import NextLink from "next/link";
-import Loading from 'src/components/Loading'
+import Loading from "src/components/Loading";
 import axios from "axios";
+import { useUser } from "@auth0/nextjs-auth0";
+import { getOrCreateUser } from "src/utils/User";
+import { BannedAlert } from "src/components/Banned";
 interface Props {
   activities: Activity[];
 }
@@ -30,6 +33,12 @@ const Activities = ({ activities }: Props) => {
   const { data, isLoading } = useQuery(
     ["activities", city, name, maxPrice, sort, sortBy], //dependencies: React is going to re-render when one of these changes
     () => getActivities(city, name, maxPrice, sort, sortBy)
+  );
+  const { user, error } = useUser();
+
+  const { data: userDb } = useQuery(
+    ["userDb", user],
+    () => user && getOrCreateUser(user)
   );
   //const data = activities;
   const cities = activities.map((a) => a.city.name);
@@ -57,7 +66,11 @@ const Activities = ({ activities }: Props) => {
     setInput(e.target.value);
   };
 
-  if (isLoading) return <Loading/>;
+
+  if (isLoading) return <Loading />;
+  if (!isLoading && userDb && !userDb.data.active) {
+    return <BannedAlert />;
+  }
   return !data ? (
     <div>
       <Layout>

@@ -58,7 +58,7 @@ export default async function index(req: NextApiRequest, res: NextApiResponse) {
         return res.json(respPatch);
       }
       case "DELETE":
-        let idfeed = idFeedback.toString();
+        let idfeed = idFeedback ? idFeedback.toString() : undefined;
         let respDelete = await ActivitiesControles.deletActivity({
           id,
           idFeedback: idfeed,

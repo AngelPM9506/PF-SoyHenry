@@ -112,7 +112,6 @@ function UserTable({ user }: UserData) {
           bg={data.isAdmin === true ? "green.400" : "#e63946"}
           color={data.isAdmin === true ? "white" : "#e63946"}
           fontSize="16px"
-          p="3px 10px"
           borderRadius="8px"
         >
           <Flex direction="column">
@@ -137,7 +136,6 @@ function UserTable({ user }: UserData) {
           bg={data.active === true ? "green.400" : "#e63946"}
           color={data.active === true ? "white" : "#e63946"}
           fontSize="16px"
-          p="3px 10px"
           borderRadius="8px"
         >
           <Flex direction="column">

@@ -12,6 +12,7 @@ import type { ColumnsType, TableProps } from 'antd/es/table';
 import 'antd/dist/antd.css';
 import NextLink from "next/link";
 import {Trip} from 'src/utils/interface';
+import { BannedAlert } from "src/components/Banned";
 
 interface DataType {
 	key: React.Key;
@@ -161,7 +162,9 @@ export default function MyTrips() {
 	useEffect(() => {
 		setTrips(usuario?.trips);
 	}, [usuario])
-
+	if (!isLoading && userDb && !userDb.data.active) {
+		return <BannedAlert />;
+	  }
 	if (isLoading) return <Loading/>;
 	return (
 		<Layout>

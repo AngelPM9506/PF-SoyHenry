@@ -53,6 +53,8 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import getDay from "date-fns/getDay";
 import { chakra } from "@chakra-ui/react";
+import { BannedAlert } from "src/components/Banned";
+import Loading from "src/components/Loading";
 
 interface Props {
   activities: Activity[];
@@ -363,7 +365,10 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [overlay, setOverlay] = useState(<OverlayTwo />);
-
+  if (!isLoading && userDb && !userDb.data.active) {
+    return <BannedAlert />;
+  }
+  if(isLoading) return <Loading />
   return (
     <Layout>
       <Center marginTop="1%">

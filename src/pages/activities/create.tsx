@@ -14,9 +14,11 @@ import {
   Text,
   Box,
   HStack,
+  Flex,
+  Container,
 } from "@chakra-ui/react";
 import axios from "axios";
-import { useState } from "react";
+import { SetStateAction, useState } from "react";
 import { Activity, City, Errors } from "src/utils/interface";
 import { ChangeEvent, FormEvent, MouseEvent, useRef } from "react";
 import Layout from "src/components/layout/Layout";
@@ -29,6 +31,8 @@ import { createActivity, getActivities } from "src/utils/activities";
 import { getCities } from "src/utils/cities";
 import NotFound from "../404";
 import ActivitiesControles from "src/controllers/activities";
+import Loading from "src/components/Loading";
+import { Select as ReactSelect } from "chakra-react-select";
 
 interface Props {
   activities: Activity[];
@@ -59,16 +63,27 @@ const CreateActivity = ({ activities, cities }: Props) => {
   const [nameFile, setNameFile] = useState("");
   const [errors, setErrors] = useState<Errors>({});
   const hiddenFileInput = useRef(null);
+  const availability = [
+    { value: "Monday", label: "Monday" },
+    { value: "Tuesday", label: "Tuesday" },
+    { value: "Wednesday", label: "Wednesday" },
+    { value: "Thursday", label: "Thursday" },
+    { value: "Friday", label: "Friday" },
+    { value: "Saturday", label: "Saturday" },
+    { value: "Sunday", label: "Sunday" },
+  ];
+  const avaFormated = input.availability.map((a) => ({ value: a, label: a }));
+  const [avaValue, setValue] = useState(avaFormated);
   const handleCities = ({
     target: { value },
   }: ChangeEvent<HTMLInputElement>) => {
     setInputCities(value);
   };
 
-  const handleCitiesSelect = (e: MouseEvent<HTMLButtonElement>) => {
-    setInput({ ...input, cityName: inputCities });
-    // setInputCities("");
-  };
+  // const handleCitiesSelect = (e: MouseEvent<HTMLButtonElement>) => {
+  //   setInput({ ...input, cityName: inputCities });
+  //   // setInputCities("");
+  // };
 
   const handleChange = ({
     target: { name, value },
@@ -77,6 +92,7 @@ const CreateActivity = ({ activities, cities }: Props) => {
       { ...input, [name]: value },
       activities
     );
+
     if (name === "price") {
       const price = parseInt(value);
       const errControlPrice = formControlActivity(
@@ -88,6 +104,12 @@ const CreateActivity = ({ activities, cities }: Props) => {
     }
     setInput({ ...input, [name]: value });
     setErrors(errControl);
+  };
+  console.log(input.availability);
+  const handleAvailability = (
+    option: SetStateAction<{ value: string; label: string }[]>
+  ) => {
+    setValue(option);
   };
 
   function previewFiles(file: File) {
@@ -120,7 +142,12 @@ const CreateActivity = ({ activities, cities }: Props) => {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (Object.values(errors).length) return;
-    await createActivity(input);
+    const avaForDb = avaValue.map((a) => a.value);
+    await createActivity({
+      ...input,
+      availability: avaForDb,
+      cityName: inputCities,
+    });
     setInput(initialState);
     setErrors({});
     router.push("/activities");
@@ -132,223 +159,205 @@ const CreateActivity = ({ activities, cities }: Props) => {
       availability: input.availability.filter((a: any) => a != c),
     });
   };
-  if (isLoading || !userDb?.data) return <div>Loading...</div>;
+  if (isLoading || !userDb?.data) return <Loading />;
   if (!userDb?.data.isAdmin) return <NotFound />;
   return (
-    <Layout>
-      <Center marginTop="1%">
-        <Heading color="primary">CREATE A NEW ACTIVITY</Heading>
-      </Center>
-      <form onSubmit={(e) => handleSubmit(e)}>
-        <FormControl>
-          <Center>
-            <Grid
-              marginBottom="5%"
-              h="80vh"
-              w="80vw"
-              templateRows="repeat(4, 1fr)"
-              templateColumns="300px 1fr 1fr 1fr 1fr"
-              gap={1}
-            >
-              <GridItem
-                borderRadius="2xl"
-                rowSpan={1}
-                colSpan={1}
-                bg="none"
-                alignContent={"center"}
-                alignSelf="center"
+    <Container maxH={"100%"} maxW={"100%"}>
+      <Layout>
+        <Center marginTop="1%">
+          <Heading color="primary">CREATE A NEW ACTIVITY</Heading>
+        </Center>
+        <form onSubmit={(e) => handleSubmit(e)}>
+          <FormControl>
+            <Center>
+              <Grid
+                marginBottom="10px"
+                h="130vh"
+                w="90vw"
+                templateRows="repeat(4, 1fr)"
+                templateColumns="300px 1fr 1fr 1fr 1fr"
+                gap={1}
               >
-                <Image
-                  src={`${image}`}
-                  fallbackSrc="https://via.placeholder.com/150"
-                  alt="img"
-                  boxSize="200px"
-                />
-                <Center>
-                  <Button onClick={(event) => handleClick(event)} mt="20px">
-                    Change Activity Image
-                  </Button>
-                  <Input
-                    type="file"
-                    ref={hiddenFileInput}
-                    style={{ display: "none" }}
-                    accept="image/png, image/jpeg, image/gif, image/jpg, image/jfif"
-                    onChange={(e) => handleImage(e)}
-                  />
-                  <Text color={"red"} fontWeight={700}>
-                    {errors.image}
-                  </Text>
-                </Center>
-              </GridItem>
-              <GridItem borderRadius="2xl" colSpan={4} bg="blackAlpha.100">
-                <FormLabel htmlFor="name" paddingLeft="2" mt={2}>
-                  Name
-                </FormLabel>
-                <Input
-                  name="name"
-                  placeholder="Type a name for your activity..."
-                  onChange={(e) => handleChange(e)}
-                  isRequired={true}
-                />
-                <Text color={"red"} fontWeight={700}>
-                  {errors.name}
-                </Text>
-                <FormLabel htmlFor="price" paddingLeft="2" mt={2}>
-                  Price
-                </FormLabel>
-                <Input
-                  name="price"
-                  placeholder="Price of the activity in USD"
-                  onChange={(e) => handleChange(e)}
-                  isRequired={true}
-                />
-                <Text color={"red"} fontWeight={700}>
-                  {errors.price}
-                </Text>
-                <FormLabel paddingLeft="2" htmlFor="city" mt={2}>
-                  City
-                </FormLabel>
-                <HStack>
-                  <Input
-                    list="city-choice"
-                    name="cityName"
-                    value={inputCities}
-                    placeholder="Type the city of the activity..."
-                    onChange={(e) => handleCities(e)}
-                    isRequired
-                  />
-                  <datalist id="city-choice">
-                    {cities
-                      ?.filter((c) => !input.city?.includes(c.name))
-                      ?.map((c, index) => (
-                        <option key={index}> {c.name} </option>
-                      ))}
-                  </datalist>
-
-                  <Button
-                    mt={1}
-                    bg="highlight"
-                    color="primary"
-                    _hover={{ bg: "danger" }}
-                    onClick={(e) => handleCitiesSelect(e)}
-                  >
-                    Select City
-                  </Button>
-                </HStack>
-                <Box textAlign={"center"}>
-                  <Text
-                    display={"inline-flex"}
-                    textAlign={"right"}
-                    align={"center"}
-                    fontSize={"lg"}
-                    pt={"5px"}
-                    fontWeight={400}
-                  >
-                    {input.cityName.length != 0 ? input.cityName : null}
-                  </Text>
-                </Box>
-                <FormLabel paddingLeft="2" htmlFor="Availability" mt={2}>
-                  Availability
-                </FormLabel>
-                <Select
-                  width={200}
-                  mb={5}
-                  value={input.availability}
-                  onChange={(e) =>
-                    setInput({
-                      ...input,
-                      availability: input.availability.includes(e.target.value)
-                        ? input.availability
-                        : [...input.availability, e.target.value],
-                    })
-                  }
+                <GridItem
+                  borderRadius="2xl"
+                  rowSpan={1}
+                  colSpan={1}
+                  bg="none"
+                  alignContent={"center"}
+                  alignSelf="center"
+                  mb={250}
                 >
-                  <option>Week days</option>
-                  <option value={"Sunday"}>Sunday</option>
-                  <option value={"Monday"}>Monday</option>
-                  <option value={"Tuesday"}>Tuesday</option>
-                  <option value={"Wednesday"}>Wednesday</option>
-                  <option value={"Thursday"}>Thursday</option>
-                  <option value={"Friday"}>Friday</option>
-                  <option value={"Saturday"}>Saturday</option>
-                </Select>
-                <Center>
-                  <HStack marginTop={"5px"}>
-                    {input.availability.length != 0 ? (
-                      input.availability.map((c, index) => {
-                        return (
-                          <Box marginLeft={"10px"} key={index}>
-                            {c}
-                            <Button
-                              marginLeft="2"
-                              value={c}
-                              onClick={() => handleDeleteAv(c)}
-                              height={"25px"}
-                              width={"5px"}
-                            >
-                              X
-                            </Button>
-                          </Box>
-                        );
-                      })
-                    ) : (
-                      <Box height={"40px"}></Box>
-                    )}
-                  </HStack>
-                </Center>
-                <GridItem borderRadius="2xl" colSpan={5} bg="blackAlpha.100">
-                  <FormLabel
-                    paddingLeft="2"
-                    htmlFor="description"
-                    mt={2}
-                    mb="8px"
+                  <Box
+                    display={"flex"}
+                    alignItems={"center"}
+                    justifyContent={"center"}
+                    mr={20}
                   >
-                    Description
+                    <Image
+                      borderRadius={"2xl"}
+                      src={`${image}`}
+                      fallbackSrc="https://via.placeholder.com/150"
+                      alt="img"
+                      boxSize="200px"
+                    />
+                  </Box>
+                  <Center>
+                    <Button
+                      onClick={(event) => handleClick(event)}
+                      mt="20px"
+                      mr={20}
+                    >
+                      Change Activity Image
+                    </Button>
+                    <Input
+                      type="file"
+                      ref={hiddenFileInput}
+                      style={{ display: "none" }}
+                      accept="image/png, image/jpeg, image/gif, image/jpg, image/jfif"
+                      onChange={(e) => handleImage(e)}
+                    />
+                    <Text color={"red"} fontWeight={700}>
+                      {errors.image}
+                    </Text>
+                  </Center>
+                </GridItem>
+                <GridItem
+                  borderRadius="2xl"
+                  colSpan={4}
+                  bg="blackAlpha.100"
+                  p={5}
+                  mt={10}
+                  mb={5}
+                  mr={10}
+                  pr={10}
+                >
+                  <FormLabel htmlFor="name" paddingLeft="2" mt={2}>
+                    Name
                   </FormLabel>
-                  <Textarea
-                    name="description"
-                    placeholder="Type a description of the activity..."
-                    size="sm"
+                  <Input
+                    name="name"
+                    placeholder="Type a name for your activity..."
                     onChange={(e) => handleChange(e)}
-                    isRequired
+                    isRequired={true}
+                    size={"lg"}
                   />
                   <Text color={"red"} fontWeight={700}>
-                    {errors.description}
+                    {errors.name}
                   </Text>
+                  <FormLabel htmlFor="price" paddingLeft="2" mt={2}>
+                    Price
+                  </FormLabel>
+                  <Input
+                    name="price"
+                    placeholder="Price of the activity in USD"
+                    onChange={(e) => handleChange(e)}
+                    isRequired={true}
+                    size="lg"
+                  />
+                  <Text color={"red"} fontWeight={700}>
+                    {errors.price}
+                  </Text>
+                  <FormLabel paddingLeft="2" htmlFor="city" mt={2}>
+                    City
+                  </FormLabel>
+                  <HStack>
+                    <Input
+                      list="city-choice"
+                      name="cityName"
+                      value={inputCities}
+                      placeholder="Type the city of the activity..."
+                      onChange={(e) => handleCities(e)}
+                      isRequired
+                      size={"lg"}
+                    />
+                    <datalist id="city-choice">
+                      {cities
+                        ?.filter((c) => !input.city?.includes(c.name))
+                        ?.map((c, index) => (
+                          <option key={index}> {c.name} </option>
+                        ))}
+                    </datalist>
+                  </HStack>
+                  <Flex direction="column" mb="30px">
+                    <FormLabel
+                      paddingLeft="2"
+                      htmlFor="description"
+                      mt={1}
+                      mb="8px"
+                    >
+                      Availability
+                    </FormLabel>
+                    <FormControl>
+                      <ReactSelect
+                        id="availability"
+                        name="availability"
+                        options={availability}
+                        closeMenuOnSelect={false}
+                        size="lg"
+                        onChange={(e: any) => handleAvailability(e)}
+                        value={avaValue}
+                        colorScheme={"blue"}
+                        isMulti
+                      />
+                    </FormControl>
+                  </Flex>
+                  <GridItem borderRadius="2xl" colSpan={5}>
+                    <FormLabel
+                      paddingLeft="2"
+                      htmlFor="description"
+                      mt={2}
+                      mb="8px"
+                    >
+                      Description
+                    </FormLabel>
+                    <Textarea
+                      name="description"
+                      placeholder="Type a description of the activity..."
+                      size="lg"
+                      onChange={(e) => handleChange(e)}
+                      isRequired
+                      minH={200}
+                    />
+                    <Text color={"red"} fontWeight={700}>
+                      {errors.description}
+                    </Text>
+                  </GridItem>
+                  <Box mt={50}>
+                    <Center marginBottom="2%">
+                      <Button
+                        bg="highlight"
+                        color="primary"
+                        _hover={{ bg: "danger" }}
+                        type="submit"
+                        onClick={() =>
+                          !Object.values(errors).length
+                            ? toast({
+                                title: "Activity Created",
+                                description: "We've created the activity",
+                                status: "success",
+                                duration: 3000,
+                                isClosable: true,
+                              })
+                            : toast({
+                                title: "Error",
+                                description: "Wrong data, check your responses",
+                                status: "error",
+                                duration: 3000,
+                                isClosable: true,
+                              })
+                        }
+                      >
+                        CREATE AND POST
+                      </Button>
+                    </Center>
+                  </Box>
                 </GridItem>
-              </GridItem>
-            </Grid>
-          </Center>
-          <Center marginBottom="2%">
-            <Button
-              bg="highlight"
-              color="primary"
-              _hover={{ bg: "danger" }}
-              type="submit"
-              onClick={() =>
-                !Object.values(errors).length
-                  ? toast({
-                      title: "Activity Created",
-                      description: "We've created the activity",
-                      status: "success",
-                      duration: 3000,
-                      isClosable: true,
-                    })
-                  : toast({
-                      title: "Error",
-                      description: "Wrong data, check your responses",
-                      status: "error",
-                      duration: 3000,
-                      isClosable: true,
-                    })
-              }
-            >
-              CREATE AND POST
-            </Button>
-          </Center>
-        </FormControl>
-      </form>
-    </Layout>
+              </Grid>
+            </Center>
+          </FormControl>
+        </form>
+      </Layout>
+    </Container>
   );
 };
 

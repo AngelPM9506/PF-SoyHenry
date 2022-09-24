@@ -239,7 +239,7 @@ const ActivitiesControles = {
           image: toUpActivity.image,
           public_id_image: toUpActivity.public_id_image,
           price: price ? parseFloat(price) : toUpActivity.price,
-          active: toUpActivity.active ? false : true,
+          active: active,
         },
         include: {
           activitiesOnTrips: {

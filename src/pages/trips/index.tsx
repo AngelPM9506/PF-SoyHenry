@@ -3,10 +3,9 @@ import type { NextPage } from "next";
 import { TripCard } from "../../components/TripCard";
 import Pagination from "../../components/pagination";
 import { Trip } from "src/interfaces/Trip";
-import { useState } from "react";
+import { KeyboardEvent, useState } from "react";
 import { useQuery, dehydrate, QueryClient } from "react-query";
 import { getTrips } from "src/utils/trips";
-
 import {
   SimpleGrid,
   Box,
@@ -31,6 +30,7 @@ import axios from "axios";
 import { BannedAlert } from "src/components/Banned";
 import { useUser } from "@auth0/nextjs-auth0";
 import { getOrCreateUser } from "src/utils/User";
+import NextLink from "next/link";
 
 interface Props {
   trips: Trip[];
@@ -68,6 +68,13 @@ function Trips({ trips }: Props) {
     setWcity(inputCity);
     setInputCity("");
   };
+
+  const onKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      handleCity();
+    }
+  };
+
   const handleSort = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSort(e.target.value);
   };
@@ -85,7 +92,9 @@ function Trips({ trips }: Props) {
     setInput(e.target.value);
   };
   const handleInputCity = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputCity(e.target.value);
+    const { value } = e.target;
+    const city = value.charAt(0).toUpperCase() + value.slice(1);
+    setInputCity(city);
   };
   const handleLoadAll = () => {
     setSort("desc");
@@ -112,30 +121,28 @@ function Trips({ trips }: Props) {
         ml={120}
         marginBottom={"50px"}
       >
-        <Text
-          width={"1500px"}
-          fontFamily={"Trebuchet MS"}
-          color={useColorModeValue("#293541", "white")}
-        >
-          ALL OUR TRAVELERS TRIPS
-        </Text>
-        <Button
-          bg={useColorModeValue("#02b1b1", "#02b1b1")}
-          color={"white"}
-          marginRight={"55px"}
-          rounded={"md"}
-          padding={"20px"}
-          _hover={{
-            transform: "translateY(-2px)",
-            boxShadow: "lg",
-            bg: "#F3B46F",
-            color: "black",
-          }}
-          m={5}
-          w={200}
-        >
-          <Link href="/trips/create">Create new Trip</Link>
-        </Button>
+        <Heading width={"1500px"} color={useColorModeValue("#293541", "white")}>
+          All Our Travelers Trips
+        </Heading>
+        <NextLink href="/trips/create">
+          <Button
+            bg={useColorModeValue("#02b1b1", "#02b1b1")}
+            color={"white"}
+            marginRight={"55px"}
+            rounded={"md"}
+            padding={"20px"}
+            _hover={{
+              transform: "translateY(-2px)",
+              boxShadow: "lg",
+              bg: "#F3B46F",
+              color: "black",
+            }}
+            m={5}
+            w={200}
+          >
+            CREATE NEW TRIP
+          </Button>
+        </NextLink>
       </Heading>
       <Box
         display="flex"
@@ -192,6 +199,7 @@ function Trips({ trips }: Props) {
             width="200px"
             marginRight={"20px"}
             placeholder="Type a City ..."
+            onKeyDown={(e) => onKeyDown(e)}
             onChange={(e) => handleInputCity(e)}
           />
           <Button

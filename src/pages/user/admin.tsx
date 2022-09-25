@@ -69,9 +69,8 @@ function TablesTableRow({
     if ((e.target as HTMLElement).id === "trips") return setActive("trips");
   };
 
-  const captions = ["user", "admin", "active"];
 
-  if (isLoading || !userDb.data) return <Loading />;
+  if (isLoading || !userDb?.data) return <Loading />;
 
   if (!userDb.data.isAdmin) return <NotFound />;
   return (

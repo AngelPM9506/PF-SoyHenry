@@ -85,8 +85,11 @@ const Activities = ({ activities }: Props) => {
     <div>
       <Layout>
         <Center>
-          <Heading margin={"40px"} marginBottom={5} display={"flex"}>
-            DISCOVER OUR ACTIVITIES
+          <Heading
+            width={"1500px"}
+            color={useColorModeValue("#293541", "white")}
+          >
+            All Our Activities
           </Heading>
         </Center>
         <ActivityFilters
@@ -139,8 +142,13 @@ const Activities = ({ activities }: Props) => {
     <div>
       <Layout>
         <Center>
-          <Heading margin={"40px"} marginBottom={5} display={"flex"}>
-            DISCOVER OUR ACTIVITIES
+          <Heading
+            pt={"30px"}
+            textAlign={"center"}
+            width={"1500px"}
+            color={useColorModeValue("#293541", "white")}
+          >
+            All Our Activities
           </Heading>
         </Center>
         <ActivityFilters

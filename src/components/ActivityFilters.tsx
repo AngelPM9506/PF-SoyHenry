@@ -69,12 +69,11 @@ export const ActivityFilters = ({
         <option value={"price"}>Sort By: Price</option>
       </Select>
       <HStack>
-        <p>Max Price:</p>
         <form onSubmit={(e) => handleMaxPrice(e)}>
           <Input
-            width="120px"
+            width="210px"
             textAlign={"left"}
-            placeholder="$"
+            placeholder="Filter by Max Price (USD)"
             onChange={(e) => handleInput(e)}
             value={input}
             key={maxPrice} //when max price changes after clicking the reset button, the input UI is going to re-render too and reflect the changes

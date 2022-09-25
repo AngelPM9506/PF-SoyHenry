@@ -23,7 +23,7 @@ export function TripCard({ props }: any) {
           p={6}
           maxW={"330px"}
           w={"full"}
-          bg={useColorModeValue("white", "#4b647c")}
+          bg={useColorModeValue("#D1DFE3", "blackAlpha.400")}
           boxShadow={"2xl"}
           rounded={"lg"}
           pos={"relative"}
@@ -33,7 +33,7 @@ export function TripCard({ props }: any) {
             rounded={"lg"}
             mt={-12}
             pos={"relative"}
-            height={"300px"}
+            height={"190px"}
             _after={{
               transition: "all .3s ease",
               content: '""',
@@ -58,7 +58,7 @@ export function TripCard({ props }: any) {
               objectFit={"cover"}
               src={props.image ? props.image : defaultpic}
               boxShadow={"0px 10px 13px -7px #000000"}
-              alt='image card Trip'
+              alt="image card Trip"
             />
           </Box>
           <Stack marginTop={"0px"} height={"80px"} align={"center"}>
@@ -76,10 +76,10 @@ export function TripCard({ props }: any) {
               Duration:
             </Text>
             <Text fontWeight={400} fontSize={"xl"}>
-              From {props.initDate.slice(0, 10)}
+              From {new Date(props.initDate).toLocaleDateString()}
             </Text>
             <Text fontWeight={400} fontSize={"xl"}>
-              To {props.endDate.slice(0, 10)}
+              To {new Date(props.endDate).toLocaleDateString()}
             </Text>
           </VStack>
           {/* <Text fontWeight={800} fontSize={"xl"}>
@@ -100,25 +100,42 @@ export function TripCard({ props }: any) {
             </Text>
           </Stack>
           <Stack
-            marginTop={"10px"}
+            marginTop={"5px"}
             textAlign={"center"}
             justifyContent={"center"}
           >
-            <Link href={`/trips/${props.id}`}>See more info of this trip</Link>
+            <NextLink href={`/trips/${props.id}`}>
+              <Button
+                w={"full"}
+                mt={5}
+                bg={useColorModeValue("#151f21", "#f4f4f4")}
+                color={useColorModeValue("#f4f4f4", "#151f21")}
+                rounded={"md"}
+                _hover={{
+                  transform: "translateY(-2px)",
+                  boxShadow: "lg",
+                }}
+              >
+                {" "}
+                +Info{" "}
+              </Button>
+            </NextLink>
           </Stack>
-          <Button
-            w={"full"}
-            mt={5}
-            bg={useColorModeValue("#151f21", "#f4f4f4")}
-            color={useColorModeValue("#f4f4f4", "#151f21")}
-            rounded={"md"}
-            _hover={{
-              transform: "translateY(-2px)",
-              boxShadow: "lg",
-            }}
-          >
-            <Link href={`/pasarella`}> Join the Trip! </Link>
-          </Button>
+          <NextLink href={`/trips/${props.id}`}>
+            <Button
+              w={"full"}
+              mt={5}
+              bg={useColorModeValue("#151f21", "#f4f4f4")}
+              color={useColorModeValue("#f4f4f4", "#151f21")}
+              rounded={"md"}
+              _hover={{
+                transform: "translateY(-2px)",
+                boxShadow: "lg",
+              }}
+            >
+              Join the Trip!
+            </Button>
+          </NextLink>
         </Box>
       </NextLink>
     </Center>

@@ -154,7 +154,7 @@ const Contact = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Center margin={'1rem'}>
-        <Heading color={'primary'}>Contact us</Heading>
+        <Heading color={'primary'}>Contact Us</Heading>
       </Center>
       <form onSubmit={sendContact} className={form}>
         <Box h={'3xl'}>

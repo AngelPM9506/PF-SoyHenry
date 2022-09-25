@@ -9,6 +9,8 @@ import { QueryFunctionContext, useQuery } from "react-query";
 import ActivityDetail from "src/components/ActivityDetail";
 import { GetServerSideProps } from "next/types";
 import { useUser } from "@auth0/nextjs-auth0";
+import Loading from "src/components/Loading";
+import NotFound from "../404";
 
 interface Props {
   id: QueryFunctionContext<string[], any>;
@@ -25,10 +27,10 @@ export default function Detail(props: Props) {
     };
   });
   if (isLoading) {
-    return <div>Is loading...</div>;
+    return <Loading />
   }
-  if (!data) {
-    return <div>No Data</div>;
+  if (!isLoading && !data) {
+    return <NotFound />
   }
   return (
     <Layout>

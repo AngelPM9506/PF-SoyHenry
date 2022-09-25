@@ -20,13 +20,17 @@ import {
   Text,
   Link,
   FormControl,
+  Center,
 } from "@chakra-ui/react";
 import Layout from "../../components/layout/Layout";
 import { BsArrowDownUp } from "react-icons/bs";
 import { MdLabelImportantOutline } from "react-icons/md";
 import TripsControllers from "src/controllers/trips";
-import Loading from 'src/components/Loading'
+import Loading from "src/components/Loading";
 import axios from "axios";
+import { BannedAlert } from "src/components/Banned";
+import { useUser } from "@auth0/nextjs-auth0";
+import { getOrCreateUser } from "src/utils/User";
 
 interface Props {
   trips: Trip[];
@@ -40,10 +44,16 @@ function Trips({ trips }: Props) {
   const [sortBy, setSortBy] = useState<string>("name"); // ordenar x nombre o por precio
   const [input, setInput] = useState<string>("");
   const [inputCity, setInputCity] = useState<string>("");
-  const { data } = useQuery(
+  const { data, isLoading } = useQuery(
     ["trips", wCity, wName, maxPrice, sort, sortBy],
     //dependencies: React is going to re-render when one of these changes
     () => getTrips(wCity, wName, maxPrice, sort, sortBy)
+  );
+  const { user, error } = useUser();
+
+  const { data: userDb } = useQuery(
+    ["userDb", user],
+    () => user && getOrCreateUser(user)
   );
   //const data = trips;
   const [currentPage, setCurrentPage] = useState(1);
@@ -86,9 +96,11 @@ function Trips({ trips }: Props) {
     setInput("");
     setInputCity("");
   };
-
-  return !data ? (
-    <Loading/>
+  if (!isLoading && userDb && !userDb.data.active) {
+    return <BannedAlert />;
+  }
+  return isLoading ? (
+    <Loading />
   ) : (
     <Layout>
       <Heading
@@ -96,7 +108,8 @@ function Trips({ trips }: Props) {
         alignItems={"center"}
         justifyContent={"space-between"}
         textAlign={"center"}
-        margin={"40px"}
+        mt={50}
+        ml={120}
         marginBottom={"50px"}
       >
         <Text
@@ -118,6 +131,8 @@ function Trips({ trips }: Props) {
             bg: "#F3B46F",
             color: "black",
           }}
+          m={5}
+          w={200}
         >
           <Link href="/trips/create">Create new Trip</Link>
         </Button>
@@ -212,23 +227,25 @@ function Trips({ trips }: Props) {
             <Text m={"15px"} textAlign={"center"} fontSize={"40px"}>
               Sorry! There are no trips with the selected condition.
             </Text>
-            <Button
-              fontSize={"40px"}
-              bg={useColorModeValue("#151f21", "#293541")}
-              color={"white"}
-              type={"submit"}
-              height={"60px"}
-              p={"20px"}
-              m={"25px"}
-              rounded={"md"}
-              _hover={{
-                transform: "translateY(-2px)",
-                boxShadow: "lg",
-              }}
-              onClick={handleLoadAll}
-            >
-              Load all the trips again!
-            </Button>
+            <Center>
+              <Button
+                fontSize={"40px"}
+                bg={useColorModeValue("#151f21", "#293541")}
+                color={"white"}
+                type={"submit"}
+                height={"60px"}
+                p={"20px"}
+                m={"25px"}
+                rounded={"md"}
+                _hover={{
+                  transform: "translateY(-2px)",
+                  boxShadow: "lg",
+                }}
+                onClick={handleLoadAll}
+              >
+                Load all the trips again!
+              </Button>
+            </Center>
           </Box>
         )}
       </SimpleGrid>

@@ -16,10 +16,7 @@ import {
   useToast,
   Link,
 } from "@chakra-ui/react";
-import {
-  Select as ReactSelect,
-  useChakraSelectProps,
-} from "chakra-react-select";
+import { Select as ReactSelect } from "chakra-react-select";
 import React, { SetStateAction, useEffect, useState } from "react";
 import { deleteActivity, editActivity } from "src/utils/activities";
 import { Activity } from "src/utils/interface";
@@ -144,7 +141,7 @@ function ActivityTable({ activity }: Props) {
       </Td>
       <Td>
         <Flex direction="column">
-          <FormControl>
+          <FormControl maxWidth={300}>
             <ReactSelect
               id="availability"
               name="availability"
@@ -164,7 +161,6 @@ function ActivityTable({ activity }: Props) {
           bg={data.active === true ? "green.400" : "#e63946"}
           color={data.active === true ? "white" : "#e63946"}
           fontSize="16px"
-          p="3px 10px"
           borderRadius="8px"
         >
           <Flex direction="column">

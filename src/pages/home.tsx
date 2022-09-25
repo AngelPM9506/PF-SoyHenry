@@ -12,8 +12,8 @@ import { useState, useEffect } from "react";
 import { Stack } from "@chakra-ui/react";
 import axios from "axios";
 import { UserData } from "src/components/UserProfile";
-import Loading from 'src/components/Loading'
-
+import Loading from "src/components/Loading";
+import { BannedAlert } from "src/components/Banned";
 
 interface Props {
   trips: Trip[];
@@ -27,9 +27,9 @@ const Home = ({ trips, activities }: Props) => {
     ["userDb", user],
     () => user && getOrCreateUser(user)
   );
-  if (!userDb) return <Loading/>;
-  if (!userDb.data.active) {
-    router.push("/api/auth/logout");
+  if (isLoading) return <Loading />;
+  if (!isLoading && userDb && !userDb.data.active) {
+    return <BannedAlert />;
   }
 
   return (

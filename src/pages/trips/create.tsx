@@ -255,8 +255,10 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
   };
 
   const createTrip = async (trip: Trip) => {
+    console.log(trip);    
     try {
       let resp = await axios.post("/api/trips", trip);
+      console.log(resp.data);      
       return resp.data;
     } catch (error) {
       console.log(error);
@@ -289,7 +291,7 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
         duration: 3000,
         isClosable: true,
       });
-      router.push(`/trips/${tripCreated.id}`);
+      //router.push(`/trips/${tripCreated.id}`);
     } else {
       toast({
         title: "Trip not created",

@@ -74,7 +74,7 @@ const Contact = () => {
     if (!input.message || input.message === '') { error.message = 'Message is required'; }
     return error;
   }
-  /**create or update toast */
+  /**create or update toast cambio para que reaccione vercel */
   const makeToast = (mesage: string, bgColor: string, stat: "error" | "info" | "success") => {
     if (!toastIdRef.current) {
       toastIdRef.current = toast({

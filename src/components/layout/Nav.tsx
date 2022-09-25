@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import React, { ReactNode, useState } from "react";
 import {
   Box,
   Flex,
@@ -17,6 +17,7 @@ import {
   Stack,
   Image,
   useColorMode,
+  LinkProps,
 } from "@chakra-ui/react";
 import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
 import { MoonIcon, SunIcon } from "@chakra-ui/icons";
@@ -25,7 +26,14 @@ import { useQuery } from "react-query";
 import { getOrCreateUser } from "src/utils/User";
 import { UserData } from "../UserProfile";
 import NextLink from "next/link";
+import { useRouter } from "next/router";
 
+interface NavLinkProps extends LinkProps {
+  children?: string | React.ReactNode;
+  to: string;
+  activeProps?: LinkProps;
+  _hover?: LinkProps;
+}
 const logo: string =
   "https://res.cloudinary.com/mauro4202214/image/upload/v1663331570/world-travelers/logowt_qifbpn.png";
 const logoNight: string =
@@ -41,15 +49,19 @@ const Links = [
 
 export default function NavBar() {
   const { user, error } = useUser();
-
+  const router = useRouter();
+  const [active, setActive] = useState(router.pathname);
   const { data: userDb, isLoading } = useQuery(
     ["userDb", user],
     () => user && getOrCreateUser(user)
   );
 
+  const handleActive = (e: any) => {
+    setActive(e.target.id);
+  };
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { colorMode, toggleColorMode } = useColorMode();
-
+  const textColor = useColorModeValue("gray.700", "white");
   return (
     <>
       <Box padding={"3px"} boxShadow={"1px 1px 1px 1px #D1DFE3"} px={4}>
@@ -82,7 +94,14 @@ export default function NavBar() {
           >
             {Links.map((l, index) => (
               <NextLink href={l[0]} key={index}>
-                <Link href={l[0]} fontSize={"2xl"} fontWeight={"3px"}>
+                <Link
+                  href={l[0]}
+                  fontSize={"2xl"}
+                  fontWeight={"3px"}
+                  id={l[0]}
+                  onClick={(e) => handleActive(e)}
+                  color={active === l[0] ? "#F3B46F" : textColor}
+                >
                   {l[1]}
                 </Link>
               </NextLink>

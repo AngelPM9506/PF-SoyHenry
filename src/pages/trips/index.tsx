@@ -20,6 +20,7 @@ import {
   Text,
   Link,
   FormControl,
+  Center,
 } from "@chakra-ui/react";
 import Layout from "../../components/layout/Layout";
 import { BsArrowDownUp } from "react-icons/bs";
@@ -107,7 +108,8 @@ function Trips({ trips }: Props) {
         alignItems={"center"}
         justifyContent={"space-between"}
         textAlign={"center"}
-        margin={"40px"}
+        mt={50}
+        ml={120}
         marginBottom={"50px"}
       >
         <Text
@@ -129,6 +131,8 @@ function Trips({ trips }: Props) {
             bg: "#F3B46F",
             color: "black",
           }}
+          m={5}
+          w={200}
         >
           <Link href="/trips/create">Create new Trip</Link>
         </Button>
@@ -223,23 +227,25 @@ function Trips({ trips }: Props) {
             <Text m={"15px"} textAlign={"center"} fontSize={"40px"}>
               Sorry! There are no trips with the selected condition.
             </Text>
-            <Button
-              fontSize={"40px"}
-              bg={useColorModeValue("#151f21", "#293541")}
-              color={"white"}
-              type={"submit"}
-              height={"60px"}
-              p={"20px"}
-              m={"25px"}
-              rounded={"md"}
-              _hover={{
-                transform: "translateY(-2px)",
-                boxShadow: "lg",
-              }}
-              onClick={handleLoadAll}
-            >
-              Load all the trips again!
-            </Button>
+            <Center>
+              <Button
+                fontSize={"40px"}
+                bg={useColorModeValue("#151f21", "#293541")}
+                color={"white"}
+                type={"submit"}
+                height={"60px"}
+                p={"20px"}
+                m={"25px"}
+                rounded={"md"}
+                _hover={{
+                  transform: "translateY(-2px)",
+                  boxShadow: "lg",
+                }}
+                onClick={handleLoadAll}
+              >
+                Load all the trips again!
+              </Button>
+            </Center>
           </Box>
         )}
       </SimpleGrid>

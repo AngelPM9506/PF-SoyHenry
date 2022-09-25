@@ -2,11 +2,13 @@
 import React, { useState } from "react";
 import { Activity } from "src/utils/interface";
 import {
+  Box,
   Button,
   Center,
   Heading,
   Link,
   SimpleGrid,
+  Text,
   useColorModeValue,
 } from "@chakra-ui/react";
 import { ActivityCard } from "../../components/ActivityCard";
@@ -66,15 +68,71 @@ const Activities = ({ activities }: Props) => {
     setInput(e.target.value);
   };
 
+  const handleLoadAll = () => {
+    setSort("desc");
+    setName(undefined);
+    setCity(undefined);
+    setMaxPrice(0);
+    setSortBy("name");
+    setInput(undefined);
+  };
 
   if (isLoading) return <Loading />;
   if (!isLoading && userDb && !userDb.data.active) {
     return <BannedAlert />;
   }
-  return !data ? (
+  return !data.length ? (
     <div>
       <Layout>
-        <h1>There are no activities yet! </h1>
+        <Center>
+          <Heading margin={"40px"} marginBottom={5} display={"flex"}>
+            DISCOVER OUR ACTIVITIES
+          </Heading>
+        </Center>
+        <ActivityFilters
+          city={city}
+          handleCity={handleCity}
+          handleInput={handleInput}
+          sort={sort}
+          handleSort={handleSort}
+          sortBy={sortBy}
+          handleSortBy={handleSortBy}
+          maxPrice={maxPrice}
+          handleMaxPrice={handleMaxPrice}
+          setMaxPrice={setMaxPrice}
+          citiesUnique={citiesUnique}
+          input={input}
+          setInput={setInput}
+        />
+        <Box
+          height={"38vh"}
+          width={"100%"}
+          justifyContent={"center"}
+          alignContent={"center"}
+        >
+          <Text m={"15px"} textAlign={"center"} fontSize={"40px"}>
+            Sorry! There are no trips with the selected condition.
+          </Text>
+          <Center>
+            <Button
+              fontSize={"40px"}
+              bg={useColorModeValue("#151f21", "#293541")}
+              color={"white"}
+              type={"submit"}
+              height={"60px"}
+              p={"20px"}
+              m={"25px"}
+              rounded={"md"}
+              _hover={{
+                transform: "translateY(-2px)",
+                boxShadow: "lg",
+              }}
+              onClick={handleLoadAll}
+            >
+              Load all the trips again!
+            </Button>
+          </Center>
+        </Box>
       </Layout>
     </div>
   ) : (

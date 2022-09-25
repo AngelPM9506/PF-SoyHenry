@@ -89,12 +89,10 @@ export const ActivityFilters = ({
             transform: "translateY(-2px)",
             boxShadow: "lg",
           }}
-          onClick={(e) => {
-            setMaxPrice(null);
-            setInput("");
-          }}
+          type="submit"
+          onClick={(e) => handleMaxPrice(e)}
         >
-          Reset
+          Search
         </Button>
       </HStack>
     </Box>

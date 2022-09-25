@@ -69,14 +69,12 @@ function TablesTableRow({
     if ((e.target as HTMLElement).id === "trips") return setActive("trips");
   };
 
-
   if (isLoading || !userDb?.data) return <Loading />;
 
   if (!userDb.data.isAdmin) return <NotFound />;
   return (
     <>
       <Layout>
-        <Box></Box>
         <Box overflowX={{ sm: "scroll", xl: "hidden" }} mt={5} ml={5}>
           <Box p="6px 0px 22px 0px" display={"inline-flex"} gap={10}>
             <Text

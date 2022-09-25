@@ -159,9 +159,14 @@ export const UserDashboard = ({ users }: { users: UserData[] }) => {
           </Tr>
         </Thead>
         <Tbody>
-          {data.map((u) => {
-            return <UserTable user={u} key={u.id} />;
-          })}
+          {data
+            .slice(
+              (currentPage - 1) * usersPerPage,
+              (currentPage - 1) * usersPerPage + usersPerPage
+            )
+            .map((u) => {
+              return <UserTable user={u} key={u.id} />;
+            })}
         </Tbody>
       </Table>
       <Center>

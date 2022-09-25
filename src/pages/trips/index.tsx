@@ -31,7 +31,7 @@ import axios from "axios";
 import { BannedAlert } from "src/components/Banned";
 import { useUser } from "@auth0/nextjs-auth0";
 import { getOrCreateUser } from "src/utils/User";
-
+import NextLink from "next/link";
 interface Props {
   trips: Trip[];
 }
@@ -134,7 +134,9 @@ function Trips({ trips }: Props) {
           m={5}
           w={200}
         >
-          <Link href="/trips/create">Create new Trip</Link>
+          <NextLink href="/trips/create">
+            <Link>Create new Trip</Link>
+          </NextLink>
         </Button>
       </Heading>
       <Box

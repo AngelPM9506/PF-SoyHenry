@@ -52,91 +52,97 @@ const MyCarousel = ({ trips, activities }: Props) => {
         <Stack width={"80%"}>
           <Slider {...settings}>
             {lastTrips?.map((t) => {
-              return (
-                <Center p={8} py={12} key={t.id}>
-                  <Box
-                    role={"group"}
-                    p={6}
-                    maxW={"330px"}
-                    w={"full"}
-                    bg={useColorModeValue("#D1DFE3", "blackAlpha.400")}
-                    boxShadow={"2xl"}
-                    rounded={"lg"}
-                    pos={"relative"}
-                    zIndex={1}
-                  >
+              if (t.active) {
+                return (
+                  <Center p={8} py={12} key={t.id}>
                     <Box
+                      role={"group"}
+                      p={6}
+                      maxW={"330px"}
+                      w={"full"}
+                      bg={useColorModeValue("#D1DFE3", "blackAlpha.400")}
+                      boxShadow={"2xl"}
                       rounded={"lg"}
-                      mt={-12}
                       pos={"relative"}
-                      height={"230px"}
-                      _after={{
-                        transition: "all .3s ease",
-                        content: '""',
-                        w: "full",
-                        h: "full",
-                        pos: "absolute",
-                        top: 5,
-                        left: 0,
-                        filter: "blur(15px)",
-                        zIndex: -1,
-                      }}
-                      _groupHover={{
-                        _after: {
-                          filter: "blur(20px)",
-                        },
-                      }}
+                      zIndex={1}
                     >
-                      <Image
-                        alt="image"
-                        rounded={"lg"}
-                        height={230}
-                        width={282}
-                        objectFit={"cover"}
-                        src={t.image ? t.image.toString() : defaultpic}
-                      />
-                    </Box>
-                    <Stack pt={4} align={"center"}>
-                      <Heading
-                        fontSize={"2xl"}
-                        fontFamily={"body"}
-                        fontWeight={500}
-                      >
-                        {t.name}
-                      </Heading>
-                      <Stack direction={"row"} align={"center"}>
-                        <Text fontWeight={800} fontSize={"xl"}>
-                          {`$${t.price}`}
-                        </Text>
-                        <Text textDecoration={"line-through"} color={"#F3B46F"}>
-                          {`$${upPrice(t.price)}`}
-                        </Text>
-                      </Stack>
-                      <NextLink href={`/trips/${t.id}`}>
-                        <Button>+Info</Button>
-                      </NextLink>
-                    </Stack>
-                    <Wrap>
                       <Box
-                        display={"flex"}
-                        flexDirection={"column"}
-                        justifyContent={"center"}
+                        rounded={"lg"}
+                        mt={-12}
+                        pos={"relative"}
+                        height={"230px"}
+                        _after={{
+                          transition: "all .3s ease",
+                          content: '""',
+                          w: "full",
+                          h: "full",
+                          pos: "absolute",
+                          top: 5,
+                          left: 0,
+                          filter: "blur(15px)",
+                          zIndex: -1,
+                        }}
+                        _groupHover={{
+                          _after: {
+                            filter: "blur(20px)",
+                          },
+                        }}
                       >
-                        <Text fontSize={"sm"}>Planner</Text>
-                        <WrapItem>
-                          <NextLink href={`/user/${t.planner.id}`}>
-                            <Avatar
-                              cursor={"pointer"}
-                              name="Trip Planner"
-                              src={t.planner ? t.planner.avatar : defaultpic}
-                            />
-                          </NextLink>
-                        </WrapItem>
+                        <Image
+                          alt="image"
+                          rounded={"lg"}
+                          height={230}
+                          width={282}
+                          objectFit={"cover"}
+                          src={t.image ? t.image.toString() : defaultpic}
+                        />
                       </Box>
-                    </Wrap>
-                  </Box>
-                </Center>
-              );
+                      <Stack pt={4} align={"center"}>
+                        <Heading
+                          noOfLines={1}
+                          fontSize={"2xl"}
+                          fontFamily={"body"}
+                          fontWeight={500}
+                        >
+                          {t.name}
+                        </Heading>
+                        <Stack direction={"row"} align={"center"}>
+                          <Text fontWeight={800} fontSize={"xl"}>
+                            {`$${t.price}`}
+                          </Text>
+                          <Text
+                            textDecoration={"line-through"}
+                            color={"#F3B46F"}
+                          >
+                            {`$${upPrice(t.price)}`}
+                          </Text>
+                        </Stack>
+                        <NextLink href={`/trips/${t.id}`}>
+                          <Button>+Info</Button>
+                        </NextLink>
+                      </Stack>
+                      <Wrap>
+                        <Box
+                          display={"flex"}
+                          flexDirection={"column"}
+                          justifyContent={"center"}
+                        >
+                          <Text fontSize={"sm"}>Planner</Text>
+                          <WrapItem>
+                            <NextLink href={`/user/${t.planner.id}`}>
+                              <Avatar
+                                cursor={"pointer"}
+                                name="Trip Planner"
+                                src={t.planner ? t.planner.avatar : defaultpic}
+                              />
+                            </NextLink>
+                          </WrapItem>
+                        </Box>
+                      </Wrap>
+                    </Box>
+                  </Center>
+                );
+              }
             })}
           </Slider>
         </Stack>
@@ -206,6 +212,7 @@ const MyCarousel = ({ trips, activities }: Props) => {
                     </Box>
                     <Stack pt={10} align={"center"}>
                       <Heading
+                        noOfLines={1}
                         fontSize={"2xl"}
                         fontFamily={"body"}
                         fontWeight={500}

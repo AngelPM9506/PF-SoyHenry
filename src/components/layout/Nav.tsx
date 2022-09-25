@@ -15,6 +15,7 @@ import {
   useDisclosure,
   useColorModeValue,
   Stack,
+  Heading,
   Image,
   useColorMode,
   LinkProps,
@@ -74,7 +75,7 @@ export default function NavBar() {
             onClick={isOpen ? onClose : onOpen}
           />
 
-          <HStack spacing={8} alignItems={"center"}>
+          <HStack spacing={12} alignItems={"center"}>
             <Box>
               <NextLink href={Links[0][0]}>
                 <Image
@@ -94,8 +95,8 @@ export default function NavBar() {
           >
             {Links.map((l, index) => (
               <NextLink href={l[0]} key={index}>
-                <Link
-                  href={l[0]}
+                <Heading
+                  cursor={"pointer"}
                   fontSize={"2xl"}
                   fontWeight={"3px"}
                   id={l[0]}
@@ -103,7 +104,7 @@ export default function NavBar() {
                   color={active === l[0] ? "#F3B46F" : textColor}
                 >
                   {l[1]}
-                </Link>
+                </Heading>
               </NextLink>
             ))}
           </HStack>

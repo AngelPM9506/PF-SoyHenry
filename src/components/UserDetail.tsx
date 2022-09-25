@@ -103,7 +103,6 @@ export const UserDetail = ({ userDetail, trips }: Props) => {
                 <Heading fontSize={"2xl"} fontFamily={"body"}>
                   {user && user?.name}
                 </Heading>
-
                 <Text
                   textAlign={"center"}
                   color={useColorModeValue("gray.700", "gray.400")}

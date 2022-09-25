@@ -61,6 +61,9 @@ let usersControllers = {
     let { id } = query;
     const response = await prisma.user.findUnique({
       where: { id: id.toString() },
+      include: {
+        trips: true
+      }
     });
     if (response.active) {
       return response;

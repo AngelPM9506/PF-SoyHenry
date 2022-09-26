@@ -31,7 +31,6 @@ import { BannedAlert } from "src/components/Banned";
 import { useUser } from "@auth0/nextjs-auth0";
 import { getOrCreateUser } from "src/utils/User";
 import NextLink from "next/link";
-
 interface Props {
   trips: Trip[];
 }

@@ -14,11 +14,21 @@ import {
   useColorModeValue,
   List,
   ListItem,
+  Tabs,
+  TabList,
+  Tab,
+  TabPanels,
+  TabPanel,
 } from "@chakra-ui/react";
 import NextLink from "next/link";
+import { useEffect } from "react";
 import Loading from "src/components/Loading";
 import Reviews from "src/components/Reviews";
 export default function ActivityDetail({ data, isLoading, error }: any) {
+  let { activity: { activitiesOnTrips } } = data;
+  useEffect(() => {
+    console.log(data);
+  });
   if (isLoading) return <Loading />;
   if (error) return <div>{error.message}</div>;
   return (
@@ -26,7 +36,7 @@ export default function ActivityDetail({ data, isLoading, error }: any) {
       <SimpleGrid
         columns={{ base: 1, lg: 2 }}
         spacing={{ base: 8, md: 10 }}
-        py={{ base: 18, md: 24 }}
+        py={{ base: 10, md: 12 }}
         maxHeight={"max-content"}
       >
         <Flex>
@@ -146,9 +156,61 @@ export default function ActivityDetail({ data, isLoading, error }: any) {
           </Stack>
         </Stack>
       </SimpleGrid>
+      {/* Parte para los trips donde esta esta actividad */}
+      <section>
+        <Tabs isFitted variant={'line'} >
+          <TabList mb={'1em'}>
+            {activitiesOnTrips && activitiesOnTrips.map((relation: any, i: number) => {
+              return (<Tab key={i} >{relation.trip.name}</Tab>);
+            })}
+          </TabList>
+          <TabPanels>
+            {activitiesOnTrips && activitiesOnTrips.map((relation: any, i: number) => {
+              let { trip: { name, image, description, initDate, endDate, id, price } } = relation;
+              return (
+                <TabPanel key={relation.trip} width={'max-content'} margin={'10px auto'} padding={'0 20px'}>
+                  <SimpleGrid
+                    gridTemplateColumns={'40% 60%'}
+                    spacing={{ base: 5, md: 4 }}>
+                    <Flex justifyContent={'center'}>
+                      <Image
+                        alt={"Trip image"}
+                        src={image}
+                        boxSize={'200px'}
+                        borderRadius={'50%'}
+                      />
+                    </Flex>
+                    <Stack width={'max-content'}>
+                      <Heading fontWeight={900} fontSize={'4xl'} color={'#F3B46F'}>{name}</Heading>
+                      <Text>Price of Trip:
+                        <Text color={'#F3B46F'} fontWeight={'bold'} as={'span'}> ${price}</Text>
+                      </Text>
+                      <Text>Duration:
+                        <Text color={'#F3B46F'} fontWeight={'bold'} as={'span'}> {initDate.split('T')[0]} </Text>
+                        -
+                        <Text color={'#F3B46F'} fontWeight={'bold'} as={'span'}> {endDate.split('T')[0]} </Text>
+                      </Text>
+                      <Stack display={'flex'} flexDirection={'row'} gap={'10px'} alignItems={'center'}>
+                        <Text>Description:
+                          <Text as={'span'}> {description}</Text>
+                        </Text>
+                      </Stack>
+                      <Stack display={'flex'} flexDirection={'row-reverse'}>
+                        <NextLink href={`/trips/${id}`}>
+                          <Button width={'max-content'} color={'#293541'} bg={'#02b1b1'}>See more</Button>
+                        </NextLink>
+                      </Stack>
+                    </Stack>
+                  </SimpleGrid>
+                </TabPanel>
+              );
+            })}
+          </TabPanels>
+        </Tabs>
+      </section>
       <Box display={"flex"} alignItems={"center"} justifyContent={"center"}>
         <Reviews feedbacks={data.activity.feedbacks} id={data.id} />
       </Box>
-    </Container>
+    </Container >
   );
 }

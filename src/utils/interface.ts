@@ -1,24 +1,36 @@
 import { type } from "os";
+import { UserData } from "src/components/UserProfile";
 
 export interface Trip {
+  activityId?: string;
+  plannerId?: string;
   id?: string;
   name: string;
-  initDate: string;
+  initDate?: string;
   cities?: string[];
   endDate: string;
-  planner?: string;
-  tripOnUser?: Object[];
+  planner?: { avatar?: string; id?: string } | any;
+  tripOnUser?: { trip: Trip; user: User }[];
   description: string;
-  activitiesName: string[];
+  activitiesName: { name: string; actDate: string }[];
   image?: string | ArrayBuffer;
   price?: number;
+  active?: boolean;
+  activitiesOnTrips?: {
+    activityId?: string;
+    activity: Activity;
+    tripId?: string;
+  }[];
+  citiesOnTrips?: { city: CityInDB }[];
 }
 
 export interface User {
+  id?: string;
   name: string;
   mail: string;
+  email?: string;
   avatar: string;
-  description: string;
+  description?: string;
 }
 
 export interface UserUpdate {
@@ -29,14 +41,16 @@ export interface UserUpdate {
 
 export interface Activity {
   id?: string;
-  name: string;
-  availability: string[];
-  description: string;
-  price: number;
+  name?: string;
+  availability?: string[];
+  description?: string;
+  price?: number;
   city?: City;
-  cityName: string;
+  cityName?: string;
   image?: string | ArrayBuffer;
   active?: boolean;
+  idFeedback?: string;
+  comment?: string;
 }
 
 export type typeSort = {
@@ -66,11 +80,17 @@ export type createUsers = {
 };
 
 export type createActivities = {
+  actDate: Date;
   activity: {
     connect: {
       name: string;
     };
   };
+};
+
+export type activeDate = {
+  actDate: string;
+  name: string;
 };
 
 export type createCity = {
@@ -110,6 +130,7 @@ export interface City {
 }
 
 export interface CityInDB {
+  id: string;
   name: string;
   country: string;
   population: number;
@@ -118,16 +139,19 @@ export interface CityInDB {
 }
 
 export interface Errors {
+  [x: string]: string;
   name?: string;
   image?: string;
   initDate?: string;
   endDate?: string;
+  date?: string;
   description?: string;
   price?: string;
   cityName?: string;
   cities?: string;
   availability?: string;
   activitiesName?: string;
+  keyWords?: string;
 }
 
 export type createComment = {
@@ -137,3 +161,33 @@ export type createComment = {
     };
   };
 };
+
+export interface Comment {
+  id: string;
+  comment?: string;
+  rating?: number;
+  User?: User;
+  userMail?: string;
+  feedbackDate?: string;
+}
+
+export type contact = {
+  [x: string]: string;
+  name: string;
+  surname: string;
+  subject: string;
+  email: string;
+  whatsapp: string;
+  message: string;
+  userId?: string;
+}
+
+export type newContact = {
+  name: string;
+  surname: string;
+  subject: string;
+  email: string;
+  whatsapp: string;
+  message: string;
+  userId: string;
+}

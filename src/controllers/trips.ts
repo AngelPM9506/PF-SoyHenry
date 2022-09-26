@@ -4,6 +4,7 @@ import {
   createActivities,
   createCity,
   createUsers,
+  activeDate,
 } from "src/utils/interface";
 const { CLOUDINARY_PRESET_TRIPS } = process.env;
 import cloudinary from "src/utils/cloudinary";
@@ -27,7 +28,7 @@ type body = {
   planner?: string;
   description?: string;
   price?: number;
-  activitiesName?: string[];
+  activitiesName?: activeDate[];
   image?: string;
   cities?: string[];
   active?: any;
@@ -73,8 +74,7 @@ const TripsControllers = {
 
     let orderBy: typeSort[] = [];
     let sortfrom: typeSort = {};
-    /**
-     * http://127.0.0.1:3000/api/trips?sort=asc&sortBy=price&wName=10&wplanner=cl7z6as0h01100cqiw589yste&maxPrice=7&wActivity=uno&wCity=Mex*/
+    /**http://127.0.0.1:3000/api/trips?sort=asc&sortBy=price&wName=10&wplanner=cl7z6as0h01100cqiw589yste&maxPrice=7&wActivity=uno&wCity=Mex*/
     let sortName: string = sortBy ? sortBy.toString().toLowerCase() : "name";
     sortfrom[sortName] = sort ? sort.toString().toLowerCase() : "desc";
     orderBy.push(sortfrom);
@@ -97,75 +97,34 @@ const TripsControllers = {
 
     wplanner
       ? (condition.where = {
-          ...condition.where,
-          planner: { is: { id: wplanner.toString() } },
-        })
-      : "";
+        ...condition.where,
+        planner: { is: { id: wplanner.toString() } },
+      }) : "";
     wActivity
       ? (condition.where = {
-          ...condition.where,
-          activitiesOnTrips: {
-            some: {
-              activity: {
-                is: {
-                  name: {
-                    contains: wActivity.toString(),
-                  },
-                },
-              },
-            },
-          },
-        })
-      : "";
+        ...condition.where,
+        activitiesOnTrips: { some: { activity: { is: { name: { contains: wActivity.toString(), }, }, }, }, },
+      }) : "";
     wCity
       ? (condition.where = {
-          citiesOnTrips: {
-            some: {
-              city: {
-                is: {
-                  name: {
-                    contains: wCity.toString(),
-                  },
-                },
-              },
-            },
-          },
-        })
-      : "";
+        ...condition.where,
+        citiesOnTrips: { some: { city: { is: { name: { contains: wCity.toString(), }, }, }, }, },
+      }) : "";
 
     maxPrice
       ? (condition.where = {
-          ...condition.where,
-          price: { lte: parseFloat(maxPrice.toString()) },
-        })
-      : "";
+        ...condition.where,
+        price: { lte: parseFloat(maxPrice.toString()) },
+      }) : "";
 
     const response = await prisma.trip.findMany(condition);
     return response;
   },
   postTrip: async (body: body) => {
-    const {
-      name,
-      initDate,
-      endDate,
-      planner,
-      description,
-      price,
-      activitiesName,
-      image,
-      cities,
-    } = body;
+    const { name, initDate, endDate, planner, description, price, activitiesName, image, cities, } = body;
     if (
-      !name ||
-      !initDate ||
-      !endDate ||
-      !description ||
-      !price ||
-      !planner ||
-      !activitiesName ||
-      !cities ||
-      !Array.isArray(activitiesName) ||
-      !Array.isArray(cities)
+      !name || !initDate || !endDate || !description || !price || !planner || !activitiesName || !cities ||
+      !Array.isArray(activitiesName) || !Array.isArray(cities)
     ) {
       throw new Error("Missing or invalid data, try again");
     }
@@ -173,32 +132,21 @@ const TripsControllers = {
     let initialDate = new Date(initDate);
     let finishDate = new Date(endDate);
 
-    // idPartaker,
-    // (idPartaker && !Array.isArray(idPartaker)) ||
-    // let createUsers: createUsers[] = idPartaker ? idPartaker.map((idP: string) => {
-    //     return {
-    //         user: {
-    //             connect: {
-    //                 id: idP.toString()
-    //             }
-    //         }
-    //     }
-    // }) : [];
-    // tripOnUser: { create: createUsers },
-    // tripOnUser: {
-    //     include: { user: true, trip: true }
-    // },
+    // let addDates = actDate.map((date) => {
+    //   return { actDate: date };
+    // });
 
     let createActivities: createActivities[] = activitiesName
-      ? activitiesName.map((nameAct: string) => {
-          return { activity: { connect: { name: nameAct } } };
-        })
+      ? activitiesName.map((nameAct: activeDate) => {
+        let newDate = new Date(nameAct.actDate);
+        return { actDate: newDate, activity: { connect: { name: nameAct.name, }, }, };
+      })
       : [];
 
     let createCities: createCity[] = cities
       ? cities.map((nameCity: string) => {
-          return { city: { connect: { name: nameCity.toString() } } };
-        })
+        return { city: { connect: { name: nameCity.toString() } } };
+      })
       : [];
 
     let condition: postCondition = {
@@ -222,7 +170,6 @@ const TripsControllers = {
         },
       },
     };
-
     if (image) {
       let uploadedImage = await uploadImage(image, name.toString());
       condition.data.image = uploadedImage.secure_url;
@@ -236,10 +183,8 @@ const TripsControllers = {
 
     try {
       const response = await prisma.trip.create(condition);
-      //console.log(response);
       return response;
     } catch (error) {
-      //console.log(error);
       return error;
     }
 
@@ -247,16 +192,28 @@ const TripsControllers = {
      * idPartaker se queda comentado 
      * activitiesName y citiesName es necesario contar con almenos uno
          {
-            "name": "Trip de pruebas",
-            "initDate": "2022-06-15",
-            "endDate": "2022-12-12",
-            "planner": "cl82bc4ow0091auqirz3xjdxv",
-            "description": "Pruebas...",
-            "price": 15.30,
-            "image": "Pruebas de imagen",
-            "activitiesName": ["Chichen Itza"],
-            "cities": ["Toluca"]
-        }
+              "name": "algo nuevo 21",
+              "initDate": "2022-06-15",
+              "endDate": "2022-12-30",
+              "planner": "cl8dlvhk70002h0qiebc7ztu9",
+              "description": "Pruebas 02...",
+              "price": 30.30,
+              "idPartaker": [
+                  "cl863bxai0166o1qinh4r2r2e",
+                  "cl863bxaj0168o1qikxnua2vf",
+                  "cl863bxaj0170o1qiewalthxc"
+              ],
+              "activitiesName": [
+                  {
+                      "actDate": "2022-12-12",
+                      "name": "Cañon del sumidero"
+                  }
+              ],
+              "cities": [
+                  "Cancún"
+              ],
+              "image": "https://res.cloudinary.com/mauro4202214/image/upload/v1663527844/world-travelers/activitydefault_q9aljz.png"
+          }
     */
   },
   getTrip: async (query: query) => {
@@ -293,20 +250,28 @@ const TripsControllers = {
     let createUsers: createUsers[] =
       idPartaker && Array.isArray(idPartaker)
         ? idPartaker.map((idP: string) => {
-            return { user: { connect: { id: idP.toString() } } };
-          })
+          return { user: { connect: { id: idP.toString() } } };
+        })
         : [];
 
     let createActivities: createActivities[] = activitiesName
-      ? activitiesName.map((nameAct: string) => {
-          return { activity: { connect: { name: nameAct } } };
-        })
+      ? activitiesName.map((nameAct: activeDate) => {
+        let newDate = new Date(nameAct.actDate);
+        return {
+          actDate: newDate,
+          activity: {
+            connect: {
+              name: nameAct.name,
+            },
+          },
+        };
+      })
       : [];
 
     let createCities: createCity[] = cities
       ? cities.map((nameCity: string) => {
-          return { city: { connect: { name: nameCity.toString() } } };
-        })
+        return { city: { connect: { name: nameCity.toString() } } };
+      })
       : [];
 
     let trip = await prisma.trip.findUnique({ where: { id: id.toString() } });
@@ -318,7 +283,7 @@ const TripsControllers = {
       },
       data: {
         description: description ? description : trip.description,
-        active: trip.active ? false : true,
+        active: active,
         image: trip.image,
         public_id_image: trip.public_id_image,
         tripOnUser: { create: createUsers },
@@ -359,18 +324,26 @@ const TripsControllers = {
     }
     let createUsers: createUsers[] = idPartaker
       ? idPartaker.map((idP: Object) => {
-          return { user: { connect: { id: idP.toString() } } };
-        })
+        return { user: { connect: { id: idP.toString() } } };
+      })
       : [];
     let createActivities: createActivities[] = activitiesName
-      ? activitiesName.map((nameAct: string) => {
-          return { activity: { connect: { name: nameAct } } };
-        })
+      ? activitiesName.map((nameAct: activeDate) => {
+        let newDate = new Date(nameAct.actDate);
+        return {
+          actDate: newDate,
+          activity: {
+            connect: {
+              name: nameAct.name,
+            },
+          },
+        };
+      })
       : [];
     let createCities: createCity[] = cities
       ? cities.map((City: string) => {
-          return { city: { connect: { name: City.toString() } } };
-        })
+        return { city: { connect: { name: City.toString() } } };
+      })
       : [];
 
     let condition = {

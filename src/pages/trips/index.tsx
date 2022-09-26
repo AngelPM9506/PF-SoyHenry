@@ -3,10 +3,9 @@ import type { NextPage } from "next";
 import { TripCard } from "../../components/TripCard";
 import Pagination from "../../components/pagination";
 import { Trip } from "src/interfaces/Trip";
-import { useState } from "react";
+import { KeyboardEvent, useState } from "react";
 import { useQuery, dehydrate, QueryClient } from "react-query";
 import { getTrips } from "src/utils/trips";
-
 import {
   SimpleGrid,
   Box,
@@ -20,13 +19,18 @@ import {
   Text,
   Link,
   FormControl,
+  Center,
 } from "@chakra-ui/react";
 import Layout from "../../components/layout/Layout";
 import { BsArrowDownUp } from "react-icons/bs";
 import { MdLabelImportantOutline } from "react-icons/md";
 import TripsControllers from "src/controllers/trips";
+import Loading from "src/components/Loading";
 import axios from "axios";
-
+import { BannedAlert } from "src/components/Banned";
+import { useUser } from "@auth0/nextjs-auth0";
+import { getOrCreateUser } from "src/utils/User";
+import NextLink from "next/link";
 interface Props {
   trips: Trip[];
 }
@@ -39,10 +43,16 @@ function Trips({ trips }: Props) {
   const [sortBy, setSortBy] = useState<string>("name"); // ordenar x nombre o por precio
   const [input, setInput] = useState<string>("");
   const [inputCity, setInputCity] = useState<string>("");
-  const { data } = useQuery(
+  const { data, isLoading } = useQuery(
     ["trips", wCity, wName, maxPrice, sort, sortBy],
     //dependencies: React is going to re-render when one of these changes
     () => getTrips(wCity, wName, maxPrice, sort, sortBy)
+  );
+  const { user, error } = useUser();
+
+  const { data: userDb } = useQuery(
+    ["userDb", user],
+    () => user && getOrCreateUser(user)
   );
   //const data = trips;
   const [currentPage, setCurrentPage] = useState(1);
@@ -57,6 +67,13 @@ function Trips({ trips }: Props) {
     setWcity(inputCity);
     setInputCity("");
   };
+
+  const onKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      handleCity();
+    }
+  };
+
   const handleSort = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSort(e.target.value);
   };
@@ -74,7 +91,9 @@ function Trips({ trips }: Props) {
     setInput(e.target.value);
   };
   const handleInputCity = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputCity(e.target.value);
+    const { value } = e.target;
+    const city = value.charAt(0).toUpperCase() + value.slice(1);
+    setInputCity(city);
   };
   const handleLoadAll = () => {
     setSort("desc");
@@ -85,11 +104,11 @@ function Trips({ trips }: Props) {
     setInput("");
     setInputCity("");
   };
-
-  return !data ? (
-    <div>
-      <h1>There are no trips yet! </h1>
-    </div>
+  if (!isLoading && userDb && !userDb.data.active) {
+    return <BannedAlert />;
+  }
+  return isLoading ? (
+    <Loading />
   ) : (
     <Layout>
       <Heading
@@ -97,31 +116,32 @@ function Trips({ trips }: Props) {
         alignItems={"center"}
         justifyContent={"space-between"}
         textAlign={"center"}
-        margin={"40px"}
+        mt={50}
+        ml={120}
         marginBottom={"50px"}
       >
-        <Text
-          width={"1500px"}
-          fontFamily={"Trebuchet MS"}
-          color={useColorModeValue("#293541", "white")}
-        >
-          ALL OUR TRAVELERS TRIPS
-        </Text>
-        <Button
-          bg={useColorModeValue("#02b1b1", "#02b1b1")}
-          color={"white"}
-          marginRight={"55px"}
-          rounded={"md"}
-          padding={"20px"}
-          _hover={{
-            transform: "translateY(-2px)",
-            boxShadow: "lg",
-            bg: "#F3B46F",
-            color: "black",
-          }}
-        >
-          <Link href="/trips/create">Create new Trip</Link>
-        </Button>
+        <Heading width={"1500px"} color={useColorModeValue("#293541", "white")}>
+          All Our Travelers Trips
+        </Heading>
+        <NextLink href="/trips/create">
+          <Button
+            bg={useColorModeValue("#02b1b1", "#02b1b1")}
+            color={"white"}
+            marginRight={"55px"}
+            rounded={"md"}
+            padding={"20px"}
+            _hover={{
+              transform: "translateY(-2px)",
+              boxShadow: "lg",
+              bg: "#F3B46F",
+              color: "black",
+            }}
+            m={5}
+            w={200}
+          >
+            CREATE NEW TRIP
+          </Button>
+        </NextLink>
       </Heading>
       <Box
         display="flex"
@@ -178,6 +198,7 @@ function Trips({ trips }: Props) {
             width="200px"
             marginRight={"20px"}
             placeholder="Type a City ..."
+            onKeyDown={(e) => onKeyDown(e)}
             onChange={(e) => handleInputCity(e)}
           />
           <Button
@@ -213,23 +234,25 @@ function Trips({ trips }: Props) {
             <Text m={"15px"} textAlign={"center"} fontSize={"40px"}>
               Sorry! There are no trips with the selected condition.
             </Text>
-            <Button
-              fontSize={"40px"}
-              bg={useColorModeValue("#151f21", "#293541")}
-              color={"white"}
-              type={"submit"}
-              height={"60px"}
-              p={"20px"}
-              m={"25px"}
-              rounded={"md"}
-              _hover={{
-                transform: "translateY(-2px)",
-                boxShadow: "lg",
-              }}
-              onClick={handleLoadAll}
-            >
-              Load all the trips again!
-            </Button>
+            <Center>
+              <Button
+                fontSize={"40px"}
+                bg={useColorModeValue("#151f21", "#293541")}
+                color={"white"}
+                type={"submit"}
+                height={"60px"}
+                p={"20px"}
+                m={"25px"}
+                rounded={"md"}
+                _hover={{
+                  transform: "translateY(-2px)",
+                  boxShadow: "lg",
+                }}
+                onClick={handleLoadAll}
+              >
+                Load all the trips again!
+              </Button>
+            </Center>
           </Box>
         )}
       </SimpleGrid>

@@ -1,13 +1,16 @@
 import { Box } from "@chakra-ui/react";
-import { Activity } from "src/utils/interface";
+import { Activity, User } from "src/utils/interface";
 import axios from "axios";
 import Layout from "../../components/layout/Layout";
 
-import { getActivities, getActivitiesId } from "src/utils/activities";
+import { getActivitiesId } from "src/utils/activities";
+import { getUsers } from "src/utils/User";
 import { QueryFunctionContext, useQuery } from "react-query";
 import ActivityDetail from "src/components/ActivityDetail";
-import ActivitiesControles from "src/controllers/activities";
 import { GetServerSideProps } from "next/types";
+import { useUser } from "@auth0/nextjs-auth0";
+import Loading from "src/components/Loading";
+import NotFound from "../404";
 
 interface Props {
   id: QueryFunctionContext<string[], any>;
@@ -15,11 +18,19 @@ interface Props {
 }
 
 export default function Detail(props: Props) {
-  const { data, isLoading, error } = useQuery(["propsId"], () =>
-    getActivitiesId(props.id)
-  );
-  if (!data) {
-    return <div>No Data</div>;
+  const { data, isLoading, error } = useQuery(["propsId"], async () => {
+    const activity = await getActivitiesId(props.id);
+    const id = props.id;
+    return {
+      activity: activity,
+      id: id,
+    };
+  });
+  if (isLoading) {
+    return <Loading />
+  }
+  if (!isLoading && !data) {
+    return <NotFound />
   }
   return (
     <Layout>
@@ -56,9 +67,12 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const { id } = context.query;
   const response = await axios.get(`/activities/${id}`);
   const activity = response.data;
+  const res = await axios.get("/users");
+  const users = res.data;
   return {
     props: {
       activity: activity,
+      users: users,
       id: id,
     },
   };

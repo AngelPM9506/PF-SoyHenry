@@ -1,7 +1,6 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import {
   Box,
-  chakra,
   Container,
   Stack,
   Text,
@@ -13,21 +12,15 @@ import {
   SimpleGrid,
   StackDivider,
   useColorModeValue,
-  VisuallyHidden,
   List,
   ListItem,
-  ListIcon,
 } from "@chakra-ui/react";
-import { FaInstagram, FaTwitter, FaYoutube } from "react-icons/fa";
-import { MdLocalShipping } from "react-icons/md";
-import { MinusIcon } from "@chakra-ui/icons";
-import { City, CityInDB } from "src/utils/interface";
 import NextLink from "next/link";
-
+import Loading from "src/components/Loading";
+import Reviews from "src/components/Reviews";
 export default function ActivityDetail({ data, isLoading, error }: any) {
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <Loading />;
   if (error) return <div>{error.message}</div>;
-  console.log(data.city);
   return (
     <Container maxW={"7xl"}>
       <SimpleGrid
@@ -41,8 +34,8 @@ export default function ActivityDetail({ data, isLoading, error }: any) {
             rounded={"md"}
             alt={"Trip image"}
             src={
-              data.image
-                ? data.image
+              data.activity.image
+                ? data.activity.image
                 : "https://drive.google.com/uc?id=1YZhzZFB0nRQuLLzmFVq13upFeZQo5CLd"
             }
             fit={"cover"}
@@ -63,7 +56,7 @@ export default function ActivityDetail({ data, isLoading, error }: any) {
               fontSize={{ base: "2xl", sm: "4xl", lg: "5xl" }}
               color={useColorModeValue("#F3B46F", "#F3B46F")}
             >
-              {data.name}
+              {data.activity.name}
             </Heading>
             <Text
               color={useColorModeValue("gray.900", "gray.400")}
@@ -71,7 +64,7 @@ export default function ActivityDetail({ data, isLoading, error }: any) {
               marginTop={"20px"}
               fontSize={"2xl"}
             >
-              $ {data.price}
+              $ {data.activity.price}
             </Text>
           </Box>
 
@@ -92,7 +85,7 @@ export default function ActivityDetail({ data, isLoading, error }: any) {
                 width={"100%"}
                 overflow={"hidden"}
               >
-                {data.description}
+                {data.activity.description}
               </Text>
             </VStack>
             <Box>
@@ -114,7 +107,7 @@ export default function ActivityDetail({ data, isLoading, error }: any) {
                       fontSize={"2xl"}
                       fontWeight={"300"}
                     >
-                      {data.city.name}
+                      {data.activity.city.name}
                     </Text>
                   </ListItem>
                   <ListItem>
@@ -124,7 +117,7 @@ export default function ActivityDetail({ data, isLoading, error }: any) {
                       fontSize={"2xl"}
                       fontWeight={"300"}
                     >
-                      {data.city.country}
+                      {data.activity.city.country}
                     </Text>
                   </ListItem>
                 </List>
@@ -151,14 +144,11 @@ export default function ActivityDetail({ data, isLoading, error }: any) {
               </Button>
             </NextLink>
           </Stack>
-
-          <Stack
-            direction="row"
-            alignItems="center"
-            justifyContent={"center"}
-          ></Stack>
         </Stack>
       </SimpleGrid>
+      <Box display={"flex"} alignItems={"center"} justifyContent={"center"}>
+        <Reviews feedbacks={data.activity.feedbacks} id={data.id} />
+      </Box>
     </Container>
   );
 }

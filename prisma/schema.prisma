@@ -29,8 +29,8 @@ model User {
   trips        Trip[]
   useOnTrip    UsersOnTrips[]
   active       Boolean        @default(true)
-  comments     comments[]
-  rating       rating[]
+  feedbaks     feedback[]
+  contact      contact[]
 }
 
 model Trip {
@@ -45,7 +45,7 @@ model Trip {
   image             String?             @db.VarChar()
   public_id_image   String?
   price             Float
-  active            Boolean             @default(true)
+  active            Boolean             @default(false)
   activitiesOnTrips activitiesOnTrips[]
   citiesOnTrips     CitiesOnTrips[]
 }
@@ -80,8 +80,7 @@ model Activity {
   city              city?               @relation(fields: [cityId], references: [id])
   cityId            String?
   activitiesOnTrips activitiesOnTrips[]
-  comments          comments[]
-  rating            rating[]
+  feedbacks         feedback[]
 }
 
 model city {
@@ -100,27 +99,51 @@ model activitiesOnTrips {
   activityId String
   trip       Trip     @relation(fields: [tripId], references: [id], onDelete: Cascade)
   tripId     String
+  actDate    DateTime @db.Date
 
   @@id([activityId, tripId])
 }
 
-model comments {
-  id         String   @id @default(cuid())
-  comment    String
-  activity   Activity @relation(fields: [activityId], references: [id])
-  activityId String
-  user       User     @relation(fields: [userMail], references: [mail])
-  userMail   String
+model feedback {
+  id           String    @id @default(cuid())
+  comment      String
+  rating       Float
+  Activity     Activity? @relation(fields: [activityId], references: [id])
+  activityId   String?
+  User         User?     @relation(fields: [userMail], references: [mail])
+  userMail     String?
+  feedbackDate DateTime? @default(now())
 }
 
-model rating {
-  id         String   @id @default(cuid())
-  rating     Int
-  activity   Activity @relation(fields: [activityId], references: [id])
-  activityId String
-  user       User     @relation(fields: [userMail], references: [mail])
-  userMail   String
+model contact {
+  id       String  @id @default(cuid())
+  name     String
+  surname  String
+  subject  String
+  email    String
+  whatsapp String
+  message  String
+  User     User?   @relation(fields: [userId], references: [id])
+  userId   String? 
 }
+
+// model comments {
+//   id         String   @id @default(cuid())
+//   comment    String
+//   activity   Activity @relation(fields: [activityId], references: [id])
+//   activityId String
+//   user       User     @relation(fields: [userMail], references: [mail])
+//   userMail   String
+// }
+
+// model rating {
+//   id         String   @id @default(cuid())
+//   rating     Int
+//   activity   Activity @relation(fields: [activityId], references: [id])
+//   activityId String
+//   user       User     @relation(fields: [userMail], references: [mail])
+//   userMail   String
+// }
 
 enum availability {
   Monday

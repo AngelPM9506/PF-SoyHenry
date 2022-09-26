@@ -133,6 +133,7 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
   };
 
   const handleActDate = (date: any, id: string) => {
+    console.log(date);
     setActDate(date);
     setIsDisabled((prevState) => [...prevState, id]);
     const errActDate = valActDateFormat(date);
@@ -255,8 +256,11 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
   };
 
   const createTrip = async (trip: Trip) => {
+    trip.planner = userDb.data.id;
+    console.log(trip);
     try {
       let resp = await axios.post("/api/trips", trip);
+      console.log(resp.data);
       return resp.data;
     } catch (error) {
       console.log(error);
@@ -368,7 +372,7 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
   if (!isLoading && userDb && !userDb.data.active) {
     return <BannedAlert />;
   }
-  if(isLoading) return <Loading />
+  if (isLoading) return <Loading />
   return (
     <Layout>
       <Center marginTop="1%">
@@ -648,8 +652,11 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
                                             Choose a date
                                           </FormLabel>
                                           <MyDataPicker
-                                            onChange={(date) =>
-                                              handleActDate(date, id)
+                                            dateFormat="yyyy/mm/ddd"
+                                            onChange={(date) => {
+                                            let D = new Date(date.toString())
+                                              handleActDate(`${D.getFullYear()}-${D.getMonth()}-${D.getDay()}`, id)
+                                            }
                                             }
                                             filterDate={(date) =>
                                               ableDays(date, act.availability)

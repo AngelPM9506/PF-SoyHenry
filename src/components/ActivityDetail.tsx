@@ -157,6 +157,7 @@ export default function ActivityDetail({ data, isLoading, error }: any) {
         </Stack>
       </SimpleGrid>
       {/* Parte para los trips donde esta esta actividad */}
+      {/* Nuevos cambior */}
       <section>
         <Tabs isFitted variant={'line'} >
           <TabList mb={'1em'}>

@@ -61,9 +61,8 @@ export function TripCard({ props }: any) {
               alt="image card Trip"
             />
           </Box>
-          <Stack marginTop={"90px"} p={2} align={"center"}>
+          <Stack marginTop={"0px"} height={"80px"} align={"center"}>
             <Heading
-              noOfLines={1}
               fontSize={"2xl"}
               fontFamily={"body"}
               fontWeight={600}

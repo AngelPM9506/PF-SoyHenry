@@ -14,7 +14,7 @@ import {
 } from "@chakra-ui/react";
 import Layout from "src/components/layout/Layout";
 import Head from "next/head";
-import React, { FormEvent, useState } from "react";
+import React, { FormEvent, useRef, useState } from "react";
 import { contact, Errors, newContact, typeSort } from "src/utils/interface";
 import styles from './contac.module.css';
 import axios from "axios";
@@ -22,6 +22,8 @@ import { useQuery } from "react-query";
 import { useUser } from "@auth0/nextjs-auth0";
 import { getOrCreateUser } from "src/utils/User";
 import { useRouter } from "next/router";
+import InputPhoneNumber from "src/components/inputPhoneNumber";
+import { FLAGS_COUNTRIES } from "src/utils/countryesCodes";
 const { MAIL_FROM } = process.env;
 const Contact = () => {
   /**estado inicial del contacto */
@@ -45,7 +47,8 @@ const Contact = () => {
   );
   const router = useRouter();
   const toast = useToast();
-  const toastIdRef: any = React.useRef()
+  const toastIdRef: any = useRef();
+  const [value, setValue] = useState();
   /**funciones de ayuda */
   /**onchange input */
   const setChangeInputs = (event: any) => {
@@ -69,11 +72,11 @@ const Contact = () => {
 
     if (!input.subject || input.subject === '') {
       error.subject = 'Subject is required';
-    } else if (!regularWhitoutSpecialChar.test(input.subject)){ error.subject = 'Special characters are not accepted'}
+    } else if (!regularWhitoutSpecialChar.test(input.subject)) { error.subject = 'Special characters are not accepted' }
 
-      if (!input.email || input.email === '') {
-        error.email = 'Email is required';
-      } else if (!regularMail.test(input.email)) { error.email = 'Enter a valid email'; }
+    if (!input.email || input.email === '') {
+      error.email = 'Email is required';
+    } else if (!regularMail.test(input.email)) { error.email = 'Enter a valid email'; }
 
     if (!input.whatsapp || input.whatsapp === '') {
       error.whatsapp = 'Whatsapp is required';
@@ -152,8 +155,13 @@ const Contact = () => {
       setTimeout(() => { router.push('/user/profile'); }, 2000);
     }
   }
+  const countriesOptions = FLAGS_COUNTRIES.map(({ name, iso }: any) => ({
+    label: name,
+    value: iso
+  }));
 
   let { form, campo, textArea, botones } = styles;
+
   return (
     <Layout>
       <Head>
@@ -219,6 +227,16 @@ const Contact = () => {
                     <div>
                       <Textarea onChange={setChangeInputs} textAlign={'center'} name={'message'} placeholder={'why you want contact us?..  UwU'} size={'sm'} />
                       {errors.message && (<Text m={0} color={"#F3B46F"}>{errors.message}</Text>)}
+                    </div>
+                  </div>
+                  <div className={campo}>
+                    <FormLabel flex={'0 0 200px'} htmlFor="message" padding={'0 0 0 20px'} margin={'0'}>
+                      Prueba PhoneNumber:
+                    </FormLabel>
+                    <div>
+                      <InputPhoneNumber value={value} options={countriesOptions} placeholder="Enter your whatsapp contact"
+                        onChange={(value: any) => setValue(value)} />
+                      <p>{value}</p>
                     </div>
                   </div>
                   <div className={botones}>

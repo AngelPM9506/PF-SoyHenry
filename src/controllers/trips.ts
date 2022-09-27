@@ -121,28 +121,10 @@ const TripsControllers = {
     return response;
   },
   postTrip: async (body: body) => {
-    const {
-      name,
-      initDate,
-      endDate,
-      planner,
-      description,
-      price,
-      activitiesName,
-      image,
-      cities,
-    } = body;
+    const { name, initDate, endDate, planner, description, price, activitiesName, image, cities, } = body;
     if (
-      !name ||
-      !initDate ||
-      !endDate ||
-      !description ||
-      !price ||
-      !planner ||
-      !activitiesName ||
-      !cities ||
-      !Array.isArray(activitiesName) ||
-      !Array.isArray(cities)
+      !name || !initDate || !endDate || !description || !price || !planner || !activitiesName || !cities ||
+      !Array.isArray(activitiesName) || !Array.isArray(cities)
     ) {
       throw new Error("Missing or invalid data, try again");
     }
@@ -156,16 +138,9 @@ const TripsControllers = {
 
     let createActivities: createActivities[] = activitiesName
       ? activitiesName.map((nameAct: activeDate) => {
-          let newDate = new Date(nameAct.actDate);
-          return {
-            actDate: newDate,
-            activity: {
-              connect: {
-                name: nameAct.name,
-              },
-            },
-          };
-        })
+        let newDate = new Date(nameAct.actDate);
+        return { actDate: newDate, activity: { connect: { name: nameAct.name, }, }, };
+      })
       : [];
 
     let createCities: createCity[] = cities
@@ -195,7 +170,6 @@ const TripsControllers = {
         },
       },
     };
-
     if (image) {
       let uploadedImage = await uploadImage(image, name.toString());
       condition.data.image = uploadedImage.secure_url;
@@ -218,16 +192,28 @@ const TripsControllers = {
      * idPartaker se queda comentado 
      * activitiesName y citiesName es necesario contar con almenos uno
          {
-            "name": "Trip de pruebas",
-            "initDate": "2022-06-15",
-            "endDate": "2022-12-12",
-            "planner": "cl82bc4ow0091auqirz3xjdxv",
-            "description": "Pruebas...",
-            "price": 15.30,
-            "image": "Pruebas de imagen",
-            "activitiesName": ["Chichen Itza"],
-            "cities": ["Toluca"]
-        }
+              "name": "algo nuevo 21",
+              "initDate": "2022-06-15",
+              "endDate": "2022-12-30",
+              "planner": "cl8dlvhk70002h0qiebc7ztu9",
+              "description": "Pruebas 02...",
+              "price": 30.30,
+              "idPartaker": [
+                  "cl863bxai0166o1qinh4r2r2e",
+                  "cl863bxaj0168o1qikxnua2vf",
+                  "cl863bxaj0170o1qiewalthxc"
+              ],
+              "activitiesName": [
+                  {
+                      "actDate": "2022-12-12",
+                      "name": "Cañon del sumidero"
+                  }
+              ],
+              "cities": [
+                  "Cancún"
+              ],
+              "image": "https://res.cloudinary.com/mauro4202214/image/upload/v1663527844/world-travelers/activitydefault_q9aljz.png"
+          }
     */
   },
   getTrip: async (query: query) => {
@@ -270,16 +256,16 @@ const TripsControllers = {
 
     let createActivities: createActivities[] = activitiesName
       ? activitiesName.map((nameAct: activeDate) => {
-          let newDate = new Date(nameAct.actDate);
-          return {
-            actDate: newDate,
-            activity: {
-              connect: {
-                name: nameAct.name,
-              },
+        let newDate = new Date(nameAct.actDate);
+        return {
+          actDate: newDate,
+          activity: {
+            connect: {
+              name: nameAct.name,
             },
-          };
-        })
+          },
+        };
+      })
       : [];
 
     let createCities: createCity[] = cities
@@ -343,16 +329,16 @@ const TripsControllers = {
       : [];
     let createActivities: createActivities[] = activitiesName
       ? activitiesName.map((nameAct: activeDate) => {
-          let newDate = new Date(nameAct.actDate);
-          return {
-            actDate: newDate,
-            activity: {
-              connect: {
-                name: nameAct.name,
-              },
+        let newDate = new Date(nameAct.actDate);
+        return {
+          actDate: newDate,
+          activity: {
+            connect: {
+              name: nameAct.name,
             },
-          };
-        })
+          },
+        };
+      })
       : [];
     let createCities: createCity[] = cities
       ? cities.map((City: string) => {

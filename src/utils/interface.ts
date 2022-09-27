@@ -10,7 +10,7 @@ export interface Trip {
   cities?: string[];
   endDate: string;
   planner?: { avatar?: string; id?: string } | any;
-  tripOnUser?: Object[];
+  tripOnUser?: { trip: Trip; user: User }[];
   description: string;
   activitiesName: { name: string; actDate: string }[];
   image?: string | ArrayBuffer;
@@ -139,6 +139,7 @@ export interface CityInDB {
 }
 
 export interface Errors {
+  [x: string]: string;
   name?: string;
   image?: string;
   initDate?: string;
@@ -168,4 +169,25 @@ export interface Comment {
   User?: User;
   userMail?: string;
   feedbackDate?: string;
+}
+
+export type contact = {
+  [x: string]: string;
+  name: string;
+  surname: string;
+  subject: string;
+  email: string;
+  whatsapp: string;
+  message: string;
+  userId?: string;
+}
+
+export type newContact = {
+  name: string;
+  surname: string;
+  subject: string;
+  email: string;
+  whatsapp: string;
+  message: string;
+  userId: string;
 }

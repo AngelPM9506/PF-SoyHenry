@@ -18,12 +18,6 @@ const mail = async (req: NextApiRequest, res: NextApiResponse) => {
                         rejectUnauthorized: false
                     }
                 });
-
-                /**boton para la redireccion
-                 * logo 
-                 * estilos
-                 */
-
                 let mailData = {
                     from: MAIL_FROM,
                     to: mail,
@@ -216,14 +210,22 @@ const mail = async (req: NextApiRequest, res: NextApiResponse) => {
                     `
                 }
                 let resp;
-                await transporter.sendMail(mailData, (error: any, resp: any) => {
-                    if (error) throw new Error("Fail to send email");
-                    else resp = "Email sended"
-                });
-                return res.status(200).json({ status: 'success', response: resp });
-            default:
-                res.status(400).send("Method not supported try again");
+                console.log(
+                    await transporter.sendMail(mailData, (error: any, resp: any) => {
+                        if (error) {
+                            console.log(error);
+                            res.status(420).json({ status: 'error', response: error });
+                        } else {
+                            //console.log(resp);
+                            res.status(200).json({ status: 'success', response: resp });
+                        }
+                        /**si funciona en local y con base de datos railway que pasa en vercel? */
+                    })
+                );
+                //return res.status(201).json({ status: 'success', response: resp });
                 break;
+            default:
+                return res.status(400).json("Method not supported try again");
         }
     } catch (error) {
         return res.json({ status: 'error', error });

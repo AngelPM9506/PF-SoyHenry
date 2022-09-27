@@ -17,88 +17,85 @@ const defaultpic: string =
 export function ActivityCard({ props }: any) {
   return (
     <Center key={props.id} py={12}>
-      <NextLink href={`/activities/${props.id}`}>
-        <Link style={{ textDecoration: "none" }}>
+      <Link style={{ textDecoration: "none" }}>
+        <Box
+          role={"group"}
+          p={6}
+          maxW={"330px"}
+          w={"full"}
+          bg={useColorModeValue("#D1DFE3", "blackAlpha.400")}
+          boxShadow={"2xl"}
+          rounded={"lg"}
+          pos={"relative"}
+          zIndex={1}
+        >
           <Box
-            role={"group"}
-            p={6}
-            maxW={"330px"}
-            w={"full"}
-            bg={useColorModeValue("white", "#4b647c")}
-            boxShadow={"2xl"}
             rounded={"lg"}
+            mt={-12}
             pos={"relative"}
-            zIndex={1}
+            height={"190px"}
+            _after={{
+              transition: "all .3s ease",
+              content: '""',
+              w: "full",
+              h: "full",
+              pos: "absolute",
+              top: 5,
+              left: 0,
+              filter: "blur(15px)",
+              zIndex: -1,
+            }}
+            _groupHover={{
+              _after: {
+                filter: "blur(20px)",
+              },
+            }}
           >
-            <Box
+            <Image
               rounded={"lg"}
-              mt={-12}
-              pos={"relative"}
-              height={"300px"}
-              _after={{
-                transition: "all .3s ease",
-                content: '""',
-                w: "full",
-                h: "full",
-                pos: "absolute",
-                top: 5,
-                left: 0,
-                filter: "blur(15px)",
-                zIndex: -1,
-              }}
-              _groupHover={{
-                _after: {
-                  filter: "blur(20px)",
-                },
-              }}
+              height={260}
+              width={282}
+              objectFit={"cover"}
+              src={props.image ? props.image : defaultpic}
+              alt={props.name}
+              boxShadow={"0px 10px 13px -7px #000000"}
+            />
+          </Box>
+
+          <Box
+            display={"flex"}
+            flexDirection={"column"}
+            justifyContent={"center"}
+            alignItems={"center"}
+            marginTop={"24"}
+          >
+            <Heading
+              fontSize={"2xl"}
+              fontFamily={"body"}
+              fontWeight={600}
+              textAlign={"center"}
             >
-              <Image
-                rounded={"lg"}
-                height={260}
-                width={282}
-                objectFit={"cover"}
-                src={props.image ? props.image : defaultpic}
-                alt={props.name}
-                boxShadow={"0px 10px 13px -7px #000000"}
-              />
-            </Box>
-            <Stack pt={4} height={"75px"} align={"center"}>
-              <Heading
-                fontSize={"2xl"}
-                fontFamily={"body"}
-                fontWeight={600}
-                textAlign={"center"}
-              >
-                {props.name}
-              </Heading>
-            </Stack>
-            <Stack pb={3} direction={"row"} align={"center"}>
-              <Text fontWeight={400} fontSize={"xl"} textAlign={"center"}>
-                {props.city.name}
-              </Text>
-            </Stack>
-            <Stack pb={3} direction={"row"} align={"center"}>
-              <Text
-                fontWeight={400}
-                fontSize={"lg"}
-                overflow={"hidden"}
-                height={"120px"}
-              >
-                {props.description}
-              </Text>
-            </Stack>
-            <Stack>
-              <Text fontWeight={700} fontSize={"xl"}>
-                $ {props.price}
-              </Text>
-            </Stack>
-            {/* <NextLink href={`/activities/${props.id}`}>
-          {' '}
-          See more info of this trip{' '}
-        </NextLink> */}
+              {props.name}
+            </Heading>
+            <Text fontWeight={400} fontSize={"xl"} textAlign={"center"}>
+              {props.city.name}
+            </Text>
+            <Text
+              fontWeight={400}
+              fontSize={"lg"}
+              overflow={"hidden"}
+              height={"120px"}
+            >
+              {props.description}
+            </Text>
+            <Text fontWeight={700} fontSize={"xl"}>
+              $ {props.price}
+            </Text>
+          </Box>
+          <NextLink href={`/activities/${props.id}`}>
             <Button
               w={"full"}
-              mt={8}
+              mt={7}
               bg={useColorModeValue("#151f21", "#f4f4f4")}
               color={useColorModeValue("#f4f4f4", "#151f21")}
               rounded={"md"}
@@ -107,11 +104,11 @@ export function ActivityCard({ props }: any) {
                 boxShadow: "lg",
               }}
             >
-              <Link href={`/activities/${props.id}`}>See more information</Link>
+              See more Information
             </Button>
-          </Box>
-        </Link>
-      </NextLink>
+          </NextLink>
+        </Box>
+      </Link>
     </Center>
   );
 }

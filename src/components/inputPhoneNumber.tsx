@@ -5,14 +5,16 @@ import {
     Select,
     InputGroup,
     InputLeftElement,
-    Icon
+    FormLabel,
+    Text
 } from "@chakra-ui/react";
 import Flag from "react-world-flags";
 import { AsYouType } from "libphonenumber-js";
 import { countryTelCode } from "src/utils/countryesCodes";
 import { useEffect, useState } from "react";
+import { ChevronDownIcon, PhoneIcon } from "@chakra-ui/icons";
 
-const InputPhoneNumber = ({ size, value, country, options, onChange, placeholder, ...rest }: any) => {
+const InputPhoneNumber = ({ size, value, country, options, onChange, placeholder, name, label, error, ...rest }: any) => {
 
     let [number, setNumber] = useState(value || "");
     let [selectCountry, setSelectCountry] = useState(country || "");
@@ -40,29 +42,37 @@ const InputPhoneNumber = ({ size, value, country, options, onChange, placeholder
         setNumber(value);
         onChange(parsedNumber);
     }
-
     return (
-        <InputGroup display={'flex'} size={size} {...rest}>
-            <InputLeftElement width={'5em'} border="1px solid #F00">
-                <Select 
-                    value={selectCountry} onChange={onCountryChange} border="1px solid #00F">
-                    <option value="" />
-                    {options && options.map((option: any, i: number) => (
-                        <option key={i} value={option.value}>{option.label}</option>
-                    ))}
-                </Select>
-                <Flex pl={2} width="10px" alignItems="center" justifyContent="center" border="1px solid #FF0">
-                    {selectCountry ? (
-                        <Box mr="4px" width="50%" flex={1}>
-                            <Flag height="1rem" code={selectCountry || ""} />
-                        </Box>
-                    ) : (<Icon name="phone" />)}
-                    <Icon name="chevron-down" />
-                </Flex>
-            </InputLeftElement>
-            <Input pl="4rem" type="tel" value={number} pattern="[0-9]"
-                placeholder={placeholder} onChange={onPhoneNumberChange} />
-        </InputGroup>
+        <Flex marginBottom={'15px'}>
+            <FormLabel flex={'0 0 125px'} htmlFor="message" padding={'0 0 0 20px'} margin={'0'}>
+                {label}
+            </FormLabel>
+            <Box width={'100%'}>
+                <InputGroup size={size} {...rest} flex={1}>
+                    <InputLeftElement width={'4rem'}>
+                        <Select top="0" left="o" zIndex={1} bottom={0} opacity={0} height="100%" position="absolute"
+                            iconColor="transparent" value={selectCountry} onChange={onCountryChange}>
+                            <option value="" />
+                            {options && options.map((option: any, i: number) => (
+                                <option key={i} value={option.value}>{option.label}</option>
+                            ))}
+                        </Select>
+                        <Flex pl={2} width="100%" alignItems="center">
+                            {selectCountry ? (
+                                <Box mr="4px" width="50%" flex={1}>
+                                    <Flag height="1rem" code={selectCountry || ""} />
+                                </Box>
+                            ) : (<PhoneIcon />)}
+                            <ChevronDownIcon />
+                        </Flex>
+                    </InputLeftElement>
+                    <Input pl="4rem" type="tel" value={number} name={name}
+                        placeholder={placeholder} onChange={onPhoneNumberChange} />
+                </InputGroup>
+                <p>Your phone will be sent as follows: {value}</p>
+                {error && (<Text m={0} color={"#F3B46F"}>{error}</Text>)}
+            </Box>
+        </Flex>
     )
 }
 

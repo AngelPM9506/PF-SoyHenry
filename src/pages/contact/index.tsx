@@ -14,7 +14,7 @@ import {
 } from "@chakra-ui/react";
 import Layout from "src/components/layout/Layout";
 import Head from "next/head";
-import React, { FormEvent, useRef, useState } from "react";
+import React, { FormEvent, useEffect, useRef, useState } from "react";
 import { contact, Errors, newContact, typeSort } from "src/utils/interface";
 import styles from './contac.module.css';
 import axios from "axios";
@@ -56,10 +56,15 @@ const Contact = () => {
     setInput({ ...input, [name]: value })
     setErrors(validateInput({ ...input, [name]: value }))
   }
+  const setWhatsapp = (value: string) => {
+    console.log(value);
+    setInput({ ...input, whatsapp: value });
+    setErrors(validateInput({ ...input, whatsapp: value }));
+  }
   const validateInput = (input: contact) => {
     let error: Errors = {};
     let regularMail = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
-    let regularWhatsapp = /[0-9]{10}$/i;
+    let regularWhatsapp = /^[+][(]{0,1}[0-9]{1,3}[)]{0,1}[-\s\./0-9]*$/g;
     let regularOnlyLetters = /^[Á-Źa-z\s]+$/i;
     let regularWhitoutSpecialChar = /^[Á-Źa-z0-9\s]+$/i;
     if (!input.name || input.name === '') {
@@ -80,7 +85,11 @@ const Contact = () => {
 
     if (!input.whatsapp || input.whatsapp === '') {
       error.whatsapp = 'Whatsapp is required';
-    } else if (!regularWhatsapp.test(input.whatsapp)) { error.whatsapp = 'Only ten digits'; }
+    } else if (!regularWhatsapp.test(input.whatsapp) ||
+      input.whatsapp.length < 10 ||
+      input.whatsapp.length >= 17) {
+      error.whatsapp = 'Only a valid phone number like (+52 55 2211 4433) and select a country';
+    }
 
     if (!input.message || input.message === '') { error.message = 'Message is required'; }
     return error;
@@ -194,6 +203,7 @@ const Contact = () => {
                       {errors.name && (<Text m={0} color={"#F3B46F"}>{errors.name}</Text>)}
                     </div>
                   </div>
+
                   <div className={campo}>
                     <FormLabel flex={'0 0 125px'} htmlFor="surname" padding={'0 0 0 20px'} margin={'0'}>Surname:</FormLabel>
                     <div>
@@ -201,6 +211,7 @@ const Contact = () => {
                       {errors.surname && (<Text m={0} color={"#F3B46F"}>{errors.surname}</Text>)}
                     </div>
                   </div>
+
                   <div className={campo}>
                     <FormLabel flex={'0 0 125px'} htmlFor="subject" padding={'0 0 0 20px'} margin={'0'}>Subject:</FormLabel>
                     <div>
@@ -208,6 +219,7 @@ const Contact = () => {
                       {errors.subject && (<Text m={0} color={"#F3B46F"}>{errors.subject}</Text>)}
                     </div>
                   </div>
+
                   <div className={campo}>
                     <FormLabel flex={'0 0 125px'} htmlFor="email" padding={'0 0 0 20px'} margin={'0'}>E-mail:</FormLabel>
                     <div>
@@ -215,13 +227,22 @@ const Contact = () => {
                       {errors.email && (<Text m={0} color={"#F3B46F"}>{errors.email}</Text>)}
                     </div>
                   </div>
-                  <div className={campo}>
+
+                  {/* <div className={campo}>
                     <FormLabel flex={'0 0 125px'} htmlFor="whatsapp" padding={'0 0 0 20px'} margin={'0'}>Whatsapp:</FormLabel>
                     <div>
                       <Input onChange={setChangeInputs} textAlign={'center'} flex={'1'} name="whatsapp" placeholder="Your whatsapp (55-55-55-55-55)" />
                       {errors.whatsapp && (<Text m={0} color={"#F3B46F"}>{errors.whatsapp}</Text>)}
                     </div>
+                  </div> */}
+
+                  <div>
+                    <InputPhoneNumber value={input.whatsapp} name="whatsapp" label={'Whatsapp:'}
+                      options={countriesOptions} placeholder="Enter your whatsapp contact"
+                      error={errors.whatsapp ? errors.whatsapp : null}
+                      onChange={setWhatsapp} />
                   </div>
+
                   <div className={`${campo} ${textArea}`}>
                     <FormLabel flex={'0 0 125px'} htmlFor="message" padding={'0 0 0 20px'} margin={'0'}>Message:</FormLabel>
                     <div>
@@ -229,16 +250,7 @@ const Contact = () => {
                       {errors.message && (<Text m={0} color={"#F3B46F"}>{errors.message}</Text>)}
                     </div>
                   </div>
-                  <div className={campo}>
-                    <FormLabel flex={'0 0 200px'} htmlFor="message" padding={'0 0 0 20px'} margin={'0'}>
-                      Prueba PhoneNumber:
-                    </FormLabel>
-                    <div>
-                      <InputPhoneNumber value={value} options={countriesOptions} placeholder="Enter your whatsapp contact"
-                        onChange={(value: any) => setValue(value)} />
-                      <p>{value}</p>
-                    </div>
-                  </div>
+
                   <div className={botones}>
                     <Button onClick={setChangeInputs} mt={4} type={'submit'} bg="highlight" color="primary">Send sessage</Button>
                   </div>

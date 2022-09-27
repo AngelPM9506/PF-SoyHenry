@@ -1,35 +1,17 @@
 import { useUser } from "@auth0/nextjs-auth0";
-import {
-  Avatar,
-  Badge,
-  Box,
-  Button,
-  Container,
-  Flex,
-  Input,
-  Link,
-  Select,
-  Table,
-  Tbody,
-  Td,
-  Text,
-  Th,
-  Thead,
-  Tr,
-  useColorModeValue,
-} from "@chakra-ui/react";
-import { fromPairs } from "lodash";
+import { Box, Text, useColorModeValue } from "@chakra-ui/react";
+
 import React, { useState } from "react";
-import { dehydrate, QueryClient, useQuery } from "react-query";
+import { useQuery } from "react-query";
 import Layout from "src/components/layout/Layout";
 import { UserData } from "src/components/UserProfile";
-import UserTable from "src/components/UserTable";
-import { getOrCreateUser, getUsers } from "src/utils/User";
-import NextLink from "next/link";
+
+import { getOrCreateUser } from "src/utils/User";
+
 import NotFound from "src/pages/404";
 
 import ActivitiesControles from "src/controllers/activities";
-import ActivityTable from "src/components/ActivityTable";
+
 import { Activity, CityInDB, Trip } from "src/utils/interface";
 import { ActivityDashboard } from "src/components/ActivityDashboard";
 import { UserDashboard } from "src/components/UserDashboard";

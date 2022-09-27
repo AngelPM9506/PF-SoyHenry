@@ -14,12 +14,11 @@ import {
   Tr,
   useColorModeValue,
 } from "@chakra-ui/react";
-import React, { SetStateAction, useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Activity } from "src/utils/interface";
 import ActivityTable from "./ActivityTable";
 import NextLink from "next/link";
 import Pagination from "./pagination";
-import { Select as ReactSelect } from "chakra-react-select";
 export const ActivityDashboard = ({
   activities,
 }: {

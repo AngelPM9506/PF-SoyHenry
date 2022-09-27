@@ -65,7 +65,9 @@ interface Props {
 const MyDataPicker = chakra(DatePicker);
 
 const CreateTrip = ({ activities, cities, trips }: Props) => {
-  const { user, error } = useUser();
+  const toast = useToast();
+  const router = useRouter();
+  const { user, isLoading: userLoading } = useUser();
 
   const { data: userDb, isLoading } = useQuery(
     ["userDb", user],
@@ -86,9 +88,6 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
     price: 0,
     image: null,
   };
-
-  const toast = useToast();
-  const router = useRouter();
 
   const [input, setInput] = useState(initialState);
   const [inputCities, setInputCities] = useState("");
@@ -365,10 +364,15 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [overlay, setOverlay] = useState(<OverlayTwo />);
-  if (!isLoading && userDb && !userDb.data.active) {
-    return <BannedAlert />;
+
+  if (!userLoading && !user) {
+    router.push("/api/auth/login");
+    return <div></div>;
   }
-  if(isLoading) return <Loading />
+  if (!isLoading && userDb && !userDb.data.active) return <BannedAlert />;
+  
+  if (isLoading) return <Loading />;
+
   return (
     <Layout>
       <Center marginTop="1%">

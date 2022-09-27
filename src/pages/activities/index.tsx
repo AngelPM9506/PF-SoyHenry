@@ -22,10 +22,12 @@ import axios from "axios";
 import { useUser } from "@auth0/nextjs-auth0";
 import { getOrCreateUser } from "src/utils/User";
 import { BannedAlert } from "src/components/Banned";
+import { useRouter } from "next/router";
 interface Props {
   activities: Activity[];
 }
 const Activities = ({ activities }: Props) => {
+  const router = useRouter();
   const [city, setCity] = useState<string>(undefined);
   const [name, setName] = useState<string>(undefined);
   const [maxPrice, setMaxPrice] = useState<number>(undefined);
@@ -36,11 +38,11 @@ const Activities = ({ activities }: Props) => {
     ["activities", city, name, maxPrice, sort, sortBy], //dependencies: React is going to re-render when one of these changes
     () => getActivities(city, name, maxPrice, sort, sortBy)
   );
-  const { user, error } = useUser();
+  const { user, isLoading: userLoading } = useUser();
 
   const { data: userDb } = useQuery(
-    ["userDb", user],
-    () => user && getOrCreateUser(user)
+    ["userDb", user, userLoading],
+    () => !userLoading && user && getOrCreateUser(user)
   );
   //const data = activities;
   const cities = activities.map((a) => a.city.name);
@@ -77,6 +79,10 @@ const Activities = ({ activities }: Props) => {
     setInput(undefined);
   };
 
+  if (!userLoading && !user) {
+    router.push("/api/auth/login");
+    return <div></div>;
+  }
   if (isLoading) return <Loading />;
   if (!isLoading && userDb && !userDb.data.active) {
     return <BannedAlert />;

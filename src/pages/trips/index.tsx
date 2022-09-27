@@ -32,11 +32,13 @@ import { BannedAlert } from "src/components/Banned";
 import { useUser } from "@auth0/nextjs-auth0";
 import { getOrCreateUser } from "src/utils/User";
 import NextLink from "next/link";
+import { useRouter } from "next/router";
 interface Props {
   trips: Trip[];
 }
 
 function Trips({ trips }: Props) {
+  const router = useRouter();
   const [sort, setSort] = useState<string>("desc"); // asc o desc orden
   const [wName, setName] = useState<string>(null); //para ordenar x nombre alfabeticamente
   const [wCity, setWcity] = useState<string>(""); //filtrar x actividad
@@ -49,11 +51,11 @@ function Trips({ trips }: Props) {
     //dependencies: React is going to re-render when one of these changes
     () => getTrips(wCity, wName, maxPrice, sort, sortBy)
   );
-  const { user, error } = useUser();
+  const { user, isLoading: userLoading } = useUser();
 
   const { data: userDb } = useQuery(
-    ["userDb", user],
-    () => user && getOrCreateUser(user)
+    ["userDb", user, userLoading],
+    () => !userLoading && user && getOrCreateUser(user)
   );
   //const data = trips;
   const [currentPage, setCurrentPage] = useState(1);
@@ -96,6 +98,11 @@ function Trips({ trips }: Props) {
     setInput("");
     setInputCity("");
   };
+
+  if (!userLoading && !user) {
+    router.push("/api/auth/login");
+    return <div></div>;
+  }
   if (!isLoading && userDb && !userDb.data.active) {
     return <BannedAlert />;
   }

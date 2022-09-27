@@ -16,7 +16,7 @@ import {
 } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { Activity } from "src/utils/interface";
-import ActivityTable from "./ActivityTable";
+import { ActivityTable } from "./ActivityTable";
 import NextLink from "next/link";
 import Pagination from "./pagination";
 export const ActivityDashboard = ({

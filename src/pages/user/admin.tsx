@@ -23,7 +23,7 @@ import Loading from "src/components/Loading";
 
 import { getCities } from "src/utils/cities";
 
-export function TablesTableRow({
+function TablesTableRow({
   users,
   activities,
   trips,
@@ -120,3 +120,4 @@ export const getServerSideProps = async () => {
     },
   };
 };
+export default TablesTableRow;

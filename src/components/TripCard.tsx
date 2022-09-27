@@ -17,7 +17,6 @@ const defaultpic: string =
 export function TripCard({ props }: any) {
   return (
     <Center key={props.id} py={12}>
-      <NextLink href={`/trips/${props.id}`}>
         <Box
           role={"group"}
           p={6}
@@ -122,7 +121,6 @@ export function TripCard({ props }: any) {
             </NextLink>
           </Stack>
         </Box>
-      </NextLink>
     </Center>
   );
 }

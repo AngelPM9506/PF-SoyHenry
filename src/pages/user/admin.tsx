@@ -23,18 +23,17 @@ import Loading from "src/components/Loading";
 
 import { getCities } from "src/utils/cities";
 
-function TablesTableRow({
+export function TablesTableRow({
   users,
   activities,
   trips,
-  cities,
 }: {
   activities: Activity[];
   users: UserData[];
   trips: Trip[];
-  cities: CityInDB[];
+  cities?: CityInDB[];
 }) {
-  const { user, error } = useUser();
+  const { user } = useUser();
   const { data: userDb, isLoading } = useQuery(["userDb", user], () =>
     getOrCreateUser(user)
   );
@@ -54,6 +53,7 @@ function TablesTableRow({
   if (isLoading || !userDb?.data) return <Loading />;
 
   if (!userDb.data.isAdmin) return <NotFound />;
+
   return (
     <>
       <Layout>
@@ -105,7 +105,6 @@ function TablesTableRow({
 
 export const getServerSideProps = async () => {
   //   const queryClient = new QueryClient(); //https://tanstack.com/query/v4/docs/guides/ssr
-
   const users = JSON.parse(JSON.stringify(await usersControllers.getUsers()));
   const activities = JSON.parse(
     JSON.stringify(await ActivitiesControles.getActivities({}))
@@ -121,4 +120,3 @@ export const getServerSideProps = async () => {
     },
   };
 };
-export default TablesTableRow;

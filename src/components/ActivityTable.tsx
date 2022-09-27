@@ -23,7 +23,7 @@ type Props = {
   activity: Activity;
 };
 
-function ActivityTable({ activity }: Props) {
+export function ActivityTable({ activity }: Props) {
   const textColor = useColorModeValue("gray.700", "white");
 
   const toast = useToast();
@@ -237,5 +237,3 @@ function ActivityTable({ activity }: Props) {
     </Tr>
   );
 }
-
-export default ActivityTable;

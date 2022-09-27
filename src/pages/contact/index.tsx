@@ -56,20 +56,28 @@ const Contact = () => {
   const validateInput = (input: contact) => {
     let error: Errors = {};
     let regularMail = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
-    let regularWhatsapp = /[0-9]{2}-[0-9]{2}-[0-9]{2}-[0-9]{2}-[0-9]{2}$/i;
-    if (!input.name || input.name === '') { error.name = 'Name is required'; }
+    let regularWhatsapp = /[0-9]{10}$/i;
+    let regularOnlyLetters = /^[Á-Źa-z\s]+$/i;
+    let regularWhitoutSpecialChar = /^[Á-Źa-z0-9\s]+$/i;
+    if (!input.name || input.name === '') {
+      error.name = 'Name is required';
+    } else if (!regularOnlyLetters.test(input.name)) { error.name = 'Only alphabetic characters are accepted' }
 
-    if (!input.surname || input.surname === '') { error.surname = 'Surname is required'; }
+    if (!input.surname || input.surname === '') {
+      error.surname = 'Surname is required';
+    } else if (!regularOnlyLetters.test(input.surname)) { error.surname = 'Only alphabetic characters are accepted' }
 
-    if (!input.subject || input.subject === '') { error.subject = 'Subject is required'; }
+    if (!input.subject || input.subject === '') {
+      error.subject = 'Subject is required';
+    } else if (!regularWhitoutSpecialChar.test(input.subject)){ error.subject = 'Special characters are not accepted'}
 
-    if (!input.email || input.email === '') {
-      error.email = 'Email is required';
-    } else if (!regularMail.test(input.email)) { error.email = 'Enter a valid email'; }
+      if (!input.email || input.email === '') {
+        error.email = 'Email is required';
+      } else if (!regularMail.test(input.email)) { error.email = 'Enter a valid email'; }
 
     if (!input.whatsapp || input.whatsapp === '') {
       error.whatsapp = 'Whatsapp is required';
-    } else if (!regularWhatsapp.test(input.whatsapp)) { error.whatsapp = 'Enter a valid whatsapp number only ten digits following the pattern: 55-55-55-55-55'; }
+    } else if (!regularWhatsapp.test(input.whatsapp)) { error.whatsapp = 'Only ten digits'; }
 
     if (!input.message || input.message === '') { error.message = 'Message is required'; }
     return error;
@@ -134,7 +142,7 @@ const Contact = () => {
       })
         .then(resp => {
           //console.log(resp);
-          makeToast('Your message was sent correctly','#02b1b1','success');
+          makeToast('Your message was sent correctly', '#02b1b1', 'success');
         })
         .catch((error) => {
           makeToast('Can not send your message, try again later', '#F3B46F', 'error');

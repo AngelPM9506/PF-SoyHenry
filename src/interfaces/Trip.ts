@@ -9,4 +9,5 @@ export interface Trip {
   description: String;
   image?: String;
   price: Number;
+  active: Boolean;
 }

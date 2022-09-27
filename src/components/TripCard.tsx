@@ -23,7 +23,10 @@ export function TripCard({ props }: any) {
           p={6}
           maxW={"330px"}
           w={"full"}
-          bg={useColorModeValue("#D1DFE3", "blackAlpha.400")}
+          bg={useColorModeValue(
+            "RGBA(75,100,124,0.41)",
+            "RGBA(75,100,124,0.41)"
+          )}
           boxShadow={"2xl"}
           rounded={"lg"}
           pos={"relative"}
@@ -61,7 +64,7 @@ export function TripCard({ props }: any) {
               alt="image card Trip"
             />
           </Box>
-          <Stack marginTop={"90px"} p={2} align={"center"}>
+          <Stack marginTop={0} height={"80px"} align={"center"}>
             <Heading
               noOfLines={1}
               fontSize={"2xl"}
@@ -69,26 +72,22 @@ export function TripCard({ props }: any) {
               fontWeight={600}
               textAlign={"center"}
             >
-              {props.name}
+              {props.name.charAt(0).toUpperCase() + props.name.slice(1)}
             </Heading>
           </Stack>
           <VStack direction={"row"} align={"center"}>
-            <Text fontWeight={400} fontSize={"xl"}>
-              Duration:
-            </Text>
-            <Text fontWeight={400} fontSize={"xl"}>
-              From {new Date(props.initDate).toLocaleDateString()}
-            </Text>
-            <Text fontWeight={400} fontSize={"xl"}>
-              To {new Date(props.endDate).toLocaleDateString()}
+            <Text fontWeight={400} fontSize={"18px"}>
+              From <b>{new Date(props.initDate).toLocaleDateString()}</b> To <b>{new Date(props.endDate).toLocaleDateString()}</b>
             </Text>
           </VStack>
-          {/* <Text fontWeight={800} fontSize={"xl"}>
-              N of Travelers: {props.tripOnUser.length}
+          <VStack direction={"row"} align={"center"}>
+          <Text fontWeight={800} fontSize={"xl"} marginBottom="-15px">
+              Cities:
             </Text>
-            <Text fontWeight={800} fontSize={"xl"}>
-              Activities: {props.activities.map((a: any) => a.name)}
-            </Text> */}
+            <Text fontWeight={400} fontSize={"xl"}>
+            {props.citiesOnTrips.map((a: any) =>  a.city.name)}
+            </Text>
+          </VStack>
 
           <Stack>
             <Text
@@ -122,21 +121,6 @@ export function TripCard({ props }: any) {
               </Button>
             </NextLink>
           </Stack>
-          <NextLink href={`/trips/${props.id}`}>
-            <Button
-              w={"full"}
-              mt={5}
-              bg={useColorModeValue("#151f21", "#f4f4f4")}
-              color={useColorModeValue("#f4f4f4", "#151f21")}
-              rounded={"md"}
-              _hover={{
-                transform: "translateY(-2px)",
-                boxShadow: "lg",
-              }}
-            >
-              Join the Trip!
-            </Button>
-          </NextLink>
         </Box>
       </NextLink>
     </Center>

@@ -14,6 +14,8 @@ export default function Profile() {
     ["userDb", user, userLoading],
     () => !userLoading && user && getOrCreateUser(user)
   );
+
+  //asd
   if (!userLoading && !user) {
     router.push("/api/auth/login");
     return <div></div>;

@@ -2,26 +2,21 @@ import {
   Avatar,
   Badge,
   Button,
-  Code,
   Flex,
   FormControl,
-  FormLabel,
   Input,
   Select,
   Td,
   Text,
-  Textarea,
   Tr,
   useColorModeValue,
   useToast,
   Link,
 } from "@chakra-ui/react";
 import { Select as ReactSelect } from "chakra-react-select";
-import React, { SetStateAction, useEffect, useState } from "react";
+import React, { SetStateAction, useState } from "react";
 import { deleteActivity, editActivity } from "src/utils/activities";
 import { Activity } from "src/utils/interface";
-import { updateUser } from "src/utils/User";
-import { UserData } from "./UserProfile";
 import NextLink from "next/link";
 import { ModalTextarea } from "./ModalEditableTextarea";
 type Props = {

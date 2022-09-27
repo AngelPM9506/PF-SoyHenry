@@ -43,7 +43,6 @@ function Trips({ trips }: Props) {
     xl: '80em',
    " 2xl": '96em'
   }
-  console.log(trips)
   const [sort, setSort] = useState<string>("desc"); // asc o desc orden
   const [wName, setName] = useState<string>(null); //para ordenar x nombre alfabeticamente
   const [wCity, setWcity] = useState<string>(""); //filtrar x actividad
@@ -192,7 +191,7 @@ function Trips({ trips }: Props) {
         </HStack>
 
         <Select
-          marginTop={{sm:"10px",md:"0"}}
+         marginTop={{base:"20px",sm:"10px",md:"0",lg:"0",xl:"0"}}
           margin={"auto"}
           height={"45px"}
           width="250px"
@@ -203,7 +202,7 @@ function Trips({ trips }: Props) {
           <option value="price">Price</option>
         </Select>
         <Select
-          marginTop={{sm:"10px",md:"0"}}
+         marginTop={{base:"20px",sm:"10px",md:"0",lg:"0",xl:"0"}}
           margin={"auto"}
           width="160px"
           placeholder={" ↑ ↓ "}
@@ -213,11 +212,11 @@ function Trips({ trips }: Props) {
           <option value={"desc"}>descendent</option>
         </Select>
         <FormControl
-          marginTop={{sm:"10px",md:"0"}}
+          marginTop={{base:"20px",sm:"10px",md:"0",lg:"0",xl:"0"}}
           margin={"auto"}
           display={"flex"}
           align-items={"center"}
-          width="20%"
+          width={{base:"50%",sm:"50%",md:"20%",lg:"20%",xl:"20%"}}
           height={"45px"}
           justify-content={"center"}
         >
@@ -276,7 +275,7 @@ function Trips({ trips }: Props) {
               (currentPage - 1) * tripsPerPage,
               (currentPage - 1) * tripsPerPage + tripsPerPage
             )
-            .filter((t: any) => t.active === true)
+            .filter((t: Trip) => t.active === true)
             .map((t: Trip) => <TripCard key={t.id} props={t} />)
         ) : (
           <Box

@@ -155,7 +155,7 @@ const Reviews = ({ feedbacks, id, change, setChange }: Props) => {
           fontWeight={"400"}
           fontSize={"3xl"}
           mb={"20px"}
-          color={useColorModeValue("#F3B46F", "#F3B46F")}
+          color={"#F3B46F"}
         >
           Comments:
         </Text>

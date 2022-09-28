@@ -3,40 +3,43 @@ import {
   Button,
   FormControl,
   HStack,
-  Input,
   Text,
   VStack,
   Avatar,
   Stack,
   Textarea,
   useToast,
-  useColorModeValue,
   Tooltip,
 } from "@chakra-ui/react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import StarRatings from "react-star-ratings";
 import { FiSend, FiDelete } from "react-icons/fi";
 import { ImCancelCircle } from "react-icons/im";
 import { BsPencilFill } from "react-icons/bs";
 import { GrEdit } from "react-icons/gr";
 import NextLink from "next/link";
-import { Comment, User } from "../utils/interface";
+import { Comment } from "../utils/interface";
 import { useUser } from "@auth0/nextjs-auth0";
-import { patchActivity, deleteComment, editComment } from "../utils/activities";
-
-const breakpoints = {
-  sm: "400px",
-  md: "600px",
-  lg: "1000px",
-};
+// const breakpoints = {
+//   sm: "400px",
+//   md: "600px",
+//   lg: "1000px",
+// };
 
 interface Props {
   feedbacks: Comment[];
   id: string;
-  change: number;
-  setChange: any;
+  mutatesubmit: any;
+  mutateedit: any;
+  mutatedelete: any;
 }
-const Reviews = ({ feedbacks, id, change, setChange }: Props) => {
+const Reviews = ({
+  feedbacks,
+  id,
+  mutatesubmit,
+  mutateedit,
+  mutatedelete,
+}: Props) => {
   const logofoto =
     "https://res.cloudinary.com/mauro4202214/image/upload/v1663331567/world-travelers/favicon.ico_c8ryjz.png";
   const { user } = useUser();
@@ -68,7 +71,7 @@ const Reviews = ({ feedbacks, id, change, setChange }: Props) => {
   };
 
   const handleSubmit = async (e: any) => {
-    await patchActivity({
+    mutatesubmit.mutate({
       comment: comment,
       mail: user.email,
       rating: rating,
@@ -86,12 +89,11 @@ const Reviews = ({ feedbacks, id, change, setChange }: Props) => {
       isClosable: true,
     });
     setEdit(false);
-    setChange(change + 1);
   };
 
   const handleEdit = async () => {
     const idFeedback = mycomment.id;
-    await editComment({
+    mutateedit.mutate({
       id: id,
       comment: commentEdit,
       idFeedback: idFeedback,
@@ -105,12 +107,11 @@ const Reviews = ({ feedbacks, id, change, setChange }: Props) => {
       isClosable: true,
     });
     setEdit(false);
-    setChange(change + 1);
   };
 
   const handleDelete = async () => {
     const idFeedback = mycomment.id;
-    await deleteComment(id, idFeedback);
+    mutatedelete.mutate({ id, idFeedback });
     toast({
       title: "Comment deleted!",
       description: "Thank you! Your comment is deleted.",
@@ -121,7 +122,6 @@ const Reviews = ({ feedbacks, id, change, setChange }: Props) => {
     setRatingEdit(0);
     setCommentEdit("");
     setEdit(false);
-    setChange(change + 1);
   };
 
   const handleCancelComment = () => {

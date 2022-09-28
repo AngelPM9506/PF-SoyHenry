@@ -30,14 +30,14 @@ export default function ActivityDetail({
   data,
   isLoading,
   error,
-  change,
-  setChange,
+  mutatesubmit,
+  mutateedit,
+  mutatedelete,
 }: any) {
   if (isLoading) return <Loading />;
   if (error) return <div>{error.message}</div>;
   const [feedBacks, setFeedBacks] = useState(data.activity.feedbacks);
-  console.log(data.activitiesOnTrips);
-  console.log(data);
+
   const tripscards = data.activity.activitiesOnTrips.filter(
     (t: any) => t.trip.active === true
   );
@@ -261,8 +261,9 @@ export default function ActivityDetail({
         <Reviews
           feedbacks={feedBacks}
           id={data.id}
-          change={change}
-          setChange={setChange}
+          mutatesubmit={mutatesubmit}
+          mutateedit={mutateedit}
+          mutatedelete={mutatedelete}
         />
       </Box>
     </Container>

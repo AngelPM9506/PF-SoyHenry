@@ -3,9 +3,19 @@ import { Activity, User } from "src/utils/interface";
 import axios from "axios";
 import Layout from "../../components/layout/Layout";
 
-import { getActivitiesId } from "src/utils/activities";
+import {
+  deleteComment,
+  editComment,
+  getActivitiesId,
+  patchActivity,
+} from "src/utils/activities";
 import { getUsers } from "src/utils/User";
-import { QueryFunctionContext, useQuery } from "react-query";
+import {
+  QueryFunctionContext,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "react-query";
 import ActivityDetail from "src/components/ActivityDetail";
 import { GetServerSideProps } from "next/types";
 import { useUser } from "@auth0/nextjs-auth0";
@@ -21,21 +31,32 @@ interface Props {
 }
 
 export default function Detail(props: Props) {
-  const { data, isLoading, error } = useQuery(
-    ["propsId"],
-    async (notifyOnChangeProps) => {
-      const activity = await getActivitiesId(props.id);
-      const id = props.id;
-
-      return {
-        activity: activity,
-        id: id,
-      };
+  const queryClient = useQueryClient();
+  const mutatesubmit = useMutation(patchActivity, {
+    onSuccess: () => {
+      queryClient.resetQueries(["propsId"]);
     },
-    { notifyOnChangeProps: ["data"] }
-  );
+  });
+  const mutateedit = useMutation(editComment, {
+    onSuccess: () => {
+      queryClient.resetQueries(["propsId"]);
+    },
+  });
+  const mutatedelete = useMutation(deleteComment, {
+    onSuccess: () => {
+      queryClient.resetQueries(["propsId"]);
+    },
+  });
 
-  const [change, setChange] = useState(1);
+  const { data, isLoading, error } = useQuery(["propsId"], async () => {
+    const activity = await getActivitiesId(props.id);
+    const id = props.id;
+
+    return {
+      activity: activity,
+      id: id,
+    };
+  });
 
   if (isLoading) {
     return <Loading />;
@@ -51,8 +72,9 @@ export default function Detail(props: Props) {
           data={data}
           isLoading={isLoading}
           error={error}
-          change={change}
-          setChange={setChange}
+          mutatesubmit={mutatesubmit}
+          mutateedit={mutateedit}
+          mutatedelete={mutatedelete}
         />
       }
     </Layout>

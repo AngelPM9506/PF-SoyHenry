@@ -64,6 +64,7 @@ export function TripCard({ props }: any) {
             />
           </Box>
           <Stack marginTop={"80px"} height={"80px"} align={"center"}>
+
             <Heading
               noOfLines={1}
               fontSize={"2xl"}

@@ -267,20 +267,24 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
     e.preventDefault();
     let tripCreated = await createTrip(input);
     setInput(initialState);
-    await axios
-      .post("/api/mail", {
-        mail: userDb.data.mail,
-        subject: `Trip ${input.name} has been create successfuly thanks to use WORLD TRAVELERS`,
-        message: `Your Trip: ${input.name} has been create successfuly thanks to use WORLD TRAVELERS`,
-        html: {
-          title: "Trip created successfuly",
-          actionName: input.name,
-          text: `Your Trip ${input.name} has been created`,
-          url: `/trips/${tripCreated.id}`,
-          urlMsg: "See your trip here",
-        },
-      })
-      .catch((error) => console.log(error));
+    try {
+      await axios
+        .post("/api/mail", {
+          mail: userDb.data.mail,
+          subject: `Trip ${input.name} has been create successfuly thanks to use WORLD TRAVELERS`,
+          message: `Your Trip: ${input.name} has been create successfuly thanks to use WORLD TRAVELERS`,
+          html: {
+            title: "Trip created successfuly",
+            actionName: input.name,
+            text: `Your Trip ${input.name} has been created`,
+            url: `/trips/${tripCreated.id}`,
+            urlMsg: "See your trip here",
+          },
+        })
+        .catch((error) => console.log(error));
+    } catch(error) {
+      console.log(error);
+    }
     if (tripCreated) {
       toast({
         title: "Trip Created",

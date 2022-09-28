@@ -6,24 +6,27 @@ import {
   Text,
   Button,
   Center,
-  Image,
+  Switch,
+  FormControl,
+  FormLabel,
 } from "@chakra-ui/react";
 import ReactPlayer from "react-player";
 import axios from "axios";
+import { BsSoundwave } from "react-icons/bs";
+import { useState } from "react";
+import NextLink from "next/link";
 
-const landingPage: NextPage = () => {
+const LandingPage: NextPage = () => {
   const url =
     "https://res.cloudinary.com/mauro4202214/video/upload/v1663337043/world-travelers/videolandingpagecrop_iklwjv.mp4";
-
-  const image =
-    "https://drive.google.com/uc?id=1YZhzZFB0nRQuLLzmFVq13upFeZQo5CLd";
+  const [ismuted, setismuted] = useState(false);
 
   const play = (event: any) => {
     event.target.play();
   };
   return (
     <Box height={"100vh"} width={"100vw"}>
-      {/* <ReactPlayer
+      <ReactPlayer
         loop
         width="100vw"
         height={"100vh"}
@@ -37,11 +40,22 @@ const landingPage: NextPage = () => {
         volume={0.1}
         onMouseMove={play}
         playsinline
-        // muted
+        muted={ismuted}
         onMouseOver={(e: any) => e.target.play()}
-      /> */}
-      <Image src={image}></Image>
-      <Box marginTop={{ base: "-130%", md: "-45%" }}>
+      />
+      <FormControl
+        position={"fixed"}
+        top={"10px"}
+        right={{ base: "-40vw", md: "-45vw" }}
+        display="flex"
+        flexDirection={"column"}
+        justifyContent={"center"}
+        alignItems="center"
+      >
+        <BsSoundwave size={"30px"} />
+        <Switch id="sound" onClick={() => setismuted(!ismuted)} />
+      </FormControl>
+      <Box marginTop={{ base: "-500px", md: "-700px" }}>
         <Stack flex={1} spacing={{ base: 5, md: 10 }}>
           <Heading
             lineHeight="1.1"
@@ -97,7 +111,7 @@ const landingPage: NextPage = () => {
             >
               {/*eslint-disable-next-line @next/next/no-html-link-for-pages*/}
               <Stack alignItems={"center"}>
-                <a href="/api/auth/login">
+                <NextLink href="/api/auth/login">
                   <Button
                     mt={{ base: "60px", md: "10px" }}
                     rounded="full"
@@ -113,7 +127,7 @@ const landingPage: NextPage = () => {
                   >
                     LOG IN
                   </Button>
-                </a>
+                </NextLink>
               </Stack>
               <Stack
                 direction="row"
@@ -123,39 +137,39 @@ const landingPage: NextPage = () => {
                 position="fixed"
                 marginTop={{ base: "30px", md: "100px" }}
               >
-                <a href="/contact">
+                <NextLink href="/contact">
                   <Button
                     mt={{ base: "60px", md: "0px" }}
                     rounded="full"
                     size={"lg"}
-                    width={{ base: "200px", md: "180px" }}
-                    height={{ base: "75px", md: "65px" }}
+                    width={{ base: "110px", md: "180px" }}
+                    height={{ base: "35px", md: "65px" }}
                     fontWeight="800"
                     px={15}
                     color="#293541"
-                    fontSize="24"
+                    fontSize={{ base: "18", md: "24" }}
                     bg="RGBA(209,223,227,0.50)"
                     mr={"30px"}
                     _hover={{ bg: "#F3B46F", color: "#293541" }}
                   >
                     Contact Us
                   </Button>
-                </a>{" "}
+                </NextLink>{" "}
                 <a href="/about">
                   <Button
                     mt={{ base: "60px", md: "0px" }}
                     rounded="full"
                     size={"lg"}
-                    width={{ base: "200px", md: "180px" }}
-                    height={{ base: "75px", md: "65px" }}
+                    width={{ base: "110px", md: "180px" }}
+                    height={{ base: "35px", md: "65px" }}
                     fontWeight="800"
                     px={15}
                     color="#293541"
-                    fontSize="24"
+                    fontSize={{ base: "18", md: "24" }}
                     bg={"RGBA(209,223,227,0.50)"}
                     _hover={{ bg: "#F3B46F", color: "#293541" }}
                   >
-                    About
+                    About Us
                   </Button>
                 </a>
               </Stack>
@@ -177,4 +191,4 @@ export const getServerSideProps = async () => {
   };
 };
 
-export default landingPage;
+export default LandingPage;

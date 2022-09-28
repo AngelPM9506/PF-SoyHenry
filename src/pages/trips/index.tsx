@@ -36,6 +36,13 @@ interface Props {
 }
 
 function Trips({ trips }: Props) {
+  const breakpoints = {
+    sm: '30em',
+    md: '48em',
+    lg: '62em',
+    xl: '80em',
+   " 2xl": '96em'
+  }
   const [sort, setSort] = useState<string>("desc"); // asc o desc orden
   const [wName, setName] = useState<string>(null); //para ordenar x nombre alfabeticamente
   const [wCity, setWcity] = useState<string>(""); //filtrar x actividad
@@ -104,6 +111,17 @@ function Trips({ trips }: Props) {
     setInput("");
     setInputCity("");
   };
+
+  const resetSortsAndFilters = () => {
+    setMaxPrice(0);
+    setSort("desc");
+    setName(null);
+    setWcity(""),
+    setSortBy("name");
+    setInput("");
+    setInputCity("")
+  }
+
   if (!isLoading && userDb && !userDb.data.active) {
     return <BannedAlert />;
   }
@@ -112,15 +130,15 @@ function Trips({ trips }: Props) {
   ) : (
     <Layout>
       <Heading
-        display={"flex"}
+        display={{md:"flex"}}
         alignItems={"center"}
         justifyContent={"space-between"}
         textAlign={"center"}
         mt={50}
-        ml={120}
+        ml={{md:"120"}}
         marginBottom={"50px"}
       >
-        <Heading width={"1500px"} color={useColorModeValue("#293541", "white")}>
+        <Heading width={"100%"} color={useColorModeValue("#293541", "white")}>
           All Our Travelers Trips
         </Heading>
         <NextLink href="/trips/create">
@@ -137,21 +155,23 @@ function Trips({ trips }: Props) {
               color: "black",
             }}
             m={5}
-            w={200}
+            w={175}
+            marginBottom={{sm:"-15px"}}
           >
             CREATE NEW TRIP
           </Button>
         </NextLink>
       </Heading>
       <Box
-        display="flex"
-        margin="20px"
+        display={{md:"flex"}}
+        margin={{md:"20px"}}
         flex-direction="center"
         align-items="center"
-        justifyContent={"space-around"}
-        justifyItems={"center"}
+        justifyContent={{md:"space-around"}}
+        justifyItems={{md:"center"}}
       >
         <HStack
+         margin={"auto"}
           height={"45px"}
           justifyContent={"center"}
           alignItems={"center"}
@@ -171,6 +191,8 @@ function Trips({ trips }: Props) {
         </HStack>
 
         <Select
+         marginTop={{base:"20px",sm:"10px",md:"0",lg:"0",xl:"0"}}
+          margin={"auto"}
           height={"45px"}
           width="250px"
           placeholder="Order by:"
@@ -180,6 +202,8 @@ function Trips({ trips }: Props) {
           <option value="price">Price</option>
         </Select>
         <Select
+         marginTop={{base:"20px",sm:"10px",md:"0",lg:"0",xl:"0"}}
+          margin={"auto"}
           width="160px"
           placeholder={" ↑ ↓ "}
           onChange={(e) => handleSort(e)}
@@ -188,20 +212,25 @@ function Trips({ trips }: Props) {
           <option value={"desc"}>descendent</option>
         </Select>
         <FormControl
+          marginTop={{base:"20px",sm:"10px",md:"0",lg:"0",xl:"0"}}
+          margin={"auto"}
           display={"flex"}
           align-items={"center"}
-          width={"20%"}
+          width={{base:"50%",sm:"50%",md:"20%",lg:"20%",xl:"20%"}}
           height={"45px"}
           justify-content={"center"}
         >
           <Input
-            width="200px"
+          margin="auto"
+            // width="200px"
             marginRight={"20px"}
             placeholder="Type a City ..."
             onKeyDown={(e) => onKeyDown(e)}
             onChange={(e) => handleInputCity(e)}
+            width={"1000px"}
           />
           <Button
+          margin="auto"
             bg={useColorModeValue("#151f21", "#293541")}
             color={"white"}
             type={"submit"}
@@ -211,10 +240,33 @@ function Trips({ trips }: Props) {
               transform: "translateY(-2px)",
               boxShadow: "lg",
             }}
+            width={"80%"}
           >
             Search
           </Button>
         </FormControl>
+      </Box>
+      <Box
+      display={"grid"}
+      placeItems={"center"}
+      >
+      <Button
+            bg={useColorModeValue("#02b1b1", "#02b1b1")}
+            color={"white"}
+            rounded={"md"}
+            padding={"20px"}
+            _hover={{
+              transform: "translateY(-2px)",
+              boxShadow: "lg",
+              bg: "#F3B46F",
+              color: "black",
+            }}
+            width="100px"
+            marginTop={"10px"}
+            onClick= {resetSortsAndFilters}
+          >
+            RESET
+          </Button>
       </Box>
       <SimpleGrid minChildWidth="330px" columns={[2, null, 3]}>
         {data.length != 0 ? (
@@ -223,6 +275,7 @@ function Trips({ trips }: Props) {
               (currentPage - 1) * tripsPerPage,
               (currentPage - 1) * tripsPerPage + tripsPerPage
             )
+            .filter((t: Trip) => t.active === true)
             .map((t: Trip) => <TripCard key={t.id} props={t} />)
         ) : (
           <Box

@@ -32,7 +32,7 @@ export const validateDescription = (description: string) => {
 };
 
 export const validatePrice = (price: number) => {
-  return /^[0-9]*\.?[0-9]*$/.test(price.toString());
+  return /^[1-9]\d*(\.\d+)?$/.test(price.toString());
 };
 
 export const validateDates = (date: string) => {
@@ -104,11 +104,11 @@ export const formControlActivity = (
   activities: Activity[]
 ) => {
   let errors: Errors = {};
-  if (!validateName(input.name)) {
+  if (!input.name.length) {
+    errors.name = "Name is required";
+  } else if (!validateName(input.name)) {
     errors.name =
       "Name has to be at least 3 characters long and cannot contain special characters";
-  } else if (!input.name.length) {
-    errors.name = "Name is required";
   } else if (
     activities?.find((a) => a.name.toLowerCase() === input.name?.toLowerCase())
   ) {

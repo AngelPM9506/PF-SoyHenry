@@ -169,7 +169,13 @@ const CreateActivity = ({ activities, cities }: Props) => {
   return (
     <Layout>
       <Center marginTop="2%">
-        <Heading color="primary">Create a New Activity</Heading>
+        <Heading
+          textAlign={[null, null, "center"]}
+          fontSize={["xl", "2xl", "3xl", "4xl"]}
+          color="primary"
+        >
+          Create a New Activity
+        </Heading>
       </Center>
       <form
         style={{ height: "100vh", marginTop: "1%" }}
@@ -191,7 +197,7 @@ const CreateActivity = ({ activities, cities }: Props) => {
               <GridItem
                 borderRadius="2xl"
                 rowSpan={1}
-                colSpan={1}
+                colSpan={{ base: 5, md: 5, lg: 1 }}
                 alignContent="center"
                 alignSelf="center"
               >
@@ -205,7 +211,7 @@ const CreateActivity = ({ activities, cities }: Props) => {
                     src={`${image}`}
                     fallbackSrc="https://via.placeholder.com/150"
                     alt="img"
-                    boxSize="200px"
+                    boxSize={{ base: "150px", md: "120px", lg: "200px" }}
                   />
                 </Box>
                 <Center>
@@ -221,7 +227,10 @@ const CreateActivity = ({ activities, cities }: Props) => {
                   />
                 </Center>
               </GridItem>
-              <GridItem borderRadius="2xl" colSpan={4}>
+              <GridItem
+                borderRadius="2xl"
+                colSpan={{ base: 4, sm: 5, md: 5, lg: 4 }}
+              >
                 <FormLabel htmlFor="name" paddingLeft="2" mt={2}>
                   Name
                 </FormLabel>

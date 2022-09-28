@@ -38,7 +38,7 @@ interface Props {
 }
 
 const CreateActivity = ({ activities, cities }: Props) => {
-  const { user } = useUser();
+  const { user, isLoading: userLoading } = useUser();
   const { data: userDb, isLoading } = useQuery(
     ["userDb", user],
     () => user && getOrCreateUser(user)
@@ -163,7 +163,6 @@ const CreateActivity = ({ activities, cities }: Props) => {
       });
     }
   };
-
   if (isLoading || !userDb?.data) return <Loading />;
   if (!userDb?.data.isAdmin) return <NotFound />;
   return (

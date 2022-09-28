@@ -2,20 +2,18 @@ import {
   Avatar,
   Badge,
   Button,
-  Code,
+
   Flex,
-  FormControl,
-  FormLabel,
-  Input,
+
   Select,
   Td,
   Text,
-  Textarea,
+
   Tr,
   useColorModeValue,
   useToast,
   Link,
-  useDisclosure,
+
 } from "@chakra-ui/react";
 
 import React, { useState } from "react";

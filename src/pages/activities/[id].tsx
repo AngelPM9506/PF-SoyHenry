@@ -11,6 +11,9 @@ import { GetServerSideProps } from "next/types";
 import { useUser } from "@auth0/nextjs-auth0";
 import Loading from "src/components/Loading";
 import NotFound from "../404";
+import { useState, useEffect, useMemo } from "react";
+import Reviews from "src/components/Reviews";
+import { getTrips } from "src/utils/trips";
 
 interface Props {
   id: QueryFunctionContext<string[], any>;
@@ -18,50 +21,43 @@ interface Props {
 }
 
 export default function Detail(props: Props) {
-  const { data, isLoading, error } = useQuery(["propsId"], async () => {
-    const activity = await getActivitiesId(props.id);
-    const id = props.id;
-    return {
-      activity: activity,
-      id: id,
-    };
-  });
+  const { data, isLoading, error } = useQuery(
+    ["propsId"],
+    async (notifyOnChangeProps) => {
+      const activity = await getActivitiesId(props.id);
+      const id = props.id;
+
+      return {
+        activity: activity,
+        id: id,
+      };
+    },
+    { notifyOnChangeProps: ["data"] }
+  );
+
+  const [change, setChange] = useState(1);
+
   if (isLoading) {
-    return <Loading />
+    return <Loading />;
   }
   if (!isLoading && !data) {
-    return <NotFound />
+    return <NotFound />;
   }
+
   return (
     <Layout>
-      {<ActivityDetail data={data} isLoading={isLoading} error={error} />}
+      {
+        <ActivityDetail
+          data={data}
+          isLoading={isLoading}
+          error={error}
+          change={change}
+          setChange={setChange}
+        />
+      }
     </Layout>
   );
 }
-
-// export async function getStaticPaths(context: any) {
-//   const activities = await ActivitiesControles.getActivities({});
-//   const paths = activities.map((a: any) => {
-//     const id = a.id;
-//     return { params: { id } };
-//   });
-//   return {
-//     paths,
-//     fallback: false,
-//   };
-// }
-
-// export async function getStaticProps({ params }: any) {
-//   const { id } = params;
-
-//   const activity = JSON.parse(JSON.stringify(await ActivitiesControles.getActivity({ id })));
-//   return {
-//     props: {
-//       activity,
-//       id,
-//     },
-//   };
-// }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { id } = context.query;

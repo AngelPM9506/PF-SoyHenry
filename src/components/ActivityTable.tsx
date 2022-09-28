@@ -15,16 +15,35 @@ import {
 } from "@chakra-ui/react";
 import { Select as ReactSelect } from "chakra-react-select";
 import React, { SetStateAction, useState } from "react";
-import { deleteActivity, editActivity } from "src/utils/activities";
+import {
+  deleteActivity,
+  editActivity,
+  getActivitiesId,
+} from "src/utils/activities";
 import { Activity } from "src/utils/interface";
 import NextLink from "next/link";
 import { ModalTextarea } from "./ModalEditableTextarea";
+import { QueryFunctionContext, useQuery } from "react-query";
+import Reviews from "./Reviews";
+import { ModalReviews } from "./ModalReviews";
+import Loading from "./Loading";
 type Props = {
   activity: Activity;
 };
 
 export function ActivityTable({ activity }: Props) {
-  const textColor = useColorModeValue("gray.700", "white");
+  const bg = useColorModeValue("#f4f4f4", "#151f21");
+  const { data: actData, isLoading } = useQuery(["propsId"], async () => {
+    const id = activity.id;
+    const actDetail = await getActivitiesId(id);
+
+    return {
+      activity: actDetail,
+      id: id,
+    };
+  });
+  console.log(actData);
+  const textColor = useColorModeValue("#151f21", "#f4f4f4");
 
   const toast = useToast();
   const avaFormated = activity.availability.map((d) => ({
@@ -91,7 +110,7 @@ export function ActivityTable({ activity }: Props) {
       isClosable: true,
     });
   };
-
+  if (isLoading) return <Loading />;
   return (
     <Tr key={changed}>
       <Td minWidth={{ sm: "250px" }} pl="0px">
@@ -136,7 +155,7 @@ export function ActivityTable({ activity }: Props) {
       </Td>
       <Td>
         <Flex direction="column">
-          <FormControl maxWidth={300}>
+          <FormControl>
             <ReactSelect
               id="availability"
               name="availability"
@@ -167,6 +186,7 @@ export function ActivityTable({ activity }: Props) {
               value={data.active.toString()}
               borderColor={"transparent"}
               onChange={(e) => handleActive(e)}
+              w={100}
             >
               <option value={"true"}>Active</option>
               <option value={"false"}>Inactive</option>
@@ -193,9 +213,14 @@ export function ActivityTable({ activity }: Props) {
         </Flex>
       </Td>
       <Td>
+        <Flex direction="column">
+          <ModalReviews data={actData} />
+        </Flex>
+      </Td>
+      <Td>
         <Button
-          bg={useColorModeValue("#151f21", "#f4f4f4")}
-          color={useColorModeValue("#f4f4f4", "#151f21")}
+          bg={textColor}
+          color={textColor}
           rounded={"md"}
           _hover={{
             transform: "translateY(-2px)",
@@ -203,34 +228,8 @@ export function ActivityTable({ activity }: Props) {
           }}
           onClick={() => handleEdit()}
         >
-          <Text
-            fontSize="md"
-            color={useColorModeValue("#f4f4f4", "#151f21")}
-            fontWeight="bold"
-            cursor="pointer"
-          >
-            Edit
-          </Text>
-        </Button>
-      </Td>
-      <Td>
-        <Button
-          bg={"red"}
-          color={"#151f21"}
-          rounded={"md"}
-          _hover={{
-            transform: "translateY(-2px)",
-            boxShadow: "lg",
-          }}
-          onClick={() => handleDelete()}
-        >
-          <Text
-            fontSize="md"
-            color={"white"}
-            fontWeight="bold"
-            cursor="pointer"
-          >
-            Delete
+          <Text fontSize="md" color={bg} fontWeight="bold" cursor="pointer">
+            Save
           </Text>
         </Button>
       </Td>

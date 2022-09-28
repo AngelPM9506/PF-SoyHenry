@@ -147,7 +147,7 @@ export default function ActivityDetail({ data, isLoading, error }: any) {
         </Stack>
       </SimpleGrid>
       <Box display={"flex"} alignItems={"center"} justifyContent={"center"}>
-        <Reviews feedbacks={data.activity.feedbacks} id={data.id} />
+        <Reviews feedbacks={data.activity.feedbacks} id={data.id} admin={false} />
       </Box>
     </Container>
   );

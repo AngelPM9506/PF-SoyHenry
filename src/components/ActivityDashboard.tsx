@@ -30,8 +30,7 @@ export const ActivityDashboard = ({
     "availability",
     "active",
     "description",
-    "edit",
-    "delete",
+    "save changes",
   ];
   const cities = activities.map((a) => a.city.name);
   const citiesUnique: string[] = Array.from(new Set(cities)).sort(); // remove duplicates, sort alphabetically
@@ -144,6 +143,7 @@ export const ActivityDashboard = ({
         display={"inline-flex"}
         gap={5}
         mb={5}
+        mt={5}
         key={availability}
       >
         <Select
@@ -221,7 +221,7 @@ export const ActivityDashboard = ({
         </Tbody>
       </Table>
       <Center>
-        <Flex gap={50}>
+        <Flex gap={50} mt={5}>
           <Select
             value={activitiesPerPage}
             name={"activitiesPerPage"}

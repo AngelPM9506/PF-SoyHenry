@@ -23,8 +23,9 @@ import { patchActivity, deleteComment, editComment } from "../utils/activities";
 interface Props {
   feedbacks: Comment[];
   id: string;
+  admin: boolean;
 }
-const Reviews = ({ feedbacks, id }: Props) => {
+const Reviews = ({ feedbacks, id, admin }: Props) => {
   const logofoto =
     "https://res.cloudinary.com/mauro4202214/image/upload/v1663331567/world-travelers/favicon.ico_c8ryjz.png";
   const { user } = useUser();
@@ -32,6 +33,8 @@ const Reviews = ({ feedbacks, id }: Props) => {
   const [ratingEdit, setRatingEdit] = useState(0);
   const [comment, setComment] = useState("");
   const [commentEdit, setCommentEdit] = useState("");
+  const [allComments, setAllComments] = useState(feedbacks);
+  const [allRatings, setAllRatings] = useState(feedbacks);
   const toast = useToast();
 
   if (!user || !feedbacks) {
@@ -43,17 +46,41 @@ const Reviews = ({ feedbacks, id }: Props) => {
     setRatingEdit(mycomment.rating);
     setCommentEdit(mycomment.comment);
   }
-
+  console.log(allComments);
   const handleInput = (e: any) => {
     setComment(e.target.value);
   };
-  const handleInputEdit = (e: any) => {
+  const handleInputEdit = (e: any, id?: string) => {
+    if (admin) {
+      const comment: any = allComments.map((c) => {
+        if (c.id === id) {
+          return (c = { ...c, comment: e.target.value });
+        } else return c;
+      });
+      return setAllComments(comment);
+    }
     setCommentEdit(e.target.value);
   };
-  const handleRatingEdit = (e: any) => {
+  const handleRatingEdit = (e: any, id?: string) => {
+    if (admin) {
+      const rating: any = allComments.map((c) => {
+        if (c.id === id) {
+          return (c = { ...c, rating: Number(e) });
+        } else return c;
+      });
+      return setAllComments(rating);
+    }
     setRatingEdit(e);
   };
+  const handleAllComments = (id: string) => {
+    const comment = allComments.find((c) => c.id === id);
+    return comment.comment;
+  };
 
+  const handleAllRatings = (id: string) => {
+    const ratings = allComments.find((c) => c.id === id);
+    return ratings.rating;
+  };
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     await patchActivity({
@@ -72,8 +99,42 @@ const Reviews = ({ feedbacks, id }: Props) => {
       isClosable: true,
     });
   };
-
-  const handleEdit = async () => {
+  console.log(feedbacks);
+  const handleEdit = async (id?: string) => {
+    // if (admin) {
+    //   const comment = allComments.find((c) => c.User.id === id);
+    //   const idFeedback = comment.id;
+    //   await editComment({
+    //     id: id,
+    //     comment: comment.comment,
+    //     idFeedback: idFeedback,
+    //     rating: comment.rating,
+    //   });
+    //   return toast({
+    //     title: "Comment edited!",
+    //     description: "Thank you! Your changes have been succesfully updated.",
+    //     status: "success",
+    //     duration: 3000,
+    //     isClosable: true,
+    //   });
+    // }
+    if (admin) {
+      allComments.forEach(async (c) => {
+        await editComment({
+          comment: c.comment,
+          rating: c.rating,
+          id: id,
+          idFeedback: c.id,
+        });
+      });
+      return toast({
+        title: "Comment posted!",
+        description: "Thank you! Now other travelers can read your opinion.",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
+    }
     const idFeedback = mycomment.id;
     await editComment({
       id: id,
@@ -90,7 +151,17 @@ const Reviews = ({ feedbacks, id }: Props) => {
     });
   };
 
-  const handleDelete = async () => {
+  const handleDelete = async (feedbackId?: string) => {
+    if (admin) {
+      await deleteComment(id, feedbackId);
+      return toast({
+        title: "Comment deleted!",
+        description: "Thank you! Your comment is deleted.",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
+    }
     const idFeedback = mycomment.id;
     await deleteComment(id, idFeedback);
     toast({
@@ -126,10 +197,10 @@ const Reviews = ({ feedbacks, id }: Props) => {
         justifyContent={"center"}
         alignItems={"center"}
       >
-        {feedbacks.map((comment, index) =>
-          comment === mycomment ? (
+        {feedbacks.map((comment) =>
+          comment === mycomment || admin ? (
             <Box rounded={"xl"} width={"90%"} bgColor={"#D1DFE3"} mb={"10px"}>
-              <FormControl key={index} width={"100%"}>
+              <FormControl key={comment.User.id} width={"100%"}>
                 <HStack
                   justifyContent={"space-between"}
                   alignItems={"center"}
@@ -165,9 +236,9 @@ const Reviews = ({ feedbacks, id }: Props) => {
 
                   <Box width={"200px"} height={"60px"} pt={"15px"}>
                     <StarRatings
-                      rating={ratingEdit}
+                      rating={admin ? handleAllRatings(comment.id) : ratingEdit}
                       starRatedColor="#F3B46F"
-                      changeRating={(e: any) => handleRatingEdit(e)}
+                      changeRating={(e: any) => handleRatingEdit(e, comment.id)}
                       numberOfStars={5}
                       starDimension={"25px"}
                       starHoverColor={"#293541"}
@@ -208,8 +279,10 @@ const Reviews = ({ feedbacks, id }: Props) => {
                       border={"1px"}
                       borderColor={"#293541"}
                       vertical-align={"top"}
-                      onChange={(e: any) => handleInputEdit(e)}
-                      value={commentEdit}
+                      onChange={(e: any) => handleInputEdit(e, comment.id)}
+                      value={
+                        admin ? handleAllComments(comment.id) : commentEdit
+                      }
                     ></Textarea>
                   </VStack>
                   <VStack
@@ -242,7 +315,9 @@ const Reviews = ({ feedbacks, id }: Props) => {
                       variant="outline"
                       width={"160px"}
                       fontSize={"md"}
-                      onClick={handleDelete}
+                      onClick={() =>
+                        admin ? handleDelete(comment.id) : handleDelete()
+                      }
                     >
                       Delete Comment
                     </Button>
@@ -252,7 +327,7 @@ const Reviews = ({ feedbacks, id }: Props) => {
             </Box>
           ) : (
             <Box rounded={"xl"} width={"90%"} bgColor={"#D1DFE3"} mb={"10px"}>
-              <FormControl key={index} width={"100%"}>
+              <FormControl key={comment.User.id} width={"100%"}>
                 <HStack
                   justifyContent={"space-between"}
                   alignItems={"center"}
@@ -348,7 +423,7 @@ const Reviews = ({ feedbacks, id }: Props) => {
           )
         )}
       </Box>
-      {mycomment ? (
+      {mycomment || admin ? (
         <Box></Box>
       ) : (
         <Box rounded={"xl"} width={"90%"} bgColor={"#D1DFE3"}>

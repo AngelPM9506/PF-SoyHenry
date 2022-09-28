@@ -180,7 +180,7 @@ export type contact = {
   whatsapp: string;
   message: string;
   userId?: string;
-}
+};
 
 export type newContact = {
   name: string;
@@ -190,4 +190,4 @@ export type newContact = {
   whatsapp: string;
   message: string;
   userId: string;
-}
+};

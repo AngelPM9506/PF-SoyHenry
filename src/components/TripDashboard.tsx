@@ -17,9 +17,7 @@ import {
 import React, { useState } from "react";
 import { Activity, Trip } from "src/utils/interface";
 
-
 import Pagination from "./pagination";
-
 
 import TripTable from "./TripTable";
 export const TripDashboard = ({
@@ -36,7 +34,7 @@ export const TripDashboard = ({
     "price",
     "active",
     "description",
-    "edit",
+    "save changes",
     "delete",
   ];
 
@@ -57,7 +55,6 @@ export const TripDashboard = ({
     t.activitiesOnTrips.map((a) => a.activity.name)
   );
   const activitiesUnique: string[] = Array.from(new Set(actOnTrips)).sort();
- 
 
   const handleTripsPerPage = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setTripsPerPage(Number(e.target.value));
@@ -153,6 +150,7 @@ export const TripDashboard = ({
         display={"inline-flex"}
         gap={5}
         mb={5}
+        mt={5}
       >
         <Select
           width={250}
@@ -227,7 +225,7 @@ export const TripDashboard = ({
         </Tbody>
       </Table>
       <Center>
-        <Flex gap={50}>
+        <Flex gap={50} mt={5}>
           <Select
             value={tripsPerPage}
             name={"tripsPerPage"}

@@ -34,7 +34,7 @@ export const UserDashboard = ({ users }: { users: UserData[] }) => {
     "description",
     "admin",
     "active",
-    "edit",
+    "save changes",
   ];
   const textColor = useColorModeValue("gray.900", "gray.400");
 
@@ -104,6 +104,7 @@ export const UserDashboard = ({ users }: { users: UserData[] }) => {
         display={"inline-flex"}
         gap={5}
         mb={5}
+        mt={5}
       >
         <Select
           width={250}
@@ -170,7 +171,7 @@ export const UserDashboard = ({ users }: { users: UserData[] }) => {
         </Tbody>
       </Table>
       <Center>
-        <Flex gap={50}>
+        <Flex gap={50} mt={5}>
           <Select
             value={usersPerPage}
             name={"usersPerPage"}

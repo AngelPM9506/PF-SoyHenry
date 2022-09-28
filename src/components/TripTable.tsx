@@ -2,18 +2,14 @@ import {
   Avatar,
   Badge,
   Button,
-
   Flex,
-
   Select,
   Td,
   Text,
-
   Tr,
   useColorModeValue,
   useToast,
   Link,
-
 } from "@chakra-ui/react";
 
 import React, { useState } from "react";
@@ -210,7 +206,7 @@ function TripTable({ trip, activities }: Props) {
               value={data.active.toString()}
               borderColor={"transparent"}
               onChange={(e) => handleChange(e)}
-              w={95}
+              w={100}
             >
               <option value={"true"}>Active</option>
               <option value={"false"}>Inactive</option>
@@ -271,7 +267,7 @@ function TripTable({ trip, activities }: Props) {
             fontWeight="bold"
             cursor="pointer"
           >
-            Edit
+            Save
           </Text>
         </Button>
       </Td>

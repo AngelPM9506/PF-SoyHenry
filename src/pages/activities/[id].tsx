@@ -24,6 +24,7 @@ import { useRouter } from "next/router";
 import { useState, useEffect, useMemo } from "react";
 import Reviews from "src/components/Reviews";
 import { getTrips } from "src/utils/trips";
+import { useUser } from "@auth0/nextjs-auth0";
 
 interface Props {
   id: QueryFunctionContext<string[], any>;

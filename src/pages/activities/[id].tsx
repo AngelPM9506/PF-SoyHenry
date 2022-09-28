@@ -21,9 +21,13 @@ import { GetServerSideProps } from "next/types";
 import { useUser } from "@auth0/nextjs-auth0";
 import Loading from "src/components/Loading";
 import NotFound from "../404";
+
+import { useRouter } from "next/router";
+
 import { useState, useEffect, useMemo } from "react";
 import Reviews from "src/components/Reviews";
 import { getTrips } from "src/utils/trips";
+
 
 interface Props {
   id: QueryFunctionContext<string[], any>;
@@ -58,6 +62,10 @@ export default function Detail(props: Props) {
     };
   });
 
+  if (!userLoading && !user) {
+    router.push("/api/auth/login");
+    return <div></div>;
+  }
   if (isLoading) {
     return <Loading />;
   }

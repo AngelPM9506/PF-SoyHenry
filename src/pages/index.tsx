@@ -14,39 +14,44 @@ import {
 import ReactPlayer from "react-player";
 import axios from "axios";
 import { NextSeo } from "next-seo";
-import { BsSoundwave } from "react-icons/bs";
+import { GiSoundWaves } from "react-icons/gi";
 import { useState } from "react";
 import NextLink from "next/link";
+import styles from "../styles/landing.module.css";
 
 const LandingPage: NextPage = () => {
   const url =
     "https://res.cloudinary.com/mauro4202214/video/upload/v1663337043/world-travelers/videolandingpagecrop_iklwjv.mp4";
-  const [ismuted, setismuted] = useState(false);
+
+  const [ismuted, setismuted] = useState(true);
+  const [color, setcolor] = useState("#D1DFE3");
+
+  const handlemuted = () => {
+    setismuted(!ismuted);
+    if (color === "#D1DFE3") {
+      setcolor("#02b1b1");
+    } else {
+      setcolor("#D1DFE3");
+    }
+  };
 
   const play = (event: any) => {
     event.target.play();
   };
   return (
-    <>
-      <NextSeo title="World Travelers" />
-      <Box height={"100vh"} width={"100vw"}>
-        <ReactPlayer
-          loop
-          width="100vw"
-          height={"100vh"}
-          object-fit={"cover"}
-          top="50%"
-          left="50%"
-          transform="translate(-50%, -50%)"
-          // zIndex="-1"
-          url={url}
-          controls={false}
-          volume={0.1}
-          onMouseMove={play}
-          playsinline
-          muted={ismuted}
-          onMouseOver={(e: any) => e.target.play()}
-        />
+    <Box className={styles.main}>
+    <NextSeo title="World Travelers" />
+      <video
+        src={url}
+        loop
+        className={styles.video}
+        controls={false}
+        onMouseMove={play}
+        muted={ismuted}
+        onMouseOver={(e: any) => e.target.play()}
+      />
+      <Box>
+
         <FormControl
           position={"fixed"}
           top={"10px"}
@@ -56,8 +61,7 @@ const LandingPage: NextPage = () => {
           justifyContent={"center"}
           alignItems="center"
         >
-          <BsSoundwave size={"30px"} />
-          <Switch id="sound" onClick={() => setismuted(!ismuted)} />
+          <GiSoundWaves onClick={handlemuted} color={color} size={"50px"} />
         </FormControl>
         <Box marginTop={{ base: "-500px", md: "-700px" }}>
           <Stack flex={1} spacing={{ base: 5, md: 10 }}>

@@ -27,7 +27,7 @@ const Home = ({ trips, activities }: Props) => {
     ["userDb", user],
     () => user && getOrCreateUser(user)
   );
-  if (isLoading) return <Loading />;
+  // if (isLoading) return <Loading />;
   if (!isLoading && userDb && !userDb.data.active) {
     return <BannedAlert />;
   }

@@ -1,40 +1,30 @@
-import React, { ReactNode, useState } from "react";
+import { useState } from "react";
 import {
   Box,
   Flex,
   Avatar,
   HStack,
-  Link,
   IconButton,
   Button,
   Menu,
   MenuButton,
   MenuList,
   MenuItem,
-  MenuDivider,
   useDisclosure,
   useColorModeValue,
-  Stack,
   Heading,
   Image,
   useColorMode,
-  LinkProps,
+  Text,
 } from "@chakra-ui/react";
 import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
 import { MoonIcon, SunIcon } from "@chakra-ui/icons";
 import { useUser } from "@auth0/nextjs-auth0";
 import { useQuery } from "react-query";
 import { getOrCreateUser } from "src/utils/User";
-import { UserData } from "../UserProfile";
 import NextLink from "next/link";
 import { useRouter } from "next/router";
 
-interface NavLinkProps extends LinkProps {
-  children?: string | React.ReactNode;
-  to: string;
-  activeProps?: LinkProps;
-  _hover?: LinkProps;
-}
 const logo: string =
   "https://res.cloudinary.com/mauro4202214/image/upload/v1663331570/world-travelers/logowt_qifbpn.png";
 const logoNight: string =
@@ -56,110 +46,143 @@ export default function NavBar() {
     ["userDb", user],
     () => user && getOrCreateUser(user)
   );
-
-  const handleActive = (e: any) => {
-    setActive(e.target.id);
+  const handleActive = (
+    e: React.MouseEvent<HTMLHeadingElement, MouseEvent>
+  ) => {
+    setActive(e.currentTarget.id);
   };
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { colorMode, toggleColorMode } = useColorMode();
-  const textColor = useColorModeValue("gray.700", "white");
+  const textColor = useColorModeValue("#293541", "white");
   return (
     <>
-      <Box padding={"3px"} boxShadow={"1px 1px 1px 1px #D1DFE3"} px={4}>
-        <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
-          <IconButton
-            size={"md"}
-            icon={isOpen ? <CloseIcon /> : <HamburgerIcon />}
-            aria-label={"Open Menu"}
-            display={{ md: "none" }}
-            onClick={isOpen ? onClose : onOpen}
-          />
-
-          <HStack spacing={12} alignItems={"center"}>
-            <Box>
+      <Flex
+        as="header"
+        position={"sticky"}
+        backgroundColor="transparent"
+        backdropFilter="blur(10px)"
+        w="100%"
+        h={["70px", "70px", "70px", "70px"]}
+        top={0}
+        zIndex={10}
+      >
+        <Box
+          w={"100%"}
+          padding={"3px"}
+          boxShadow={"1px 1px 1px 1px #D1DFE3"}
+          px={4}
+        >
+          <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
+            <IconButton
+              size={"md"}
+              icon={isOpen ? <CloseIcon /> : <HamburgerIcon />}
+              aria-label={"Open Menu"}
+              display={{ xl: "none" }}
+              onClick={isOpen ? onClose : onOpen}
+            />
+            <HStack spacing={12} alignItems={"center"}>
               <NextLink href={Links[0][0]}>
                 <Image
                   cursor={"pointer"}
-                  height={"60px"}
+                  w={["100px", "150px", "200px"]}
                   src={useColorModeValue(logo, logoNight)}
                   alt="logo"
                 />
               </NextLink>
-            </Box>
-          </HStack>
-          <HStack
-            as={"nav"}
-            spacing={10}
-            justifyContent={"center"}
-            display={{ base: "none", md: "flex" }}
-          >
-            {Links.map((l, index) => (
-              <NextLink href={l[0]} key={index}>
-                <Heading
-                  cursor={"pointer"}
-                  fontSize={"2xl"}
-                  fontWeight={"3px"}
-                  id={l[0]}
-                  onClick={(e) => handleActive(e)}
-                  color={active === l[0] ? "#F3B46F" : textColor}
-                >
-                  {l[1]}
-                </Heading>
-              </NextLink>
-            ))}
-          </HStack>
-          <Flex alignItems={"center"}>
-            <Button
-              marginRight={"50px"}
+            </HStack>
+            <HStack
+              as={"nav"}
+              spacing={10}
               justifyContent={"center"}
-              alignItems={"center"}
-              onClick={toggleColorMode}
-              bgColor={"transparent"}
+              display={{ base: "none", xl: "flex" }}
             >
-              {colorMode === "light" ? <MoonIcon /> : <SunIcon />}
-            </Button>
-            <Menu>
-              <MenuButton
-                as={Button}
-                rounded={"full"}
-                variant={"link"}
-                cursor={"pointer"}
-                minW={0}
+              {Links.map((l, index) => (
+                <NextLink href={l[0]} key={index}>
+                  <Heading
+                    cursor={"pointer"}
+                    fontSize={"2xl"}
+                    fontWeight={"3px"}
+                    id={l[0]}
+                    onClick={(e) => handleActive(e)}
+                    color={active === l[0] ? "#F3B46F" : textColor}
+                  >
+                    {l[1]}
+                  </Heading>
+                </NextLink>
+              ))}
+            </HStack>
+            <Flex alignItems={"center"}>
+              <Button
+                marginRight={"50px"}
+                justifyContent={"center"}
+                alignItems={"center"}
+                onClick={toggleColorMode}
+                bgColor={"transparent"}
               >
-                <Avatar size={"md"} src={userDb?.data.avatar} />
-              </MenuButton>
-              <MenuList>
-                <MenuItem>
-                  <NextLink href={`/user/profile`}>
-                    <Link> My Profile </Link>
-                  </NextLink>
-                </MenuItem>
-                <MenuItem>
-                  <NextLink href={`/user/${userDb?.data.id}`}>
-                    <Link> My Public Profile </Link>
-                  </NextLink>
-                </MenuItem>
-                <MenuItem>
-                  <NextLink href={`/user/my-trips`}>
-                    <Link> My Trips </Link>
-                  </NextLink>
-                </MenuItem>
-                <MenuItem>
-                  <Link href="/api/auth/logout">Logout</Link>
-                </MenuItem>
-                {userDb?.data.isAdmin && (
+                {colorMode === "light" ? <MoonIcon /> : <SunIcon />}
+              </Button>
+              <Menu>
+                <MenuButton
+                  as={Button}
+                  rounded={"full"}
+                  variant={"link"}
+                  cursor={"pointer"}
+                  minW={0}
+                >
+                  <Avatar size={"md"} src={userDb?.data.avatar} />
+                </MenuButton>
+                <MenuList>
                   <MenuItem>
-                    <NextLink href={`/user/admin`}>
-                      <Link> Admin Panel </Link>
+                    <NextLink href={`/user/profile`}>
+                      <Text>My Profile</Text>
                     </NextLink>
                   </MenuItem>
-                )}
-              </MenuList>
-            </Menu>
+                  <MenuItem>
+                    <NextLink href={`/user/${userDb?.data.id}`}>
+                      <Text> My Public Profile </Text>
+                    </NextLink>
+                  </MenuItem>
+                  <MenuItem>
+                    <NextLink href={`/user/my-trips`}>
+                      <Text> My Trips </Text>
+                    </NextLink>
+                  </MenuItem>
+                  {userDb?.data.isAdmin && (
+                    <MenuItem>
+                      <NextLink href={`/user/admin`}>
+                        <Text> Admin Panel </Text>
+                      </NextLink>
+                    </MenuItem>
+                  )}
+                  <MenuItem>
+                    <NextLink href={"/api/auth/logout"}>
+                      <Text>Logout</Text>
+                    </NextLink>
+                  </MenuItem>
+                </MenuList>
+              </Menu>
+            </Flex>
           </Flex>
-        </Flex>
-        {isOpen ? <Box pb={4} display={{ md: "none" }}></Box> : null}
-      </Box>
+          {isOpen ? (
+            <Box pb={4} display={{ xl: "none" }}>
+              {Links.map((l, index) => (
+                <NextLink href={l[0]} key={index}>
+                  <Heading
+                    cursor={"pointer"}
+                    fontSize={"md"}
+                    fontWeight={"2px"}
+                    id={l[0]}
+                    onClick={(e) => handleActive(e)}
+                    color={active === l[0] ? "#02b1b1" : textColor}
+                  >
+                    {l[1]}
+                  </Heading>
+                </NextLink>
+              ))}
+            </Box>
+          ) : null}
+        </Box>
+      </Flex>
     </>
   );
 }

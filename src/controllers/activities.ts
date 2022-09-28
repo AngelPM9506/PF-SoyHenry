@@ -98,6 +98,22 @@ const ActivitiesControles = {
           include: { trip: true },
         },
         city: true,
+        feedbacks: {
+          select: {
+            id: true,
+            userMail: true,
+            comment: true,
+            rating: true,
+            feedbackDate: true,
+            User: {
+              select: {
+                name: true,
+                id: true,
+                avatar: true,
+              },
+            },
+          },
+        },
       },
       orderBy,
     };

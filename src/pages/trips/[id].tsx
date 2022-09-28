@@ -7,6 +7,8 @@ import { getTripId, getTrips } from "src/utils/trips";
 import TripsControllers from "src/controllers/trips";
 import axios from "axios";
 import { GetServerSideProps } from "next/types";
+import { useUser } from "@auth0/nextjs-auth0";
+import { useRouter } from "next/router";
 
 interface Props {
   id: QueryFunctionContext<string[], any>;
@@ -14,6 +16,8 @@ interface Props {
 }
 
 export default function Detail(props: Props) {
+  const router = useRouter();
+  const { user, isLoading: userLoading } = useUser();
   const { data, isLoading, error } = useQuery(
     ["propsId"],
     () => getTripId(props.id),
@@ -21,6 +25,12 @@ export default function Detail(props: Props) {
       initialData: props.trip,
     }
   );
+
+  if (!userLoading && !user) {
+    router.push("/api/auth/login");
+    return <div></div>;
+  }
+
   return (
     <Layout>
       <TripDetail data={data} isLoading={isLoading} error={error} />

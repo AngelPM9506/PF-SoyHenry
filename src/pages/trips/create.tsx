@@ -47,7 +47,6 @@ import {
   valActDateFormat,
 } from "src/utils/validations";
 // import sendMail from "src/utils/mail";
-import { upPrice } from "src/components/Carousel";
 import NextLink from "next/link";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -65,7 +64,9 @@ interface Props {
 const MyDataPicker = chakra(DatePicker);
 
 const CreateTrip = ({ activities, cities, trips }: Props) => {
-  const { user, error } = useUser();
+  const toast = useToast();
+  const router = useRouter();
+  const { user, isLoading: userLoading } = useUser();
 
   const { data: userDb, isLoading } = useQuery(
     ["userDb", user],
@@ -86,9 +87,6 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
     price: 0,
     image: null,
   };
-
-  const toast = useToast();
-  const router = useRouter();
 
   const [input, setInput] = useState(initialState);
   const [inputCities, setInputCities] = useState("");
@@ -133,7 +131,6 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
   };
 
   const handleActDate = (date: any, id: string) => {
-    console.log(date);
     setActDate(date);
     setIsDisabled((prevState) => [...prevState, id]);
     const errActDate = valActDateFormat(date);
@@ -257,10 +254,8 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
 
   const createTrip = async (trip: Trip) => {
     trip.planner = userDb.data.id;
-    console.log(trip);
     try {
       let resp = await axios.post("/api/trips", trip);
-      console.log(resp.data);
       return resp.data;
     } catch (error) {
       console.log(error);
@@ -271,20 +266,24 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
     e.preventDefault();
     let tripCreated = await createTrip(input);
     setInput(initialState);
-    await axios
-      .post("/api/mail", {
-        mail: userDb.data.mail,
-        subject: `Trip ${input.name} has been create successfuly thanks to use WORLD TRAVELERS`,
-        message: `Your Trip: ${input.name} has been create successfuly thanks to use WORLD TRAVELERS`,
-        html: {
-          title: "Trip created successfuly",
-          actionName: input.name,
-          text: `Your Trip ${input.name} has been created`,
-          url: `/trips/${tripCreated.id}`,
-          urlMsg: "See your trip here",
-        },
-      })
-      .catch((error) => console.log(error));
+    try {
+      await axios
+        .post("/api/mail", {
+          mail: userDb.data.mail,
+          subject: `Trip ${input.name} has been create successfuly thanks to use WORLD TRAVELERS`,
+          message: `Your Trip: ${input.name} has been create successfuly thanks to use WORLD TRAVELERS`,
+          html: {
+            title: "Trip created successfuly",
+            actionName: input.name,
+            text: `Your Trip ${input.name} has been created`,
+            url: `/trips/${tripCreated.id}`,
+            urlMsg: "See your trip here",
+          },
+        })
+        .catch((error) => console.log(error));
+    } catch(error) {
+      console.log(error);
+    }
     if (tripCreated) {
       toast({
         title: "Trip Created",
@@ -369,10 +368,18 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [overlay, setOverlay] = useState(<OverlayTwo />);
-  if (!isLoading && userDb && !userDb.data.active) {
-    return <BannedAlert />;
+
+  if (!userLoading && !user) {
+    router.push("/api/auth/login");
+    return <div></div>;
   }
-  if (isLoading) return <Loading />
+
+
+  if (!isLoading && userDb && !userDb.data.active) return <BannedAlert />;
+
+  if (isLoading) return <Loading />;
+
+
   return (
     <Layout>
       <Center marginTop="1%">
@@ -640,12 +647,6 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
                                           >
                                             {`$${act?.price}`}
                                           </Text>
-                                          <Text
-                                            textDecoration={"line-through"}
-                                            color={"#F3B46F"}
-                                          >
-                                            {`$${upPrice(act?.price)}`}
-                                          </Text>
                                         </Box>
                                         <GridItem>
                                           <FormLabel fontSize={"xs"}>
@@ -654,10 +655,12 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
                                           <MyDataPicker
                                             dateFormat="yyyy/mm/ddd"
                                             onChange={(date) => {
-                                            let D = new Date(date.toString())
-                                              handleActDate(`${D.getFullYear()}-${D.getMonth()}-${D.getDay()}`, id)
-                                            }
-                                            }
+                                              let D = new Date(date.toString());
+                                              handleActDate(
+                                                `${D.getFullYear()}-${D.getMonth()}-${D.getDay()}`,
+                                                id
+                                              );
+                                            }}
                                             filterDate={(date) =>
                                               ableDays(date, act.availability)
                                             }

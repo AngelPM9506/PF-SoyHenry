@@ -17,7 +17,6 @@ const defaultpic: string =
 export function TripCard({ props }: any) {
   return (
     <Center key={props.id} py={12}>
-      <NextLink href={`/trips/${props.id}`}>
         <Box
           role={"group"}
           p={6}
@@ -64,8 +63,7 @@ export function TripCard({ props }: any) {
               alt="image card Trip"
             />
           </Box>
-
-          <Stack marginTop={0} height={"80px"} align={"center"}>
+          <Stack marginTop={"80px"} height={"80px"} align={"center"}>
             <Heading
               fontSize={"2xl"}
               fontFamily={"body"}
@@ -75,7 +73,7 @@ export function TripCard({ props }: any) {
               {props.name.charAt(0).toUpperCase() + props.name.slice(1)}
             </Heading>
           </Stack>
-          <VStack direction={"row"} align={"center"}>
+          <VStack direction={"row"} align={"center"} marginTop={"-25px"}>
             <Text fontWeight={400} fontSize={"18px"}>
               From <b>{new Date(props.initDate).toLocaleDateString()}</b> To{" "}
               <b>{new Date(props.endDate).toLocaleDateString()}</b>
@@ -123,7 +121,6 @@ export function TripCard({ props }: any) {
             </NextLink>
           </Stack>
         </Box>
-      </NextLink>
     </Center>
   );
 }

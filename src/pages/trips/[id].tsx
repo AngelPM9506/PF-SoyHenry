@@ -25,10 +25,12 @@ export default function Detail(props: Props) {
       initialData: props.trip,
     }
   );
+
   if (!userLoading && !user) {
     router.push("/api/auth/login");
     return <div></div>;
   }
+
   return (
     <Layout>
       <TripDetail data={data} isLoading={isLoading} error={error} />

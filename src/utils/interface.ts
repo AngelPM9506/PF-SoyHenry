@@ -51,7 +51,17 @@ export interface Activity {
   active?: boolean;
   idFeedback?: string;
   comment?: string;
+  feedbacks?: Feedback[];
 }
+
+export type Feedback = {
+  id: string;
+  userMail: string;
+  comment: string;
+  rating: number;
+  feedbackDate: string;
+  User: User;
+};
 
 export type typeSort = {
   [x: string]: string;

@@ -122,7 +122,7 @@ export const deleteActivity = async (id: string) => {
   return activity.data;
 };
 
-export const deleteComment = async (id: string, idFeedback: string) => {
+export const deleteComment = async ({ id, idFeedback }: any) => {
   const comment = await axios.delete(
     `/api/activities/${id}?idFeedback=${idFeedback}`
   );

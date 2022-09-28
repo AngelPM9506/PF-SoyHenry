@@ -1,6 +1,5 @@
 import Footer from "./Footer";
 import Nav from "./Nav";
-import { Container } from "@chakra-ui/react";
 
 export default function Layout({
   children,

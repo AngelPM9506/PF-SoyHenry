@@ -150,6 +150,7 @@ const Activities = ({ activities }: Props) => {
   ) : (
     <div>
       <Layout>
+        <NextSeo title="Activities" />
         <Center>
           <Heading
             pt={"30px"}

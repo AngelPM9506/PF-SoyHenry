@@ -1,5 +1,4 @@
-import { Box } from "@chakra-ui/react";
-import { Activity, User } from "src/utils/interface";
+import { Activity } from "src/utils/interface";
 import axios from "axios";
 import Layout from "../../components/layout/Layout";
 
@@ -9,7 +8,6 @@ import {
   getActivitiesId,
   patchActivity,
 } from "src/utils/activities";
-import { getUsers } from "src/utils/User";
 import {
   QueryFunctionContext,
   useMutation,
@@ -18,12 +16,8 @@ import {
 } from "react-query";
 import ActivityDetail from "src/components/ActivityDetail";
 import { GetServerSideProps } from "next/types";
-import { useUser } from "@auth0/nextjs-auth0";
 import Loading from "src/components/Loading";
 import NotFound from "../404";
-import { useState, useEffect, useMemo } from "react";
-import Reviews from "src/components/Reviews";
-import { getTrips } from "src/utils/trips";
 
 interface Props {
   id: QueryFunctionContext<string[], any>;
@@ -70,8 +64,8 @@ export default function Detail(props: Props) {
       {
         <ActivityDetail
           data={data}
-          isLoading={isLoading}
-          error={error}
+          // isLoading={isLoading}
+          // error={error}
           mutatesubmit={mutatesubmit}
           mutateedit={mutateedit}
           mutatedelete={mutatedelete}

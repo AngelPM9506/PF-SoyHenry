@@ -11,20 +11,20 @@ import {
   useToast,
   Tooltip,
 } from "@chakra-ui/react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import StarRatings from "react-star-ratings";
 import { FiSend, FiDelete } from "react-icons/fi";
 import { ImCancelCircle } from "react-icons/im";
 import { BsPencilFill } from "react-icons/bs";
 import { GrEdit } from "react-icons/gr";
 import NextLink from "next/link";
-import { Comment, User } from "../utils/interface";
+import { Comment } from "../utils/interface";
 import { useUser } from "@auth0/nextjs-auth0";
-const breakpoints = {
-  sm: "400px",
-  md: "600px",
-  lg: "1000px",
-};
+// const breakpoints = {
+//   sm: "400px",
+//   md: "600px",
+//   lg: "1000px",
+// };
 
 interface Props {
   feedbacks: Comment[];

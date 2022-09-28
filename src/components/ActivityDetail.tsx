@@ -20,7 +20,7 @@ import {
   TabPanels,
   Tabs,
 } from "@chakra-ui/react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import NextLink from "next/link";
 import Loading from "src/components/Loading";
 import Reviews from "src/components/Reviews";
@@ -28,14 +28,14 @@ import { TripDescription } from "./TripDescription";
 
 export default function ActivityDetail({
   data,
-  isLoading,
-  error,
+  // isLoading,
+  // error,
   mutatesubmit,
   mutateedit,
   mutatedelete,
 }: any) {
-  if (isLoading) return <Loading />;
-  if (error) return <div>{error.message}</div>;
+  // if (isLoading) return <Loading />;
+  // if (error) return <div>{error.message}</div>;
   const [feedBacks, setFeedBacks] = useState(data.activity.feedbacks);
 
   const tripscards = data.activity.activitiesOnTrips.filter(

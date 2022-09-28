@@ -14,7 +14,7 @@ export const TripDescription = ({ noOfLines = 4, children }: Props) => {
     setExpandedCount(expandedCount ? undefined : noOfLines);
 
   return (
-    <Box display="inline-block" as="span" marginRight={"20px"}>
+    <Box display="inline-block" as="span">
       <Box noOfLines={expandedCount}>{children}</Box>
       <Button
         size="md"

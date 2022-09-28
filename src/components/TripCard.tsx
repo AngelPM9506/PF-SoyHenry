@@ -61,7 +61,7 @@ export function TripCard({ props }: any) {
               alt="image card Trip"
             />
           </Box>
-          <Stack marginTop={"90px"} p={2} align={"center"}>
+          <Stack marginTop={"80px"} h="80px" align={"center"}>
             <Heading
               noOfLines={1}
               fontSize={"2xl"}
@@ -69,7 +69,7 @@ export function TripCard({ props }: any) {
               fontWeight={600}
               textAlign={"center"}
             >
-              {props.name}
+              {props.name.charAt(0).toUpperCase() + props.name.slice(1)}
             </Heading>
           </Stack>
           <VStack direction={"row"} align={"center"}>

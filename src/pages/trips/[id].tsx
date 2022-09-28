@@ -21,6 +21,8 @@ export default function Detail(props: Props) {
       initialData: props.trip,
     }
   );
+
+  console.log(data);
   return (
     <Layout>
       <TripDetail data={data} isLoading={isLoading} error={error} />

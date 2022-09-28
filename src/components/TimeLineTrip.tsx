@@ -86,7 +86,7 @@ export const TimeLine = ({ data }: any) => {
           alignItems="center"
           justifyContent="center"
           textAlign="center"
-          height="150px"
+          height="160px"
         >
           <AlertIcon boxSize="40px" mr={0} />
           <AlertTitle mt={4} mb={1} fontSize="lg">

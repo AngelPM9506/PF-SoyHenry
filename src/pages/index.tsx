@@ -1,17 +1,29 @@
 import type { NextPage } from "next";
-import { Stack, Box, Heading, Text, Button, Center } from "@chakra-ui/react";
+import {
+  Stack,
+  Box,
+  Heading,
+  Text,
+  Button,
+  Center,
+  Image,
+} from "@chakra-ui/react";
 import ReactPlayer from "react-player";
 import axios from "axios";
 
 const landingPage: NextPage = () => {
   const url =
     "https://res.cloudinary.com/mauro4202214/video/upload/v1663337043/world-travelers/videolandingpagecrop_iklwjv.mp4";
+
+  const image =
+    "https://drive.google.com/uc?id=1YZhzZFB0nRQuLLzmFVq13upFeZQo5CLd";
+
   const play = (event: any) => {
     event.target.play();
   };
   return (
     <Box height={"100vh"} width={"100vw"}>
-      <ReactPlayer
+      {/* <ReactPlayer
         loop
         width="100vw"
         height={"100vh"}
@@ -27,7 +39,8 @@ const landingPage: NextPage = () => {
         playsinline
         // muted
         onMouseOver={(e: any) => e.target.play()}
-      />
+      /> */}
+      <Image src={image}></Image>
       <Box marginTop={{ base: "-130%", md: "-45%" }}>
         <Stack flex={1} spacing={{ base: 5, md: 10 }}>
           <Heading
@@ -52,7 +65,7 @@ const landingPage: NextPage = () => {
                 zIndex: -1,
               }}
             >
-              Welcome to,
+              Welcome
             </Text>
             <br />
             <Text
@@ -74,7 +87,7 @@ const landingPage: NextPage = () => {
             fontWeight="400"
             textShadow="1px 1px #D1DFE3"
           >
-            The most amazing community of travelers!
+            Join the most amazing community!
           </Text>
           <Center>
             <Stack

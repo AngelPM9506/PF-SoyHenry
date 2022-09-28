@@ -40,9 +40,8 @@ const Reviews = ({
   mutatesubmit,
   mutateedit,
   mutatedelete,
-  admin
+  admin,
 }: Props) => {
-
   const logofoto =
     "https://res.cloudinary.com/mauro4202214/image/upload/v1663331567/world-travelers/favicon.ico_c8ryjz.png";
   const { user } = useUser();
@@ -51,7 +50,7 @@ const Reviews = ({
   const [comment, setComment] = useState("");
   const [commentEdit, setCommentEdit] = useState("");
   const [allComments, setAllComments] = useState(feedbacks);
-  const [allRatings, setAllRatings] = useState(feedbacks);
+
   const [edit, setEdit] = useState(false);
 
   const toast = useToast();
@@ -122,25 +121,8 @@ const Reviews = ({
   };
 
   const handleEdit = async (id?: string) => {
-    // if (admin) {
-    //   const comment = allComments.find((c) => c.User.id === id);
-    //   const idFeedback = comment.id;
-    //   await editComment({
-    //     id: id,
-    //     comment: comment.comment,
-    //     idFeedback: idFeedback,
-    //     rating: comment.rating,
-    //   });
-    //   return toast({
-    //     title: "Comment edited!",
-    //     description: "Thank you! Your changes have been succesfully updated.",
-    //     status: "success",
-    //     duration: 3000,
-    //     isClosable: true,
-    //   });
-    // }
     if (admin) {
-      allComments.forEach( (c) => {
+      allComments.forEach((c) => {
         mutateedit.mutate({
           comment: c.comment,
           rating: c.rating,
@@ -148,7 +130,7 @@ const Reviews = ({
           idFeedback: c.id,
         });
       });
-      setEdit(false)
+      setEdit(false);
       return toast({
         title: "Comment posted!",
         description: "Thank you! Now other travelers can read your opinion.",
@@ -176,7 +158,7 @@ const Reviews = ({
 
   const handleDelete = (feedbackId?: string) => {
     if (admin) {
-      mutatedelete.mutate({id, idFeedback: feedbackId});
+      mutatedelete.mutate({ id, idFeedback: feedbackId });
       return toast({
         title: "Comment deleted!",
         description: "Thank you! Your comment is deleted.",
@@ -223,7 +205,6 @@ const Reviews = ({
         justifyContent={"center"}
         alignItems={"center"}
       >
-
         <Text
           width={"100%"}
           textAlign={"left"}
@@ -236,7 +217,7 @@ const Reviews = ({
           Comments:
         </Text>
         {feedbacks.map((comment) =>
-          comment === mycomment || admin ? (
+          comment === mycomment || admin === true ? (
             <Box rounded={"xl"} width={"90%"} bgColor={"#D1DFE3"} mb={"10px"}>
               {edit === true ? (
                 <FormControl key={comment.User.id} width={"100%"}>
@@ -274,30 +255,34 @@ const Reviews = ({
                       </Box>
                     </NextLink>
                     <Box width={"200px"} height={"60px"} pt={"15px"}>
-                    <StarRatings
-                      rating={admin ? handleAllRatings(comment.id) : ratingEdit}
-                      starRatedColor="#F3B46F"
-                      changeRating={(e: any) => handleRatingEdit(e, comment.id)}
-                      numberOfStars={5}
-                      starDimension={"25px"}
-                      starHoverColor={"#293541"}
-                      starSpacing={"3px"}
-                      name="rating"
-                    />
-                  </Box>
-                  <Text
-                    width={"max-content"}
-                    color={"#293541"}
-                    fontSize={"xl"}
-                    fontWeight={"bold"}
-                    paddingRight={"50px"}
-                  >
-                    {comment.feedbackDate
-                      .slice(0, 10)
-                      .split("-")
-                      .reverse()
-                      .join("/")}
-                  </Text>
+                      <StarRatings
+                        rating={
+                          admin ? handleAllRatings(comment.id) : ratingEdit
+                        }
+                        starRatedColor="#F3B46F"
+                        changeRating={(e: any) =>
+                          handleRatingEdit(e, comment.id)
+                        }
+                        numberOfStars={5}
+                        starDimension={"25px"}
+                        starHoverColor={"#293541"}
+                        starSpacing={"3px"}
+                        name="rating"
+                      />
+                    </Box>
+                    <Text
+                      width={"max-content"}
+                      color={"#293541"}
+                      fontSize={"xl"}
+                      fontWeight={"bold"}
+                      paddingRight={"50px"}
+                    >
+                      {comment.feedbackDate
+                        .slice(0, 10)
+                        .split("-")
+                        .reverse()
+                        .join("/")}
+                    </Text>
                   </Stack>
                   <HStack
                     width={"100%"}
@@ -315,14 +300,14 @@ const Reviews = ({
                         width={"100%"}
                         height={"100px"}
                         color={"#293541"}
-                      backgroundColor={"#e7eff1"}
-                      border={"1px"}
-                      borderColor={"#293541"}
-                      vertical-align={"top"}
-                      onChange={(e: any) => handleInputEdit(e, comment.id)}
-                      value={
-                        admin ? handleAllComments(comment.id) : commentEdit
-                      }
+                        backgroundColor={"#e7eff1"}
+                        border={"1px"}
+                        borderColor={"#293541"}
+                        vertical-align={"top"}
+                        onChange={(e: any) => handleInputEdit(e, comment.id)}
+                        value={
+                          admin ? handleAllComments(comment.id) : commentEdit
+                        }
                       ></Textarea>
                     </VStack>
                     <Stack
@@ -414,9 +399,13 @@ const Reviews = ({
                       pt={"15px"}
                     >
                       <StarRatings
-                        rating={ratingEdit}
+                        rating={
+                          admin ? handleAllRatings(comment.id) : ratingEdit
+                        }
                         starRatedColor="#F3B46F"
-                        changeRating={(e: any) => handleRatingEdit(e)}
+                        changeRating={(e: any) =>
+                          handleRatingEdit(e, comment.id)
+                        }
                         numberOfStars={5}
                         starDimension={"25px"}
                         starHoverColor={"#293541"}
@@ -459,7 +448,7 @@ const Reviews = ({
                         vertical-align={"top"}
                         textAlign={{ base: "center", md: "left" }}
                       >
-                        {commentEdit}
+                        {admin ? handleAllComments(comment.id) : commentEdit}
                       </Text>
                     </VStack>
                     <Button
@@ -486,7 +475,6 @@ const Reviews = ({
                   display={"flex"}
                   flexDirection={{ base: "column", md: "row" }}
                   justifyContent={{ base: "center", md: "space-between" }}
-
                   alignItems={"center"}
                   width={"100%"}
                   height={{ base: "max-content", md: "60px" }}
@@ -579,7 +567,7 @@ const Reviews = ({
           )
         )}
       </Box>
-      {mycomment || admin ? (
+      {mycomment ? (
         <Box></Box>
       ) : (
         <Box rounded={"xl"} width={"90%"} bgColor={"#D1DFE3"}>

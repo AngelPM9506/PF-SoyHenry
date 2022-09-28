@@ -20,8 +20,14 @@ import Reviews from "./Reviews";
 
 export function ModalReviews({
   data,
+  mutatesubmit,
+  mutateedit,
+  mutatedelete,
 }: {
   data: { activity: { feedbacks: Comment[]; name: string }; id: string };
+  mutatesubmit: any;
+  mutateedit: any;
+  mutatedelete: any;
 }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -52,6 +58,9 @@ export function ModalReviews({
                 feedbacks={data.activity.feedbacks}
                 id={data.id}
                 admin={true}
+                mutatesubmit={mutatesubmit}
+                mutateedit={mutateedit}
+                mutatedelete={mutatedelete}
               />
             </ModalBody>
           </Center>

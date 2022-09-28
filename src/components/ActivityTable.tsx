@@ -17,13 +17,21 @@ import { Select as ReactSelect } from "chakra-react-select";
 import React, { SetStateAction, useState } from "react";
 import {
   deleteActivity,
+  deleteComment,
   editActivity,
+  editComment,
   getActivitiesId,
+  patchActivity,
 } from "src/utils/activities";
 import { Activity } from "src/utils/interface";
 import NextLink from "next/link";
 import { ModalTextarea } from "./ModalEditableTextarea";
-import { QueryFunctionContext, useQuery } from "react-query";
+import {
+  QueryFunctionContext,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "react-query";
 import Reviews from "./Reviews";
 import { ModalReviews } from "./ModalReviews";
 import Loading from "./Loading";
@@ -33,7 +41,7 @@ type Props = {
 
 export function ActivityTable({ activity }: Props) {
   const bg = useColorModeValue("#f4f4f4", "#151f21");
-  const { data: actData, isLoading } = useQuery(["propsId"], async () => {
+  const { data: actData, isLoading } = useQuery(["editActivity"], async () => {
     const id = activity.id;
     const actDetail = await getActivitiesId(id);
 
@@ -42,7 +50,30 @@ export function ActivityTable({ activity }: Props) {
       id: id,
     };
   });
-  console.log(actData);
+
+
+  const queryClient = useQueryClient();
+  const mutatesubmit = useMutation(patchActivity, {
+    onSuccess: () => {
+      queryClient.resetQueries(["editActivity"]);
+    },
+  });
+  const mutateedit = useMutation(editComment, {
+    onSuccess: () => {
+      queryClient.resetQueries(["editActivity"]);
+    },
+  });
+  const mutatedelete = useMutation(deleteComment, {
+    onSuccess: () => {
+      queryClient.resetQueries(["editActivity"]);
+    },
+  });
+  const mutateActivity = useMutation(editActivity, {
+    onSuccess: () => {
+      queryClient.resetQueries(["editActivity"]);
+    },
+  });
+
   const textColor = useColorModeValue("#151f21", "#f4f4f4");
 
   const toast = useToast();
@@ -90,7 +121,7 @@ export function ActivityTable({ activity }: Props) {
 
   const handleEdit = async () => {
     const avaValue = value.map((a) => a.value);
-    await editActivity({ ...data, availability: avaValue });
+    await  editActivity({ ...data, availability: avaValue });
     return toast({
       title: "Successful change",
       description: "State changed successfully!",
@@ -113,7 +144,7 @@ export function ActivityTable({ activity }: Props) {
   if (isLoading) return <Loading />;
   return (
     <Tr key={changed}>
-      <Td minWidth={{ sm: "250px" }} pl="0px">
+      <Td>
         <Flex align="center" py=".8rem" minWidth="100%" flexWrap="nowrap">
           <Avatar
             src={activity.image as string}
@@ -214,7 +245,12 @@ export function ActivityTable({ activity }: Props) {
       </Td>
       <Td>
         <Flex direction="column">
-          <ModalReviews data={actData} />
+          <ModalReviews
+            data={actData}
+            mutatesubmit={mutatesubmit}
+            mutateedit={mutateedit}
+            mutatedelete={mutatedelete}
+          />
         </Flex>
       </Td>
       <Td>

@@ -6,6 +6,7 @@ import Layout from "src/components/layout/Layout";
 import Loading from "src/components/Loading";
 import { BannedAlert } from "src/components/Banned";
 import { useRouter } from "next/router";
+import { NextSeo } from "next-seo";
 
 export default function Profile() {
   const router = useRouter();
@@ -29,6 +30,7 @@ export default function Profile() {
     userDb &&
     !isLoading && (
       <Layout>
+        <NextSeo title="Profile" />
         <UserProfile user={userDb} />
       </Layout>
     )

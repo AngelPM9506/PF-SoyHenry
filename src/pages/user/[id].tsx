@@ -9,6 +9,7 @@ import { GetServerSideProps } from "next/types";
 import { Trip } from "src/utils/interface";
 import { useUser } from "@auth0/nextjs-auth0";
 import { useRouter } from "next/router";
+import { NextSeo } from "next-seo";
 
 export interface Props {
   userPath: UserData;
@@ -30,6 +31,7 @@ export const ProfileDetail = (props: Props) => {
   if (isLoading) return <Loading />;
   return (
     <Layout>
+      <NextSeo title="User Detail" />
       <UserDetail trips={props.trips} userDetail={userDetail} />
     </Layout>
   );

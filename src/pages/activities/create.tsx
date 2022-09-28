@@ -33,6 +33,7 @@ import NotFound from "../404";
 import ActivitiesControles from "src/controllers/activities";
 import Loading from "src/components/Loading";
 import { Select as ReactSelect } from "chakra-react-select";
+import { NextSeo } from "next-seo";
 
 interface Props {
   activities: Activity[];
@@ -165,6 +166,7 @@ const CreateActivity = ({ activities, cities }: Props) => {
   return (
     <Container maxH={"100%"} maxW={"100%"}>
       <Layout>
+        <NextSeo title="Create Activity" />
         <Center marginTop="1%">
           <Heading color="primary">CREATE A NEW ACTIVITY</Heading>
         </Center>

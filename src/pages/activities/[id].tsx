@@ -17,7 +17,7 @@ import { useRouter } from "next/router";
 import { useState, useEffect, useMemo } from "react";
 import Reviews from "src/components/Reviews";
 import { getTrips } from "src/utils/trips";
-
+import { NextSeo } from "next-seo";
 
 interface Props {
   id: QueryFunctionContext<string[], any>;
@@ -25,8 +25,7 @@ interface Props {
 }
 
 export default function Detail(props: Props) {
-
- const router = useRouter();
+  const router = useRouter();
   const { user, isLoading: userLoading } = useUser();
   const { data, isLoading, error } = useQuery(
     ["propsId"],
@@ -57,6 +56,7 @@ export default function Detail(props: Props) {
 
   return (
     <Layout>
+      <NextSeo title="Activity Detail" />
       {
         <ActivityDetail
           data={data}

@@ -9,6 +9,7 @@ import axios from "axios";
 import { GetServerSideProps } from "next/types";
 import { useUser } from "@auth0/nextjs-auth0";
 import { useRouter } from "next/router";
+import { NextSeo } from "next-seo";
 
 interface Props {
   id: QueryFunctionContext<string[], any>;
@@ -33,6 +34,7 @@ export default function Detail(props: Props) {
 
   return (
     <Layout>
+      <NextSeo title="Trip Detail" />
       <TripDetail data={data} isLoading={isLoading} error={error} />
     </Layout>
   );

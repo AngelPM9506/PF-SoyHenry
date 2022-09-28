@@ -2,6 +2,7 @@ import type { NextPage } from "next";
 import { Stack, Box, Heading, Text, Button, Center } from "@chakra-ui/react";
 import ReactPlayer from "react-player";
 import axios from "axios";
+import { NextSeo } from "next-seo";
 
 const landingPage: NextPage = () => {
   const url =
@@ -11,6 +12,7 @@ const landingPage: NextPage = () => {
   };
   return (
     <>
+      <NextSeo title="World Travelers" />
       <ReactPlayer
         loop
         width="100vw"

@@ -21,13 +21,20 @@ interface Props {
 }
 
 const Home = ({ trips, activities }: Props) => {
-  const { user } = useUser();
+  const { user, isLoading: userLoading } = useUser();
   const router = useRouter();
   const { data: userDb, isLoading } = useQuery(
     ["userDb", user],
     () => user && getOrCreateUser(user)
   );
-  // if (isLoading) return <Loading />;
+
+
+  if (!userLoading && !user) {
+    router.push("/api/auth/login");
+    return <div></div>;
+  }
+  if (isLoading) return <Loading />;
+
   if (!isLoading && userDb && !userDb.data.active) {
     return <BannedAlert />;
   }

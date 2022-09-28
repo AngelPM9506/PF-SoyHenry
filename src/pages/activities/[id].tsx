@@ -11,9 +11,13 @@ import { GetServerSideProps } from "next/types";
 import { useUser } from "@auth0/nextjs-auth0";
 import Loading from "src/components/Loading";
 import NotFound from "../404";
+
+import { useRouter } from "next/router";
+
 import { useState, useEffect, useMemo } from "react";
 import Reviews from "src/components/Reviews";
 import { getTrips } from "src/utils/trips";
+
 
 interface Props {
   id: QueryFunctionContext<string[], any>;
@@ -21,6 +25,9 @@ interface Props {
 }
 
 export default function Detail(props: Props) {
+
+ const router = useRouter();
+  const { user, isLoading: userLoading } = useUser();
   const { data, isLoading, error } = useQuery(
     ["propsId"],
     async (notifyOnChangeProps) => {
@@ -37,6 +44,10 @@ export default function Detail(props: Props) {
 
   const [change, setChange] = useState(1);
 
+  if (!userLoading && !user) {
+    router.push("/api/auth/login");
+    return <div></div>;
+  }
   if (isLoading) {
     return <Loading />;
   }

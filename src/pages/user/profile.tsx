@@ -5,18 +5,26 @@ import { getOrCreateUser } from "src/utils/User";
 import Layout from "src/components/layout/Layout";
 import Loading from "src/components/Loading";
 import { BannedAlert } from "src/components/Banned";
+import { useRouter } from "next/router";
 
 export default function Profile() {
-  const { user, error } = useUser();
+  const router = useRouter();
+  const { user, isLoading: userLoading } = useUser();
   const { data: userDb, isLoading } = useQuery(
-    ["userDb", user],
-    () => user && getOrCreateUser(user)
+    ["userDb", user, userLoading],
+    () => !userLoading && user && getOrCreateUser(user)
   );
+
+  //asd
+  if (!userLoading && !user) {
+    router.push("/api/auth/login");
+    return <div></div>;
+  }
   if (!isLoading && userDb && !userDb.data.active) {
     return <BannedAlert />;
   }
   if (isLoading) return <Loading />;
-  if (error) return <div>{error.message}</div>;
+
   return (
     userDb &&
     !isLoading && (

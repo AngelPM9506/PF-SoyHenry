@@ -14,7 +14,7 @@ import {
   Box,
   Text,
 } from "@chakra-ui/react";
-import ActivityTable from "./ActivityTable";
+import { ActivityTable } from "./ActivityTable";
 import UserTable from "./UserTable";
 import Pagination from "./pagination";
 import sortArray from "sort-array";

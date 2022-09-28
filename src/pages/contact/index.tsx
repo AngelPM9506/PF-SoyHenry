@@ -10,7 +10,8 @@ import {
   Textarea,
   Button,
   Text,
-  useToast
+  useToast,
+  Flex
 } from "@chakra-ui/react";
 import Layout from "src/components/layout/Layout";
 import Head from "next/head";
@@ -101,7 +102,7 @@ const Contact = () => {
         status: stat,
         title: "Contact message",
         description: mesage,
-        position: "bottom-right",
+        position: "bottom",
         containerStyle: {
           background: bgColor,
           borderRadius: "2xl"
@@ -181,14 +182,14 @@ const Contact = () => {
       <Center margin={'1rem'}>
         <Heading color={'primary'}>Contact Us</Heading>
       </Center>
-      <form onSubmit={sendContact} className={form}>
-        <Box h={'3xl'}>
+      <form onSubmit={sendContact}>
+        <Box h={['max-content', 'max-content', '3xl']}>
           <FormControl>
             <Center>
-              <Grid marginBottom={'10px'} h={'max-content'} w={'45vw'}
+              <Grid marginBottom={'10px'} h={'max-content'} w={['95vw', '95vw', '85vw', '45vw']}
                 templateRows={'repeat(6, 1fr)'} templateColumns={'repeat(5,1fr)'}
                 gap={'10px'} padding={'10px'}>
-                <GridItem borderRadius={'2xl'} padding={'20px'} rowSpan={5} colSpan={5} bg={'blackAlpha.100'}>
+                <GridItem borderRadius={'2xl'} padding={['10px', '10px', '20px']} rowSpan={5} colSpan={5} bg={'blackAlpha.100'}>
                   {/*alert.msg &&
                     <Text bg={'#02b1b1'} textAlign={'center'}
                       padding={'10px'} borderRadius={'2xl'}
@@ -196,37 +197,49 @@ const Contact = () => {
                       fontWeight={'semibold'} fontSize={'20px'}>
                       {alert.msg}
                   </Text>*/}
-                  <div className={campo}>
-                    <FormLabel flex={'0 0 125px'} htmlFor="name" padding={'0 0 0 20px'} margin={'0'}>Name:</FormLabel>
-                    <div>
+                  <Box display={'flex'} flexDirection={['column', 'column', 'row']}
+                    justifyContent={'space-between'} alignItems={'center'} marginBottom={['10px', '10px', '15px']}>
+                    <FormLabel
+                      flex={['0', '0', '0 0 125px']} htmlFor="name" textAlign={['center', 'center', 'left']}
+                      padding={['3px', '3px', '0 0 0 20px']} margin={['5px', '5px', '0']}>Name:</FormLabel>
+                    <Box width={'100%'}>
                       <Input onChange={setChangeInputs} textAlign={'center'} flex={'1'} name="name" placeholder="Your name(s)" />
                       {errors.name && (<Text m={0} color={"#F3B46F"}>{errors.name}</Text>)}
-                    </div>
-                  </div>
+                    </Box>
+                  </Box>
 
-                  <div className={campo}>
-                    <FormLabel flex={'0 0 125px'} htmlFor="surname" padding={'0 0 0 20px'} margin={'0'}>Surname:</FormLabel>
-                    <div>
+                  <Box display={'flex'} flexDirection={['column', 'column', 'row']}
+                    justifyContent={'space-between'} alignItems={'center'} marginBottom={['10px', '10px', '15px']}>
+                    <FormLabel
+                      flex={['0', '0', '0 0 125px']} htmlFor="surname" textAlign={['center', 'center', 'left']}
+                      padding={['3px', '3px', '0 0 0 20px']} margin={['5px', '5px', '0']}>Surname:</FormLabel>
+                    <Box width={'100%'}>
                       <Input onChange={setChangeInputs} textAlign={'center'} flex={'1'} name="surname" placeholder="Your surname(s)" />
                       {errors.surname && (<Text m={0} color={"#F3B46F"}>{errors.surname}</Text>)}
-                    </div>
-                  </div>
+                    </Box>
+                  </Box>
 
-                  <div className={campo}>
-                    <FormLabel flex={'0 0 125px'} htmlFor="subject" padding={'0 0 0 20px'} margin={'0'}>Subject:</FormLabel>
-                    <div>
+                  <Box display={'flex'} flexDirection={['column', 'column', 'row']}
+                    justifyContent={'space-between'} alignItems={'center'} marginBottom={['10px', '10px', '15px']}>
+                    <FormLabel
+                      flex={['0', '0', '0 0 125px']} htmlFor="subject" textAlign={['center', 'center', 'left']}
+                      padding={['3px', '3px', '0 0 0 20px']} margin={['5px', '5px', '0']}>Subject:</FormLabel>
+                    <Box width={'100%'}>
                       <Input onChange={setChangeInputs} textAlign={'center'} flex={'1'} name="subject" placeholder="Reason for your message" />
                       {errors.subject && (<Text m={0} color={"#F3B46F"}>{errors.subject}</Text>)}
-                    </div>
-                  </div>
+                    </Box>
+                  </Box>
 
-                  <div className={campo}>
-                    <FormLabel flex={'0 0 125px'} htmlFor="email" padding={'0 0 0 20px'} margin={'0'}>E-mail:</FormLabel>
-                    <div>
+                  <Box display={'flex'} flexDirection={['column', 'column', 'row']}
+                    justifyContent={'space-between'} alignItems={'center'} marginBottom={['10px', '10px', '15px']}>
+                    <FormLabel
+                      flex={['0', '0', '0 0 125px']} htmlFor="email" textAlign={['center', 'center', 'left']}
+                      padding={['3px', '3px', '0 0 0 20px']} margin={['5px', '5px', '0']}>Email:</FormLabel>
+                    <Box width={'100%'}>
                       <Input onChange={setChangeInputs} textAlign={'center'} flex={'1'} name="email" placeholder="Your email (ejemplo@ejemplo.com)" />
                       {errors.email && (<Text m={0} color={"#F3B46F"}>{errors.email}</Text>)}
-                    </div>
-                  </div>
+                    </Box>
+                  </Box>
 
                   {/* <div className={campo}>
                     <FormLabel flex={'0 0 125px'} htmlFor="whatsapp" padding={'0 0 0 20px'} margin={'0'}>Whatsapp:</FormLabel>
@@ -236,24 +249,26 @@ const Contact = () => {
                     </div>
                   </div> */}
 
-                  <div>
-                    <InputPhoneNumber value={input.whatsapp} name="whatsapp" label={'Whatsapp:'}
-                      options={countriesOptions} placeholder="Enter your whatsapp contact"
-                      error={errors.whatsapp ? errors.whatsapp : null}
-                      onChange={setWhatsapp} />
-                  </div>
+                  <InputPhoneNumber value={input.whatsapp} name="whatsapp" label={'Whatsapp:'}
+                    options={countriesOptions} placeholder="Enter your whatsapp contact"
+                    error={errors.whatsapp ? errors.whatsapp : null}
+                    onChange={setWhatsapp} />
 
-                  <div className={`${campo} ${textArea}`}>
-                    <FormLabel flex={'0 0 125px'} htmlFor="message" padding={'0 0 0 20px'} margin={'0'}>Message:</FormLabel>
-                    <div>
-                      <Textarea onChange={setChangeInputs} textAlign={'center'} name={'message'} placeholder={'why you want contact us?..  UwU'} size={'sm'} />
+                  <Box display={'flex'} flexDirection={['column', 'column', 'row']}
+                    justifyContent={'space-between'}  marginBottom={['10px', '10px', '15px']}>
+                    <FormLabel
+                      flex={['0', '0', '0 0 125px']} htmlFor="message" textAlign={['center', 'center', 'left']}
+                      padding={['3px', '3px', '0 0 0 20px']} margin={['5px', '5px', '0']}>Message:</FormLabel>
+                    <Box width={'100%'}>
+                      <Textarea onChange={setChangeInputs} textAlign={'center'} name={'message'}
+                        placeholder={'why you want contact us?..  UwU'} size={'2xl'} />
                       {errors.message && (<Text m={0} color={"#F3B46F"}>{errors.message}</Text>)}
-                    </div>
-                  </div>
+                    </Box>
+                  </Box>
 
-                  <div className={botones}>
+                  <Flex justifyContent={'center'}>
                     <Button onClick={setChangeInputs} mt={4} type={'submit'} bg="highlight" color="primary">Send sessage</Button>
-                  </div>
+                  </Flex>
                 </GridItem>
               </Grid>
             </Center>

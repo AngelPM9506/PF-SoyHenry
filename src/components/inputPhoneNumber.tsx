@@ -43,15 +43,19 @@ const InputPhoneNumber = ({ size, value, country, options, onChange, placeholder
         onChange(parsedNumber);
     }
     return (
-        <Flex marginBottom={'15px'}>
-            <FormLabel flex={'0 0 125px'} htmlFor="message" padding={'0 0 0 20px'} margin={'0'}>
+        <Flex flexDirection={['column', 'column', 'row']} marginBottom={['10px', '10px', '15px']}
+            justifyContent={'space-between'} alignItems={'center'}>
+            <FormLabel
+                flex={['0', '0', '0 0 125px']} htmlFor="name" textAlign={['center', 'center', 'left']}
+                padding={['3px', '3px', '0 0 0 20px']} margin={['5px', '5px', '0']}>
                 {label}
             </FormLabel>
             <Box width={'100%'}>
-                <InputGroup size={size} {...rest} flex={1}>
-                    <InputLeftElement width={'4rem'}>
-                        <Select top="0" left="o" zIndex={1} bottom={0} opacity={0} height="100%" position="absolute"
-                            iconColor="transparent" value={selectCountry} onChange={onCountryChange}>
+                <InputGroup size={size} {...rest}>
+                    <InputLeftElement width={'4rem'} background={'blackAlpha.300'}>
+                        <Select top="0" left="0" zIndex={1} bottom={0} cursor={'pointer'} opacity={0}
+                            min-height={100} position="absolute" iconColor="transparent"
+                            value={selectCountry} onChange={onCountryChange}>
                             <option value="" />
                             {options && options.map((option: any, i: number) => (
                                 <option key={i} value={option.value}>{option.label}</option>
@@ -59,7 +63,7 @@ const InputPhoneNumber = ({ size, value, country, options, onChange, placeholder
                         </Select>
                         <Flex pl={2} width="100%" alignItems="center">
                             {selectCountry ? (
-                                <Box mr="4px" width="50%" flex={1}>
+                                <Box mr="4px" width="25%" flex={1}>
                                     <Flag height="1rem" code={selectCountry || ""} />
                                 </Box>
                             ) : (<PhoneIcon />)}
@@ -69,7 +73,7 @@ const InputPhoneNumber = ({ size, value, country, options, onChange, placeholder
                     <Input pl="4rem" type="tel" value={number} name={name}
                         placeholder={placeholder} onChange={onPhoneNumberChange} />
                 </InputGroup>
-                <p>Your phone will be sent as follows: {value}</p>
+                <Text>Your phone will be sent as follows: {value}</Text>
                 {error && (<Text m={0} color={"#F3B46F"}>{error}</Text>)}
             </Box>
         </Flex>

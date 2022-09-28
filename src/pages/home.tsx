@@ -28,11 +28,13 @@ const Home = ({ trips, activities }: Props) => {
     () => user && getOrCreateUser(user)
   );
 
+
   if (!userLoading && !user) {
     router.push("/api/auth/login");
     return <div></div>;
   }
   if (isLoading) return <Loading />;
+
   if (!isLoading && userDb && !userDb.data.active) {
     return <BannedAlert />;
   }

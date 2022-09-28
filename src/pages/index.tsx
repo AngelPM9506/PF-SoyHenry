@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import type { NextPage } from "next";
 import { Stack, Box, Heading, Text, Button, Center } from "@chakra-ui/react";
 import ReactPlayer from "react-player";

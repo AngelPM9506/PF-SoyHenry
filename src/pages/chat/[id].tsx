@@ -1,56 +1,79 @@
-import {
-	Box,
-	Container,
-	Stack,
-    FormControl,
-    Input,
-    Button
-} from "@chakra-ui/react";
-import Layout from 'src/components/layout/Layout'
-import io, { Socket } from "socket.io-client";
+/* eslint-disable react-hooks/exhaustive-deps */
+// import {
+//     Box,
+//     Container,
+//     Stack,
+//     FormControl,
+//     Input,
+//     Button,
+//     Text
+// } from "@chakra-ui/react";
+//import Layout from 'src/components/layout/Layout'
+//import io, { Socket } from "socket.io-client";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/router";
-import axios from "axios";
+//import axios from "axios";
 import { initiateSocket, disconnectSocket, sendMessage, subscribeToChat } from "src/utils/hooksSockets";
-let socket: Socket;
+import { GetServerSideProps } from "next/types";
+//let socket: Socket;
 
-const ChatRoom = () => {
-    const router = useRouter();
-    const [room, setRoom] = useState(router.query.id.toString());
+interface Props {
+    id: String;
+}
+
+export default function ChatRoom(props: Props) {
+    const room = props.id.toString();
     const [message, setMessage] = useState('');
     const [chat, setChat] = useState([]);
+    const [sended, setSended] = useState(0);
 
+    const sendedMessages = (value: number) => {
+        setSended(sended + value)
+    }
+    subscribeToChat((err: any, data: any) => {
+        console.log(data);
+        setChat([...chat, data])
+    });
+    
     useEffect(() => {
-        if (room) initiateSocket(room);
-        subscribeToChat((err: any, data: any) => {
-            console.log("estoy aca");
-            if(err) return;
-            setChat(oldChats =>[data, ...oldChats])
-        });
-
+        initiateSocket(room);
+        //sendedMessages(sended);
         return () => {
             disconnectSocket();
         }
-    }, [room, chat]);
+    },[]);
 
-    
+    const setInput = (event: any) => {
+        let { target: { value } } = event;
+        setMessage(value);
+    }
+
+    const putMessage = (event: any) => {
+        event.preventDefault();
+        sendMessage(room, message);
+    }
+
     return (
-        <Layout>
-            <Stack flexDir="column" h="75vh" w="100%">
-                { chat.map((m,i) => <p key={i}>{m}</p>) }
-            </Stack>
-            <Stack w="100%">
-                <FormControl w="100%" display="flex" alignItems="center" p="30px">
-                    <Input type='text' onChange={e => setMessage(e.target.value)}/>
-                    <Button type="submit" 
-                            ml="15px" 
-                            onClick={()=> sendMessage(room, message)}>
-                        Send
-                    </Button>
-                </FormControl>
-            </Stack>
-        </Layout>
+        <div>
+            {/**render chats */}
+            <div >
+                {chat.map((m, i) => <p key={i}>{m} <br /></p>)}
+            </div>
+            {/**form */}
+            <p>{message}</p>
+            <form onSubmit={putMessage}>
+                <div>
+                    <input type='text' onChange={setInput} />
+                    <input type='submit' value={'send'} />
+                </div>
+            </form>
+        </div>
     )
 }
-
-export default ChatRoom
+export const getServerSideProps: GetServerSideProps = async context => {
+    const { id } = context.query;
+    return {
+        props: {
+            id: id
+        },
+    };
+}

@@ -9,8 +9,6 @@ const index = (req: NextApiRequest, res: NextApiResponse | any) => {
         res.socket.server.io = io;
         io.on('connection', socket => {
             socket.on('input-change', msg => {
-                console.log(msg);
-                
                 socket.broadcast.emit('update-input', msg);
             });
         })

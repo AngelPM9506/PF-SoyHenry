@@ -9,12 +9,12 @@
 //     Text
 // } from "@chakra-ui/react";
 //import Layout from 'src/components/layout/Layout'
-//import io, { Socket } from "socket.io-client";
+import io, { Socket } from "socket.io-client";
 import { useEffect, useState } from "react";
-//import axios from "axios";
-import { initiateSocket, disconnectSocket, sendMessage, subscribeToChat } from "src/utils/hooksSockets";
+import axios from "axios";
+//import { initiateSocket, disconnectSocket, sendMessage, subscribeToChat } from "src/utils/hooksSockets";
 import { GetServerSideProps } from "next/types";
-//let socket: Socket;
+let socket: Socket;
 
 interface Props {
     id: String;
@@ -24,23 +24,31 @@ export default function ChatRoom(props: Props) {
     const room = props.id.toString();
     const [message, setMessage] = useState('');
     const [chat, setChat] = useState([]);
-    const [sended, setSended] = useState(0);
 
-    const sendedMessages = (value: number) => {
-        setSended(sended + value)
+    const initiateSocket = async (room: string) => {
+        await axios('/api/socket');
+        socket = io();
+        socket.on('connect', () => { });
+        socket.emit('join', room);
+        socket.on('chat', data => {
+            setChat(olodChat => [...olodChat, data]);
+        });
     }
-    subscribeToChat((err: any, data: any) => {
-        console.log(data);
-        setChat([...chat, data])
-    });
-    
+
+    const disconnectSocket = () => {
+        if (socket) socket.on("disconnect", () => { });
+    }
+
+    const sendMessage = (room: string, message: string) => {
+        if (socket) socket.emit('chat', { message, room });
+    }
+
     useEffect(() => {
         initiateSocket(room);
-        //sendedMessages(sended);
         return () => {
             disconnectSocket();
         }
-    },[]);
+    }, []);
 
     const setInput = (event: any) => {
         let { target: { value } } = event;

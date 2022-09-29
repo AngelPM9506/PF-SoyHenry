@@ -23,7 +23,6 @@ import { useUser } from "@auth0/nextjs-auth0";
 import { getOrCreateUser } from "src/utils/User";
 import { BannedAlert } from "src/components/Banned";
 import { useRouter } from "next/router";
-import { NextSeo } from "next-seo";
 
 interface Props {
   activities: Activity[];
@@ -92,7 +91,6 @@ const Activities = ({ activities }: Props) => {
   return !data.length ? (
     <div>
       <Layout>
-        <NextSeo title="Activities" />
         <Center>
           <Heading
             width={"1500px"}
@@ -150,7 +148,6 @@ const Activities = ({ activities }: Props) => {
   ) : (
     <div>
       <Layout>
-        <NextSeo title="Activities" />
         <Center>
           <Heading
             pt={"30px"}

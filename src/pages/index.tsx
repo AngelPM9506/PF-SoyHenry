@@ -13,7 +13,6 @@ import {
 } from "@chakra-ui/react";
 import ReactPlayer from "react-player";
 import axios from "axios";
-import { NextSeo } from "next-seo";
 import { GiSoundWaves } from "react-icons/gi";
 import { useState } from "react";
 import NextLink from "next/link";
@@ -40,7 +39,6 @@ const LandingPage: NextPage = () => {
   };
   return (
     <Box className={styles.main}>
-      <NextSeo title="World Travelers" />
       <video
         src={url}
         loop

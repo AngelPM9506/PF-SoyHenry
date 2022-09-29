@@ -54,7 +54,6 @@ import getDay from "date-fns/getDay";
 import { chakra } from "@chakra-ui/react";
 import { BannedAlert } from "src/components/Banned";
 import Loading from "src/components/Loading";
-import { NextSeo } from "next-seo";
 
 interface Props {
   activities: Activity[];
@@ -381,7 +380,6 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
 
   return (
     <Layout>
-      <NextSeo title="Create Trip" />
       <Center marginTop="1%">
         <Heading color="primary">CREATE A NEW TRIP</Heading>
       </Center>

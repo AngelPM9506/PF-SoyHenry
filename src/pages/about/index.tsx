@@ -1,5 +1,4 @@
 import Layout from "src/components/layout/Layout";
-import { NextSeo } from "next-seo";
 import {
   Heading,
   Text,
@@ -13,7 +12,6 @@ import AboutCarousel from "src/components/AboutCarousel";
 const AboutPage = () => {
   return (
     <Layout>
-      <NextSeo title="About World Travelers" />
       <Stack
         direction={{ base: "column", sm: "column", md: "column", lg: "row" }}
         margin={"2%"}

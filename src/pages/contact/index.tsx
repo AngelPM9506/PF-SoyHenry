@@ -24,7 +24,6 @@ import { getOrCreateUser } from "src/utils/User";
 import { useRouter } from "next/router";
 import InputPhoneNumber from "src/components/inputPhoneNumber";
 import { FLAGS_COUNTRIES } from "src/utils/countryesCodes";
-import { NextSeo } from "next-seo";
 const { MAIL_FROM } = process.env;
 const Contact = () => {
   /**estado inicial del contacto */
@@ -217,7 +216,6 @@ const Contact = () => {
 
   return (
     <Layout>
-      <NextSeo title="Contact" />
       <Center display={"flex"} flexDirection={"column"} margin={"1rem"}>
         <Heading color={"primary"}>Contact Us</Heading>
         <Text textAlign={"center"} margin={0}>

@@ -22,9 +22,7 @@ import { useRouter } from "next/router";
 import { useState, useEffect, useMemo } from "react";
 import Reviews from "src/components/Reviews";
 import { getTrips } from "src/utils/trips";
-import { NextSeo } from "next-seo";
 import { useUser } from "@auth0/nextjs-auth0";
-
 
 interface Props {
   id: QueryFunctionContext<string[], any>;
@@ -74,7 +72,6 @@ export default function Detail(props: Props) {
 
   return (
     <Layout>
-      <NextSeo title="Activity Detail" />
       {
         <ActivityDetail
           data={data}

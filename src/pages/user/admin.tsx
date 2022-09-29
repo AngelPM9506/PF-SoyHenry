@@ -22,7 +22,6 @@ import TripsControllers from "src/controllers/trips";
 import Loading from "src/components/Loading";
 
 import { getCities } from "src/utils/cities";
-import { NextSeo } from "next-seo";
 
 function TablesTableRow({
   users,
@@ -58,7 +57,6 @@ function TablesTableRow({
   return (
     <>
       <Layout>
-        <NextSeo title="Admin" />
         <Box overflowX={{ sm: "scroll", xl: "hidden" }} mt={5} ml={5}>
           <Box p="6px 0px 22px 0px" display={"inline-flex"} gap={10}>
             <Text

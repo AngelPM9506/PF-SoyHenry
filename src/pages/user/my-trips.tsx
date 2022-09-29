@@ -14,7 +14,6 @@ import NextLink from "next/link";
 import { Trip } from "src/utils/interface";
 import { BannedAlert } from "src/components/Banned";
 import { useRouter } from "next/router";
-import { NextSeo } from "next-seo";
 
 interface DataType {
   key: React.Key;
@@ -175,7 +174,6 @@ export default function MyTrips() {
   if (isLoading) return <Loading />;
   return (
     <Layout>
-      <NextSeo title="My Trips" />
       <Flex flexDirection="row">
         <Center w="100%" h="100%" bg="none" m="15px">
           <Box w="90%">

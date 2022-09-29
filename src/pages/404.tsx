@@ -1,12 +1,10 @@
 import { Box, Button, Image, Link } from "@chakra-ui/react";
 import Layout from "src/components/layout/Layout";
 import NextLink from "next/link";
-import { NextSeo } from "next-seo";
 
 const NotFound = () => {
   return (
     <Layout>
-      <NextSeo title="404" />
       <Box
         width={"100%"}
         display={"flex"}

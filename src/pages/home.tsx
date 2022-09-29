@@ -14,7 +14,6 @@ import axios from "axios";
 import { UserData } from "src/components/UserProfile";
 import Loading from "src/components/Loading";
 import { BannedAlert } from "src/components/Banned";
-import { NextSeo } from "next-seo";
 
 interface Props {
   trips: Trip[];
@@ -41,7 +40,6 @@ const Home = ({ trips, activities }: Props) => {
 
   return (
     <Layout>
-      <NextSeo title="World Travelers" />
       <div className={styles.container}>
         <Head>
           <link rel="icon" href="/favicon.ico" />

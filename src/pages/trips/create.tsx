@@ -702,7 +702,7 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
                                             Choose a date
                                           </FormLabel>
                                           <MyDataPicker
-                                          _hover={{cursor:"pointer"}}
+                                           _hover={{cursor:"pointer"}}
                                             dateFormat="yyyy/mm/ddd"
                                             onChange={(date) => {
                                             let D = new Date(date.toString())

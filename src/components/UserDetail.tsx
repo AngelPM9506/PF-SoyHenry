@@ -118,7 +118,6 @@ export const UserDetail = ({ userDetail, trips }: Props) => {
                     );
                   })}
                 </Stack>
-
                 <Center>
                   <Stack
                     width={"100%"}
@@ -171,31 +170,40 @@ export const UserDetail = ({ userDetail, trips }: Props) => {
               </Stack>
             </Stack>
           </Box>
+
           <Box display={"flex"} justifyContent={"center"} flexDir={"column"}>
-            <Text
-              textAlign={"center"}
-              color={useColorModeValue("#293541", "#F3B46F")}
-              fontSize={"xl"}
-              fontFamily={"body"}
-              p={2}
-            >
-              Trips created by this traveler
-            </Text>
-            <Box display={"flex"} justifyContent={"center"}>
-              <AvatarCarousel trips={myCreatedActiveTrips} />
-            </Box>
-            <Text
-              textAlign={"center"}
-              color={useColorModeValue("#293541", "#F3B46F")}
-              fontSize={"xl"}
-              fontFamily={"body"}
-              p={2}
-            >
-              Trips traveler joined
-            </Text>
-            <Box display={"flex"} justifyContent={"center"}>
-              <AvaCarousel trips={tripsTravJoined} />
-            </Box>
+            {myCreatedActiveTrips?.length > 0 && (
+              <>
+                <Text
+                  textAlign={"center"}
+                  color={useColorModeValue("#293541", "#F3B46F")}
+                  fontSize={"xl"}
+                  fontFamily={"body"}
+                  p={2}
+                >
+                  Trips created by this traveler
+                </Text>
+                <Box display={"flex"} justifyContent={"center"}>
+                  <AvatarCarousel trips={myCreatedActiveTrips} />
+                </Box>{" "}
+              </>
+            )}
+            {tripsTravJoined?.length > 0 && (
+              <>
+                <Text
+                  textAlign={"center"}
+                  color={useColorModeValue("#293541", "#F3B46F")}
+                  fontSize={"xl"}
+                  fontFamily={"body"}
+                  p={2}
+                >
+                  Trips traveler joined
+                </Text>
+                <Box display={"flex"} justifyContent={"center"}>
+                  <AvaCarousel trips={tripsTravJoined} />
+                </Box>{" "}
+              </>
+            )}
           </Box>
         </Stack>
       </Center>

@@ -12,8 +12,27 @@ import {
 } from "@chakra-ui/react";
 import { TiSocialLinkedin, TiSocialGithub } from "react-icons/ti";
 import { ImLink } from "react-icons/im";
+import NextLink from "next/link";
 
-const AuthorCard = () => {
+interface Props {
+  name: string;
+  job: string;
+  linkedin: string;
+  github: string;
+  cv: string;
+  avatar: string;
+  image: string;
+}
+
+const AuthorCard = ({
+  name,
+  job,
+  linkedin,
+  github,
+  cv,
+  avatar,
+  image,
+}: Props) => {
   return (
     <Center py={6}>
       <Box
@@ -24,75 +43,71 @@ const AuthorCard = () => {
         rounded={"md"}
         overflow={"hidden"}
       >
-        <Image
-          h={"120px"}
-          w={"full"}
-          src={
-            "https://images.unsplash.com/photo-1612865547334-09cb8cb455da?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80"
-          }
-          objectFit={"cover"}
-        />
+        <Image h={"120px"} w={"full"} src={image} objectFit={"cover"} />
         <Flex justify={"center"} mt={-12}>
-          <Avatar
-            size={"xl"}
-            src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&ixid=eyJhcHBfaWQiOjE3Nzg0fQ"
-          />
+          <Avatar size={"xl"} src={avatar} />
         </Flex>
 
         <Box p={4} pb={6}>
           <Stack spacing={0} align={"center"} mb={5}>
             <Heading fontSize={"2xl"} fontWeight={500} fontFamily={"body"}>
-              Agustina Di Nucci
+              {name}
             </Heading>
-            <Text color={"gray.500"}>Full stack web developer</Text>
+            <Text color={"gray.500"}>{job}</Text>
           </Stack>
           <Stack direction={"row"} justifyContent={"center"} mt={"6px"}>
-            <Button
-              w={"300px"}
-              bg={useColorModeValue("#151f21", "gray.900")}
-              color={"white"}
-              rounded={"md"}
-              fontSize={"sm"}
-              _hover={{
-                transform: "translateY(-2px)",
-                boxShadow: "lg",
-              }}
-            >
-              <TiSocialLinkedin size={"33"} color={"#F3B46F"} />
-              LinkedIn
-            </Button>
-            <Button
-              w={"350px"}
-              bg={useColorModeValue("#151f21", "gray.900")}
-              color={"white"}
-              rounded={"md"}
-              fontSize={"sm"}
-              _hover={{
-                transform: "translateY(-2px)",
-                boxShadow: "lg",
-              }}
-            >
-              <TiSocialGithub size={"33"} color={"#F3B46F"} />
-              GitHub
-            </Button>
+            <NextLink href={linkedin}>
+              <Button
+                w={"300px"}
+                bg={useColorModeValue("#151f21", "gray.900")}
+                color={"white"}
+                rounded={"md"}
+                fontSize={"sm"}
+                _hover={{
+                  transform: "translateY(-2px)",
+                  boxShadow: "lg",
+                }}
+              >
+                <TiSocialLinkedin size={"33"} color={"#F3B46F"} />
+                LinkedIn
+              </Button>
+            </NextLink>
+            <NextLink href={github}>
+              <Button
+                w={"350px"}
+                bg={useColorModeValue("#151f21", "gray.900")}
+                color={"white"}
+                rounded={"md"}
+                fontSize={"sm"}
+                _hover={{
+                  transform: "translateY(-2px)",
+                  boxShadow: "lg",
+                }}
+              >
+                <TiSocialGithub size={"33"} color={"#F3B46F"} />
+                GitHub
+              </Button>
+            </NextLink>
           </Stack>
           <Stack direction={"row"} justifyContent={"center"} mt={"6px"}>
-            <Button
-              marginTop={"6px"}
-              width={"100%"}
-              bg={useColorModeValue("#151f21", "gray.900")}
-              color={"white"}
-              rounded={"md"}
-              fontSize={"sm"}
-              _hover={{
-                transform: "translateY(-2px)",
-                boxShadow: "lg",
-              }}
-              justifyContent={"space-around"}
-            >
-              <ImLink />
-              Curriculum / Portfolio
-            </Button>
+            <NextLink href={cv}>
+              <Button
+                marginTop={"6px"}
+                width={"100%"}
+                bg={useColorModeValue("#151f21", "gray.900")}
+                color={"white"}
+                rounded={"md"}
+                fontSize={"sm"}
+                _hover={{
+                  transform: "translateY(-2px)",
+                  boxShadow: "lg",
+                }}
+                justifyContent={"space-around"}
+              >
+                <ImLink />
+                Curriculum / Portfolio
+              </Button>
+            </NextLink>
           </Stack>
         </Box>
       </Box>

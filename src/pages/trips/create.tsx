@@ -579,7 +579,7 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
                   <FormLabel paddingLeft="2" htmlFor="activitiesName" mt={1} textAlign={{base:"left",md:"left"}}>
                     Associated activities: <br/>
                     {input.activitiesName.map(a =>
-                      <Text> - {a.name}</Text>
+                      <Text key={a.name}> - {a.name}</Text>
                     )}
                   </FormLabel>
                   <Button

@@ -113,27 +113,10 @@ const Activities = ({ activities }: Props) => {
             citiesUnique={citiesUnique}
             input={input}
             setInput={setInput}
+            handleLoadAll={handleLoadAll}
           />
-          <Box display={"grid"} placeItems={"center"}>
-            <Button
-              bg={useColorModeValue("#02b1b1", "#02b1b1")}
-              color={"white"}
-              rounded={"md"}
-              padding={"20px"}
-              _hover={{
-                transform: "translateY(-2px)",
-                boxShadow: "lg",
-                bg: "#F3B46F",
-                color: "black",
-              }}
-              width="100px"
-              marginTop={"10px"}
-              onClick={() => handleLoadAll}
-            >
-              RESET
-            </Button>
-          </Box>
         </Center>
+
         <Box
           height={"38vh"}
           width={"100%"}
@@ -192,6 +175,7 @@ const Activities = ({ activities }: Props) => {
           citiesUnique={citiesUnique}
           input={input}
           setInput={setInput}
+          handleLoadAll={handleLoadAll}
         />
         <SimpleGrid minChildWidth="330px" spacing={2}>
           {data.map((a: any) => (

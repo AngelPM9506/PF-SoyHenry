@@ -59,12 +59,12 @@ const LandingPage: NextPage = () => {
         >
           <GiSoundWaves onClick={handlemuted} color={color} size={"50px"} />
         </FormControl>
-        <Box marginTop={{ base: "-500px", md: "-700px" }}>
+        <Box marginTop={{ base: "-85vh", md: "-85vh" }}>
           <Stack flex={1} spacing={{ base: 5, md: 10 }}>
             <Heading
               lineHeight="1.1"
               fontWeight={{ base: "600", md: "800" }}
-              fontSize={{ base: "40", md: "100" }}
+              fontSize={{ base: "40", sm: "60", md: "80", lg: "95" }}
               textAlign="center"
             >
               <Text
@@ -137,7 +137,7 @@ const LandingPage: NextPage = () => {
                   direction="row"
                   alignItems={"center"}
                   justifyContent={"center"}
-                  bottom="40px"
+                  bottom="5vh"
                   position="fixed"
                   marginTop={{ base: "30px", md: "100px" }}
                 >
@@ -159,7 +159,8 @@ const LandingPage: NextPage = () => {
                       Contact Us
                     </Button>
                   </NextLink>{" "}
-                  <NextLink href="/about">
+                  {/*eslint-disable-next-line @next/next/no-html-link-for-pages*/}
+                  <a href="/about">
                     <Button
                       mt={{ base: "60px", md: "0px" }}
                       rounded="full"
@@ -175,7 +176,7 @@ const LandingPage: NextPage = () => {
                     >
                       About Us
                     </Button>
-                  </NextLink>
+                  </a>
                 </Stack>
               </Stack>
             </Center>

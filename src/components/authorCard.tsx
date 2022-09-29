@@ -11,6 +11,7 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import { TiSocialLinkedin, TiSocialGithub } from "react-icons/ti";
+import { ImLink } from "react-icons/im";
 
 const AuthorCard = () => {
   return (
@@ -45,21 +46,6 @@ const AuthorCard = () => {
             </Heading>
             <Text color={"gray.500"}>Full stack web developer</Text>
           </Stack>
-
-          <Stack direction={"row"} justify={"center"} spacing={6}>
-            <Stack spacing={0} align={"center"}>
-              <Text fontWeight={600}>23k</Text>
-              <Text fontSize={"sm"} color={"gray.500"}>
-                Followers
-              </Text>
-            </Stack>
-            <Stack spacing={0} align={"center"}>
-              <Text fontWeight={600}>23k</Text>
-              <Text fontSize={"sm"} color={"gray.500"}>
-                Followers
-              </Text>
-            </Stack>
-          </Stack>
           <Stack direction={"row"} justifyContent={"center"} mt={"6px"}>
             <Button
               w={"300px"}
@@ -88,6 +74,24 @@ const AuthorCard = () => {
             >
               <TiSocialGithub size={"33"} color={"#F3B46F"} />
               GitHub
+            </Button>
+          </Stack>
+          <Stack direction={"row"} justifyContent={"center"} mt={"6px"}>
+            <Button
+              marginTop={"6px"}
+              width={"100%"}
+              bg={useColorModeValue("#151f21", "gray.900")}
+              color={"white"}
+              rounded={"md"}
+              fontSize={"sm"}
+              _hover={{
+                transform: "translateY(-2px)",
+                boxShadow: "lg",
+              }}
+              justifyContent={"space-around"}
+            >
+              <ImLink />
+              Curriculum / Portfolio
             </Button>
           </Stack>
         </Box>

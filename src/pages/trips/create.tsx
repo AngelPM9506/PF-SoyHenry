@@ -29,6 +29,7 @@ import {
   Box,
   Stack,
   useColorModeValue,
+  Flex,
 } from "@chakra-ui/react";
 import { ChevronDownIcon, CheckCircleIcon } from "@chakra-ui/icons";
 import { useState } from "react";
@@ -55,6 +56,8 @@ import getDay from "date-fns/getDay";
 import { chakra } from "@chakra-ui/react";
 import { BannedAlert } from "src/components/Banned";
 import Loading from "src/components/Loading";
+import { cursorTo } from "readline";
+import { Select as ReactSelect } from "chakra-react-select";
 
 interface Props {
   activities: Activity[];
@@ -102,7 +105,6 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
   const [disable, setDisable] = useState(true);
   const [actDate, setActDate] = useState("");
   const [isDisabled, setIsDisabled] = useState([]);
-
   const arrWorkingDays = (availability: string[]) => {
     const arr: number[] = [];
     availability.forEach((d) => {
@@ -133,13 +135,13 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
   };
 
   const handleActDate = (date: any, id: string) => {
-    console.log(date);
     setActDate(date);
     setIsDisabled((prevState) => [...prevState, id]);
     const errActDate = valActDateFormat(date);
     if (errActDate) {
       setErrorActivities(errActDate);
     }
+    console.log(date)
   };
 
   const handleCitiesSelect = (e: MouseEvent<HTMLButtonElement>) => {
@@ -257,7 +259,6 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
 
   const createTrip = async (trip: Trip) => {
     trip.planner = userDb.data.id;
-    console.log(trip);
     try {
       let resp = await axios.post("/api/trips", trip);
       console.log(resp.data);
@@ -293,7 +294,7 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
         duration: 3000,
         isClosable: true,
       });
-      router.push(`/trips/${tripCreated.id}`);
+      router.push(`/user/my-trips`);
     } else {
       toast({
         title: "Trip not created",
@@ -373,17 +374,24 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
     return <BannedAlert />;
   }
   if (isLoading) return <Loading />
+  const breakpoints = {
+    sm: '30em',
+    md: '48em',
+    lg: '62em',
+    xl: '80em',
+   " 2xl": '96em'
+  }
   return (
     <Layout>
-      <Center marginTop="1%">
-        <Heading color="primary">CREATE A NEW TRIP</Heading>
+      <Center marginTop="1%" >
+        <Heading   fontSize={{base:"30px",md:"60px"}} color="primary">CREATE A NEW TRIP</Heading>
       </Center>
       <form onSubmit={(e) => handleSubmit(e)}>
-        <Box h={"3xl"}>
+        <Box h={"3xl"} marginBottom={{base:"350px",md:"70px"}}>
           <FormControl>
             <Center>
               <Grid
-                marginBottom={"10px"}
+              marginBottom={"20px"}
                 h="80vh"
                 w="80vw"
                 templateRows="repeat(4, 1fr)"
@@ -391,10 +399,16 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
                 gap={1}
               >
                 <GridItem
+                  display= {{md:"grid"}}
+                  placeItems={"center"}
+                  height={"100%"}
                   borderRadius="2xl"
                   rowSpan={1}
-                  colSpan={1}
-                  bg="none"
+                  colSpan={{base:5,md:1}}
+                  bg={useColorModeValue(
+                    "RGBA(75,100,124,0.41)",
+                    "RGBA(75,100,124,0.41)"
+                  )}
                   alignContent="center"
                   alignSelf="center"
                 >
@@ -409,10 +423,11 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
                       fallbackSrc="https://via.placeholder.com/150"
                       alt="img"
                       boxSize="200px"
+                      marginTop={{base:"20px",md:0}}
                     />
                   </Box>
                   <Center>
-                    <Button onClick={(event) => handleClick(event)} mt="20px">
+                    <Button onClick={(event) => handleClick(event)} mt="20px"  marginBottom={{base:"20px",md:0}}>
                       Change Trip Image
                     </Button>
                     <Input
@@ -424,7 +439,11 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
                     />
                   </Center>
                 </GridItem>
-                <GridItem borderRadius="2xl" colSpan={4} bg="blackAlpha.100">
+                <GridItem borderRadius="2xl" colSpan={{base:5,md:4}} bg={useColorModeValue(
+                        "RGBA(75,100,124,0.41)",
+                        "RGBA(75,100,124,0.41)"
+                      )} padding = {"10px 20px"}
+                      paddingBottom={"20px"}>
                   <FormLabel htmlFor="name" paddingLeft="2" mt={2}>
                     Name
                   </FormLabel>
@@ -467,6 +486,29 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
                       ADD CITY
                     </Button>
                   </HStack>
+                   <Flex direction="column" mb="30px">
+                    {/* <FormLabel
+                      paddingLeft="2"
+                      htmlFor="description"
+                      mt={1}
+                      mb="8px"
+                    >
+                      Availability
+                    </FormLabel>
+                    <FormControl>
+                      <ReactSelect
+                        id="availability"
+                        name="availability"
+                        // options={availability}
+                        closeMenuOnSelect={false}
+                        size="lg"
+                        // onChange={(e: any) => handleAvailability(e)}
+                        // value={avaValue}
+                        colorScheme={"blue"}
+                        isMulti
+                      />
+                    </FormControl> */}
+                  </Flex>
                   <Center>
                     <HStack marginTop={"5px"}>
                       {input.cities.length != 0 ? (
@@ -531,7 +573,10 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
                   )}
                 </GridItem>
 
-                <GridItem borderRadius="2xl" colSpan={5} bg="blackAlpha.100">
+                <GridItem borderRadius="2xl" colSpan={{base:5,md:5}} bg={useColorModeValue(
+                        "RGBA(75,100,124,0.41)",
+                        "RGBA(75,100,124,0.41)"
+                      )} padding = {"10px 20px"} paddingBottom={"20px"}>
                   <FormLabel
                     paddingLeft="2"
                     htmlFor="description"
@@ -541,6 +586,7 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
                     Description
                   </FormLabel>
                   <Textarea
+                  resize={"none"}
                     name="description"
                     placeholder="Type a description of your trip..."
                     size="sm"
@@ -552,11 +598,13 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
                     </Text>
                   )}
                 </GridItem>
-                <GridItem borderRadius="2xl" colSpan={5}>
-                  <FormLabel paddingLeft="2" htmlFor="activitiesName" mt={2}>
-                    Associated activities
+                <GridItem borderRadius="2xl" colSpan={5} textAlign={{base:"left",md:"left"}}>
+                  <FormLabel paddingLeft="2" htmlFor="activitiesName" mt={1} textAlign={{base:"left",md:"left"}}>
+                    Associated activities: <br/>
+                    {input.activitiesName.map(a =>
+                      <Text> - {a.name}</Text>
+                    )}
                   </FormLabel>
-
                   <Button
                     ml="4"
                     disabled={input.initDate === "" || input.endDate === ""}
@@ -565,7 +613,7 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
                       onOpen();
                     }}
                   >
-                    Click to open the Associated Activities
+                    Click to select activities dates
                   </Button>
                   <Modal
                     size={"5xl"}
@@ -575,13 +623,13 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
                   >
                     {overlay}
                     <ModalContent>
-                      <ModalHeader>Select the activities</ModalHeader>
+                      <ModalHeader textAlign={{base:"center",md:"left"}} marginTop={{base:'30px',md:"0"}}>Select the activities</ModalHeader>
                       <ModalCloseButton />
                       <ModalBody>
                         <Box display={"flex"} flexDirection={"row"}>
                           <Center>
-                            <SimpleGrid columns={7} spacing={1}>
-                              {activities?.map((act) => {
+                            <SimpleGrid columns={{base:3,md:7}} spacing={1}>
+                              {activities?.map((act,i) => {
                                 if (input.cities.includes(act.city.name)) {
                                   const id = act.id;
                                   return (
@@ -591,8 +639,8 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
                                       p={2}
                                       width={"100%"}
                                       bg={useColorModeValue(
-                                        "white",
-                                        "gray.800"
+                                        "RGBA(75,100,124,0.41)",
+                                        "RGBA(75,100,124,0.41)"
                                       )}
                                       boxShadow={"2xl"}
                                       rounded={"lg"}
@@ -661,7 +709,7 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
                                             filterDate={(date) =>
                                               ableDays(date, act.availability)
                                             }
-                                            placeholderText="Select a date..."
+                                            placeholderText={input.activitiesName.find((a:any) => a.name === act.name.toString())?.actDate.slice(0,10).split("-").reverse().join("/")} 
                                             withPortal
                                             portalId="root"
                                             width={"100%"}
@@ -670,13 +718,13 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
                                             maxDate={new Date(input.endDate)}
                                           />
                                         </GridItem>
-                                        <GridItem>
+                                        {/* <GridItem>
                                           {errorActivities && (
                                             <Text m={1} color={"#F3B46F"}>
                                               {errorActivities.date}
                                             </Text>
                                           )}
-                                        </GridItem>
+                                        </GridItem> */}
                                         <Box
                                           display={"flex"}
                                           flexDirection={"row"}
@@ -742,28 +790,28 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
                       </ModalFooter>
                     </ModalContent>
                   </Modal>
-                </GridItem>
-                <GridItem colSpan={5}>
+                  <GridItem ml={"13px"} colSpan={5}>
                   {errorActivities.activitiesName && (
-                    <Text m={1} color={"#F3B46F"}>
+                    <Text  m={1} color={"#F3B46F"}>
                       {errorActivities.activitiesName}
                     </Text>
                   )}
                 </GridItem>
-              </Grid>
-            </Center>
-
-            <Center marginTop={"28"} marginBottom="2%">
-              <Button
-                mt={"20px"}
+                <Center marginTop={2} marginBottom="2%">
+                <Button
+                mt="20px"
+                ml={{md:"300px",lg:"0"}}
                 bg="highlight"
                 color="primary"
                 _hover={{ bg: "danger" }}
                 type="submit"
                 disabled={disable}
-              >
+                 >
                 CREATE AND POST
-              </Button>
+                </Button>
+            </Center>
+                </GridItem>
+              </Grid>
             </Center>
           </FormControl>
         </Box>

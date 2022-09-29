@@ -22,7 +22,11 @@ import TripsControllers from "src/controllers/trips";
 import Loading from "src/components/Loading";
 
 import { getCities } from "src/utils/cities";
+
 import { editActivity } from "src/utils/activities";
+
+import { NextSeo } from "next-seo";
+
 
 function TablesTableRow({
   users,
@@ -59,6 +63,7 @@ function TablesTableRow({
   return (
     <>
       <Layout>
+ <NextSeo title="Admin Panel" />
         <Box overflowX={{ base: "scroll", xl: "initial" }} mt={5} ml={5} p={7}>
           <Flex
             textAlign={{ base: "center", xl: "left" }}

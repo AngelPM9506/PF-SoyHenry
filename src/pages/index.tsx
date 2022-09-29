@@ -16,6 +16,7 @@ import { GiSoundWaves } from "react-icons/gi";
 import { useState } from "react";
 import NextLink from "next/link";
 import styles from "../styles/landing.module.css";
+import { NextSeo } from "next-seo";
 
 const LandingPage: NextPage = () => {
   const url =
@@ -38,6 +39,7 @@ const LandingPage: NextPage = () => {
   };
   return (
     <Box className={styles.main}>
+      <NextSeo title="World Travelers" />
       <video
         src={url}
         loop
@@ -59,12 +61,12 @@ const LandingPage: NextPage = () => {
         >
           <GiSoundWaves onClick={handlemuted} color={color} size={"50px"} />
         </FormControl>
-        <Box marginTop={{ base: "-500px", md: "-700px" }}>
+        <Box marginTop={{ base: "-85vh", md: "-85vh" }}>
           <Stack flex={1} spacing={{ base: 5, md: 10 }}>
             <Heading
               lineHeight="1.1"
               fontWeight={{ base: "600", md: "800" }}
-              fontSize={{ base: "40", md: "100" }}
+              fontSize={{ base: "40", sm: "60", md: "80", lg: "95" }}
               textAlign="center"
             >
               <Text
@@ -113,9 +115,9 @@ const LandingPage: NextPage = () => {
                 direction="column"
                 alignItems={"center"}
               >
-                {/*eslint-disable-next-line @next/next/no-html-link-for-pages*/}
                 <Stack alignItems={"center"}>
-                  <NextLink href="/api/auth/login">
+                  {/*eslint-disable-next-line @next/next/no-html-link-for-pages*/}
+                  <a href="/api/auth/login">
                     <Button
                       mt={{ base: "60px", md: "10px" }}
                       rounded="full"
@@ -131,13 +133,13 @@ const LandingPage: NextPage = () => {
                     >
                       LOG IN
                     </Button>
-                  </NextLink>
+                  </a>
                 </Stack>
                 <Stack
                   direction="row"
                   alignItems={"center"}
                   justifyContent={"center"}
-                  bottom="40px"
+                  bottom="5vh"
                   position="fixed"
                   marginTop={{ base: "30px", md: "100px" }}
                 >
@@ -159,6 +161,7 @@ const LandingPage: NextPage = () => {
                       Contact Us
                     </Button>
                   </NextLink>{" "}
+                  {/*eslint-disable-next-line @next/next/no-html-link-for-pages*/}
                   <a href="/about">
                     <Button
                       mt={{ base: "60px", md: "0px" }}

@@ -54,6 +54,7 @@ import getDay from "date-fns/getDay";
 import { chakra } from "@chakra-ui/react";
 import { BannedAlert } from "src/components/Banned";
 import Loading from "src/components/Loading";
+import { NextSeo } from "next-seo";
 
 interface Props {
   activities: Activity[];
@@ -281,7 +282,7 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
           },
         })
         .catch((error) => console.log(error));
-    } catch(error) {
+    } catch (error) {
       console.log(error);
     }
     if (tripCreated) {
@@ -374,14 +375,13 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
     return <div></div>;
   }
 
-
   if (!isLoading && userDb && !userDb.data.active) return <BannedAlert />;
 
   if (isLoading) return <Loading />;
 
-
   return (
     <Layout>
+      <NextSeo title="Create Trip" />
       <Center marginTop="1%">
         <Heading color="primary">CREATE A NEW TRIP</Heading>
       </Center>

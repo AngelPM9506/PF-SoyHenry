@@ -37,8 +37,6 @@ import {
   FacebookIcon,
   WhatsappShareButton,
   WhatsappIcon,
-  InstapaperIcon,
-  InstapaperShareButton,
 } from "next-share";
 
 // const Url = "http://localhost:3000";
@@ -83,10 +81,12 @@ export default function TripDetail({ data, isLoading, error }: any) {
           direction={"row"}
           alignItems={"center"}
           justifyContent={"space-between"}
-          width={"40%"}
+          display={"flex"}
+          flexDirection={{ base: "column", md: "row" }}
+          width={"90%"}
         >
           <Heading
-            width={"80%"}
+            width={"100%"}
             mt={"10px"}
             mb={"10px"}
             lineHeight={1.1}
@@ -97,6 +97,7 @@ export default function TripDetail({ data, isLoading, error }: any) {
             flexDirection={"row"}
             justifyContent={"center"}
             alignItems={"center"}
+            marginLeft={{ base: "0px", md: "10%" }}
           >
             <Image
               height={"40px"}
@@ -109,11 +110,18 @@ export default function TripDetail({ data, isLoading, error }: any) {
           </Heading>
           <Stack
             alignItems={"center"}
-            justifyContent={"right"}
+            justifyContent={"center"}
             direction={"row"}
+            bg={"#D1DFE3"}
+            height={"50px"}
+            paddingLeft={"20px"}
+            paddingRight={"5px"}
+            rounded={"30px"}
           >
+            <Text width={"max-content"} color={"#293541"} fontWeight={"bold"}>
+              Share trip:
+            </Text>
             <FacebookShareButton
-              // url={urlFacebook}
               url={urlFacebook}
               quote={
                 "Come explore the world with us! Click here to see the details of our latest trip."
@@ -157,7 +165,7 @@ export default function TripDetail({ data, isLoading, error }: any) {
               rounded={"20px"}
               overflow={"hidden"}
             >
-              <AspectRatio w="100%" h="100%">
+              <AspectRatio w="100%" h="100%" zIndex={0}>
                 {data.citiesOnTrips[0].city.latitude &&
                 data.citiesOnTrips[0].city.latitude ? (
                   <MapView

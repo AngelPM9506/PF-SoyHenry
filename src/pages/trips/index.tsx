@@ -67,7 +67,6 @@ function Trips({ trips }: Props) {
   data = data.filter((t: Trip) => t.active === true)
   const max = Math.ceil((data ? data.length : trips) / tripsPerPage);
   const [inputPage, setInputPage] = useState(1);
-  console.log(data ? data : "no")
   if (sort === "Sort Order") setSort("desc");
   if (sortBy === "Sort By") setSortBy("name");
 

@@ -603,7 +603,7 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
                   >
                     {overlay}
                     <ModalContent>
-                      <ModalHeader textAlign={{base:"center",md:"left"}} marginTop={{base:"220px",sm:"300px",md:"0"}}>Select the activities</ModalHeader>
+                      <ModalHeader textAlign={{base:"center",md:"left"}} marginTop={{base:"220px",sm:"200px",md:"0"}}>Select the activities</ModalHeader>
                       <ModalCloseButton />
                       <ModalBody>
                         <Box display={"flex"} flexDirection={"row"}>
@@ -742,18 +742,19 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
                           </Center>
                         </Box>
                         <Center>
-                          <SimpleGrid
+                          <Flex
+                            flex-wrap= "wrap"
+                            justify-content= "space-around"
                             marginTop={"10px"}
                             marginBottom={"5px"}
-                            columns={7}
-                            spacing={3}
                           >
                             {input.activitiesName?.map((a, index) => {
                               return (
                                 <>
-                                  <GridItem key={index}>
+                                  <GridItem key={index} margin="20px" placeItems={"center"}>
                                     {a.name}
                                     <Button
+                                      display="block"
                                       key={a.name}
                                       marginLeft="2"
                                       onClick={() => handleDelete(a.name)}
@@ -766,7 +767,7 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
                                 </>
                               );
                             })}
-                          </SimpleGrid>
+                          </Flex>
                         </Center>
                       </ModalBody>
                       <ModalFooter>

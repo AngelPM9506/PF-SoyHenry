@@ -64,7 +64,7 @@ function Trips({ trips }: Props) {
   //const data = trips;
   const [currentPage, setCurrentPage] = useState(1);
   const [tripsPerPage, setTripsPerPage] = useState(8);
-  data = data.filter((t: Trip) => t.active === true)
+  data = data?.filter((t: Trip) => t.active === true)
   const max = Math.ceil((data ? data.length : trips) / tripsPerPage);
   const [inputPage, setInputPage] = useState(1);
   if (sort === "Sort Order") setSort("desc");
@@ -268,7 +268,7 @@ function Trips({ trips }: Props) {
             RESET
           </Button>
       </Box>
-      <SimpleGrid minChildWidth="330px" columns={[2, null, 3]}>
+      <SimpleGrid columnGap={"7px"} minChildWidth="330px" columns={[2, null, 3]}>
         {data.length != 0 ? (
           data
             .slice(

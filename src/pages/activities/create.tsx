@@ -31,6 +31,7 @@ import { createActivity } from "src/utils/activities";
 import NotFound from "../404";
 import Loading from "src/components/Loading";
 import { Select as ReactSelect } from "chakra-react-select";
+import { NextSeo } from "next-seo";
 
 interface Props {
   activities: Activity[];
@@ -167,6 +168,7 @@ const CreateActivity = ({ activities, cities }: Props) => {
   if (!userDb?.data.isAdmin) return <NotFound />;
   return (
     <Layout>
+      <NextSeo title="Create Activity" />
       <Center marginTop="2%">
         <Heading
           textAlign={[null, null, "center"]}

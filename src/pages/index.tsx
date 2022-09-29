@@ -16,6 +16,7 @@ import { GiSoundWaves } from "react-icons/gi";
 import { useState } from "react";
 import NextLink from "next/link";
 import styles from "../styles/landing.module.css";
+import { NextSeo } from "next-seo";
 
 const LandingPage: NextPage = () => {
   const url =
@@ -38,6 +39,7 @@ const LandingPage: NextPage = () => {
   };
   return (
     <Box className={styles.main}>
+      <NextSeo title="World Travelers" />
       <video
         src={url}
         loop
@@ -113,9 +115,9 @@ const LandingPage: NextPage = () => {
                 direction="column"
                 alignItems={"center"}
               >
-                {/*eslint-disable-next-line @next/next/no-html-link-for-pages*/}
                 <Stack alignItems={"center"}>
-                  <NextLink href="/api/auth/login">
+                  {/*eslint-disable-next-line @next/next/no-html-link-for-pages*/}
+                  <a href="/api/auth/login">
                     <Button
                       mt={{ base: "60px", md: "10px" }}
                       rounded="full"
@@ -131,7 +133,7 @@ const LandingPage: NextPage = () => {
                     >
                       LOG IN
                     </Button>
-                  </NextLink>
+                  </a>
                 </Stack>
                 <Stack
                   direction="row"
@@ -159,7 +161,7 @@ const LandingPage: NextPage = () => {
                       Contact Us
                     </Button>
                   </NextLink>{" "}
-                  <a href="/about">
+                  <NextLink href="/about">
                     <Button
                       mt={{ base: "60px", md: "0px" }}
                       rounded="full"
@@ -175,7 +177,7 @@ const LandingPage: NextPage = () => {
                     >
                       About Us
                     </Button>
-                  </a>
+                  </NextLink>
                 </Stack>
               </Stack>
             </Center>

@@ -141,7 +141,6 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
     if (errActDate) {
       setErrorActivities(errActDate);
     }
-    console.log(date)
   };
 
   const handleCitiesSelect = (e: MouseEvent<HTMLButtonElement>) => {
@@ -173,7 +172,6 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
   const handleChange = ({
     target: { name, value },
   }: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    console.log(input.initDate,input.endDate,input.activitiesName.map(a => a.actDate))
     setInput({ ...input, [name]: value });
     const errControl = formControl({ ...input, [name]: value }, trips);
     const citiesControl = controlCities(input);
@@ -262,7 +260,6 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
     trip.planner = userDb.data.id;
     try {
       let resp = await axios.post("/api/trips", trip);
-      console.log(resp.data);
       return resp.data;
     } catch (error) {
       console.log(error);

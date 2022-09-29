@@ -488,27 +488,6 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
                     </Button>
                   </HStack>
                    <Flex direction="column" mb="30px">
-                    {/* <FormLabel
-                      paddingLeft="2"
-                      htmlFor="description"
-                      mt={1}
-                      mb="8px"
-                    >
-                      Availability
-                    </FormLabel>
-                    <FormControl>
-                      <ReactSelect
-                        id="availability"
-                        name="availability"
-                        // options={availability}
-                        closeMenuOnSelect={false}
-                        size="lg"
-                        // onChange={(e: any) => handleAvailability(e)}
-                        // value={avaValue}
-                        colorScheme={"blue"}
-                        isMulti
-                      />
-                    </FormControl> */}
                   </Flex>
                   <Center>
                     <HStack marginTop={"5px"}>

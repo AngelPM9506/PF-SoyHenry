@@ -1,11 +1,12 @@
 import { NextApiRequest, NextApiResponse } from "next"
 import { Server } from 'socket.io';
 const index = (req: NextApiRequest, res: NextApiResponse | any) => {
-    if (res.socket.server.io) {
-        console.log('server is already running');
-    } else {
+    if (!res.socket.server.io) {
+
         console.log('Socket is initializing');
+
         const io = new Server(res.socket.server);
+        
         res.socket.server.io = io;
         io.on('connection', socket => {
             /**desconeccion del chat */
@@ -13,6 +14,7 @@ const index = (req: NextApiRequest, res: NextApiResponse | any) => {
 
             /** Union a un chat */
             socket.on('join', room => {
+                console.log(`Socket ${socket.id} joining ${room}`);
                 socket.join(room);
             });
 

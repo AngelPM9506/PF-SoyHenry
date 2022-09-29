@@ -65,7 +65,6 @@ export function TripCard({ props }: any) {
           </Box>
           <Stack marginTop={"80px"} height={"80px"} align={"center"}>
             <Heading
-              noOfLines={1}
               fontSize={"2xl"}
               fontFamily={"body"}
               fontWeight={600}
@@ -76,15 +75,16 @@ export function TripCard({ props }: any) {
           </Stack>
           <VStack direction={"row"} align={"center"} marginTop={"-25px"}>
             <Text fontWeight={400} fontSize={"18px"}>
-              From <b>{new Date(props.initDate).toLocaleDateString()}</b> To <b>{new Date(props.endDate).toLocaleDateString()}</b>
+              From <b>{new Date(props.initDate).toLocaleDateString()}</b> To{" "}
+              <b>{new Date(props.endDate).toLocaleDateString()}</b>
             </Text>
           </VStack>
           <VStack direction={"row"} align={"center"}>
-          <Text fontWeight={800} fontSize={"xl"} marginBottom="-15px">
+            <Text fontWeight={800} fontSize={"xl"} marginBottom="-15px">
               Cities:
             </Text>
             <Text fontWeight={400} fontSize={"xl"}>
-            {props.citiesOnTrips.map((a: any) =>  a.city.name)}
+              {props.citiesOnTrips.map((a: any) => a.city.name)}
             </Text>
           </VStack>
 

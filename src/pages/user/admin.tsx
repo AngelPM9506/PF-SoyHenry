@@ -1,35 +1,17 @@
 import { useUser } from "@auth0/nextjs-auth0";
-import {
-  Avatar,
-  Badge,
-  Box,
-  Button,
-  Container,
-  Flex,
-  Input,
-  Link,
-  Select,
-  Table,
-  Tbody,
-  Td,
-  Text,
-  Th,
-  Thead,
-  Tr,
-  useColorModeValue,
-} from "@chakra-ui/react";
-import { fromPairs } from "lodash";
+import { Box, Text, useColorModeValue } from "@chakra-ui/react";
+
 import React, { useState } from "react";
-import { dehydrate, QueryClient, useQuery } from "react-query";
+import { useQuery } from "react-query";
 import Layout from "src/components/layout/Layout";
 import { UserData } from "src/components/UserProfile";
-import UserTable from "src/components/UserTable";
-import { getOrCreateUser, getUsers } from "src/utils/User";
-import NextLink from "next/link";
+
+import { getOrCreateUser } from "src/utils/User";
+
 import NotFound from "src/pages/404";
 
 import ActivitiesControles from "src/controllers/activities";
-import ActivityTable from "src/components/ActivityTable";
+
 import { Activity, CityInDB, Trip } from "src/utils/interface";
 import { ActivityDashboard } from "src/components/ActivityDashboard";
 import { UserDashboard } from "src/components/UserDashboard";
@@ -40,19 +22,19 @@ import TripsControllers from "src/controllers/trips";
 import Loading from "src/components/Loading";
 
 import { getCities } from "src/utils/cities";
+import { NextSeo } from "next-seo";
 
 function TablesTableRow({
   users,
   activities,
   trips,
-  cities,
 }: {
   activities: Activity[];
   users: UserData[];
   trips: Trip[];
-  cities: CityInDB[];
+  cities?: CityInDB[];
 }) {
-  const { user, error } = useUser();
+  const { user } = useUser();
   const { data: userDb, isLoading } = useQuery(["userDb", user], () =>
     getOrCreateUser(user)
   );
@@ -72,9 +54,11 @@ function TablesTableRow({
   if (isLoading || !userDb?.data) return <Loading />;
 
   if (!userDb.data.isAdmin) return <NotFound />;
+
   return (
     <>
       <Layout>
+        <NextSeo title="Admin Panel" />
         <Box overflowX={{ sm: "scroll", xl: "hidden" }} mt={5} ml={5}>
           <Box p="6px 0px 22px 0px" display={"inline-flex"} gap={10}>
             <Text
@@ -123,7 +107,6 @@ function TablesTableRow({
 
 export const getServerSideProps = async () => {
   //   const queryClient = new QueryClient(); //https://tanstack.com/query/v4/docs/guides/ssr
-
   const users = JSON.parse(JSON.stringify(await usersControllers.getUsers()));
   const activities = JSON.parse(
     JSON.stringify(await ActivitiesControles.getActivities({}))

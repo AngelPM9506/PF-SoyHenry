@@ -1,5 +1,5 @@
 import { useUser } from "@auth0/nextjs-auth0";
-import { Box, Text, useColorModeValue } from "@chakra-ui/react";
+import { Box, Flex, Text, useColorModeValue } from "@chakra-ui/react";
 
 import React, { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
@@ -59,8 +59,13 @@ function TablesTableRow({
   return (
     <>
       <Layout>
-        <Box overflowX={{ sm: "scroll", xl: "hidden" }} mt={5} ml={5} p={7}>
-          <Box p="6px 0px 22px 0px" display={"inline-flex"} gap={10}>
+        <Box overflowX={{ base: "scroll", xl: "initial" }} mt={5} ml={5} p={7}>
+          <Flex
+            textAlign={{ base: "center", xl: "left" }}
+            p="6px 0px 22px 0px"
+            direction={{ base: "column", xl: "row" }}
+            gap={{ base: 3, xl: 10 }}
+          >
             <Text
               fontSize="xl"
               color={active === "users" ? textColor : "gray"}
@@ -91,7 +96,7 @@ function TablesTableRow({
             >
               Trips Dashboard
             </Text>
-          </Box>
+          </Flex>
           {active === "users" && <UserDashboard users={users} />}
           {active === "activities" && (
             <ActivityDashboard activities={activities} />

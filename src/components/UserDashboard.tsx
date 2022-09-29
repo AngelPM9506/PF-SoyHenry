@@ -98,10 +98,10 @@ export const UserDashboard = ({ users }: { users: UserData[] }) => {
   };
   return (
     <>
-      <Box
+      <Flex
+        direction={{ base: "column", xl: "row" }}
         textAlign={"center"}
         key={active}
-        display={"inline-flex"}
         gap={5}
         mb={5}
         mt={5}
@@ -141,7 +141,7 @@ export const UserDashboard = ({ users }: { users: UserData[] }) => {
             placeholder={"Search by Email"}
           />
         </Flex>
-      </Box>
+      </Flex>
       <Table>
         <Thead>
           <Tr my=".8rem" pl="0px" color={"gray.400"} gap={5}>
@@ -171,13 +171,14 @@ export const UserDashboard = ({ users }: { users: UserData[] }) => {
         </Tbody>
       </Table>
       <Center>
-        <Flex gap={50} mt={5}>
+        <Flex direction={"column"}>
           <Select
             value={usersPerPage}
             name={"usersPerPage"}
             onChange={(e) => handleUsersPerPage(e)}
             w={130}
-            mt={8}
+            ml={16}
+            mt={5}
           >
             <option value={5}>5 Results</option>
             <option value={10}>10 Results</option>

@@ -144,10 +144,10 @@ export const TripDashboard = ({
   };
   return (
     <>
-      <Box
+      <Flex
         textAlign={"center"}
         key={activity}
-        display={"inline-flex"}
+        direction={{ base: "column", xl: "row" }}
         gap={5}
         mb={5}
         mt={5}
@@ -194,19 +194,13 @@ export const TripDashboard = ({
             </option>
           ))}
         </Select>
-      </Box>
+      </Flex>
       <Table>
         <Thead>
-          <Tr my=".8rem" pl="0px" color={textColor} gap={5}>
+          <Tr my=".8rem" color={textColor}>
             {captions.map((c, i) => {
               return (
-                <Th
-                  color={textColor}
-                  key={i}
-                  ps={i === 0 ? "10px" : null}
-                  gap={50}
-                  pl={30}
-                >
+                <Th color={textColor} key={i} ps={i === 0 ? "10px" : null}>
                   {c}
                 </Th>
               );
@@ -225,19 +219,7 @@ export const TripDashboard = ({
         </Tbody>
       </Table>
       <Center>
-        <Flex gap={50} mt={5}>
-          <Select
-            value={tripsPerPage}
-            name={"tripsPerPage"}
-            onChange={(e) => handleTripsPerPage(e)}
-            w={130}
-            mt={8}
-          >
-            <option value={5}>5 Results</option>
-            <option value={10}>10 Results</option>
-            <option value={20}>20 Results</option>
-            <option value={50}>50 Results</option>
-          </Select>
+        <Flex direction="column">
           <Pagination
             inputPage={inputPage}
             setInputPage={setInputPage}
@@ -245,6 +227,19 @@ export const TripDashboard = ({
             setCurrentPage={setCurrentPage}
             max={max}
           />
+          <Select
+            value={tripsPerPage}
+            name={"tripsPerPage"}
+            onChange={(e) => handleTripsPerPage(e)}
+            mt={5}
+            w={130}
+            ml={16}
+          >
+            <option value={5}>5 Results</option>
+            <option value={10}>10 Results</option>
+            <option value={20}>20 Results</option>
+            <option value={50}>50 Results</option>
+          </Select>
         </Flex>
       </Center>
     </>

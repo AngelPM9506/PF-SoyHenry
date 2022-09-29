@@ -40,6 +40,7 @@ type Props = {
 };
 
 export function ActivityTable({ activity }: Props) {
+  const textColor = useColorModeValue("#151f21", "#f4f4f4");
   const bg = useColorModeValue("#f4f4f4", "#151f21");
   const { data: actData, isLoading } = useQuery(["editActivity"], async () => {
     const id = activity.id;
@@ -50,7 +51,6 @@ export function ActivityTable({ activity }: Props) {
       id: id,
     };
   });
-
 
   const queryClient = useQueryClient();
   const mutatesubmit = useMutation(patchActivity, {
@@ -73,8 +73,6 @@ export function ActivityTable({ activity }: Props) {
       queryClient.resetQueries(["editActivity"]);
     },
   });
-
-  const textColor = useColorModeValue("#151f21", "#f4f4f4");
 
   const toast = useToast();
   const avaFormated = activity.availability.map((d) => ({
@@ -121,7 +119,7 @@ export function ActivityTable({ activity }: Props) {
 
   const handleEdit = async () => {
     const avaValue = value.map((a) => a.value);
-    await  editActivity({ ...data, availability: avaValue });
+    await editActivity({ ...data, availability: avaValue });
     return toast({
       title: "Successful change",
       description: "State changed successfully!",
@@ -144,7 +142,7 @@ export function ActivityTable({ activity }: Props) {
   if (isLoading) return <Loading />;
   return (
     <Tr key={changed}>
-      <Td>
+      <Td minWidth={{ base: "300px", sm: "200px" }}>
         <Flex align="center" py=".8rem" minWidth="100%" flexWrap="nowrap">
           <Avatar
             src={activity.image as string}

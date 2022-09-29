@@ -57,6 +57,7 @@ export default function TripDetail({ data, isLoading, error }: any) {
     ["userDb", user],
     () => user && getOrCreateUser(user)
   );
+
   const location =
     "https://drive.google.com/uc?id=1w5WnrjO9EbDHxa8B7h9oedYuk0SgQWBL";
   const iday = data.initDate.slice(0, 10).split("-").reverse().join("/");
@@ -272,13 +273,11 @@ export default function TripDetail({ data, isLoading, error }: any) {
               borderWidth={"1.5px"}
               color={"#293541"}
             /> */}
-
             {data.tripOnUser.length > 0 && (
               <Box height={"200px"} overflow={"hidden"}>
                 <AvatarCarousel props={data.tripOnUser} />
               </Box>
             )}
-
             {/* <Divider
               orientation="horizontal"
               width={"80%"}

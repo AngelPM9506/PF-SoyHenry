@@ -53,9 +53,12 @@ export default function Detail(props: Props) {
   });
 
   const { data, isLoading, error } = useQuery(["propsId"], async () => {
-    const activity = await getActivitiesId(props.id);
-    const id = props.id;
+    const activity = (await getActivitiesId(props.id))
+      ? await getActivitiesId(props.id)
+      : "error";
 
+    const id = props.id;
+    console.log(props.activity);
     return {
       activity: activity,
       id: id,
@@ -69,7 +72,7 @@ export default function Detail(props: Props) {
   if (isLoading) {
     return <Loading />;
   }
-  if (!isLoading && !data) {
+  if (!isLoading && data.activity === "error") {
     return <NotFound />;
   }
 
@@ -79,8 +82,6 @@ export default function Detail(props: Props) {
       {
         <ActivityDetail
           data={data}
-          // isLoading={isLoading}
-          // error={error}
           mutatesubmit={mutatesubmit}
           mutateedit={mutateedit}
           mutatedelete={mutatedelete}

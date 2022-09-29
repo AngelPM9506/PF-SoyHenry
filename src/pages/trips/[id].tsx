@@ -10,6 +10,7 @@ import { GetServerSideProps } from "next/types";
 import { useUser } from "@auth0/nextjs-auth0";
 import { useRouter } from "next/router";
 import NotFound from "../404";
+import { NextSeo } from "next-seo";
 
 interface Props {
   id: QueryFunctionContext<string[], any>;
@@ -33,9 +34,9 @@ export default function Detail(props: Props) {
   if (!isLoading && !data) {
     return <NotFound />;
   }
-
   return (
     <Layout>
+      <NextSeo title={data.name} />
       <TripDetail data={data} isLoading={isLoading} error={error} />
     </Layout>
   );

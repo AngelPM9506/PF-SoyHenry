@@ -17,6 +17,8 @@ import {
   ListIcon,
   Divider,
   AspectRatio,
+  Avatar,
+  Tooltip,
 } from "@chakra-ui/react";
 import { MinusIcon } from "@chakra-ui/icons";
 import { City, User } from "src/utils/interface";
@@ -30,7 +32,15 @@ import MapView from "src/components/DynamicMap";
 import { useUser } from "@auth0/nextjs-auth0";
 import { getOrCreateUser } from "src/utils/User";
 import { useRouter } from "next/router";
+import {
+  FacebookShareButton,
+  FacebookIcon,
+  WhatsappShareButton,
+  WhatsappIcon,
+} from "next-share";
 
+// const Url = "http://localhost:3000";
+const Url = "https://worldtravelers.vercel.app";
 interface Props {
   id: QueryFunctionContext<string[], any>;
   cities: City[];
@@ -40,9 +50,9 @@ interface Users {
 }
 
 export default function TripDetail({ data, isLoading, error }: any) {
+  const urlFacebook = Url + "/trips/" + data.id;
   const { user } = useUser();
   const router = useRouter();
-
   const { data: userDb } = useQuery(
     ["userDb", user],
     () => user && getOrCreateUser(user)
@@ -67,27 +77,70 @@ export default function TripDetail({ data, isLoading, error }: any) {
         mt={"40px"}
         height={"max-content"}
       >
-        <Heading
-          mt={"10px"}
-          mb={"10px"}
-          lineHeight={1.1}
-          fontWeight={600}
-          color={useColorModeValue("#293541", "white")}
-          fontSize={{ base: "2xl", sm: "4xl", lg: "5xl" }}
-          display={"flex"}
-          flexDirection={"row"}
-          justifyContent={"center"}
+        <Stack
+          direction={"row"}
           alignItems={"center"}
+          justifyContent={"space-between"}
+          display={"flex"}
+          flexDirection={{ base: "column", md: "row" }}
+          width={"90%"}
         >
-          <Image
-            height={"40px"}
-            width={"40px"}
-            marginRight={"10px"}
-            src={location}
-            alt={"icon"}
-          />
-          {data.name}
-        </Heading>
+          <Heading
+            width={"100%"}
+            mt={"10px"}
+            mb={"10px"}
+            lineHeight={1.1}
+            fontWeight={600}
+            color={useColorModeValue("#293541", "white")}
+            fontSize={{ base: "2xl", sm: "4xl", lg: "5xl" }}
+            display={"flex"}
+            flexDirection={"row"}
+            justifyContent={"center"}
+            alignItems={"center"}
+            marginLeft={{ base: "0px", md: "10%" }}
+          >
+            <Image
+              height={"40px"}
+              width={"40px"}
+              marginRight={"10px"}
+              src={location}
+              alt={"icon"}
+            />
+            <Text>{data.name}</Text>
+          </Heading>
+          <Stack
+            alignItems={"center"}
+            justifyContent={"center"}
+            direction={"row"}
+            bg={"#D1DFE3"}
+            height={"50px"}
+            paddingLeft={"20px"}
+            paddingRight={"5px"}
+            rounded={"30px"}
+          >
+            <Text width={"max-content"} color={"#293541"} fontWeight={"bold"}>
+              Share trip:
+            </Text>
+            <FacebookShareButton
+              url={urlFacebook}
+              quote={
+                "Come explore the world with us! Click here to see the details of our latest trip."
+              }
+              hashtag={"#WorldTravelers"}
+            >
+              <FacebookIcon size={40} round />
+            </FacebookShareButton>
+            <WhatsappShareButton
+              url={urlFacebook}
+              title={
+                "Come explore the world with us! We offer unique travel experiences that will stay with you for a lifetime. Click here to see the details of our latest trip."
+              }
+              separator=" -->  "
+            >
+              <WhatsappIcon size={40} round />
+            </WhatsappShareButton>
+          </Stack>
+        </Stack>
         <Divider
           orientation="horizontal"
           width={"100%"}
@@ -104,12 +157,15 @@ export default function TripDetail({ data, isLoading, error }: any) {
           <Flex>
             <Stack
               width={"100%"}
-              paddingRight={"10px"}
-              paddingLeft={"10px"}
-              alignItems={"top"}
-              justifyContent={"flex-start"}
+              height={"100%"}
+              marginRight={"10px"}
+              marginLeft={"10px"}
+              alignItems={"center"}
+              justifyContent={"center"}
+              rounded={"20px"}
+              overflow={"hidden"}
             >
-              <AspectRatio w="100%" h="100%">
+              <AspectRatio w="100%" h="100%" zIndex={0}>
                 {data.citiesOnTrips[0].city.latitude &&
                 data.citiesOnTrips[0].city.latitude ? (
                   <MapView
@@ -123,14 +179,30 @@ export default function TripDetail({ data, isLoading, error }: any) {
           </Flex>
           <Stack spacing={{ base: 6, md: 10 }}>
             <Box as={"header"}>
-              <Text
-                color={useColorModeValue("gray.900", "#02b1b1")}
-                fontWeight={"bold"}
-                marginTop={"20px"}
-                fontSize={"2xl"}
+              <Stack
+                direction={{ base: "column", md: "row" }}
+                width={"100%"}
+                alignItems={"center"}
+                justifyContent={"space-between"}
               >
-                Price: $ {data.price}
-              </Text>
+                <Text
+                  color={useColorModeValue("gray.900", "#02b1b1")}
+                  fontWeight={"bold"}
+                  marginTop={"20px"}
+                  fontSize={"2xl"}
+                >
+                  Price: $ {data.price}
+                </Text>
+                <Stack direction={"row"} alignItems={"center"}>
+                  <Text>Planner</Text>
+                  <Tooltip label={data.planner.name}>
+                    <Avatar
+                      name={data.planner.name}
+                      src={data.planner.avatar}
+                    />
+                  </Tooltip>
+                </Stack>
+              </Stack>
             </Box>
             <Stack
               spacing={{ base: 4, sm: 6 }}
@@ -201,9 +273,11 @@ export default function TripDetail({ data, isLoading, error }: any) {
               borderWidth={"1.5px"}
               color={"#293541"}
             /> */}
-            <Box>
-              <AvatarCarousel props={data.tripOnUser} />
-            </Box>
+            {data.tripOnUser.length > 0 && (
+              <Box height={"200px"} overflow={"hidden"}>
+                <AvatarCarousel props={data.tripOnUser} />
+              </Box>
+            )}
             {/* <Divider
               orientation="horizontal"
               width={"80%"}

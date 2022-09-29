@@ -29,8 +29,7 @@ import { useRouter } from "next/router";
 import { useUser } from "@auth0/nextjs-auth0";
 import { useQuery } from "react-query";
 import { getOrCreateUser } from "src/utils/User";
-import { useRef, useEffect, useState } from "react";
-import usersControllers from "src/controllers/users";
+import { useEffect, useState } from "react";
 import searchUser from "src/utils/searchUserOnTrip";
 
 export const TimeLine = ({ data }: any) => {

@@ -273,8 +273,8 @@ export default function TripDetail({ data, isLoading, error }: any) {
               color={"#293541"}
             /> */}
 
-            {data.tripOnUser[0] && (
-              <Box>
+            {data.tripOnUser.length > 0 && (
+              <Box height={"200px"} overflow={"hidden"}>
                 <AvatarCarousel props={data.tripOnUser} />
               </Box>
             )}

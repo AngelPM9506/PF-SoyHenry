@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import { Box, Avatar, Tooltip, useColorModeValue } from "@chakra-ui/react";
 import Slider from "react-slick";
 import { Trip } from "src/utils/interface";

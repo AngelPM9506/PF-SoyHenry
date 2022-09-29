@@ -55,8 +55,12 @@ export default function TripDetail({ data, isLoading, error }: any) {
 	const iday = data.initDate.slice(0, 10).split("-").reverse().join("/");
 	const eday = data.endDate.slice(0, 10).split("-").reverse().join("/");
 
+	const openChat = () => {
+		router.push(`/chat/${data.id}`)
+	}
+
 	
-	if (isLoading || !userDb || user) return <LoadingWithoutLayout />;
+	if (isLoading || !userDb || !user) return <LoadingWithoutLayout />;
 	if(data.plannerId !== userDb.data.id && data.active === false) router.push('/404')
 	if (error) return <div>{error.message}</div>;
 	return (
@@ -174,6 +178,7 @@ export default function TripDetail({ data, isLoading, error }: any) {
 												)}
 											</List>
 										</ListItem>
+										<Button onClick={() => openChat()}>Chat</Button>
 									</List>
 								</SimpleGrid>
 							</Box>

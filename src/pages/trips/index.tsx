@@ -32,6 +32,8 @@ import { useUser } from "@auth0/nextjs-auth0";
 import { getOrCreateUser } from "src/utils/User";
 import NextLink from "next/link";
 import { useRouter } from "next/router";
+import { NextSeo } from "next-seo";
+
 interface Props {
   trips: Trip[];
 }
@@ -137,6 +139,7 @@ function Trips({ trips }: Props) {
     <Loading />
   ) : (
     <Layout>
+      <NextSeo title="Trips" />
       <Heading
         display={{ md: "flex" }}
         alignItems={"center"}

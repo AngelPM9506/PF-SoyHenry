@@ -16,6 +16,7 @@ import { GiSoundWaves } from "react-icons/gi";
 import { useState } from "react";
 import NextLink from "next/link";
 import styles from "../styles/landing.module.css";
+import { NextSeo } from "next-seo";
 
 const LandingPage: NextPage = () => {
   const url =
@@ -38,6 +39,7 @@ const LandingPage: NextPage = () => {
   };
   return (
     <Box className={styles.main}>
+      <NextSeo title="World Travelers" />
       <video
         src={url}
         loop

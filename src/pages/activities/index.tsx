@@ -23,6 +23,8 @@ import { useUser } from "@auth0/nextjs-auth0";
 import { getOrCreateUser } from "src/utils/User";
 import { BannedAlert } from "src/components/Banned";
 import { useRouter } from "next/router";
+import Pagination from "../../components/pagination";
+
 interface Props {
   activities: Activity[];
 }
@@ -44,7 +46,6 @@ const Activities = ({ activities }: Props) => {
     ["userDb", user, userLoading],
     () => !userLoading && user && getOrCreateUser(user)
   );
-  //const data = activities;
   const cities = activities.map((a) => a.city.name);
   const citiesUnique: string[] = Array.from(new Set(cities)).sort(); // remove duplicates, sort alphabetically
   if (city === "All Cities") setCity(undefined);
@@ -79,6 +80,13 @@ const Activities = ({ activities }: Props) => {
     setInput(undefined);
   };
 
+  //pagination
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [actPerPage, setActPerPage] = useState(8);
+  const max = Math.ceil((data ? data.length : activities) / actPerPage);
+  const [inputPage, setInputPage] = useState(1);
+
   if (!userLoading && !user) {
     router.push("/api/auth/login");
     return <div></div>;
@@ -87,68 +95,7 @@ const Activities = ({ activities }: Props) => {
   if (!isLoading && userDb && !userDb.data.active) {
     return <BannedAlert />;
   }
-  return !data.length ? (
-    <div>
-      <Layout>
-        <Center>
-          <Heading
-            width={"1500px"}
-            color={useColorModeValue("#293541", "white")}
-          >
-            All Our Activities
-          </Heading>
-        </Center>
-        <Center>
-          <ActivityFilters
-            city={city}
-            handleCity={handleCity}
-            handleInput={handleInput}
-            sort={sort}
-            handleSort={handleSort}
-            sortBy={sortBy}
-            handleSortBy={handleSortBy}
-            maxPrice={maxPrice}
-            handleMaxPrice={handleMaxPrice}
-            setMaxPrice={setMaxPrice}
-            citiesUnique={citiesUnique}
-            input={input}
-            setInput={setInput}
-            handleLoadAll={handleLoadAll}
-          />
-        </Center>
-
-        <Box
-          height={"38vh"}
-          width={"100%"}
-          justifyContent={"center"}
-          alignContent={"center"}
-        >
-          <Text m={"15px"} textAlign={"center"} fontSize={"40px"}>
-            Sorry! There are no activities with the selected condition.
-          </Text>
-          <Center>
-            <Button
-              fontSize={"40px"}
-              bg={useColorModeValue("#151f21", "#293541")}
-              color={"white"}
-              type={"submit"}
-              height={"60px"}
-              p={"20px"}
-              m={"25px"}
-              rounded={"md"}
-              _hover={{
-                transform: "translateY(-2px)",
-                boxShadow: "lg",
-              }}
-              onClick={handleLoadAll}
-            >
-              Load all the trips again!
-            </Button>
-          </Center>
-        </Box>
-      </Layout>
-    </div>
-  ) : (
+  return (
     <div>
       <Layout>
         <Center>
@@ -178,27 +125,56 @@ const Activities = ({ activities }: Props) => {
           handleLoadAll={handleLoadAll}
         />
         <SimpleGrid minChildWidth="330px" spacing={2}>
-          {data.map((a: any) => (
-            <ActivityCard key={a.id} props={a} />
-          ))}
+          {data.length != 0 ? (
+            data
+              .slice(
+                (currentPage - 1) * actPerPage,
+                (currentPage - 1) * actPerPage + actPerPage
+              )
+              .map((a: any) => <ActivityCard key={a.id} props={a} />)
+          ) : (
+            <Box
+              height={"38vh"}
+              width={"100%"}
+              justifyContent={"center"}
+              alignContent={"center"}
+            >
+              <Text m={"15px"} textAlign={"center"} fontSize={"40px"}>
+                Sorry! There are no activities with the selected condition.
+              </Text>
+              <Center>
+                <Button
+                  fontSize={"40px"}
+                  bg={useColorModeValue("#151f21", "#293541")}
+                  color={"white"}
+                  type={"submit"}
+                  height={"60px"}
+                  p={"20px"}
+                  m={"25px"}
+                  rounded={"md"}
+                  _hover={{
+                    transform: "translateY(-2px)",
+                    boxShadow: "lg",
+                  }}
+                  onClick={handleLoadAll}
+                >
+                  Load all the trips again!
+                </Button>
+              </Center>
+            </Box>
+          )}
         </SimpleGrid>
+        <Pagination
+          inputPage={inputPage}
+          setInputPage={setInputPage}
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+          max={max}
+        />
       </Layout>
     </div>
   );
 };
-
-// export const getServerSideProps = async () => {
-//   const queryClient = new QueryClient(); //https://tanstack.com/query/v4/docs/guides/ssr
-
-//   await queryClient.prefetchQuery(await ActivitiesControles.getActivities({}));
-//   const activities = await ActivitiesControles.getActivities({});
-//   return {
-//     props: {
-//       activities: activities,
-//       dehydratedState: dehydrate(queryClient),
-//     },
-//   };
-// };
 
 export const getServerSideProps = async () => {
   const response = await axios.get("/activities");

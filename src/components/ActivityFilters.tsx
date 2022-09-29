@@ -152,7 +152,7 @@ export const ActivityFilters = ({
         >
           <Button
             margin="auto"
-            bg={useColorModeValue("#151f21", "#02b1b1")}
+            bg={"#02b1b1"}
             color={"white"}
             type={"submit"}
             rounded={"md"}

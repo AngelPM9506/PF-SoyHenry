@@ -23,7 +23,10 @@ export function ActivityCard({ props }: any) {
           p={6}
           maxW={"330px"}
           w={"full"}
-          bg={useColorModeValue("#D1DFE3", "blackAlpha.400")}
+          bg={useColorModeValue(
+            "RGBA(75,100,124,0.41)",
+            "RGBA(75,100,124,0.41)"
+          )}
           boxShadow={"2xl"}
           rounded={"lg"}
           pos={"relative"}

@@ -5,6 +5,7 @@ import {
 } from "react-vertical-timeline-component";
 import "react-vertical-timeline-component/style.min.css";
 import { MdOutlineTripOrigin } from "react-icons/md";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
 import {
   HStack,
   Image,
@@ -29,9 +30,12 @@ import { useRouter } from "next/router";
 import { useUser } from "@auth0/nextjs-auth0";
 import { useQuery } from "react-query";
 import { getOrCreateUser } from "src/utils/User";
-import { useEffect, useState } from "react";
+import { useRef, useEffect, useState } from "react";
+import usersControllers from "src/controllers/users";
 import searchUser from "src/utils/searchUserOnTrip";
-
+import { useAccount, useConnect, useDisconnect } from "wagmi";
+import { SendTransaction } from "./SendWeb3Transaction";
+import { ModalWeb3 } from "./ModalWeb3";
 export const TimeLine = ({ data }: any) => {
   const activitiesinOrder = data.activitiesOnTrips.sort(function compareFn(
     a: any,
@@ -48,6 +52,7 @@ export const TimeLine = ({ data }: any) => {
 
   const router = useRouter();
   const { user, error } = useUser();
+  const { isConnected } = useAccount();
   const [userOnTrip, setUserOnTrip] = useState(false);
 
   const { data: userDb, isLoading } = useQuery(
@@ -85,7 +90,7 @@ export const TimeLine = ({ data }: any) => {
           alignItems="center"
           justifyContent="center"
           textAlign="center"
-          height="160px"
+          height="150px"
         >
           <AlertIcon boxSize="40px" mr={0} />
           <AlertTitle mt={4} mb={1} fontSize="lg">
@@ -183,6 +188,13 @@ export const TimeLine = ({ data }: any) => {
           >
             Pay and Join the trip!
           </Button>
+          <ConnectButton
+            label={"Connect Ethereum Wallet"}
+            showBalance={false}
+          />
+          <ModalWeb3
+            value={"0.01"}
+          />
         </Stack>
       )}
     </Stack>

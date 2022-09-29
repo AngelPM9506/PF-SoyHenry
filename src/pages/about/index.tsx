@@ -8,10 +8,12 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import AboutCarousel from "src/components/AboutCarousel";
+import { NextSeo } from "next-seo";
 
 const AboutPage = () => {
   return (
     <Layout>
+      <NextSeo title="About" />
       <Stack
         direction={{ base: "column", sm: "column", md: "column", lg: "row" }}
         margin={"2%"}

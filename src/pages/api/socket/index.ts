@@ -8,17 +8,21 @@ const index = (req: NextApiRequest, res: NextApiResponse | any) => {
         const io = new Server(res.socket.server);
         res.socket.server.io = io;
         io.on('connection', socket => {
+           
             /**desconeccion del chat */
             socket.on('disconnect', () => console.log(`Disconect: ${socket.id}`));
 
             /** Union a un chat */
             socket.on('join', room => {
+                console.log(`Socket ${socket.id} joining room with ID: ${room}`);
                 socket.join(room);
             });
 
             /**Enviar mensaje a un room */
             socket.on('chat', data => {
+                console.log(data);
                 const { message, room } = data;
+                console.log(`msg: ${message}, room: ${room}`);
                 io.to(room).emit('chat', message);
             });
         })

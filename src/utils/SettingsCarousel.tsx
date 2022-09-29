@@ -1,8 +1,4 @@
 import { useColorModeValue } from "@chakra-ui/react";
-import {
-  BsFillArrowLeftCircleFill,
-  BsFillArrowRightCircleFill,
-} from "react-icons/bs";
 
 export const Arrow = ({ className, style, onClick }: any) => {
   return (

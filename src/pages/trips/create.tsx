@@ -173,6 +173,7 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
   const handleChange = ({
     target: { name, value },
   }: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    console.log(input.initDate,input.endDate,input.activitiesName.map(a => a.actDate))
     setInput({ ...input, [name]: value });
     const errControl = formControl({ ...input, [name]: value }, trips);
     const citiesControl = controlCities(input);
@@ -623,7 +624,7 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
                   >
                     {overlay}
                     <ModalContent>
-                      <ModalHeader textAlign={{base:"center",md:"left"}} marginTop={{base:'30px',md:"0"}}>Select the activities</ModalHeader>
+                      <ModalHeader textAlign={{base:"center",md:"left"}} marginTop={{base:"220px",sm:"300px",md:"0"}}>Select the activities</ModalHeader>
                       <ModalCloseButton />
                       <ModalBody>
                         <Box display={"flex"} flexDirection={"row"}>
@@ -677,6 +678,7 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
                                           {act?.name}
                                         </Text>
                                         <Box
+                                        key={act.name}
                                           display={"flex"}
                                           flexDirection={"row"}
                                           alignItems={"center"}
@@ -703,7 +705,7 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
                                             dateFormat="yyyy/mm/ddd"
                                             onChange={(date) => {
                                             let D = new Date(date.toString())
-                                              handleActDate(`${D.getFullYear()}-${D.getMonth()}-${D.getDay()}`, id)
+                                              handleActDate(`${D.toISOString().slice(0,10).split("-").reverse().join("/")}`, id)
                                             }
                                             }
                                             filterDate={(date) =>
@@ -726,6 +728,7 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
                                           )}
                                         </GridItem> */}
                                         <Box
+                                        key={act.id + act.name}
                                           display={"flex"}
                                           flexDirection={"row"}
                                           alignItems={"center"}
@@ -771,6 +774,7 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
                                   <GridItem key={index}>
                                     {a.name}
                                     <Button
+                                      key={a.name}
                                       marginLeft="2"
                                       onClick={() => handleDelete(a.name)}
                                       height={"25px"}

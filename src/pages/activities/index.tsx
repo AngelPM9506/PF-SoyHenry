@@ -98,21 +98,42 @@ const Activities = ({ activities }: Props) => {
             All Our Activities
           </Heading>
         </Center>
-        <ActivityFilters
-          city={city}
-          handleCity={handleCity}
-          handleInput={handleInput}
-          sort={sort}
-          handleSort={handleSort}
-          sortBy={sortBy}
-          handleSortBy={handleSortBy}
-          maxPrice={maxPrice}
-          handleMaxPrice={handleMaxPrice}
-          setMaxPrice={setMaxPrice}
-          citiesUnique={citiesUnique}
-          input={input}
-          setInput={setInput}
-        />
+        <Center>
+          <ActivityFilters
+            city={city}
+            handleCity={handleCity}
+            handleInput={handleInput}
+            sort={sort}
+            handleSort={handleSort}
+            sortBy={sortBy}
+            handleSortBy={handleSortBy}
+            maxPrice={maxPrice}
+            handleMaxPrice={handleMaxPrice}
+            setMaxPrice={setMaxPrice}
+            citiesUnique={citiesUnique}
+            input={input}
+            setInput={setInput}
+          />
+          <Box display={"grid"} placeItems={"center"}>
+            <Button
+              bg={useColorModeValue("#02b1b1", "#02b1b1")}
+              color={"white"}
+              rounded={"md"}
+              padding={"20px"}
+              _hover={{
+                transform: "translateY(-2px)",
+                boxShadow: "lg",
+                bg: "#F3B46F",
+                color: "black",
+              }}
+              width="100px"
+              marginTop={"10px"}
+              onClick={() => handleLoadAll}
+            >
+              RESET
+            </Button>
+          </Box>
+        </Center>
         <Box
           height={"38vh"}
           width={"100%"}
@@ -120,7 +141,7 @@ const Activities = ({ activities }: Props) => {
           alignContent={"center"}
         >
           <Text m={"15px"} textAlign={"center"} fontSize={"40px"}>
-            Sorry! There are no trips with the selected condition.
+            Sorry! There are no activities with the selected condition.
           </Text>
           <Center>
             <Button

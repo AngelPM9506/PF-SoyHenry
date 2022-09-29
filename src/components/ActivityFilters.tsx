@@ -68,27 +68,35 @@ export const ActivityFilters = ({
         <option value={"name"}>Sort By: Name</option>
         <option value={"price"}>Sort By: Price</option>
       </Select>
-      <HStack>
+      <HStack
+        margin={"auto"}
+        height={"45px"}
+        justifyContent={"center"}
+        alignItems={"center"}
+        spacing="10px"
+      >
+        <Text minWidth={"max-content"}>Max price: </Text>
         <form onSubmit={(e) => handleMaxPrice(e)}>
           <Input
-            width="210px"
+            width="80px"
             textAlign={"left"}
-            placeholder="Filter by Max Price (USD)"
+            placeholder="$"
             onChange={(e) => handleInput(e)}
             value={input}
-            key={maxPrice} //when max price changes after clicking the reset button, the input UI is going to re-render too and reflect the changes
+            key={maxPrice}
           />
         </form>
         <Button
-          mt={8}
-          bg={useColorModeValue("#151f21", "#f4f4f4")}
-          color={useColorModeValue("#f4f4f4", "#151f21")}
+          margin="auto"
+          bg={useColorModeValue("#151f21", "#293541")}
+          color={"white"}
+          type={"submit"}
           rounded={"md"}
           _hover={{
             transform: "translateY(-2px)",
             boxShadow: "lg",
           }}
-          type="submit"
+          width={"80%"}
           onClick={(e) => handleMaxPrice(e)}
         >
           Search

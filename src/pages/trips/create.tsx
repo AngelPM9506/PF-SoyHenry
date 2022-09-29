@@ -702,6 +702,7 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
                                             Choose a date
                                           </FormLabel>
                                           <MyDataPicker
+                                          _hover={{cursor:"pointer"}}
                                             dateFormat="yyyy/mm/ddd"
                                             onChange={(date) => {
                                             let D = new Date(date.toString())
@@ -711,7 +712,7 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
                                             filterDate={(date) =>
                                               ableDays(date, act.availability)
                                             }
-                                            placeholderText={input.activitiesName.find((a:any) => a.name === act.name.toString())?.actDate.slice(0,10).split("-").reverse().join("/")} 
+                                            placeholderText={input.activitiesName.find((a:any) => a.name === act.name.toString())?.actDate.slice(0,10).split("-").reverse().join("/")?input.activitiesName.find((a:any) => a.name === act.name.toString())?.actDate.slice(0,10).split("-").reverse().join("/"):"Choose a date"} 
                                             withPortal
                                             portalId="root"
                                             width={"100%"}

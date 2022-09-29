@@ -462,6 +462,15 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
                     Cities
                   </FormLabel>
                   <HStack>
+                  <Button
+                      marginLeft={"10px"}
+                      mt={1}
+                      width={"80px"}
+                      fontSize={"xs"}
+                      onClick={(e) => handleCitiesSelect(e)}
+                    >
+                      ADD CITY
+                    </Button>
                     <Input
                       list="cities-choices"
                       name="cities"
@@ -477,15 +486,6 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
                           <option key={index}> {c.name} </option>
                         ))}
                     </datalist>
-                    <Button
-                      marginLeft={"10px"}
-                      mt={1}
-                      width={"80px"}
-                      fontSize={"xs"}
-                      onClick={(e) => handleCitiesSelect(e)}
-                    >
-                      ADD CITY
-                    </Button>
                   </HStack>
                    <Flex direction="column" mb="30px">
                   </Flex>

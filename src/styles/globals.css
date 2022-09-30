@@ -25,10 +25,24 @@ a {
   }
 }
 
-.ant-table-thead .ant-table-cell{
-  background-color: #857C7E;
+.ant-table table {
+  font-size: 15px;
+}
+
+.ant-table-thead .ant-table-cell {
+  background-color: #02b1b1;
 }
 
 .ant-table-tbody {
-  background-color: #C9C3C5;
+  background-color: #d1dfe3;
+}
+
+.ant-table-tbody > tr > td {
+  height: 2px;
+  padding: 2px;
+}
+
+.ant-table-thead > tr > th {
+  height: 2px;
+  padding: 2px;
 }

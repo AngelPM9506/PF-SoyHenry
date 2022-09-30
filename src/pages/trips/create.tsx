@@ -32,7 +32,7 @@ import {
   Flex,
 } from "@chakra-ui/react";
 import { ChevronDownIcon, CheckCircleIcon } from "@chakra-ui/icons";
-import { useState } from "react";
+import { SetStateAction, useState } from "react";
 import { Trip, Activity, City, Errors } from "src/utils/interface";
 import { ChangeEvent, FormEvent, MouseEvent, useRef } from "react";
 import Layout from "src/components/layout/Layout";
@@ -59,6 +59,7 @@ import { cursorTo } from "readline";
 import { Select as ReactSelect } from "chakra-react-select";
 import { NextSeo } from "next-seo";
 import Link from "next/link";
+import React from 'react'
 
 interface Props {
   activities: Activity[];
@@ -77,7 +78,11 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
     ["userDb", user],
     () => user && getOrCreateUser(user)
   );
-
+  let options : any = []
+  cities.map(c => {
+    let selectObject = {value:c.name, label:c.name,name:c.name}
+    options.push(selectObject)
+  })
   const url =
     "https://res.cloudinary.com/mauro4202214/image/upload/v1663527844/world-travelers/activitydefault_q9aljz.png";
 
@@ -94,7 +99,9 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
   };
 
   const [input, setInput] = useState(initialState);
-  const [inputCities, setInputCities] = useState("");
+  let citieFormated = input.cities.map(c => ({value:c,label:c}))
+  // const [inputCities, setInputCities] = useState("");
+  const [inputCities, setinputCities] = useState(citieFormated)
   const [image, setImage] = useState<string | ArrayBuffer>();
   const [file, setFile] = useState<File>();
   const [nameFile, setNameFile] = useState("");
@@ -128,11 +135,11 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
   if (!isLoading && input.planner === "" && userDb?.data.id)
     setInput({ ...input, planner: userDb.data.id });
 
-  const handleCities = ({
-    target: { value },
-  }: ChangeEvent<HTMLInputElement>) => {
-    setInputCities(value);
-  };
+  // const handleCities = ({
+  //   target: { value },
+  // }: ChangeEvent<HTMLInputElement>) => {
+  //   setInputCities(value);
+  // };
 
   const handleActDate = (date: any, id: string) => {
     setActDate(date);
@@ -143,37 +150,37 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
     }
   };
 
-  const handleCitiesSelect = (e: MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    if (inputCities !== "") {
-      setInput({ ...input, cities: [...input.cities, inputCities] });
-      const errControl = formControl(input);
-      const citiesControl = controlCities({
-        ...input,
-        cities: [...input.cities, inputCities],
-      });
-      const activitiesControl: any = controlActivities(input);
-      if (
-        JSON.stringify(errControl) === "{}" &&
-        JSON.stringify(citiesControl) === "{}" &&
-        JSON.stringify(activitiesControl) === "{}"
-      ) {
-        setDisable(false);
-      } else {
-        setDisable(true);
-      }
-      setErrorCities(citiesControl);
-      setErrorActivities(activitiesControl);
-      setErrors(errControl);
-      setInputCities("");
-    }
-  };
+  // const handleCitiesSelect = (e: MouseEvent<HTMLButtonElement>) => {
+  //   e.preventDefault();
+  //   // if (inputCities !== "") {
+  //   //   setInput({ ...input, cities: [...input.cities, inputCities] });
+  //   //   const errControl = formControl(input);
+  //   //   const citiesControl = controlCities({
+  //   //     ...input,
+  //   //     cities: [...input.cities, inputCities],
+  //   //   });
+  //     const activitiesControl: any = controlActivities(input);
+  //     if (
+  //       JSON.stringify(errControl) === "{}" &&
+  //       JSON.stringify(citiesControl) === "{}" &&
+  //       JSON.stringify(activitiesControl) === "{}"
+  //     ) {
+  //       setDisable(false);
+  //     } else {
+  //       setDisable(true);
+  //     }
+  //     setErrorCities(citiesControl);
+  //     setErrorActivities(activitiesControl);
+  //     setErrors(errControl);
+  //     setInputCities("");
+  //   }
+  // };
 
   const handleChange = ({
     target: { name, value },
   }: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setInput({ ...input, [name]: value });
-    console.log(cities)
+    console.log(input)
     const errControl = formControl({ ...input, [name]: value }, trips);
     const citiesControl = controlCities(input);
     const activitiesControl = controlActivities(input);
@@ -390,6 +397,9 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
    " 2xl": '96em'
   }
   
+  const handleCities2 = (option:SetStateAction<{ value: string; label: string }[]>) => {
+    setinputCities(option)
+  }
   return (
     <Layout>
       <NextSeo title="Create Trip" />
@@ -467,7 +477,7 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
                       {errors.name}
                     </Text>
                   )}
-                  <FormLabel paddingLeft="2" htmlFor="cities" mt={2}>
+                  {/* <FormLabel paddingLeft="2" htmlFor="cities" mt={2}>
                     Cities
                   </FormLabel>
                   <HStack>
@@ -495,7 +505,30 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
                           <option key={index}> {c.name} </option>
                         ))}
                     </datalist>
-                  </HStack>
+                  </HStack> */}
+                    <Flex direction="column" mb="30px">
+                  <FormLabel
+                    paddingLeft="2"
+                    htmlFor="description"
+                    mt={1}
+                    mb="8px"
+                  >
+                    Cities
+                  </FormLabel>
+                  <FormControl>
+                    <ReactSelect
+                      id="cities"
+                      name="cities"
+                      options={options}
+                      closeMenuOnSelect={false}
+                      size="md"
+                      onChange={(e: any) => handleCities2(e)}
+                      value={inputCities}
+                      colorScheme={"blue"}
+                      isMulti
+                    />
+                  </FormControl>
+                </Flex>
                    <Flex direction="column" mb="30px">
                   </Flex>
                   <Center>

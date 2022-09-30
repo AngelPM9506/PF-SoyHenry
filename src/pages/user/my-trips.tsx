@@ -62,8 +62,6 @@ export default function MyTrips() {
       responsive: ["lg", "md", "sm", "xs"],
       render: (name: string) => {
         let trip = trips.find((t) => t.name === name);
-        console.log("trips", trips);
-        console.log("trip", trip);
         return (
           <NextLink href={`/trips/${trip.id}`}>
             <Title level={5}>
@@ -188,7 +186,7 @@ export default function MyTrips() {
       width: "27%",
       responsive: ["lg", "md", "sm", "xs"],
       render: (name: string) => {
-        let newTrip: Trip = otherTrips?.map((t) => t.name);
+        let newTrip: any = otherTrips?.map((t) => t.name);
         return (
           <NextLink href={`/trips/${newTrip.id}`}>
             <Title level={5}>
@@ -309,10 +307,10 @@ export default function MyTrips() {
   useEffect(() => {
     const filterTrips: Trip[] = usuario?.useOnTrip
       ?.filter((t: Trip) => t.plannerId !== userDb.data.id)
-      .map((t: any) => t.trip);
+      .map((t: Trip) => t.trip);
     setOtherTrips(filterTrips);
     setTrips(usuario?.trips);
-  }, [usuario]);
+  }, [usuario, userDb.data.id]);
 
   if (!userLoading && !user) {
     router.push("/api/auth/login");
@@ -346,8 +344,8 @@ export default function MyTrips() {
               color={useColorModeValue("#293541", "#F3B46F")}
               marginTop={"1%"}
             >
-              Hello traveler, you'll find your created trips and their status in
-              this section.
+              Hello traveler, you will find your created trips and their status
+              in this section.
             </Text>
           </Box>
           <Flex alignItems={"center"} flexDirection="row">
@@ -422,8 +420,8 @@ export default function MyTrips() {
               color={useColorModeValue("#293541", "#F3B46F")}
               marginTop={"1%"}
             >
-              Hello traveler, you'll find all the info related to the trips
-              you've joined here, you can create your own.
+              Hello traveler, you will find all the info related to the trips
+              you have joined here, you can create your own.
             </Text>
           </Box>
           <Flex alignItems={"center"} flexDirection="row">
@@ -498,8 +496,8 @@ export default function MyTrips() {
               color={useColorModeValue("#293541", "#F3B46F")}
               marginTop={"1%"}
             >
-              Hello traveler, you'll find your created trips and their status in
-              this section.
+              Hello traveler, you will find your created trips and their status
+              in this section.
             </Text>
           </Box>
           <Flex alignItems={"center"} flexDirection="row">
@@ -536,8 +534,8 @@ export default function MyTrips() {
                         marginTop={"1%"}
                         marginBottom={"1%"}
                       >
-                        Here you'll find all the info related to the trips
-                        you've joined.
+                        Here you will find all the info related to the trips you
+                        have joined.
                       </Text>
                     </Center>
                   </Stack>
@@ -617,9 +615,9 @@ export default function MyTrips() {
                       marginTop={"1%"}
                       textAlign={"center"}
                     >
-                      Hello traveler, you'll find your created trips and their
-                      status in this section. But, It looks like you don't have
-                      any trips created or you haven't joined a trip yet, let's
+                      Hello traveler, you will find your created trips and their
+                      status in this section. But, It looks like you do not have
+                      any trips created or you have not joined a trip yet, so
                       create one now.
                     </Text>
                   </Stack>

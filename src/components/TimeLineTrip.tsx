@@ -56,7 +56,7 @@ export const TimeLine = ({ data }: any) => {
   );
 
   const payTrip = async () => {
-    // console.log(data)
+     console.log(data)
     const response = await axios.post("/api/payment/paypal", {
       id: data.id,
       description: data.name,

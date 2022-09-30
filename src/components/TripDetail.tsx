@@ -80,7 +80,7 @@ export default function TripDetail({ data, isLoading, error }: any) {
 		a();
 	}, [data.id, userDb]);
 
-  if (isLoading || !userDb || !!user) return <LoadingWithoutLayout />;
+  if (isLoading || !userDb || !user) return <LoadingWithoutLayout />;
   if (data.plannerId !== userDb.data.id && data.active === false)
     router.push("/404");
   if (error) return <div>{error.message}</div>;

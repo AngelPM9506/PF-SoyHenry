@@ -48,7 +48,7 @@ export default function ChatRoom(props: Props) {
     );
 
     const initiateSocket = async (room: string) => {
-        await axios('/socket');
+        await axios('/api/socket');
         socket = io();
         socket.on('connect', () => { console.log(socket.id) });
         socket.emit('join', room);

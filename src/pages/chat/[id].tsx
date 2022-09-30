@@ -11,7 +11,7 @@ import {
 } from "@chakra-ui/react";
 import Layout from 'src/components/layout/Layout'
 import io, { Socket } from "socket.io-client";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 //import { initiateSocket, disconnectSocket, sendMessage, subscribeToChat } from "src/utils/hooksSockets";
 import { GetServerSideProps } from "next/types";
@@ -29,6 +29,7 @@ export default function ChatRoom(props: Props) {
     const [message, setMessage] = useState('');
     const [chat, setChat] = useState([]);
     const { user, isLoading: userLoading } = useUser();
+    const bottomRef = useRef();
 
     const { data: userDb, isLoading } = useQuery(
         ["userDb", user],
@@ -69,6 +70,10 @@ export default function ChatRoom(props: Props) {
         }
     }, []);
 
+    useEffect(()=>{
+        bottomRef.current?.scrollIntoView({behavior: 'smooth'});
+    },[chat]);
+
     const setInput = (event: any) => {
         let { target: { value } } = event;
         setMessage(value);
@@ -85,7 +90,7 @@ export default function ChatRoom(props: Props) {
     return (
         <Layout>
             {/**render chats */}
-            <Box display={'flex'} flexDirection={'column'} width={'50%'} margin={'1rem auto'} height={'70vh'}
+            <Box display={'flex'} flexDirection={'column'} scrollSnapAlign={'end'} width={'50%'} margin={'1rem auto'} height={'70vh'}
                 border={'1px solid #F3B46F'} borderRadius={'2xl'} padding={'2rem'} overflow={'scroll'}
                 sx={{ '::-webkit-scrollbar': { display: 'none' } }} >
                 {chat && chat.map((m, i) => {
@@ -103,6 +108,7 @@ export default function ChatRoom(props: Props) {
                         </Box>
                     );
                 })}
+                <Box ref={bottomRef} />
             </Box>
             {/**form */}
             <Stack as={'form'} width={'50%'} margin={'0 auto 3rem auto'} onSubmit={putMessage}>

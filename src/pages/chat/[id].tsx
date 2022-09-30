@@ -40,7 +40,7 @@ export default function ChatRoom(props: Props) {
     const [chat, setChat] = useState([]);
     const [trip, setTrip] = useState(initTrip);
     const { user, isLoading: userLoading } = useUser();
-    const bottomRef = useRef();
+    const bottomRef = useRef<HTMLDivElement>(null);
 
     const { data: userDb, isLoading } = useQuery(
         ["userDb", user],
@@ -90,13 +90,13 @@ export default function ChatRoom(props: Props) {
 
     const prefixDate = (date: string) => {
         let arraydate = date.split('T');
-        let dateF = arraydate[0].split('-').reverse().join('-')
+        let dateF = arraydate[0].split('-').reverse().join('-');
         let timePre = arraydate[1].split('.')[0].split(':');
-        let time = `${timePre[0]}:${timePre[1]}`
+        let time = `${timePre[0]}:${timePre[1]}`;
         return `${dateF}: ${time}`;
     }
     useEffect(() => {
-        bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+        bottomRef?.current?.scrollIntoView({ behavior: 'smooth' });
     }, [chat]);
 
     const setInput = (event: any) => {
@@ -166,7 +166,7 @@ export default function ChatRoom(props: Props) {
                             </Box>
                         );
                     })}
-                    <Box ref={bottomRef} />
+                    <Box as="div" ref={bottomRef} />
                 </Box>
                 {/**form */}
                 <Stack as={'form'} width={['95%', '95%', '85%', '75%']} margin={'0 auto 3rem auto'} onSubmit={putMessage}>

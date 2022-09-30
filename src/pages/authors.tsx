@@ -1,9 +1,55 @@
-import { Box, SimpleGrid, Stack, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Image,
+  SimpleGrid,
+  Stack,
+  Text,
+  useColorModeValue,
+  Heading,
+  Avatar,
+  Center,
+  Flex,
+  Button,
+} from "@chakra-ui/react";
 import { NextSeo } from "next-seo";
 import Layout from "src/components/layout/Layout";
-import AuthorCard from "../components/authorCard";
+import getauthorsinfo from "../utils/authors";
+import Loading from "src/components/Loading";
+import { useQuery } from "react-query";
+import { TiSocialLinkedin, TiSocialGithub } from "react-icons/ti";
+import { ImLink } from "react-icons/im";
+import NextLink from "next/link";
+
+const dayimage =
+  "http://drive.google.com/uc?export=view&id=1fkNhSwwPL3E2HzNqQlDRh1lQt26hMA6-";
+const nightimage =
+  "http://drive.google.com/uc?export=view&id=1M-mmBYm7veoWsGaxepcS4A53ak1qW-8i";
+
+function shuffle(array: object[]) {
+  let currentIndex = array.length,
+    randomIndex;
+
+  // While there remain elements to shuffle.
+  while (currentIndex != 0) {
+    // Pick a remaining element.
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
+
+    // And swap it with the current element.
+    [array[currentIndex], array[randomIndex]] = [
+      array[randomIndex],
+      array[currentIndex],
+    ];
+  }
+
+  return array;
+}
 
 const authors = () => {
+  const { isLoading, data, error } = useQuery(["info"], () => getauthorsinfo());
+
+  if (isLoading || !data) return <Loading />;
+  const info: object[] = shuffle(data);
   return (
     <Layout>
       <NextSeo title="World Travelers" />
@@ -13,6 +59,7 @@ const authors = () => {
         display={"flex"}
         justifyContent={"center"}
         alignItems={"center"}
+        pb={"20px"}
       >
         <Stack
           width={"60%"}
@@ -20,9 +67,14 @@ const authors = () => {
           display={"flex"}
           justifyContent={"space-around"}
           rounded={"20px"}
-          marginTop={"40px"}
+          marginTop={"20px"}
+          pb={"25px"}
         >
-          <Text>Meet the developers team:</Text>
+          <Image
+            alignSelf={"center"}
+            width={"50%"}
+            src={useColorModeValue(dayimage, nightimage)}
+          />
           <SimpleGrid
             columns={3}
             columnGap={"6"}
@@ -32,90 +84,106 @@ const authors = () => {
             paddingRight={"20px"}
             alignSelf={"center"}
           >
-            <AuthorCard
-              name={"Agustina Di Nucci"}
-              job={"Full Stack Web Developer"}
-              linkedin={"https://www.linkedin.com/in/agustina-dinucci/"}
-              github={"https://github.com/dinucciagus"}
-              cv={"https://github.com/dinucciagus"}
-              avatar={
-                "https://avatars.githubusercontent.com/u/105603671?s=400&u=9dae9f01a131d632cb953afee34917054febfca1&v=4"
-              }
-              image={
-                // "http://drive.google.com/uc?export=view&id=1_qsAn-4e7xBfc_IGLbtQMt9Sgo29WjUv"
-                "http://drive.google.com/uc?export=view&id=1CczbOs_-ph6f4sbWzxZwMJcPDWpahD2l"
-              }
-            />
-            <AuthorCard
-              name={"Agustina Di Nucci"}
-              job={"Full Stack Web Developer"}
-              linkedin={"https://www.linkedin.com/in/agustina-dinucci/"}
-              github={"https://github.com/dinucciagus"}
-              cv={"https://github.com/dinucciagus"}
-              avatar={
-                "https://avatars.githubusercontent.com/u/105603671?s=400&u=9dae9f01a131d632cb953afee34917054febfca1&v=4"
-              }
-              image={
-                // "http://drive.google.com/uc?export=view&id=1_qsAn-4e7xBfc_IGLbtQMt9Sgo29WjUv"
-                "http://drive.google.com/uc?export=view&id=1CczbOs_-ph6f4sbWzxZwMJcPDWpahD2l"
-              }
-            />
-            <AuthorCard
-              name={"Agustina Di Nucci"}
-              job={"Full Stack Web Developer"}
-              linkedin={"https://www.linkedin.com/in/agustina-dinucci/"}
-              github={"https://github.com/dinucciagus"}
-              cv={"https://github.com/dinucciagus"}
-              avatar={
-                "https://avatars.githubusercontent.com/u/105603671?s=400&u=9dae9f01a131d632cb953afee34917054febfca1&v=4"
-              }
-              image={
-                // "http://drive.google.com/uc?export=view&id=1_qsAn-4e7xBfc_IGLbtQMt9Sgo29WjUv"
-                "http://drive.google.com/uc?export=view&id=1CczbOs_-ph6f4sbWzxZwMJcPDWpahD2l"
-              }
-            />
-            <AuthorCard
-              name={"Agustina Di Nucci"}
-              job={"Full Stack Web Developer"}
-              linkedin={"https://www.linkedin.com/in/agustina-dinucci/"}
-              github={"https://github.com/dinucciagus"}
-              cv={"https://github.com/dinucciagus"}
-              avatar={
-                "https://avatars.githubusercontent.com/u/105603671?s=400&u=9dae9f01a131d632cb953afee34917054febfca1&v=4"
-              }
-              image={
-                // "http://drive.google.com/uc?export=view&id=1_qsAn-4e7xBfc_IGLbtQMt9Sgo29WjUv"
-                "http://drive.google.com/uc?export=view&id=1CczbOs_-ph6f4sbWzxZwMJcPDWpahD2l"
-              }
-            />
-            <AuthorCard
-              name={"Agustina Di Nucci"}
-              job={"Full Stack Web Developer"}
-              linkedin={"https://www.linkedin.com/in/agustina-dinucci/"}
-              github={"https://github.com/dinucciagus"}
-              cv={"https://github.com/dinucciagus"}
-              avatar={
-                "https://avatars.githubusercontent.com/u/105603671?s=400&u=9dae9f01a131d632cb953afee34917054febfca1&v=4"
-              }
-              image={
-                // "http://drive.google.com/uc?export=view&id=1_qsAn-4e7xBfc_IGLbtQMt9Sgo29WjUv"
-                "http://drive.google.com/uc?export=view&id=1CczbOs_-ph6f4sbWzxZwMJcPDWpahD2l"
-              }
-            />
-            <AuthorCard
-              name={"Agustina Di Nucci"}
-              job={"Full Stack Web Developer"}
-              linkedin={"https://www.linkedin.com/in/agustina-dinucci/"}
-              github={"https://github.com/dinucciagus"}
-              cv={"https://github.com/dinucciagus"}
-              avatar={
-                "https://avatars.githubusercontent.com/u/105603671?s=400&u=9dae9f01a131d632cb953afee34917054febfca1&v=4"
-              }
-              image={
-                // "http://drive.google.com/uc?export=view&id=1_qsAn-4e7xBfc_IGLbtQMt9Sgo29WjUv"
-                "http://drive.google.com/uc?export=view&id=1CczbOs_-ph6f4sbWzxZwMJcPDWpahD2l"
-              }
-            />
+            {info?.map((a) => (
+              <Center py={6} pb={0} pt={0}>
+                <Box
+                  maxW={"270px"}
+                  w={"full"}
+                  bg={useColorModeValue(
+                    "RGBA(75,100,124,0.41)",
+                    "RGBA(75,100,124,0.41)"
+                  )}
+                  boxShadow={"2xl"}
+                  rounded={"md"}
+                  overflow={"hidden"}
+                >
+                  <Image
+                    h={"120px"}
+                    w={"full"}
+                    src={a.image}
+                    objectFit={"cover"}
+                  />
+                  <Flex justify={"center"} mt={-12}>
+                    <Avatar size={"xl"} src={a.avatar} />
+                  </Flex>
+
+                  <Box p={4} pb={6}>
+                    <Stack spacing={0} align={"center"} mb={5}>
+                      <Heading
+                        fontSize={"2xl"}
+                        fontWeight={500}
+                        fontFamily={"body"}
+                      >
+                        {a.name}
+                      </Heading>
+                      <Text color={"gray.500"}>{a.job}</Text>
+                    </Stack>
+                    <Stack
+                      direction={"row"}
+                      justifyContent={"center"}
+                      mt={"6px"}
+                    >
+                      <NextLink href={a.linkedin}>
+                        <Button
+                          w={"300px"}
+                          bg={useColorModeValue("#151f21", "gray.900")}
+                          color={"white"}
+                          rounded={"md"}
+                          fontSize={"sm"}
+                          _hover={{
+                            transform: "translateY(-2px)",
+                            boxShadow: "lg",
+                          }}
+                        >
+                          <TiSocialLinkedin size={"33"} color={"#F3B46F"} />
+                          LinkedIn
+                        </Button>
+                      </NextLink>
+                      <NextLink href={a.github}>
+                        <Button
+                          w={"350px"}
+                          bg={useColorModeValue("#151f21", "gray.900")}
+                          color={"white"}
+                          rounded={"md"}
+                          fontSize={"sm"}
+                          _hover={{
+                            transform: "translateY(-2px)",
+                            boxShadow: "lg",
+                          }}
+                        >
+                          <TiSocialGithub size={"33"} color={"#F3B46F"} />
+                          GitHub
+                        </Button>
+                      </NextLink>
+                    </Stack>
+                    <Stack
+                      direction={"row"}
+                      justifyContent={"center"}
+                      mt={"6px"}
+                    >
+                      <NextLink href={a.cv}>
+                        <Button
+                          marginTop={"6px"}
+                          width={"100%"}
+                          bg={useColorModeValue("#151f21", "gray.900")}
+                          color={"white"}
+                          rounded={"md"}
+                          fontSize={"sm"}
+                          _hover={{
+                            transform: "translateY(-2px)",
+                            boxShadow: "lg",
+                          }}
+                          justifyContent={"space-around"}
+                        >
+                          <ImLink />
+                          Curriculum / Portfolio
+                        </Button>
+                      </NextLink>
+                    </Stack>
+                  </Box>
+                </Box>
+              </Center>
+            ))}
           </SimpleGrid>
         </Stack>
       </Stack>

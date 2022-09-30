@@ -58,6 +58,7 @@ import Loading from "src/components/Loading";
 import { cursorTo } from "readline";
 import { Select as ReactSelect } from "chakra-react-select";
 import { NextSeo } from "next-seo";
+import Link from "next/link";
 
 interface Props {
   activities: Activity[];
@@ -716,13 +717,14 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
                                           alignItems={"center"}
                                           justifyContent={"space-between"}
                                         >
-                                          <NextLink
+                                          <Link
                                             href={`/activities/${act.id}`}
+                                            passHref
                                           >
-                                            <Button margin={1} size={"xs"}>
+                                            <a target={'_blank'}><Button margin={1} size={"xs"}>
                                               +Info
-                                            </Button>
-                                          </NextLink>
+                                            </Button></a>
+                                          </Link>
                                           <Button
                                             id={id}
                                             disabled={!isDisabled.includes(id)}
@@ -808,9 +810,9 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
 };
 
 export const getServerSideProps = async () => {
-  const response = await axios("/activities");
+  const response = await axios("/activities?byName=true");
   const activities = await response.data;
-  const res = await axios("/cities");
+  const res = await axios("/cities?byName=true");
   const cities = await res.data;
   const data = await axios("/trips");
   const trips = await data.data;

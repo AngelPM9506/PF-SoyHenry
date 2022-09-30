@@ -19,6 +19,7 @@ import {
   AspectRatio,
   Avatar,
   Tooltip,
+
 } from "@chakra-ui/react";
 import { MinusIcon } from "@chakra-ui/icons";
 import { City, User } from "src/utils/interface";
@@ -50,9 +51,11 @@ interface Users {
 }
 
 export default function TripDetail({ data, isLoading, error }: any) {
+
   const urlFacebook = Url + "/trips/" + data.id;
   const { user } = useUser();
   const router = useRouter();
+
   const { data: userDb } = useQuery(
     ["userDb", user],
     () => user && getOrCreateUser(user)

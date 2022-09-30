@@ -46,7 +46,7 @@ const Authors = () => {
   const { isLoading, data } = useQuery(["info"], () => getauthorsinfo());
 
   if (isLoading || !data) return <Loading />;
-  const info: object[] = shuffle(data);
+  shuffle(data);
   return (
     <Layout>
       <NextSeo title="World Travelers" />
@@ -82,7 +82,7 @@ const Authors = () => {
             paddingRight={"20px"}
             alignSelf={"center"}
           >
-            {info?.map((a) => (
+            {data?.map((a) => (
               <Center key={a.name} py={6} pb={0} pt={0}>
                 <Box
                   maxW={"270px"}

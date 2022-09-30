@@ -16,11 +16,12 @@ import {
 	ListItem,
 	ListIcon,
 	Divider,
-	AspectRatio
+	AspectRatio,
+	Tooltip
 } from "@chakra-ui/react";
-import { MinusIcon } from "@chakra-ui/icons";
+import { MinusIcon, ChatIcon } from "@chakra-ui/icons";
 import { City, User } from "src/utils/interface";
-import { Key, useEffect } from "react";
+import { Key, useEffect, useState } from "react";
 import { QueryFunctionContext, useQuery } from "react-query";
 import { TimeLine } from "./TimeLineTrip";
 import { TripDescription } from "./TripDescription";
@@ -30,6 +31,7 @@ import MapView from 'src/components/DynamicMap'
 import { useUser } from "@auth0/nextjs-auth0";
 import { getOrCreateUser } from "src/utils/User";
 import { useRouter } from "next/router";
+import searchUser from "src/utils/searchUserOnTrip";
 
 interface Props {
 	id: QueryFunctionContext<string[], any>;
@@ -42,6 +44,7 @@ interface Users {
 export default function TripDetail({ data, isLoading, error }: any) {
 	const { user } = useUser();
 	const router = useRouter();
+	const [userOnTrip, setUserOnTrip] = useState(false);
 
 	const { data: userDb } = useQuery(
 	  ["userDb", user],
@@ -58,6 +61,14 @@ export default function TripDetail({ data, isLoading, error }: any) {
 	const openChat = () => {
 		router.push(`/chat/${data.id}`)
 	}
+
+	useEffect(() => {
+		async function a() {
+		  const bool = await searchUser(data.id, userDb?.data.id);
+		  setUserOnTrip(bool);
+		}
+		a();
+	}, [data.id, userDb]);
 
 	
 	if (isLoading || !userDb || !user) return <LoadingWithoutLayout />;
@@ -156,7 +167,7 @@ export default function TripDetail({ data, isLoading, error }: any) {
 									Details
 								</Text>
 
-								<SimpleGrid columns={{ base: 1, md: 2 }} spacing={10}>
+								<SimpleGrid columns={{ base: 1, md: 2 }} spacing={12}>
 									<List spacing={2}>
 										<ListItem>Initial date: {iday}</ListItem>
 										<ListItem>Ending date: {eday}</ListItem>
@@ -178,7 +189,15 @@ export default function TripDetail({ data, isLoading, error }: any) {
 												)}
 											</List>
 										</ListItem>
-										<Button onClick={() => openChat()}>Chat</Button>
+										{
+											userOnTrip ? 
+											<Button onClick={() => openChat()} borderRadius="100%" h="48px" mt="20px" bg="#F3B46F" transition="0.5s" _hover={{bg:"#25D366"}}>
+												<Tooltip label={`Go to chat!`} placement="right" hasArrow arrowSize={10}>
+													<ChatIcon/>
+												</Tooltip>
+											</Button> 
+											: null
+										}
 									</List>
 								</SimpleGrid>
 							</Box>

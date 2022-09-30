@@ -279,20 +279,20 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
     let tripCreated = await createTrip(input);
     setInput(initialState);
     try {
-      await axios
-        .post("/api/mail", {
-          mail: userDb.data.mail,
-          subject: `Trip ${input.name} has been create successfuly thanks to use WORLD TRAVELERS`,
-          message: `Your Trip: ${input.name} has been create successfuly thanks to use WORLD TRAVELERS`,
-          html: {
-            title: "Trip created successfuly",
-            actionName: input.name,
-            text: `Your Trip ${input.name} has been created`,
-            url: `/trips/${tripCreated.id}`,
-            urlMsg: "See your trip here",
-          },
-        })
-        .catch((error) => console.log(error));
+      // await axios
+      //   .post("/api/mail", {
+      //     mail: userDb.data.mail,
+      //     subject: `Trip ${input.name} has been create successfuly thanks to use WORLD TRAVELERS`,
+      //     message: `Your Trip: ${input.name} has been create successfuly thanks to use WORLD TRAVELERS`,
+      //     html: {
+      //       title: "Trip created successfuly",
+      //       actionName: input.name,
+      //       text: `Your Trip ${input.name} has been created`,
+      //       url: `/trips/${tripCreated.id}`,
+      //       urlMsg: "See your trip here",
+      //     },
+      //   })
+      //   .catch((error) => console.log(error));
     } catch (error) {
       console.log(error);
     }
@@ -397,8 +397,16 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
    " 2xl": '96em'
   }
   
-  const handleCities2 = (option:SetStateAction<{ value: string; label: string }[]>) => {
+  const handleCities2 = (option: any) => {
+    // const citiesSelected = e.map((c:any) => c)
     setinputCities(option)
+    const citiesSelected = option.map((o:any) => o.value)
+    setInput({...input,cities:citiesSelected})
+    // const citiesSelected = [...e.target.options].filter((c:any) => c.selected).map((x:any) => x.value)
+    // setInput({...input,
+    //    cities: citiesSelected
+    //   })
+    console.log(input)
   }
   return (
     <Layout>
@@ -477,35 +485,6 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
                       {errors.name}
                     </Text>
                   )}
-                  {/* <FormLabel paddingLeft="2" htmlFor="cities" mt={2}>
-                    Cities
-                  </FormLabel>
-                  <HStack>
-                  <Button
-                      marginLeft={"10px"}
-                      mt={1}
-                      width={"80px"}
-                      fontSize={"xs"}
-                      onClick={(e) => handleCitiesSelect(e)}
-                    >
-                      ADD CITY
-                    </Button>
-                    <Input
-                      list="cities-choices"
-                      name="cities"
-                      value={inputCities}
-                      marginRight={"20px"}
-                      placeholder="Type the cities you are visiting..."
-                      onChange={(e) => handleCities(e)}
-                    />
-                    <datalist id="cities-choices">
-                      {cities
-                        ?.filter((c) => !input.cities?.includes(c.name))
-                        ?.map((c, index) => (
-                          <option key={index}> {c.name} </option>
-                        ))}
-                    </datalist>
-                  </HStack> */}
                     <Flex direction="column" mb="30px">
                   <FormLabel
                     paddingLeft="2"
@@ -529,30 +508,9 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
                     />
                   </FormControl>
                 </Flex>
-                   <Flex direction="column" mb="30px">
+                   <Flex direction="column" mb="-25px">
                   </Flex>
                   <Center>
-                    <HStack marginTop={"5px"}>
-                      {input.cities.length != 0 ? (
-                        input.cities.map((c, index) => {
-                          return (
-                            <Box marginLeft={"10px"} key={index}>
-                              {c}
-                              <Button
-                                marginLeft="2"
-                                onClick={() => handleDeleteCity(c)}
-                                height={"25px"}
-                                width={"5px"}
-                              >
-                                X
-                              </Button>
-                            </Box>
-                          );
-                        })
-                      ) : (
-                        <Box height={"40px"}></Box>
-                      )}
-                    </HStack>
                     {errorCities.cities && (
                       <Text m={1} color={"#F3B46F"}>
                         {errorCities.cities}
@@ -721,13 +679,13 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
                                             dateFormat="yyyy/mm/ddd"
                                             onChange={(date) => {
                                             let D = new Date(date.toString())
-                                              handleActDate(`${D.toISOString().slice(0,10).split("-").reverse().join("/")}`, id)
+                                              handleActDate(`${D.toISOString().slice(0,10)}`, id)
                                             }
                                             }
                                             filterDate={(date) =>
                                               ableDays(date, act.availability)
                                             }
-                                            placeholderText={input.activitiesName.find((a:any) => a.name === act.name.toString())?.actDate.slice(0,10).split("-").reverse().join("/")?input.activitiesName.find((a:any) => a.name === act.name.toString())?.actDate.slice(0,10).split("-").reverse().join("/"):"Choose a date"} 
+                                            placeholderText={input.activitiesName.find((a:any) => a.name === act.name.toString())?.actDate.slice(0,10)?input.activitiesName.find((a:any) => a.name === act.name.toString())?.actDate.slice(0,10):"Choose a date"} 
                                             withPortal
                                             portalId="root"
                                             width={"100%"}

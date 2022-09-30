@@ -18,7 +18,6 @@ import Layout from 'src/components/layout/Layout'
 import io, { Socket } from "socket.io-client";
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
-//import { initiateSocket, disconnectSocket, sendMessage, subscribeToChat } from "src/utils/hooksSockets";
 import { GetServerSideProps } from "next/types";
 import { useQuery } from "react-query";
 import { getOrCreateUser } from "src/utils/User";
@@ -33,7 +32,7 @@ interface Trip {
     [x: string]: any;
 }
 
-export default function ChatRoom(props: Props) {
+export default function Index(props: Props) {
     const initTrip: Trip = {};
     const room = props.id.toString();
     const [message, setMessage] = useState('');
@@ -48,8 +47,8 @@ export default function ChatRoom(props: Props) {
     );
 
     const initiateSocket = async (room: string) => {
-        //await axios('https://worldtravelers.vercel.app/api/socket');
-        socket = io('https://worldtravelers.vercel.app:3000/api/socket');
+        await axios('/api/socket');
+        socket = io();
         socket.on('connect', () => { console.log(socket.id) });
         socket.emit('join', room);
         socket.on('chat', data => {

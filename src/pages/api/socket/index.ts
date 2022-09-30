@@ -1,6 +1,11 @@
 import { NextApiRequest, NextApiResponse } from "next"
 import { Server } from 'socket.io';
 import NextCors from "nextjs-cors";
+import axios from "axios";
+import mongoConection from 'src/utils/mongoConection'
+import Chatmodel from "src/models/Chat";
+
+mongoConection();
 
 const index = async (req: NextApiRequest, res: NextApiResponse | any) => {
     await NextCors(req, res, {
@@ -30,10 +35,16 @@ const index = async (req: NextApiRequest, res: NextApiResponse | any) => {
             });
 
             /**Enviar mensaje a un room */
-            socket.on('chat', data => {
-                const { message, room } = data;
+            socket.on('chat', async (data) => {
+                const { message, room, user } = data;
+                let msgToCreat = {
+                    idTrip: room,
+                    nameUser: user,
+                    message: message
+                };
+                await Chatmodel.create(msgToCreat)
                 console.log(`msg: ${message}, room: ${room}`);
-                io.to(room).emit('chat', message);
+                io.to(room).emit('chat', msgToCreat);
             });
         })
     }

@@ -6,12 +6,13 @@ mongoConection();
 
 
 const Index = async (req: NextApiRequest, res: NextApiResponse) => {
-    let { method, body: { idTrip, nameUser, message } } = req;
+    let { method, query: { room }, body: { idTrip, nameUser, message } } = req;
     try {
         switch (method) {
             case 'GET':
-                const clients = await ChatModel.find({});
-                return res.status(200).json({ status: 'success', data: clients });
+                let idTrip = room ? { idTrip: room } : {};
+                const clients = await ChatModel.find(idTrip);
+                return res.status(200).json({ status: 'success', messages: clients });
             case 'POST':
                 if (!idTrip || !nameUser || !message) return res.status(404).json({ status: 'error', msg: 'Data Missing' })
                 let newClient = await ChatModel.create({ idTrip, nameUser, message });

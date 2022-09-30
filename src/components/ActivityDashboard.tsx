@@ -30,8 +30,8 @@ export const ActivityDashboard = ({
     "availability",
     "active",
     "description",
-    "edit",
-    "delete",
+    "reviews",
+    "save changes",
   ];
   const cities = activities.map((a) => a.city.name);
   const citiesUnique: string[] = Array.from(new Set(cities)).sort(); // remove duplicates, sort alphabetically
@@ -119,32 +119,37 @@ export const ActivityDashboard = ({
     setData(city ? data.filter((a) => a.city.name === city) : activities);
   };
   return (
-    <>
-      <Button
-        position={"absolute"}
-        right={0}
-        mr={10}
-        bg={background}
-        color={"white"}
-        rounded={"md"}
-        padding={"20px"}
-        _hover={{
-          transform: "translateY(-2px)",
-          boxShadow: "lg",
-          bg: "#F3B46F",
-          color: "black",
-        }}
+    <Box>
+      <Flex
+        alignItems={{ base: "center", xl: "right" }}
+        justifyContent={{ base: "center", xl: "right" }}
       >
-        <NextLink href="/activities/create">
-          <Link>Create Activity</Link>
-        </NextLink>
-      </Button>
-      <Box
+        <Button
+          bg={background}
+          mb={5}
+          mt={5}
+          color={"white"}
+          rounded={"md"}
+          padding={"20px"}
+          _hover={{
+            transform: "translateY(-2px)",
+            boxShadow: "lg",
+            bg: "#F3B46F",
+            color: "black",
+          }}
+        >
+          <NextLink href="/activities/create">
+            <Link>Create Activity</Link>
+          </NextLink>
+        </Button>
+      </Flex>
+      <Flex
         textAlign={"center"}
-        display={"inline-flex"}
         gap={5}
         mb={5}
+        mt={5}
         key={availability}
+        direction={{ base: "column", xl: "row" }}
       >
         <Select
           width={250}
@@ -190,17 +195,16 @@ export const ActivityDashboard = ({
           <option value={"Saturday"}>Saturday</option>
           <option value={"Sunday"}>Sunday</option>
         </Select>
-      </Box>
+      </Flex>
       <Table>
         <Thead>
-          <Tr my=".8rem" pl="0px" color={textColor} gap={5}>
+          <Tr my=".8rem" pl="0px" color={textColor}>
             {captions.map((c, i) => {
               return (
                 <Th
                   color={textColor}
                   key={i}
                   ps={i === 0 ? "10px" : null}
-                  gap={50}
                   pl={30}
                 >
                   {c}
@@ -221,13 +225,14 @@ export const ActivityDashboard = ({
         </Tbody>
       </Table>
       <Center>
-        <Flex gap={50}>
+        <Flex direction="column">
           <Select
             value={activitiesPerPage}
             name={"activitiesPerPage"}
             onChange={(e) => handleActivitiesPerPage(e)}
+            mt={5}
             w={130}
-            mt={8}
+            ml={16}
           >
             <option value={5}>5 Results</option>
             <option value={10}>10 Results</option>
@@ -243,6 +248,6 @@ export const ActivityDashboard = ({
           />
         </Flex>
       </Center>
-    </>
+    </Box>
   );
 };

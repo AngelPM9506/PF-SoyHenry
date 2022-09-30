@@ -40,6 +40,8 @@
     "moment": "^2.29.4",
     "mongoose": "^6.6.2",
     "next": "12.3.0",
+    "next-seo": "^5.5.0",
+    "next-share": "^0.12.2",
     "nextjs-cors": "^2.1.1",
     "nodemailer": "^6.7.8",
     "npm": "^8.19.2",

@@ -32,6 +32,8 @@ import { useUser } from "@auth0/nextjs-auth0";
 import { getOrCreateUser } from "src/utils/User";
 import NextLink from "next/link";
 import { useRouter } from "next/router";
+import { NextSeo } from "next-seo";
+
 interface Props {
   trips: Trip[];
 }
@@ -54,7 +56,7 @@ function Trips({ trips }: Props) {
   const [sortBy, setSortBy] = useState<string>("name"); // ordenar x nombre o por precio
   const [input, setInput] = useState<string>("");
   const [inputCity, setInputCity] = useState<string>("");
-  const { data, isLoading } = useQuery(
+  let { data, isLoading } = useQuery(
     ["trips", wCity, wName, maxPrice, sort, sortBy],
     //dependencies: React is going to re-render when one of these changes
     () => getTrips(wCity, wName, maxPrice, sort, sortBy)
@@ -68,9 +70,9 @@ function Trips({ trips }: Props) {
   //const data = trips;
   const [currentPage, setCurrentPage] = useState(1);
   const [tripsPerPage, setTripsPerPage] = useState(8);
+  data = data?.filter((t: Trip) => t.active === true)
   const max = Math.ceil((data ? data.length : trips) / tripsPerPage);
   const [inputPage, setInputPage] = useState(1);
-
   if (sort === "Sort Order") setSort("desc");
   if (sortBy === "Sort By") setSortBy("name");
 
@@ -137,6 +139,7 @@ function Trips({ trips }: Props) {
     <Loading />
   ) : (
     <Layout>
+      <NextSeo title="Trips" />
       <Heading
         display={{ md: "flex" }}
         alignItems={"center"}
@@ -273,14 +276,13 @@ function Trips({ trips }: Props) {
           RESET
         </Button>
       </Box>
-      <SimpleGrid minChildWidth="330px" columns={[2, null, 3]}>
+      <SimpleGrid columnGap={"7px"} minChildWidth="330px" columns={[2, null, 3]}>
         {data.length != 0 ? (
           data
             .slice(
               (currentPage - 1) * tripsPerPage,
               (currentPage - 1) * tripsPerPage + tripsPerPage
             )
-            .filter((t: Trip) => t.active === true)
             .map((t: Trip) => <TripCard key={t.id} props={t} />)
         ) : (
           <Box

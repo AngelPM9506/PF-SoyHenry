@@ -11,8 +11,19 @@ import {
   Highlight,
 } from "@chakra-ui/react";
 import NextLink from "next/link";
+import StarRatings from "react-star-ratings";
+import { Feedback } from "src/utils/interface";
 const defaultpic: string =
   "https://drive.google.com/uc?id=1_6Nlg2YJEROqakx47LjLzuLjhLifPJ5t";
+
+const averageRating = (feedbacks: Feedback[]) => {
+  let total = 0;
+  if (feedbacks.length === 0) return 0;
+  feedbacks.forEach((feedback) => {
+    total += feedback.rating;
+  });
+  return Math.ceil(total / feedbacks.length);
+};
 
 export function ActivityCard({ props }: any) {
   return (
@@ -23,7 +34,10 @@ export function ActivityCard({ props }: any) {
           p={6}
           maxW={"330px"}
           w={"full"}
-          bg={useColorModeValue("#D1DFE3", "blackAlpha.400")}
+          bg={useColorModeValue(
+            "RGBA(75,100,124,0.41)",
+            "RGBA(75,100,124,0.41)"
+          )}
           boxShadow={"2xl"}
           rounded={"lg"}
           pos={"relative"}
@@ -80,17 +94,38 @@ export function ActivityCard({ props }: any) {
             <Text fontWeight={400} fontSize={"xl"} textAlign={"center"}>
               {props.city.name}
             </Text>
-            <Text
-              fontWeight={400}
-              fontSize={"lg"}
-              overflow={"hidden"}
-              height={"120px"}
-            >
-              {props.description}
-            </Text>
             <Text fontWeight={700} fontSize={"xl"}>
               $ {props.price}
             </Text>
+          </Box>
+          {props.feedbacks.length > 0 ? (
+            <Box
+              display={"flex"}
+              alignItems={"center"}
+              justifyContent={"center"}
+              width={"100%"}
+              height={"30px"}
+            >
+              <StarRatings
+                rating={averageRating(props.feedbacks)}
+                starRatedColor={"#02b1b1"}
+                numberOfStars={5}
+                starDimension={"20px"}
+                starSpacing={"3px"}
+                name="rating"
+              />
+            </Box>
+          ) : (
+            <Box height={"30px"}></Box>
+          )}
+          <Box
+            display={"flex"}
+            alignItems={"center"}
+            justifyContent={"center"}
+            width={"100%"}
+            mt={"2px"}
+          >
+            this activity is in {props.activitiesOnTrips.length} trips
           </Box>
           <NextLink href={`/activities/${props.id}`}>
             <Button

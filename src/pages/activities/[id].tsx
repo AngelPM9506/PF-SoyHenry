@@ -1,14 +1,21 @@
-import { Box } from "@chakra-ui/react";
-import { Activity, User } from "src/utils/interface";
+import { Activity } from "src/utils/interface";
 import axios from "axios";
 import Layout from "../../components/layout/Layout";
 
-import { getActivitiesId } from "src/utils/activities";
-import { getUsers } from "src/utils/User";
-import { QueryFunctionContext, useQuery } from "react-query";
+import {
+  deleteComment,
+  editComment,
+  getActivitiesId,
+  patchActivity,
+} from "src/utils/activities";
+import {
+  QueryFunctionContext,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "react-query";
 import ActivityDetail from "src/components/ActivityDetail";
 import { GetServerSideProps } from "next/types";
-import { useUser } from "@auth0/nextjs-auth0";
 import Loading from "src/components/Loading";
 import NotFound from "../404";
 
@@ -17,7 +24,8 @@ import { useRouter } from "next/router";
 import { useState, useEffect, useMemo } from "react";
 import Reviews from "src/components/Reviews";
 import { getTrips } from "src/utils/trips";
-
+import { useUser } from "@auth0/nextjs-auth0";
+import { NextSeo } from "next-seo";
 
 interface Props {
   id: QueryFunctionContext<string[], any>;
@@ -25,24 +33,37 @@ interface Props {
 }
 
 export default function Detail(props: Props) {
-
- const router = useRouter();
+  const router = useRouter();
   const { user, isLoading: userLoading } = useUser();
-  const { data, isLoading, error } = useQuery(
-    ["propsId"],
-    async (notifyOnChangeProps) => {
-      const activity = await getActivitiesId(props.id);
-      const id = props.id;
-
-      return {
-        activity: activity,
-        id: id,
-      };
+  const queryClient = useQueryClient();
+  const mutatesubmit = useMutation(patchActivity, {
+    onSuccess: () => {
+      queryClient.resetQueries(["propsId"]);
     },
-    { notifyOnChangeProps: ["data"] }
-  );
+  });
+  const mutateedit = useMutation(editComment, {
+    onSuccess: () => {
+      queryClient.resetQueries(["propsId"]);
+    },
+  });
+  const mutatedelete = useMutation(deleteComment, {
+    onSuccess: () => {
+      queryClient.resetQueries(["propsId"]);
+    },
+  });
 
-  const [change, setChange] = useState(1);
+  const { data, isLoading, error } = useQuery(["propsId"], async () => {
+    const activity = (await getActivitiesId(props.id))
+      ? await getActivitiesId(props.id)
+      : "error";
+
+    const id = props.id;
+    console.log(props.activity);
+    return {
+      activity: activity,
+      id: id,
+    };
+  });
 
   if (!userLoading && !user) {
     router.push("/api/auth/login");
@@ -51,19 +72,19 @@ export default function Detail(props: Props) {
   if (isLoading) {
     return <Loading />;
   }
-  if (!isLoading && !data) {
+  if (!isLoading && data.activity === "error") {
     return <NotFound />;
   }
 
   return (
     <Layout>
+      <NextSeo title={data.activity.name} />
       {
         <ActivityDetail
           data={data}
-          isLoading={isLoading}
-          error={error}
-          change={change}
-          setChange={setChange}
+          mutatesubmit={mutatesubmit}
+          mutateedit={mutateedit}
+          mutatedelete={mutatedelete}
         />
       }
     </Layout>

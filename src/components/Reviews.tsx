@@ -3,40 +3,45 @@ import {
   Button,
   FormControl,
   HStack,
-  Input,
   Text,
   VStack,
   Avatar,
   Stack,
   Textarea,
   useToast,
-  useColorModeValue,
   Tooltip,
 } from "@chakra-ui/react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import StarRatings from "react-star-ratings";
 import { FiSend, FiDelete } from "react-icons/fi";
 import { ImCancelCircle } from "react-icons/im";
 import { BsPencilFill } from "react-icons/bs";
 import { GrEdit } from "react-icons/gr";
 import NextLink from "next/link";
-import { Comment, User } from "../utils/interface";
+import { Comment } from "../utils/interface";
 import { useUser } from "@auth0/nextjs-auth0";
-import { patchActivity, deleteComment, editComment } from "../utils/activities";
-
-const breakpoints = {
-  sm: "400px",
-  md: "600px",
-  lg: "1000px",
-};
+// const breakpoints = {
+//   sm: "400px",
+//   md: "600px",
+//   lg: "1000px",
+// };
 
 interface Props {
   feedbacks: Comment[];
   id: string;
-  change: number;
-  setChange: any;
+  mutatesubmit: any;
+  mutateedit: any;
+  mutatedelete: any;
+  admin: boolean;
 }
-const Reviews = ({ feedbacks, id, change, setChange }: Props) => {
+const Reviews = ({
+  feedbacks,
+  id,
+  mutatesubmit,
+  mutateedit,
+  mutatedelete,
+  admin,
+}: Props) => {
   const logofoto =
     "https://res.cloudinary.com/mauro4202214/image/upload/v1663331567/world-travelers/favicon.ico_c8ryjz.png";
   const { user } = useUser();
@@ -44,7 +49,10 @@ const Reviews = ({ feedbacks, id, change, setChange }: Props) => {
   const [ratingEdit, setRatingEdit] = useState(0);
   const [comment, setComment] = useState("");
   const [commentEdit, setCommentEdit] = useState("");
+  const [allComments, setAllComments] = useState(feedbacks);
+
   const [edit, setEdit] = useState(false);
+
   const toast = useToast();
 
   if (!user || !feedbacks) {
@@ -56,19 +64,43 @@ const Reviews = ({ feedbacks, id, change, setChange }: Props) => {
     setRatingEdit(mycomment.rating);
     setCommentEdit(mycomment.comment);
   }
-
+  console.log(allComments);
   const handleInput = (e: any) => {
     setComment(e.target.value);
   };
-  const handleInputEdit = (e: any) => {
+  const handleInputEdit = (e: any, id?: string) => {
+    if (admin) {
+      const comment: any = allComments.map((c) => {
+        if (c.id === id) {
+          return (c = { ...c, comment: e.target.value });
+        } else return c;
+      });
+      return setAllComments(comment);
+    }
     setCommentEdit(e.target.value);
   };
-  const handleRatingEdit = (e: any) => {
+  const handleRatingEdit = (e: any, id?: string) => {
+    if (admin) {
+      const rating: any = allComments.map((c) => {
+        if (c.id === id) {
+          return (c = { ...c, rating: Number(e) });
+        } else return c;
+      });
+      return setAllComments(rating);
+    }
     setRatingEdit(e);
   };
+  const handleAllComments = (id: string) => {
+    const comment = allComments.find((c) => c.id === id);
+    return comment.comment;
+  };
 
+  const handleAllRatings = (id: string) => {
+    const ratings = allComments.find((c) => c.id === id);
+    return ratings.rating;
+  };
   const handleSubmit = async (e: any) => {
-    await patchActivity({
+    mutatesubmit.mutate({
       comment: comment,
       mail: user.email,
       rating: rating,
@@ -86,12 +118,29 @@ const Reviews = ({ feedbacks, id, change, setChange }: Props) => {
       isClosable: true,
     });
     setEdit(false);
-    setChange(change + 1);
   };
 
-  const handleEdit = async () => {
+  const handleEdit = async (id?: string) => {
+    if (admin) {
+      allComments.forEach((c) => {
+        mutateedit.mutate({
+          comment: c.comment,
+          rating: c.rating,
+          id: id,
+          idFeedback: c.id,
+        });
+      });
+      setEdit(false);
+      return toast({
+        title: "Comment posted!",
+        description: "Thank you! Now other travelers can read your opinion.",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
+    }
     const idFeedback = mycomment.id;
-    await editComment({
+    mutateedit.mutate({
       id: id,
       comment: commentEdit,
       idFeedback: idFeedback,
@@ -105,12 +154,21 @@ const Reviews = ({ feedbacks, id, change, setChange }: Props) => {
       isClosable: true,
     });
     setEdit(false);
-    setChange(change + 1);
   };
 
-  const handleDelete = async () => {
+  const handleDelete = (feedbackId?: string) => {
+    if (admin) {
+      mutatedelete.mutate({ id, idFeedback: feedbackId });
+      return toast({
+        title: "Comment deleted!",
+        description: "Thank you! Your comment is deleted.",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
+    }
     const idFeedback = mycomment.id;
-    await deleteComment(id, idFeedback);
+    mutatedelete.mutate({ id, idFeedback });
     toast({
       title: "Comment deleted!",
       description: "Thank you! Your comment is deleted.",
@@ -121,7 +179,6 @@ const Reviews = ({ feedbacks, id, change, setChange }: Props) => {
     setRatingEdit(0);
     setCommentEdit("");
     setEdit(false);
-    setChange(change + 1);
   };
 
   const handleCancelComment = () => {
@@ -159,11 +216,11 @@ const Reviews = ({ feedbacks, id, change, setChange }: Props) => {
         >
           Comments:
         </Text>
-        {feedbacks.map((comment, index) =>
-          comment === mycomment ? (
+        {feedbacks.map((comment) =>
+          comment === mycomment || admin === true ? (
             <Box rounded={"xl"} width={"90%"} bgColor={"#D1DFE3"} mb={"10px"}>
               {edit === true ? (
-                <FormControl key={index} width={"100%"}>
+                <FormControl key={comment.User.id} width={"100%"}>
                   <Stack
                     direction={{ base: "row", md: "column" }}
                     display={"flex"}
@@ -197,15 +254,15 @@ const Reviews = ({ feedbacks, id, change, setChange }: Props) => {
                         </Text>
                       </Box>
                     </NextLink>
-                    <Box
-                      width={{ base: "max-content", md: "200px" }}
-                      height={"60px"}
-                      pt={"15px"}
-                    >
+                    <Box width={"200px"} height={"60px"} pt={"15px"}>
                       <StarRatings
-                        rating={ratingEdit}
+                        rating={
+                          admin ? handleAllRatings(comment.id) : ratingEdit
+                        }
                         starRatedColor="#F3B46F"
-                        changeRating={(e: any) => handleRatingEdit(e)}
+                        changeRating={(e: any) =>
+                          handleRatingEdit(e, comment.id)
+                        }
                         numberOfStars={5}
                         starDimension={"25px"}
                         starHoverColor={"#293541"}
@@ -218,7 +275,7 @@ const Reviews = ({ feedbacks, id, change, setChange }: Props) => {
                       color={"#293541"}
                       fontSize={"xl"}
                       fontWeight={"bold"}
-                      paddingRight={{ base: "0", md: "50px" }}
+                      paddingRight={"50px"}
                     >
                       {comment.feedbackDate
                         .slice(0, 10)
@@ -227,7 +284,6 @@ const Reviews = ({ feedbacks, id, change, setChange }: Props) => {
                         .join("/")}
                     </Text>
                   </Stack>
-
                   <HStack
                     width={"100%"}
                     display={"flex"}
@@ -248,9 +304,10 @@ const Reviews = ({ feedbacks, id, change, setChange }: Props) => {
                         border={"1px"}
                         borderColor={"#293541"}
                         vertical-align={"top"}
-                        textAlign={{ base: "center", md: "left" }}
-                        onChange={(e: any) => handleInputEdit(e)}
-                        value={commentEdit}
+                        onChange={(e: any) => handleInputEdit(e, comment.id)}
+                        value={
+                          admin ? handleAllComments(comment.id) : commentEdit
+                        }
                       ></Textarea>
                     </VStack>
                     <Stack
@@ -284,7 +341,9 @@ const Reviews = ({ feedbacks, id, change, setChange }: Props) => {
                         variant="outline"
                         width={"160px"}
                         fontSize={"md"}
-                        onClick={handleDelete}
+                        onClick={() =>
+                          admin ? handleDelete(comment.id) : handleDelete()
+                        }
                       >
                         Delete Comment
                       </Button>
@@ -292,7 +351,7 @@ const Reviews = ({ feedbacks, id, change, setChange }: Props) => {
                   </HStack>
                 </FormControl>
               ) : (
-                <FormControl key={index} width={"100%"}>
+                <FormControl key={comment.User.id} width={"100%"}>
                   <Stack
                     direction={{ base: "row", md: "column" }}
                     display={"flex"}
@@ -340,9 +399,13 @@ const Reviews = ({ feedbacks, id, change, setChange }: Props) => {
                       pt={"15px"}
                     >
                       <StarRatings
-                        rating={ratingEdit}
+                        rating={
+                          admin ? handleAllRatings(comment.id) : ratingEdit
+                        }
                         starRatedColor="#F3B46F"
-                        changeRating={(e: any) => handleRatingEdit(e)}
+                        changeRating={(e: any) =>
+                          handleRatingEdit(e, comment.id)
+                        }
                         numberOfStars={5}
                         starDimension={"25px"}
                         starHoverColor={"#293541"}
@@ -385,7 +448,7 @@ const Reviews = ({ feedbacks, id, change, setChange }: Props) => {
                         vertical-align={"top"}
                         textAlign={{ base: "center", md: "left" }}
                       >
-                        {commentEdit}
+                        {admin ? handleAllComments(comment.id) : commentEdit}
                       </Text>
                     </VStack>
                     <Button
@@ -406,7 +469,7 @@ const Reviews = ({ feedbacks, id, change, setChange }: Props) => {
             </Box>
           ) : (
             <Box rounded={"xl"} width={"90%"} bgColor={"#D1DFE3"} mb={"10px"}>
-              <FormControl key={index} width={"100%"}>
+              <FormControl key={comment.User.id} width={"100%"}>
                 <Stack
                   direction={{ base: "row", md: "column" }}
                   display={"flex"}

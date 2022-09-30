@@ -1,4 +1,5 @@
 import moment, { now } from "moment";
+import { UserData } from "src/components/UserProfile";
 import { Activity, Trip } from "src/utils/interface";
 import { Errors } from "src/utils/interface";
 
@@ -12,15 +13,6 @@ export const oneKeyWord = (keyWord: string) => {
   return /^[a-zA-Z]{0,10}$/.test(keyWord);
 };
 
-export const valKeyWord = (input: string) => {
-  let errors: Errors = {};
-  if (!oneKeyWord(input)) {
-    errors.keyWords =
-      "Please, type one word at a time, numbers and symbols are not allowed";
-  }
-  return errors;
-};
-
 export const validateImgUrl = (url: string) => {
   return /^https?:\/\/.+\.(jpg|jpeg|png|webp|avif|gif|svg)$/.test(url);
 };
@@ -32,7 +24,7 @@ export const validateDescription = (description: string) => {
 };
 
 export const validatePrice = (price: number) => {
-  return /^[0-9]*\.?[0-9]*$/.test(price.toString());
+  return /^[1-9]\d*(\.\d+)?$/.test(price.toString());
 };
 
 export const validateDates = (date: string) => {
@@ -104,11 +96,11 @@ export const formControlActivity = (
   activities: Activity[]
 ) => {
   let errors: Errors = {};
-  if (!validateName(input.name)) {
+  if (!input.name.length) {
+    errors.name = "Name is required";
+  } else if (!validateName(input.name)) {
     errors.name =
       "Name has to be at least 3 characters long and cannot contain special characters";
-  } else if (!input.name.length) {
-    errors.name = "Name is required";
   } else if (
     activities?.find((a) => a.name.toLowerCase() === input.name?.toLowerCase())
   ) {
@@ -117,6 +109,35 @@ export const formControlActivity = (
     errors.price = "Price has to be a number";
   } else if (!validateDescription) {
     errors.description = "Only 1000 characters are allowed";
+  }
+  return errors;
+};
+
+export const profileControl = (input: any) => {
+  let errors: Errors = {};
+  if (input.name === "") {
+    errors.name = "Name is required";
+  } else if (!validateName(input.name)) {
+    errors.name =
+      "Name has to be at least 3 characters long and cannot contain special characters";
+  } else if (!validateDescription(input.description)) {
+    errors.description = "Only 1000 characters are allowed";
+  }
+  return errors;
+};
+
+export const validateKeyWords = (keyWord: string) => {
+  let errors: Errors = {};
+  if (!oneKeyWord(keyWord)) {
+    errors.keyWords = "Please, type one word per keyword";
+  }
+  return errors;
+};
+
+export const threeKeyWords = (keyWords: string[]) => {
+  let errors: Errors = {};
+  if (keyWords.length > 3) {
+    errors.keyWords = "Please, only three interests are allowed";
   }
   return errors;
 };

@@ -276,15 +276,11 @@ export default function TripDetail({ data, isLoading, error }: any) {
               borderWidth={"1.5px"}
               color={"#293541"}
             /> */}
-
-
             {data.tripOnUser.length > 0 && (
               <Box height={"200px"} overflow={"hidden"}>
                 <AvatarCarousel props={data.tripOnUser} />
               </Box>
             )}
-
-
             {/* <Divider
               orientation="horizontal"
               width={"80%"}

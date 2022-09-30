@@ -36,15 +36,16 @@ const index = async (req: NextApiRequest, res: NextApiResponse | any) => {
 
             /**Enviar mensaje a un room */
             socket.on('chat', async (data) => {
-                const { message, room, user } = data;
+                const { message, room, user, avatar } = data;
                 let msgToCreat = {
                     idTrip: room,
                     nameUser: user,
-                    message: message
+                    message: message,
+                    avatar: avatar
                 };
-                await Chatmodel.create(msgToCreat)
+                let newMsgSaved = await Chatmodel.create(msgToCreat);
                 console.log(`msg: ${message}, room: ${room}`);
-                io.to(room).emit('chat', msgToCreat);
+                io.to(room).emit('chat', newMsgSaved);
             });
         })
     }

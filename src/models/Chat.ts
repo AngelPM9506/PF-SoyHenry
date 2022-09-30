@@ -12,6 +12,9 @@ class Chat {
 
     @prop({ type: () => Date, default: new Date() })
     public createdAt?: Date;
+
+    @prop({ type: () => String })
+    public avatar?: string;
 }
 
 const Chatmodel = getModelForClass(Chat);

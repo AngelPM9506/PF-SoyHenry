@@ -132,6 +132,7 @@ export interface City {
   featureCode: string;
   adminCode: string;
   population: Number;
+  activity?: [];
   loc: {
     type: string;
     coordinates: Number[];

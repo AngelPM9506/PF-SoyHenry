@@ -7,7 +7,11 @@ export default async function Cities(req: NextApiRequest, res: NextApiResponse) 
   switch (method) {
     case 'GET':
       try {
-        let response = await prisma.city.findMany()
+        let response = await prisma.city.findMany({
+          include:{
+            activity:true
+          }
+        })
         return res.json(response)
       } catch (error) {
         return res.json(error)

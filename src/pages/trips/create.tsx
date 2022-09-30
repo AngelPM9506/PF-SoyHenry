@@ -71,7 +71,7 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
   const toast = useToast();
   const router = useRouter();
   const { user, isLoading: userLoading } = useUser();
-
+  cities = cities.filter(c => c.activity.length > 0)
   const { data: userDb, isLoading } = useQuery(
     ["userDb", user],
     () => user && getOrCreateUser(user)
@@ -172,6 +172,7 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
     target: { name, value },
   }: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setInput({ ...input, [name]: value });
+    console.log(cities)
     const errControl = formControl({ ...input, [name]: value }, trips);
     const citiesControl = controlCities(input);
     const activitiesControl = controlActivities(input);

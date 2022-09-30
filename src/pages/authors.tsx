@@ -59,7 +59,7 @@ const Authors = () => {
         pb={"20px"}
       >
         <Stack
-          width={"60%"}
+          width={{ base: "90%", xl: "71%" }}
           bg={"RGBA(209,223,227,0.1)"}
           display={"flex"}
           justifyContent={"space-around"}
@@ -69,12 +69,12 @@ const Authors = () => {
         >
           <Image
             alignSelf={"center"}
-            width={"50%"}
+            width={{ base: "80%", sm: "65%", md: "50%" }}
             src={useColorModeValue(dayimage, nightimage)}
             alt={"title"}
           />
           <SimpleGrid
-            columns={3}
+            columns={{ base: 1, md: 2, lg: 3 }}
             columnGap={"6"}
             rowGap={"6"}
             width={"100%"}

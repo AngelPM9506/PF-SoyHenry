@@ -48,8 +48,8 @@ export default function ChatRoom(props: Props) {
     );
 
     const initiateSocket = async (room: string) => {
-        await axios('https://worldtravelers.vercel.app/api/socket');
-        socket = io();
+        //await axios('https://worldtravelers.vercel.app/api/socket');
+        socket = io('https://worldtravelers.vercel.app/api/socket');
         socket.on('connect', () => { console.log(socket.id) });
         socket.emit('join', room);
         socket.on('chat', data => {

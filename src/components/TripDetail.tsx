@@ -33,12 +33,12 @@ import MapView from "src/components/DynamicMap";
 import { useUser } from "@auth0/nextjs-auth0";
 import { getOrCreateUser } from "src/utils/User";
 import { useRouter } from "next/router";
-import {
-  FacebookShareButton,
-  FacebookIcon,
-  WhatsappShareButton,
-  WhatsappIcon,
-} from "next-share";
+//import {
+//  FacebookShareButton,
+//  FacebookIcon,
+//  WhatsappShareButton,
+//  WhatsappIcon,
+//} from "next-share";
 import searchUser from "src/utils/searchUserOnTrip";
 
 // const Url = "http://localhost:3000";
@@ -125,7 +125,7 @@ export default function TripDetail({ data, isLoading, error }: any) {
             />
             <Text>{data.name}</Text>
           </Heading>
-          <Stack
+		{/*<Stack
             alignItems={"center"}
             justifyContent={"center"}
             direction={"row"}
@@ -156,7 +156,7 @@ export default function TripDetail({ data, isLoading, error }: any) {
             >
               <WhatsappIcon size={40} round />
             </WhatsappShareButton>
-          </Stack>
+          </Stack>*/}
         </Stack>
         <Divider
           orientation="horizontal"

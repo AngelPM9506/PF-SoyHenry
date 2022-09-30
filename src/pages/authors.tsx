@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/rules-of-hooks */
+
 import {
   Box,
   Image,
@@ -28,14 +30,9 @@ const nightimage =
 function shuffle(array: object[]) {
   let currentIndex = array.length,
     randomIndex;
-
-  // While there remain elements to shuffle.
   while (currentIndex != 0) {
-    // Pick a remaining element.
     randomIndex = Math.floor(Math.random() * currentIndex);
     currentIndex--;
-
-    // And swap it with the current element.
     [array[currentIndex], array[randomIndex]] = [
       array[randomIndex],
       array[currentIndex],
@@ -45,8 +42,8 @@ function shuffle(array: object[]) {
   return array;
 }
 
-const authors = () => {
-  const { isLoading, data, error } = useQuery(["info"], () => getauthorsinfo());
+const Authors = () => {
+  const { isLoading, data } = useQuery(["info"], () => getauthorsinfo());
 
   if (isLoading || !data) return <Loading />;
   const info: object[] = shuffle(data);
@@ -74,6 +71,7 @@ const authors = () => {
             alignSelf={"center"}
             width={"50%"}
             src={useColorModeValue(dayimage, nightimage)}
+            alt={"title"}
           />
           <SimpleGrid
             columns={3}
@@ -85,7 +83,7 @@ const authors = () => {
             alignSelf={"center"}
           >
             {info?.map((a) => (
-              <Center py={6} pb={0} pt={0}>
+              <Center key={a.name} py={6} pb={0} pt={0}>
                 <Box
                   maxW={"270px"}
                   w={"full"}
@@ -101,6 +99,7 @@ const authors = () => {
                     h={"120px"}
                     w={"full"}
                     src={a.image}
+                    alt={a.name}
                     objectFit={"cover"}
                   />
                   <Flex justify={"center"} mt={-12}>
@@ -191,4 +190,4 @@ const authors = () => {
   );
 };
 
-export default authors;
+export default Authors;

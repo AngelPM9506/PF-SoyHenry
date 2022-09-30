@@ -56,7 +56,7 @@ export default function TripDetail({ data, isLoading, error }: any) {
   const urlFacebook = Url + "/trips/" + data.id;
   const { user } = useUser();
   const router = useRouter();
-	const [userOnTrip, setUserOnTrip] = useState(false);
+  const [userOnTrip, setUserOnTrip] = useState(false);
 
   const { data: userDb } = useQuery(
     ["userDb", user],
@@ -68,17 +68,17 @@ export default function TripDetail({ data, isLoading, error }: any) {
   const iday = data.initDate.slice(0, 10).split("-").reverse().join("/");
   const eday = data.endDate.slice(0, 10).split("-").reverse().join("/");
 
-	const openChat = () => {
-		router.push(`/chat/${data.id}`)
-	}
+  const openChat = () => {
+    router.push(`/chat/${data.id}`)
+  }
 
-	useEffect(() => {
-		async function a() {
-		  const bool = await searchUser(data.id, userDb?.data.id);
-		  setUserOnTrip(bool);
-		}
-		a();
-	}, [data.id, userDb]);
+  useEffect(() => {
+    async function a() {
+      const bool = await searchUser(data.id, userDb?.data.id);
+      setUserOnTrip(bool);
+    }
+    a();
+  }, [data.id, userDb]);
 
   if (isLoading || !userDb || !user) return <LoadingWithoutLayout />;
   if (data.plannerId !== userDb.data.id && data.active === false)
@@ -125,7 +125,7 @@ export default function TripDetail({ data, isLoading, error }: any) {
             />
             <Text>{data.name}</Text>
           </Heading>
-		{/*<Stack
+          {/*<Stack
             alignItems={"center"}
             justifyContent={"center"}
             direction={"row"}
@@ -184,7 +184,7 @@ export default function TripDetail({ data, isLoading, error }: any) {
             >
               <AspectRatio w="100%" h="100%" zIndex={0}>
                 {data.citiesOnTrips[0].city.latitude &&
-                data.citiesOnTrips[0].city.latitude ? (
+                  data.citiesOnTrips[0].city.latitude ? (
                   <MapView
                     cities={data.citiesOnTrips.map((c: any) => c.city)}
                   />
@@ -266,15 +266,15 @@ export default function TripDetail({ data, isLoading, error }: any) {
                         )}
                       </List>
                     </ListItem>
-										{
-											userOnTrip ? 
-											<Button onClick={() => openChat()} borderRadius="100%" h="48px" mt="20px" bg="#F3B46F" transition="0.5s" _hover={{bg:"#25D366"}}>
-												<Tooltip label={`Go to chat!`} placement="right" hasArrow arrowSize={10}>
-													<ChatIcon/>
-												</Tooltip>
-											</Button> 
-											: null
-										}
+                    {
+                      userOnTrip ?
+                        <Button onClick={() => openChat()} borderRadius="100%" h="48px" mt="20px" bg="#F3B46F" transition="0.5s" _hover={{ bg: "#25D366" }}>
+                          <Tooltip label={`Go to chat!`} placement="right" hasArrow arrowSize={10}>
+                            <ChatIcon />
+                          </Tooltip>
+                        </Button>
+                        : null
+                    }
                   </List>
                 </SimpleGrid>
               </Box>
@@ -321,72 +321,72 @@ export default function TripDetail({ data, isLoading, error }: any) {
 
 {
   /* <Text
-			  fontSize={{ base: "16px", lg: "18px" }}
-			  color={useColorModeValue("#F3B46F", "#F3B46F")}
-			  fontWeight={"500"}
-			  textTransform={"uppercase"}
-			  mb={"4"}
-			  ml={"20px"}
-			  pb={"3px"}
-			>
-			  Activities
-			</Text> */
+        fontSize={{ base: "16px", lg: "18px" }}
+        color={useColorModeValue("#F3B46F", "#F3B46F")}
+        fontWeight={"500"}
+        textTransform={"uppercase"}
+        mb={"4"}
+        ml={"20px"}
+        pb={"3px"}
+      >
+        Activities
+      </Text> */
 }
 {
   /* <SimpleGrid ml={"20px"} mr={"20px"} columns={5} spacing={2}>
-			  {data.activitiesOnTrips.length != 0 ? (
-				data.activitiesOnTrips.map((activity: any, i: number) => (
-				  <MiniCardAct
-				  Key={i}
-					activity={activity.activity}
-					cities={data.citiesOnTrips}
-				  />
-				))
-			  ) : (
-				<Text> No Activities found</Text>
-			  )}
-			</SimpleGrid> */
+        {data.activitiesOnTrips.length != 0 ? (
+        data.activitiesOnTrips.map((activity: any, i: number) => (
+          <MiniCardAct
+          Key={i}
+          activity={activity.activity}
+          cities={data.citiesOnTrips}
+          />
+        ))
+        ) : (
+        <Text> No Activities found</Text>
+        )}
+      </SimpleGrid> */
 }
 // </Box>
 {
   /* <Stack width={"100vw"} align={"center"}>
-			<StackDivider
-			  borderColor={useColorModeValue("gray.200", "gray.600")}
-			/>
-			<Box
-			  bgColor={"#02b1b1"}
-			  height={"60px"}
-			  width={"230px"}
-			  rounded={"lg"}
-			  padding={"8px"}
-			  boxShadow={"0px 5px   white"}
-			>
-			  <Text textAlign={"center"} fontWeight={"bold"} fontSize={"2xl"}>
-				Trip's itinerary
-			  </Text>
-			</Box>
-			<TimeLine />
-			<Stack alignItems={"center"} justifyContent={"center"}>
-			  <Button
-				rounded={"lg"}
-				w={"100%"}
-				pb={"2px"}
-				mb={"10px"}
-				mt={4}
-				size={"lg"}
-				py={"7"}
-				bg={useColorModeValue("gray.900", "gray.50")}
-				color={useColorModeValue("white", "gray.900")}
-				textTransform={"uppercase"}
-				_hover={{
-				  transform: "translateY(2px)",
-				  boxShadow: "lg",
-				}}
-			  >
-				Pay and Join the trip!
-			  </Button>
-			</Stack>
-		  </Stack> */
+      <StackDivider
+        borderColor={useColorModeValue("gray.200", "gray.600")}
+      />
+      <Box
+        bgColor={"#02b1b1"}
+        height={"60px"}
+        width={"230px"}
+        rounded={"lg"}
+        padding={"8px"}
+        boxShadow={"0px 5px   white"}
+      >
+        <Text textAlign={"center"} fontWeight={"bold"} fontSize={"2xl"}>
+        Trip's itinerary
+        </Text>
+      </Box>
+      <TimeLine />
+      <Stack alignItems={"center"} justifyContent={"center"}>
+        <Button
+        rounded={"lg"}
+        w={"100%"}
+        pb={"2px"}
+        mb={"10px"}
+        mt={4}
+        size={"lg"}
+        py={"7"}
+        bg={useColorModeValue("gray.900", "gray.50")}
+        color={useColorModeValue("white", "gray.900")}
+        textTransform={"uppercase"}
+        _hover={{
+          transform: "translateY(2px)",
+          boxShadow: "lg",
+        }}
+        >
+        Pay and Join the trip!
+        </Button>
+      </Stack>
+      </Stack> */
 }
 //       </VStack>
 //     </Container>

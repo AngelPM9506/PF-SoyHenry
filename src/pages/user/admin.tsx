@@ -59,7 +59,7 @@ function TablesTableRow({
     <>
       <Layout>
         <NextSeo title="Admin Panel" />
-        <Box overflowX={{ sm: "scroll", xl: "hidden" }} mt={5} ml={5}>
+        <Box overflowX={{ sm: "scroll", xl: "hidden" }} mt={12} ml={5}>
           <Box p="6px 0px 22px 0px" display={"inline-flex"} gap={10}>
             <Text
               fontSize="xl"

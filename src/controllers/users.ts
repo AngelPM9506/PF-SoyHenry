@@ -61,9 +61,13 @@ let usersControllers = {
     let { id } = query;
     const response = await prisma.user.findUnique({
       where: { id: id.toString() },
-      include: {
-        trips: true
-      }
+      select: {
+        id: true,
+        name: true,
+        trips: true,
+        useOnTrip: { select: { trip: true } },
+        active: true,
+      },
     });
     if (response.active) {
       return response;
@@ -136,16 +140,14 @@ let usersControllers = {
     return "Suspendeed acount";
   },
 
-  searchUser: async(idTrip:string, idUser:string) => {
+  searchUser: async (idTrip: string, idUser: string) => {
     const searchUser = await prisma.usersOnTrips.findFirst({
-        where:{
-            userid:idUser,
-            tripId:idTrip
-        }
-    })
+      where: {
+        userid: idUser,
+        tripId: idTrip,
+      },
+    });
     return searchUser ? true : false;
-}
-
-
+  },
 };
 export default usersControllers;

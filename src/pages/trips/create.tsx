@@ -267,6 +267,7 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    console.log(input);
     let tripCreated = await createTrip(input);
     setInput(initialState);
     try {

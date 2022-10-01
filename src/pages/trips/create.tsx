@@ -32,7 +32,7 @@ import {
   Flex,
 } from "@chakra-ui/react";
 import { ChevronDownIcon, CheckCircleIcon } from "@chakra-ui/icons";
-import { useState } from "react";
+import { SetStateAction, useState } from "react";
 import { Trip, Activity, City, Errors } from "src/utils/interface";
 import { ChangeEvent, FormEvent, MouseEvent, useRef } from "react";
 import Layout from "src/components/layout/Layout";
@@ -58,6 +58,8 @@ import Loading from "src/components/Loading";
 import { cursorTo } from "readline";
 import { Select as ReactSelect } from "chakra-react-select";
 import { NextSeo } from "next-seo";
+import Link from "next/link";
+import React from 'react'
 
 interface Props {
   activities: Activity[];
@@ -71,12 +73,16 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
   const toast = useToast();
   const router = useRouter();
   const { user, isLoading: userLoading } = useUser();
-
+  cities = cities.filter(c => c.activity.length > 0)
   const { data: userDb, isLoading } = useQuery(
     ["userDb", user],
     () => user && getOrCreateUser(user)
   );
-
+  let options : any = []
+  cities.map(c => {
+    let selectObject = {value:c.name, label:c.name,name:c.name}
+    options.push(selectObject)
+  })
   const url =
     "https://res.cloudinary.com/mauro4202214/image/upload/v1663527844/world-travelers/activitydefault_q9aljz.png";
 
@@ -93,7 +99,9 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
   };
 
   const [input, setInput] = useState(initialState);
-  const [inputCities, setInputCities] = useState("");
+  let citieFormated = input.cities.map(c => ({value:c,label:c}))
+  // const [inputCities, setInputCities] = useState("");
+  const [inputCities, setinputCities] = useState(citieFormated)
   const [image, setImage] = useState<string | ArrayBuffer>();
   const [file, setFile] = useState<File>();
   const [nameFile, setNameFile] = useState("");
@@ -127,11 +135,11 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
   if (!isLoading && input.planner === "" && userDb?.data.id)
     setInput({ ...input, planner: userDb.data.id });
 
-  const handleCities = ({
-    target: { value },
-  }: ChangeEvent<HTMLInputElement>) => {
-    setInputCities(value);
-  };
+  // const handleCities = ({
+  //   target: { value },
+  // }: ChangeEvent<HTMLInputElement>) => {
+  //   setInputCities(value);
+  // };
 
   const handleActDate = (date: any, id: string) => {
     setActDate(date);
@@ -142,31 +150,31 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
     }
   };
 
-  const handleCitiesSelect = (e: MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    if (inputCities !== "") {
-      setInput({ ...input, cities: [...input.cities, inputCities] });
-      const errControl = formControl(input);
-      const citiesControl = controlCities({
-        ...input,
-        cities: [...input.cities, inputCities],
-      });
-      const activitiesControl: any = controlActivities(input);
-      if (
-        JSON.stringify(errControl) === "{}" &&
-        JSON.stringify(citiesControl) === "{}" &&
-        JSON.stringify(activitiesControl) === "{}"
-      ) {
-        setDisable(false);
-      } else {
-        setDisable(true);
-      }
-      setErrorCities(citiesControl);
-      setErrorActivities(activitiesControl);
-      setErrors(errControl);
-      setInputCities("");
-    }
-  };
+  // const handleCitiesSelect = (e: MouseEvent<HTMLButtonElement>) => {
+  //   e.preventDefault();
+  //   // if (inputCities !== "") {
+  //   //   setInput({ ...input, cities: [...input.cities, inputCities] });
+  //   //   const errControl = formControl(input);
+  //   //   const citiesControl = controlCities({
+  //   //     ...input,
+  //   //     cities: [...input.cities, inputCities],
+  //   //   });
+  //     const activitiesControl: any = controlActivities(input);
+  //     if (
+  //       JSON.stringify(errControl) === "{}" &&
+  //       JSON.stringify(citiesControl) === "{}" &&
+  //       JSON.stringify(activitiesControl) === "{}"
+  //     ) {
+  //       setDisable(false);
+  //     } else {
+  //       setDisable(true);
+  //     }
+  //     setErrorCities(citiesControl);
+  //     setErrorActivities(activitiesControl);
+  //     setErrors(errControl);
+  //     setInputCities("");
+  //   }
+  // };
 
   const handleChange = ({
     target: { name, value },
@@ -389,6 +397,17 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
    " 2xl": '96em'
   }
   
+  const handleCities2 = (option: any) => {
+    // const citiesSelected = e.map((c:any) => c)
+    setinputCities(option)
+    const citiesSelected = option.map((o:any) => o.value)
+    setInput({...input,cities:citiesSelected})
+    // const citiesSelected = [...e.target.options].filter((c:any) => c.selected).map((x:any) => x.value)
+    // setInput({...input,
+    //    cities: citiesSelected
+    //   })
+    console.log(input)
+  }
   return (
     <Layout>
       <NextSeo title="Create Trip" />
@@ -466,60 +485,33 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
                       {errors.name}
                     </Text>
                   )}
-                  <FormLabel paddingLeft="2" htmlFor="cities" mt={2}>
+                    <Flex direction="column" mb="30px">
+                  <FormLabel
+                    paddingLeft="2"
+                    htmlFor="description"
+                    mt={1}
+                    mb="8px"
+                  >
                     Cities
                   </FormLabel>
-                  <HStack>
-                  <Button
-                      marginLeft={"10px"}
-                      mt={1}
-                      width={"80px"}
-                      fontSize={"xs"}
-                      onClick={(e) => handleCitiesSelect(e)}
-                    >
-                      ADD CITY
-                    </Button>
-                    <Input
-                      list="cities-choices"
+                  <FormControl>
+                    <ReactSelect
+                      id="cities"
                       name="cities"
+                      options={options}
+                      closeMenuOnSelect={false}
+                      size="md"
+                      onChange={(e: any) => handleCities2(e)}
                       value={inputCities}
-                      marginRight={"20px"}
-                      placeholder="Type the cities you are visiting..."
-                      onChange={(e) => handleCities(e)}
+                      colorScheme={"blue"}
+                      isMulti
                     />
-                    <datalist id="cities-choices">
-                      {cities
-                        ?.filter((c) => !input.cities?.includes(c.name))
-                        ?.map((c, index) => (
-                          <option key={index}> {c.name} </option>
-                        ))}
-                    </datalist>
-                  </HStack>
-                   <Flex direction="column" mb="30px">
+                  </FormControl>
+                </Flex>
+                   <Flex direction="column" mb="-25px">
                   </Flex>
                   <Center>
-                    <HStack marginTop={"5px"}>
-                      {input.cities.length != 0 ? (
-                        input.cities.map((c, index) => {
-                          return (
-                            <Box marginLeft={"10px"} key={index}>
-                              {c}
-                              <Button
-                                marginLeft="2"
-                                onClick={() => handleDeleteCity(c)}
-                                height={"25px"}
-                                width={"5px"}
-                              >
-                                X
-                              </Button>
-                            </Box>
-                          );
-                        })
-                      ) : (
-                        <Box height={"40px"}></Box>
-                      )}
-                    </HStack>
-                    {errorCities.cities && (
+                    {!input.cities.length && (
                       <Text m={1} color={"#F3B46F"}>
                         {errorCities.cities}
                       </Text>
@@ -610,7 +602,7 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
                     onClose={onClose}
                   >
                     {overlay}
-                    <ModalContent>
+                    <ModalContent marginTop={activities.filter(a => input.cities.includes(a.city.name)).length > 4 ? "200px" : "50px"}>
                       <ModalHeader textAlign={{base:"center",md:"left"}} marginTop={{base:"220px",sm:"200px",md:"0"}}>Select the activities</ModalHeader>
                       <ModalCloseButton />
                       <ModalBody>
@@ -687,13 +679,13 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
                                             dateFormat="yyyy/mm/ddd"
                                             onChange={(date) => {
                                             let D = new Date(date.toString())
-                                              handleActDate(`${D.toISOString().slice(0,10).split("-").reverse().join("/")}`, id)
+                                              handleActDate(`${D.toISOString().slice(0,10)}`, id)
                                             }
                                             }
                                             filterDate={(date) =>
                                               ableDays(date, act.availability)
                                             }
-                                            placeholderText={input.activitiesName.find((a:any) => a.name === act.name.toString())?.actDate.slice(0,10).split("-").reverse().join("/")?input.activitiesName.find((a:any) => a.name === act.name.toString())?.actDate.slice(0,10).split("-").reverse().join("/"):"Choose a date"} 
+                                            placeholderText={input.activitiesName.find((a:any) => a.name === act.name.toString())?.actDate.slice(0,10)?input.activitiesName.find((a:any) => a.name === act.name.toString())?.actDate.slice(0,10):"Choose a date"} 
                                             withPortal
                                             portalId="root"
                                             width={"100%"}
@@ -716,13 +708,14 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
                                           alignItems={"center"}
                                           justifyContent={"space-between"}
                                         >
-                                          <NextLink
+                                          <Link
                                             href={`/activities/${act.id}`}
+                                            passHref
                                           >
-                                            <Button margin={1} size={"xs"}>
+                                            <a target={'_blank'}><Button margin={1} size={"xs"}>
                                               +Info
-                                            </Button>
-                                          </NextLink>
+                                            </Button></a>
+                                          </Link>
                                           <Button
                                             id={id}
                                             disabled={!isDisabled.includes(id)}
@@ -808,9 +801,9 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
 };
 
 export const getServerSideProps = async () => {
-  const response = await axios("/activities");
+  const response = await axios("/activities?byName=true");
   const activities = await response.data;
-  const res = await axios("/cities");
+  const res = await axios("/cities?byName=true");
   const cities = await res.data;
   const data = await axios("/trips");
   const trips = await data.data;

@@ -167,7 +167,7 @@ function Trips({ trips }: Props) {
             }}
             m={5}
             w={175}
-            marginBottom={{ sm: "-15px" }}
+            marginBottom={{ sm: "10px" }}
           >
             CREATE NEW TRIP
           </Button>

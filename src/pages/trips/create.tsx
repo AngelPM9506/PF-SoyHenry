@@ -180,7 +180,6 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
     target: { name, value },
   }: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setInput({ ...input, [name]: value });
-    console.log(input)
     const errControl = formControl({ ...input, [name]: value }, trips);
     const citiesControl = controlCities(input);
     const activitiesControl = controlActivities(input);
@@ -279,20 +278,20 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
     let tripCreated = await createTrip(input);
     setInput(initialState);
     try {
-      // await axios
-      //   .post("/api/mail", {
-      //     mail: userDb.data.mail,
-      //     subject: `Trip ${input.name} has been create successfuly thanks to use WORLD TRAVELERS`,
-      //     message: `Your Trip: ${input.name} has been create successfuly thanks to use WORLD TRAVELERS`,
-      //     html: {
-      //       title: "Trip created successfuly",
-      //       actionName: input.name,
-      //       text: `Your Trip ${input.name} has been created`,
-      //       url: `/trips/${tripCreated.id}`,
-      //       urlMsg: "See your trip here",
-      //     },
-      //   })
-      //   .catch((error) => console.log(error));
+      await axios
+        .post("/api/mail", {
+          mail: userDb.data.mail,
+          subject: `Trip ${input.name} has been create successfuly thanks to use WORLD TRAVELERS`,
+          message: `Your Trip: ${input.name} has been create successfuly thanks to use WORLD TRAVELERS`,
+          html: {
+            title: "Trip created successfuly",
+            actionName: input.name,
+            text: `Your Trip ${input.name} has been created`,
+            url: `/trips/${tripCreated.id}`,
+            urlMsg: "See your trip here",
+          },
+        })
+        .catch((error) => console.log(error));
     } catch (error) {
       console.log(error);
     }
@@ -511,7 +510,7 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
                    <Flex direction="column" mb="-25px">
                   </Flex>
                   <Center>
-                    {errorCities.cities && (
+                    {!input.cities.length && (
                       <Text m={1} color={"#F3B46F"}>
                         {errorCities.cities}
                       </Text>
@@ -602,7 +601,7 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
                     onClose={onClose}
                   >
                     {overlay}
-                    <ModalContent>
+                    <ModalContent marginTop={activities.filter(a => input.cities.includes(a.city.name)).length > 4 ? "200px" : "50px"}>
                       <ModalHeader textAlign={{base:"center",md:"left"}} marginTop={{base:"220px",sm:"200px",md:"0"}}>Select the activities</ModalHeader>
                       <ModalCloseButton />
                       <ModalBody>

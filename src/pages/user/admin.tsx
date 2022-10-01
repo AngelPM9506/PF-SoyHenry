@@ -1,12 +1,12 @@
 import { useUser } from "@auth0/nextjs-auth0";
-import { Box, Text, useColorModeValue } from "@chakra-ui/react";
+import { Box, Flex, Text, useColorModeValue } from "@chakra-ui/react";
 
 import React, { useState } from "react";
-import { useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import Layout from "src/components/layout/Layout";
 import { UserData } from "src/components/UserProfile";
 
-import { getOrCreateUser } from "src/utils/User";
+import { getOrCreateUser, updateUser } from "src/utils/User";
 
 import NotFound from "src/pages/404";
 
@@ -22,7 +22,11 @@ import TripsControllers from "src/controllers/trips";
 import Loading from "src/components/Loading";
 
 import { getCities } from "src/utils/cities";
+
+import { editActivity } from "src/utils/activities";
+
 import { NextSeo } from "next-seo";
+
 
 function TablesTableRow({
   users,
@@ -38,6 +42,7 @@ function TablesTableRow({
   const { data: userDb, isLoading } = useQuery(["userDb", user], () =>
     getOrCreateUser(user)
   );
+
   const [active, setActive] = useState("users");
 
   const textColor = useColorModeValue("gray.700", "white");
@@ -91,7 +96,7 @@ function TablesTableRow({
             >
               Trips Dashboard
             </Text>
-          </Box>
+          </Flex>
           {active === "users" && <UserDashboard users={users} />}
           {active === "activities" && (
             <ActivityDashboard activities={activities} />

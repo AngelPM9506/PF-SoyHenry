@@ -49,7 +49,7 @@ interface Users {
   users: User[];
 }
 
-export default function TripDetail({ data, isLoading, error }: any) {
+export default function TripDetail({ data, isLoading, error, ethPrice }: any) {
   const urlFacebook = Url + "/trips/" + data.id;
   const { user } = useUser();
   const router = useRouter();
@@ -287,7 +287,7 @@ export default function TripDetail({ data, isLoading, error }: any) {
             /> */}
           </Box>
 
-          <TimeLine data={data} />
+          <TimeLine data={data} ethPrice={ethPrice} />
         </Box>
       </VStack>
     </Container>

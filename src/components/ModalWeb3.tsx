@@ -16,18 +16,28 @@ import {
   Flex,
 } from "@chakra-ui/react";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
-import { useState } from "react";
 import { Trip } from "src/utils/interface";
 import { useAccount, useEnsAddress, useEnsAvatar } from "wagmi";
 import { SendTransaction } from "./SendWeb3Transaction";
 
-export function ModalWeb3({ value }: { value: string}) {
+export function ModalWeb3({
+  value,
+  ethPrice,
+  tripData,
+}: {
+  value: string;
+
+  ethPrice: number;
+
+  tripData: Trip;
+}) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { isConnected } = useAccount();
   const { data, isError, isLoading } = useEnsAvatar({
     addressOrName: "world-travelers.eth",
   });
-  console.log(data);
+  const priceInEth = Number(value) / Number(ethPrice);
+
   return (
     <>
       <Button
@@ -39,21 +49,23 @@ export function ModalWeb3({ value }: { value: string}) {
         <Text>Pay With Ethereum</Text>
       </Button>
 
-      <Modal isOpen={isOpen} onClose={onClose} key={value} size={"5xl"}>
+      <Modal isOpen={isOpen} onClose={onClose} key={value} size={"2xl"}>
         <ModalOverlay />
-        <ModalContent>
+        <ModalContent bg={"#4b647c"}>
           <ModalHeader>Pay With Ethereum</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             {isConnected && (
-              <SendTransaction value={"0.01"} address={"world-travelers.eth"}  avatar={data}/>
+              <SendTransaction
+                value={priceInEth.toFixed(9).toString()}
+                address={"world-travelers.eth"}
+                avatar={data}
+                tripData={tripData}
+                ethPrice={ethPrice}
+              />
             )}
           </ModalBody>
-          <ModalFooter>
-            <Button colorScheme="blue" mr={3} onClick={onClose}>
-              Cancel
-            </Button>
-          </ModalFooter>
+          <ModalFooter></ModalFooter>
         </ModalContent>
       </Modal>
     </>

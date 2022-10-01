@@ -1,7 +1,12 @@
 import "../styles/globals.css";
 import type { AppProps } from "next/app";
 import { UserProvider } from "@auth0/nextjs-auth0";
-import { ChakraProvider } from "@chakra-ui/react";
+import {
+  ChakraProvider,
+  ColorModeProvider,
+  theme,
+  ThemeProvider,
+} from "@chakra-ui/react";
 import { myTheme } from "src/styles/theme";
 import { useEffect, useState } from "react";
 import { Hydrate, QueryClient, QueryClientProvider } from "react-query";
@@ -54,31 +59,35 @@ function MyApp({
     return <></>;
   } else {
     return (
-      <QueryClientProvider client={queryClient}>
-        <WagmiConfig client={wagmiClient}>
-          <RainbowKitProvider
-            appInfo={{
-              appName: "World Travelers",
-            }}
-            theme={{
-              lightMode: lightTheme(),
-              darkMode: darkTheme(),
-            }}
-            chains={chains}
-            showRecentTransactions={true}
-            coolMode
-          >
-            <ChakraProvider>
-              <UserProvider>
-                <Hydrate state={pageProps.dehydratedState}>
-                  <Component {...pageProps} />
-                </Hydrate>
-                <ReactQueryDevtools />
-              </UserProvider>
-            </ChakraProvider>
-          </RainbowKitProvider>
-        </WagmiConfig>
-      </QueryClientProvider>
+      <ChakraProvider>
+        <ThemeProvider theme={myTheme}>
+          <QueryClientProvider client={queryClient}>
+            <WagmiConfig client={wagmiClient}>
+              <RainbowKitProvider
+                appInfo={{
+                  appName: "World Travelers",
+                }}
+                theme={{
+                  lightMode: lightTheme(),
+                  darkMode: darkTheme(),
+                }}
+                chains={chains}
+                showRecentTransactions={true}
+                coolMode
+              >
+                <ColorModeProvider>
+                  <UserProvider>
+                    <Hydrate state={pageProps.dehydratedState}>
+                      <Component {...pageProps} />
+                    </Hydrate>
+                    <ReactQueryDevtools />
+                  </UserProvider>
+                </ColorModeProvider>
+              </RainbowKitProvider>
+            </WagmiConfig>
+          </QueryClientProvider>
+        </ThemeProvider>
+      </ChakraProvider>
     );
   }
 }

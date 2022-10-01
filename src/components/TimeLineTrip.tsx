@@ -36,7 +36,7 @@ import searchUser from "src/utils/searchUserOnTrip";
 import { useAccount, useConnect, useDisconnect } from "wagmi";
 import { SendTransaction } from "./SendWeb3Transaction";
 import { ModalWeb3 } from "./ModalWeb3";
-export const TimeLine = ({ data }: any) => {
+export const TimeLine = ({ data, ethPrice }: any) => {
   const activitiesinOrder = data.activitiesOnTrips.sort(function compareFn(
     a: any,
     b: any
@@ -193,7 +193,9 @@ export const TimeLine = ({ data }: any) => {
             showBalance={false}
           />
           <ModalWeb3
-            value={"0.01"}
+            value={data.price}
+            ethPrice={ethPrice}
+            tripData={data}
           />
         </Stack>
       )}

@@ -62,7 +62,6 @@
     "states-cities-db": "^1.4.1",
     "use-debounce": "^8.0.4",
     "wagmi": "^0.6.7"
-
   },
   "devDependencies": {
     "@types/node": "18.7.16",

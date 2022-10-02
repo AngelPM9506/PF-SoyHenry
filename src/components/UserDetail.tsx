@@ -23,6 +23,8 @@ interface Props {
 export const UserDetail = ({ userDetail, trips }: Props) => {
   const user = userDetail;
 
+  console.log(user);
+
   const logo: string =
     "https://drive.google.com/file/d/1ti7xmFJWKOqUUNcuV2TEpMCb56NAaMU3/view";
   const tikTok: string =
@@ -44,16 +46,23 @@ export const UserDetail = ({ userDetail, trips }: Props) => {
   const tripsTravJoined: Trip[] = trips
     ?.map((trip) => trip.tripOnUser)
     .flat()
-    .map((trip) => trip.trip);
+    .map((trip) => trip.trip)
+    .filter((trip) => trip.plannerId !== user?.id);
 
   return (
-    <Stack display={"flex"} justifyContent={"center"} alignItems={"center"}>
+    <Stack
+      minHeight={"75vh"}
+      minWidth={"100vw"}
+      display={"flex"}
+      justifyContent={"center"}
+      alignItems={"center"}
+    >
       <Center pt={6}>
         <Heading>Meet the traveler</Heading>
       </Center>
       <Center>
         <Stack
-          direction={{ base: "column", md: "column", lg: "row" }}
+          direction={{ base: "column", md: "column", lg: "column", xl: "row" }}
           spacing={4}
           p={6}
           width={"100vw"}
@@ -71,12 +80,17 @@ export const UserDetail = ({ userDetail, trips }: Props) => {
               boxShadow={"2xl"}
               padding={4}
             >
-              <Flex justifyContent={"center"} flex={1}>
+              <Flex alignItems={"center"} justifyContent={"center"} flex={1}>
                 <Image
                   alt="image user"
                   borderRadius={"xl"}
                   objectFit="cover"
-                  boxSize={{ sm: "50%", md: "100%", lg: "100%" }}
+                  height={{
+                    base: "100px",
+                    sm: "100px",
+                    md: "150px",
+                    lg: "250px",
+                  }}
                   src={user?.avatar ? user.avatar.toString() : logo}
                 />
               </Flex>
@@ -118,7 +132,6 @@ export const UserDetail = ({ userDetail, trips }: Props) => {
                     );
                   })}
                 </Stack>
-
                 <Center>
                   <Stack
                     width={"100%"}
@@ -171,31 +184,40 @@ export const UserDetail = ({ userDetail, trips }: Props) => {
               </Stack>
             </Stack>
           </Box>
+
           <Box display={"flex"} justifyContent={"center"} flexDir={"column"}>
-            <Text
-              textAlign={"center"}
-              color={useColorModeValue("#293541", "#F3B46F")}
-              fontSize={"xl"}
-              fontFamily={"body"}
-              p={2}
-            >
-              Trips created by this traveler
-            </Text>
-            <Box display={"flex"} justifyContent={"center"}>
-              <AvatarCarousel trips={myCreatedActiveTrips} />
-            </Box>
-            <Text
-              textAlign={"center"}
-              color={useColorModeValue("#293541", "#F3B46F")}
-              fontSize={"xl"}
-              fontFamily={"body"}
-              p={2}
-            >
-              Trips traveler joined
-            </Text>
-            <Box display={"flex"} justifyContent={"center"}>
-              <AvaCarousel trips={tripsTravJoined} />
-            </Box>
+            {myCreatedActiveTrips?.length > 0 && (
+              <>
+                <Text
+                  textAlign={"center"}
+                  color={useColorModeValue("#293541", "#F3B46F")}
+                  fontSize={"xl"}
+                  fontFamily={"body"}
+                  p={2}
+                >
+                  Trips created by this traveler
+                </Text>
+                <Box display={"flex"} justifyContent={"center"}>
+                  <AvatarCarousel trips={myCreatedActiveTrips} />
+                </Box>{" "}
+              </>
+            )}
+            {tripsTravJoined?.length > 0 && (
+              <>
+                <Text
+                  textAlign={"center"}
+                  color={useColorModeValue("#293541", "#F3B46F")}
+                  fontSize={"xl"}
+                  fontFamily={"body"}
+                  p={2}
+                >
+                  Trips traveler joined
+                </Text>
+                <Box display={"flex"} justifyContent={"center"}>
+                  <AvaCarousel trips={tripsTravJoined} />
+                </Box>{" "}
+              </>
+            )}
           </Box>
         </Stack>
       </Center>

@@ -23,8 +23,13 @@ export default function CardTimeLine({ activity, actDate, cities }: any) {
     xl: "80em",
     "2xl": "96em",
   };
+  const datedisorder = actDate.slice(0, 10).split("-");
+  let datei = [];
+  datei.push(datedisorder[1]);
+  datei.push(datedisorder[2]);
+  datei.push(datedisorder[0]);
+  const date = datei.join("/");
 
-  const date = actDate.slice(0, 10).split("-").reverse().join("/");
   return (
     <VerticalTimelineElement
       className="vertical-timeline-element--work"

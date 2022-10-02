@@ -20,7 +20,7 @@ import { NextSeo } from "next-seo";
 
 const LandingPage: NextPage = () => {
   const url =
-    "https://res.cloudinary.com/mauro4202214/video/upload/v1663337043/world-travelers/videolandingpagecrop_iklwjv.mp4";
+    " https://res.cloudinary.com/mauro4202214/video/upload/v1664478710/world-travelers/videolanding_aborr1.mp4";
 
   const [ismuted, setismuted] = useState(true);
   const [color, setcolor] = useState("#D1DFE3");

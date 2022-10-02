@@ -149,6 +149,7 @@ export default function ActivityDetail({
           </Stack>
         </Stack>
       </SimpleGrid>
+
       {data.activity.activitiesOnTrips.length > 0 && (
         <Box
           display={"flex"}
@@ -264,6 +265,7 @@ export default function ActivityDetail({
           mutatesubmit={mutatesubmit}
           mutateedit={mutateedit}
           mutatedelete={mutatedelete}
+          admin={false}
         />
       </Box>
     </Container>

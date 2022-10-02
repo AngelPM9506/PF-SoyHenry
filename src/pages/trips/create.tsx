@@ -29,9 +29,10 @@ import {
   Box,
   Stack,
   useColorModeValue,
+  Flex,
 } from "@chakra-ui/react";
 import { ChevronDownIcon, CheckCircleIcon } from "@chakra-ui/icons";
-import { useState } from "react";
+import { SetStateAction, useState } from "react";
 import { Trip, Activity, City, Errors } from "src/utils/interface";
 import { ChangeEvent, FormEvent, MouseEvent, useRef } from "react";
 import Layout from "src/components/layout/Layout";
@@ -54,7 +55,11 @@ import getDay from "date-fns/getDay";
 import { chakra } from "@chakra-ui/react";
 import { BannedAlert } from "src/components/Banned";
 import Loading from "src/components/Loading";
+import { cursorTo } from "readline";
+import { Select as ReactSelect } from "chakra-react-select";
 import { NextSeo } from "next-seo";
+import Link from "next/link";
+import React from 'react'
 
 interface Props {
   activities: Activity[];
@@ -68,12 +73,16 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
   const toast = useToast();
   const router = useRouter();
   const { user, isLoading: userLoading } = useUser();
-
+  cities = cities.filter(c => c.activity.length > 0)
   const { data: userDb, isLoading } = useQuery(
     ["userDb", user],
     () => user && getOrCreateUser(user)
   );
-
+  let options : any = []
+  cities.map(c => {
+    let selectObject = {value:c.name, label:c.name,name:c.name}
+    options.push(selectObject)
+  })
   const url =
     "https://res.cloudinary.com/mauro4202214/image/upload/v1663527844/world-travelers/activitydefault_q9aljz.png";
 
@@ -90,7 +99,9 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
   };
 
   const [input, setInput] = useState(initialState);
-  const [inputCities, setInputCities] = useState("");
+  let citieFormated = input.cities.map(c => ({value:c,label:c}))
+  // const [inputCities, setInputCities] = useState("");
+  const [inputCities, setinputCities] = useState(citieFormated)
   const [image, setImage] = useState<string | ArrayBuffer>();
   const [file, setFile] = useState<File>();
   const [nameFile, setNameFile] = useState("");
@@ -101,7 +112,6 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
   const [disable, setDisable] = useState(true);
   const [actDate, setActDate] = useState("");
   const [isDisabled, setIsDisabled] = useState([]);
-
   const arrWorkingDays = (availability: string[]) => {
     const arr: number[] = [];
     availability.forEach((d) => {
@@ -125,11 +135,11 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
   if (!isLoading && input.planner === "" && userDb?.data.id)
     setInput({ ...input, planner: userDb.data.id });
 
-  const handleCities = ({
-    target: { value },
-  }: ChangeEvent<HTMLInputElement>) => {
-    setInputCities(value);
-  };
+  // const handleCities = ({
+  //   target: { value },
+  // }: ChangeEvent<HTMLInputElement>) => {
+  //   setInputCities(value);
+  // };
 
   const handleActDate = (date: any, id: string) => {
     setActDate(date);
@@ -140,31 +150,31 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
     }
   };
 
-  const handleCitiesSelect = (e: MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    if (inputCities !== "") {
-      setInput({ ...input, cities: [...input.cities, inputCities] });
-      const errControl = formControl(input);
-      const citiesControl = controlCities({
-        ...input,
-        cities: [...input.cities, inputCities],
-      });
-      const activitiesControl: any = controlActivities(input);
-      if (
-        JSON.stringify(errControl) === "{}" &&
-        JSON.stringify(citiesControl) === "{}" &&
-        JSON.stringify(activitiesControl) === "{}"
-      ) {
-        setDisable(false);
-      } else {
-        setDisable(true);
-      }
-      setErrorCities(citiesControl);
-      setErrorActivities(activitiesControl);
-      setErrors(errControl);
-      setInputCities("");
-    }
-  };
+  // const handleCitiesSelect = (e: MouseEvent<HTMLButtonElement>) => {
+  //   e.preventDefault();
+  //   // if (inputCities !== "") {
+  //   //   setInput({ ...input, cities: [...input.cities, inputCities] });
+  //   //   const errControl = formControl(input);
+  //   //   const citiesControl = controlCities({
+  //   //     ...input,
+  //   //     cities: [...input.cities, inputCities],
+  //   //   });
+  //     const activitiesControl: any = controlActivities(input);
+  //     if (
+  //       JSON.stringify(errControl) === "{}" &&
+  //       JSON.stringify(citiesControl) === "{}" &&
+  //       JSON.stringify(activitiesControl) === "{}"
+  //     ) {
+  //       setDisable(false);
+  //     } else {
+  //       setDisable(true);
+  //     }
+  //     setErrorCities(citiesControl);
+  //     setErrorActivities(activitiesControl);
+  //     setErrors(errControl);
+  //     setInputCities("");
+  //   }
+  // };
 
   const handleChange = ({
     target: { name, value },
@@ -294,7 +304,7 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
         duration: 3000,
         isClosable: true,
       });
-      router.push(`/trips/${tripCreated.id}`);
+      router.push(`/user/my-trips`);
     } else {
       toast({
         title: "Trip not created",
@@ -375,23 +385,41 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
     router.push("/api/auth/login");
     return <div></div>;
   }
-
+  if (isLoading) return <Loading />
   if (!isLoading && userDb && !userDb.data.active) return <BannedAlert />;
-
   if (isLoading) return <Loading />;
 
+ const breakpoints = {
+    sm: '30em',
+    md: '48em',
+    lg: '62em',
+    xl: '80em',
+   " 2xl": '96em'
+  }
+  
+  const handleCities2 = (option: any) => {
+    // const citiesSelected = e.map((c:any) => c)
+    setinputCities(option)
+    const citiesSelected = option.map((o:any) => o.value)
+    setInput({...input,cities:citiesSelected})
+    // const citiesSelected = [...e.target.options].filter((c:any) => c.selected).map((x:any) => x.value)
+    // setInput({...input,
+    //    cities: citiesSelected
+    //   })
+    console.log(input)
+  }
   return (
     <Layout>
       <NextSeo title="Create Trip" />
       <Center marginTop="1%">
-        <Heading color="primary">CREATE A NEW TRIP</Heading>
+        <Heading  fontSize={{base:"30px",md:"60px"}} color="primary">CREATE A NEW TRIP</Heading>
       </Center>
       <form onSubmit={(e) => handleSubmit(e)}>
-        <Box h={"3xl"}>
+        <Box h={"3xl"} marginBottom={{base:"350px",md:"70px"}}>
           <FormControl>
             <Center>
               <Grid
-                marginBottom={"10px"}
+              marginBottom={"20px"}
                 h="80vh"
                 w="80vw"
                 templateRows="repeat(4, 1fr)"
@@ -399,10 +427,16 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
                 gap={1}
               >
                 <GridItem
+                  display= {{md:"grid"}}
+                  placeItems={"center"}
+                  height={"100%"}
                   borderRadius="2xl"
                   rowSpan={1}
-                  colSpan={1}
-                  bg="none"
+                  colSpan={{base:5,md:1}}
+                  bg={useColorModeValue(
+                    "RGBA(75,100,124,0.41)",
+                    "RGBA(75,100,124,0.41)"
+                  )}
                   alignContent="center"
                   alignSelf="center"
                 >
@@ -417,10 +451,11 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
                       fallbackSrc="https://via.placeholder.com/150"
                       alt="img"
                       boxSize="200px"
+                      marginTop={{base:"20px",md:0}}
                     />
                   </Box>
                   <Center>
-                    <Button onClick={(event) => handleClick(event)} mt="20px">
+                    <Button onClick={(event) => handleClick(event)} mt="20px"  marginBottom={{base:"20px",md:0}}>
                       Change Trip Image
                     </Button>
                     <Input
@@ -432,7 +467,11 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
                     />
                   </Center>
                 </GridItem>
-                <GridItem borderRadius="2xl" colSpan={4} bg="blackAlpha.100">
+                <GridItem borderRadius="2xl" colSpan={{base:5,md:4}} bg={useColorModeValue(
+                        "RGBA(75,100,124,0.41)",
+                        "RGBA(75,100,124,0.41)"
+                      )} padding = {"10px 20px"}
+                      paddingBottom={"20px"}>
                   <FormLabel htmlFor="name" paddingLeft="2" mt={2}>
                     Name
                   </FormLabel>
@@ -446,58 +485,33 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
                       {errors.name}
                     </Text>
                   )}
-                  <FormLabel paddingLeft="2" htmlFor="cities" mt={2}>
+                    <Flex direction="column" mb="30px">
+                  <FormLabel
+                    paddingLeft="2"
+                    htmlFor="description"
+                    mt={1}
+                    mb="8px"
+                  >
                     Cities
                   </FormLabel>
-                  <HStack>
-                    <Input
-                      list="cities-choices"
+                  <FormControl>
+                    <ReactSelect
+                      id="cities"
                       name="cities"
+                      options={options}
+                      closeMenuOnSelect={false}
+                      size="md"
+                      onChange={(e: any) => handleCities2(e)}
                       value={inputCities}
-                      marginRight={"20px"}
-                      placeholder="Type the cities you are visiting..."
-                      onChange={(e) => handleCities(e)}
+                      colorScheme={"blue"}
+                      isMulti
                     />
-                    <datalist id="cities-choices">
-                      {cities
-                        ?.filter((c) => !input.cities?.includes(c.name))
-                        ?.map((c, index) => (
-                          <option key={index}> {c.name} </option>
-                        ))}
-                    </datalist>
-                    <Button
-                      marginLeft={"10px"}
-                      mt={1}
-                      width={"80px"}
-                      fontSize={"xs"}
-                      onClick={(e) => handleCitiesSelect(e)}
-                    >
-                      ADD CITY
-                    </Button>
-                  </HStack>
+                  </FormControl>
+                </Flex>
+                   <Flex direction="column" mb="-25px">
+                  </Flex>
                   <Center>
-                    <HStack marginTop={"5px"}>
-                      {input.cities.length != 0 ? (
-                        input.cities.map((c, index) => {
-                          return (
-                            <Box marginLeft={"10px"} key={index}>
-                              {c}
-                              <Button
-                                marginLeft="2"
-                                onClick={() => handleDeleteCity(c)}
-                                height={"25px"}
-                                width={"5px"}
-                              >
-                                X
-                              </Button>
-                            </Box>
-                          );
-                        })
-                      ) : (
-                        <Box height={"40px"}></Box>
-                      )}
-                    </HStack>
-                    {errorCities.cities && (
+                    {!input.cities.length && (
                       <Text m={1} color={"#F3B46F"}>
                         {errorCities.cities}
                       </Text>
@@ -539,7 +553,10 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
                   )}
                 </GridItem>
 
-                <GridItem borderRadius="2xl" colSpan={5} bg="blackAlpha.100">
+                <GridItem borderRadius="2xl" colSpan={{base:5,md:5}} bg={useColorModeValue(
+                        "RGBA(75,100,124,0.41)",
+                        "RGBA(75,100,124,0.41)"
+                      )} padding = {"10px 20px"} paddingBottom={"20px"}>
                   <FormLabel
                     paddingLeft="2"
                     htmlFor="description"
@@ -549,6 +566,7 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
                     Description
                   </FormLabel>
                   <Textarea
+                  resize={"none"}
                     name="description"
                     placeholder="Type a description of your trip..."
                     size="sm"
@@ -560,11 +578,13 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
                     </Text>
                   )}
                 </GridItem>
-                <GridItem borderRadius="2xl" colSpan={5}>
-                  <FormLabel paddingLeft="2" htmlFor="activitiesName" mt={2}>
-                    Associated activities
+                <GridItem borderRadius="2xl" colSpan={5} textAlign={{base:"left",md:"left"}}>
+                  <FormLabel paddingLeft="2" htmlFor="activitiesName" mt={1} textAlign={{base:"left",md:"left"}}>
+                    Associated activities: <br/>
+                    {input.activitiesName.map(a =>
+                      <Text key={a.name}> - {a.name}</Text>
+                    )}
                   </FormLabel>
-
                   <Button
                     ml="4"
                     disabled={input.initDate === "" || input.endDate === ""}
@@ -573,7 +593,7 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
                       onOpen();
                     }}
                   >
-                    Click to open the Associated Activities
+                    Click to select activities dates
                   </Button>
                   <Modal
                     size={"5xl"}
@@ -582,14 +602,14 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
                     onClose={onClose}
                   >
                     {overlay}
-                    <ModalContent>
-                      <ModalHeader>Select the activities</ModalHeader>
+                    <ModalContent marginTop={activities.filter(a => input.cities.includes(a.city.name)).length > 4 ? "200px" : "50px"}>
+                      <ModalHeader textAlign={{base:"center",md:"left"}} marginTop={{base:"220px",sm:"200px",md:"0"}}>Select the activities</ModalHeader>
                       <ModalCloseButton />
                       <ModalBody>
                         <Box display={"flex"} flexDirection={"row"}>
                           <Center>
-                            <SimpleGrid columns={7} spacing={1}>
-                              {activities?.map((act) => {
+                            <SimpleGrid columns={{base:3,md:7}} spacing={1}>
+                              {activities?.map((act,i) => {
                                 if (input.cities.includes(act.city.name)) {
                                   const id = act.id;
                                   return (
@@ -599,8 +619,8 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
                                       p={2}
                                       width={"100%"}
                                       bg={useColorModeValue(
-                                        "white",
-                                        "gray.800"
+                                        "RGBA(75,100,124,0.41)",
+                                        "RGBA(75,100,124,0.41)"
                                       )}
                                       boxShadow={"2xl"}
                                       rounded={"lg"}
@@ -637,6 +657,7 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
                                           {act?.name}
                                         </Text>
                                         <Box
+                                        key={act.name}
                                           display={"flex"}
                                           flexDirection={"row"}
                                           alignItems={"center"}
@@ -654,18 +675,17 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
                                             Choose a date
                                           </FormLabel>
                                           <MyDataPicker
+                                           _hover={{cursor:"pointer"}}
                                             dateFormat="yyyy/mm/ddd"
                                             onChange={(date) => {
-                                              let D = new Date(date.toString());
-                                              handleActDate(
-                                                `${D.getFullYear()}-${D.getMonth()}-${D.getDay()}`,
-                                                id
-                                              );
-                                            }}
+                                            let D = new Date(date.toString())
+                                              handleActDate(`${D.toISOString().slice(0,10)}`, id)
+                                            }
+                                            }
                                             filterDate={(date) =>
                                               ableDays(date, act.availability)
                                             }
-                                            placeholderText="Select a date..."
+                                            placeholderText={input.activitiesName.find((a:any) => a.name === act.name.toString())?.actDate.slice(0,10)?input.activitiesName.find((a:any) => a.name === act.name.toString())?.actDate.slice(0,10):"Choose a date"} 
                                             withPortal
                                             portalId="root"
                                             width={"100%"}
@@ -674,26 +694,28 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
                                             maxDate={new Date(input.endDate)}
                                           />
                                         </GridItem>
-                                        <GridItem>
+                                        {/* <GridItem>
                                           {errorActivities && (
                                             <Text m={1} color={"#F3B46F"}>
                                               {errorActivities.date}
                                             </Text>
                                           )}
-                                        </GridItem>
+                                        </GridItem> */}
                                         <Box
+                                        key={act.id + act.name}
                                           display={"flex"}
                                           flexDirection={"row"}
                                           alignItems={"center"}
                                           justifyContent={"space-between"}
                                         >
-                                          <NextLink
+                                          <Link
                                             href={`/activities/${act.id}`}
+                                            passHref
                                           >
-                                            <Button margin={1} size={"xs"}>
+                                            <a target={'_blank'}><Button margin={1} size={"xs"}>
                                               +Info
-                                            </Button>
-                                          </NextLink>
+                                            </Button></a>
+                                          </Link>
                                           <Button
                                             id={id}
                                             disabled={!isDisabled.includes(id)}
@@ -715,18 +737,20 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
                           </Center>
                         </Box>
                         <Center>
-                          <SimpleGrid
+                          <Flex
+                            flex-wrap= "wrap"
+                            justify-content= "space-around"
                             marginTop={"10px"}
                             marginBottom={"5px"}
-                            columns={7}
-                            spacing={3}
                           >
                             {input.activitiesName?.map((a, index) => {
                               return (
                                 <>
-                                  <GridItem key={index}>
+                                  <GridItem key={index} margin="20px" placeItems={"center"}>
                                     {a.name}
                                     <Button
+                                      display="block"
+                                      key={a.name}
                                       marginLeft="2"
                                       onClick={() => handleDelete(a.name)}
                                       height={"25px"}
@@ -738,7 +762,7 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
                                 </>
                               );
                             })}
-                          </SimpleGrid>
+                          </Flex>
                         </Center>
                       </ModalBody>
                       <ModalFooter>
@@ -746,28 +770,28 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
                       </ModalFooter>
                     </ModalContent>
                   </Modal>
-                </GridItem>
-                <GridItem colSpan={5}>
+                  <GridItem ml={"13px"} colSpan={5}>
                   {errorActivities.activitiesName && (
-                    <Text m={1} color={"#F3B46F"}>
+                    <Text  m={1} color={"#F3B46F"}>
                       {errorActivities.activitiesName}
                     </Text>
                   )}
                 </GridItem>
-              </Grid>
-            </Center>
-
-            <Center marginTop={"28"} marginBottom="2%">
-              <Button
-                mt={"20px"}
+                <Center marginTop={2} marginBottom="2%">
+                <Button
+                mt="20px"
+                ml={{md:"300px",lg:"0"}}
                 bg="highlight"
                 color="primary"
                 _hover={{ bg: "danger" }}
                 type="submit"
                 disabled={disable}
-              >
+                 >
                 CREATE AND POST
-              </Button>
+                </Button>
+            </Center>
+                </GridItem>
+              </Grid>
             </Center>
           </FormControl>
         </Box>
@@ -777,9 +801,9 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
 };
 
 export const getServerSideProps = async () => {
-  const response = await axios("/activities");
+  const response = await axios("/activities?byName=true");
   const activities = await response.data;
-  const res = await axios("/cities");
+  const res = await axios("/cities?byName=true");
   const cities = await res.data;
   const data = await axios("/trips");
   const trips = await data.data;

@@ -5,7 +5,7 @@ const getauthorsinfo = () => {
       job: "Full Stack Web Developer",
       linkedin: "https://www.linkedin.com/in/agustina-dinucci/",
       github: "https://github.com/dinucciagus",
-      cv: "https://www.linkedin.com/in/agustina-dinucci/",
+      cv: "http://drive.google.com/uc?export=view&id=1U2GFiW_x4biOTkVWlLszduw6q8QTmULt",
       avatar:
         "https://avatars.githubusercontent.com/u/105603671?s=400&u=9dae9f01a131d632cb953afee34917054febfca1&v=4",
       image:

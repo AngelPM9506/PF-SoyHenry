@@ -143,140 +143,145 @@ export default function ChatRoom(props: Props) {
       <Heading
         as={"h2"}
         width={"100%"}
+        textTransform={"capitalize"}
         textAlign={"center"}
         marginTop={"1rem"}
-        textTransform={"capitalize"}
       >
         Chat: {trip.name}
       </Heading>
-      <Box
-        bg={useColorModeValue("RGBA(75,100,124,0.41)", "RGBA(75,100,124,0.41)")}
-        width={["95%", "95%", "85%", "75%"]}
-        margin={"1rem auto"}
-        padding={"0.1rem 1rem"}
-        borderRadius={"3xl"}
-      >
-        {/**render chats */}
+      <Flex>
         <Box
-          display={"flex"}
-          flexDirection={"column"}
-          scrollSnapAlign={"end"}
+          bg={useColorModeValue(
+            "RGBA(75,100,124,0.41)",
+            "RGBA(75,100,124,0.41)"
+          )}
           width={["95%", "95%", "85%", "75%"]}
           margin={"1rem auto"}
-          height={"60vh"}
-          borderRadius={"2xl"}
-          padding={"1rem"}
-          overflow={"scroll"}
-          sx={{ "::-webkit-scrollbar": { display: "none" } }}
+          padding={"0.1rem 1rem"}
+          borderRadius={"3xl"}
         >
-          {chat &&
-            chat.map((m, i) => {
-              return (
-                <Box
-                  key={i}
-                  display={"flex"}
-                  alignItems={"center"}
-                  flexDirection={
-                    userDb && m.nameUser === userDb.data.name
-                      ? "row-reverse"
-                      : "row"
-                  }
-                >
-                  <Flex
-                    borderRadius={"3xl"}
-                    bg={useColorModeValue(
-                      "RGBA(255,255,255,1)",
-                      "rgba(209,223,227, 0.2)"
-                    )}
-                    boxShadow={"0px 0px 13px 10px rgba(0,0,0,0.1)"}
-                    border={
-                      userDb && m.nameUser === userDb.data.name
-                        ? "1px solid #F3B46F"
-                        : "1px solid #02b1b1"
-                    }
-                    margin={"0.3rem"}
+          {/**render chats */}
+          <Box
+            display={"flex"}
+            flexDirection={"column"}
+            scrollSnapAlign={"end"}
+            width={["95%", "95%", "85%", "75%"]}
+            margin={"1rem auto"}
+            height={"60vh"}
+            borderRadius={"2xl"}
+            padding={"1rem"}
+            overflow={"scroll"}
+            sx={{ "::-webkit-scrollbar": { display: "none" } }}
+          >
+            {chat &&
+              chat.map((m, i) => {
+                return (
+                  <Box
+                    key={i}
+                    display={"flex"}
                     alignItems={"center"}
-                    padding={"0.5rem 1rem"}
-                    maxWidth={"85%"}
+                    flexDirection={
+                      userDb && m.nameUser === userDb.data.name
+                        ? "row-reverse"
+                        : "row"
+                    }
                   >
-                    {userDb && m.nameUser === userDb.data.name
-                      ? ""
-                      : renderAvatar(m.avatar)}
-                    <Flex margin={"0 0.2rem"} flexDirection="column">
-                      <Text
-                        color={
-                          userDb && m.nameUser === userDb.data.name
-                            ? "#F3B46F"
-                            : "#02b1b1"
-                        }
-                        margin={"0.3rem 0.3rem 0 0.3rem"}
-                        fontStyle={"italic"}
-                        fontWeight={"bold"}
-                      >
-                        {m.nameUser}:
-                      </Text>
-                      <Text
-                        overflowWrap={"anywhere"}
-                        fontSize={"lg"}
-                        padding={"0.4rem 1rem 0 1rem"}
-                      >
-                        {m.message}
-                      </Text>
-                      <Text textAlign={"right"} fontSize={"sm"}>
-                        {prefixDate(m.createdAt)}
-                        <br />
-                      </Text>
+                    <Flex
+                      borderRadius={"3xl"}
+                      bg={useColorModeValue(
+                        "RGBA(255,255,255,1)",
+                        "rgba(209,223,227, 0.2)"
+                      )}
+                      boxShadow={"0px 0px 13px 10px rgba(0,0,0,0.1)"}
+                      border={
+                        userDb && m.nameUser === userDb.data.name
+                          ? "1px solid #F3B46F"
+                          : "1px solid #02b1b1"
+                      }
+                      margin={"0.3rem"}
+                      alignItems={"center"}
+                      padding={"0.5rem 1rem"}
+                      maxWidth={"85%"}
+                    >
+                      {userDb && m.nameUser === userDb.data.name
+                        ? ""
+                        : renderAvatar(m.avatar)}
+                      <Flex margin={"0 0.2rem"} flexDirection="column">
+                        <Text
+                          color={
+                            userDb && m.nameUser === userDb.data.name
+                              ? "#F3B46F"
+                              : "#02b1b1"
+                          }
+                          margin={"0.3rem 0.3rem 0 0.3rem"}
+                          fontStyle={"italic"}
+                          fontWeight={"bold"}
+                        >
+                          {m.nameUser}:
+                        </Text>
+                        <Text
+                          overflowWrap={"anywhere"}
+                          fontSize={"lg"}
+                          padding={"0.4rem 1rem 0 1rem"}
+                        >
+                          {m.message}
+                        </Text>
+                        <Text textAlign={"right"} fontSize={"sm"}>
+                          {prefixDate(m.createdAt)}
+                          <br />
+                        </Text>
+                      </Flex>
+                      {userDb && m.nameUser === userDb.data.name
+                        ? renderAvatar(m.avatar)
+                        : ""}
                     </Flex>
-                    {userDb && m.nameUser === userDb.data.name
-                      ? renderAvatar(m.avatar)
-                      : ""}
-                  </Flex>
-                </Box>
-              );
-            })}
-          <Box as="div" ref={bottomRef} />
+                  </Box>
+                );
+              })}
+            <Box as="div" ref={bottomRef} />
+          </Box>
+          {/**form */}
+          <Stack
+            as={"form"}
+            width={["95%", "95%", "85%", "75%"]}
+            margin={"0 auto 3rem auto"}
+            onSubmit={putMessage}
+          >
+            <FormControl display={"flex"} alignItems={"center"}>
+              <Textarea
+                value={message}
+                onChange={setInput}
+                margin={"0.5rem auto"}
+                resize={"none"}
+                borderRadius={"3xl"}
+                bg={useColorModeValue(
+                  "RGBA(255,255,255,1)",
+                  "rgba(209,223,227, 0.2)"
+                )}
+                autoComplete={"false"}
+              />
+              <Flex flexDirection={"row-reverse"}>
+                <Button
+                  bg={useColorModeValue("#02b1b1", "#02b1b1")}
+                  margin={"0 15px"}
+                  color={"white"}
+                  rounded={"md"}
+                  padding={"20px"}
+                  type={"submit"}
+                  _hover={{
+                    transform: "translateY(-2px)",
+                    boxShadow: "lg",
+                    bg: "#F3B46F",
+                    color: "black",
+                  }}
+                >
+                  Send
+                </Button>
+              </Flex>
+            </FormControl>
+          </Stack>
         </Box>
-        {/**form */}
-        <Stack
-          as={"form"}
-          width={["95%", "95%", "85%", "75%"]}
-          margin={"0 auto 3rem auto"}
-          onSubmit={putMessage}
-        >
-          <FormControl display={"flex"} alignItems={"center"}>
-            <Textarea
-              value={message}
-              onChange={setInput}
-              margin={"0.5rem auto"}
-              resize={"none"}
-              borderRadius={"3xl"}
-              bg={useColorModeValue(
-                "RGBA(255,255,255,1)",
-                "rgba(209,223,227, 0.2)"
-              )}
-              autoComplete={"false"}
-            />
-            <Flex flexDirection={"row-reverse"}>
-              <Button
-                bg={useColorModeValue("#02b1b1", "#02b1b1")}
-                margin={"0 15px"}
-                color={"white"}
-                rounded={"md"}
-                padding={"20px"}
-                type={"submit"}
-                _hover={{
-                  transform: "translateY(-2px)",
-                  boxShadow: "lg",
-                  bg: "#F3B46F",
-                  color: "black",
-                }}
-              >
-                Send
-              </Button>
-            </Flex>
-          </FormControl>
-        </Stack>
-      </Box>
+      </Flex>
     </Layout>
   );
 }

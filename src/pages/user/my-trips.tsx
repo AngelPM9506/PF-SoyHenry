@@ -310,11 +310,11 @@ export default function MyTrips() {
       .map((t: Trip) => t.trip);
     setOtherTrips(filterTrips);
     setTrips(usuario?.trips);
-  }, [usuario, userDb.data.id]);
+  }, [usuario, userDb?.data?.id]);
 
   if (!userLoading && !user) {
     router.push("/api/auth/login");
-    return <div></div>;
+    return <></>;
   }
   if (!isLoading && userDb && !userDb.data.active) {
     return <BannedAlert />;

@@ -24,6 +24,7 @@ import { useQuery } from "react-query";
 import { getOrCreateUser } from "src/utils/User";
 import NextLink from "next/link";
 import { useRouter } from "next/router";
+import BreadCrumb from "../BreadCrumb";
 
 const logo: string =
   "https://res.cloudinary.com/mauro4202214/image/upload/v1663331570/world-travelers/logowt_qifbpn.png";
@@ -181,6 +182,7 @@ export default function NavBar() {
               ))}
             </Box>
           ) : null}
+          <BreadCrumb />
         </Box>
       </Flex>
     </>

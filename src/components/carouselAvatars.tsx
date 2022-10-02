@@ -14,6 +14,7 @@ import {
   AvatarGroup,
   Avatar,
   VStack,
+  Tooltip,
 } from "@chakra-ui/react";
 import { settings } from "src/utils/AvatarCarousel";
 import NextLink from "next/link";
@@ -95,17 +96,16 @@ export const AvatarCarousel = (props: any) => {
                             flexDirection={"column"}
                             cursor={"pointer"}
                           >
-                            <Image
-                              height={"80px"}
-                              width={"80px"}
-                              rounded={"100%"}
-                              objectFit={"cover"}
-                              src={a.user.avatar ? a.user.avatar : defaultpic}
-                              alt={"user avatar"}
-                            />
-                            <Text textAlign={"center"} width={"max-content"}>
-                              {a.user.name}
-                            </Text>
+                            <Tooltip label={a.user.name}>
+                              <Image
+                                height={"80px"}
+                                width={"80px"}
+                                rounded={"100%"}
+                                objectFit={"cover"}
+                                src={a.user.avatar ? a.user.avatar : defaultpic}
+                                alt={"user avatar"}
+                              />
+                            </Tooltip>
                           </Box>
                         </NextLink>
                       </VStack>

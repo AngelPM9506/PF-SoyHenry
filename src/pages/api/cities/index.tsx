@@ -1,14 +1,24 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
+import controllersCities from 'src/controllers/cities';
 import prisma from "src/utils/prisma";
 
 
 export default async function Cities(req: NextApiRequest, res: NextApiResponse) {
-  const { method } = req;
+  const { method,query:{byName} } = req;
   switch (method) {
     case 'GET':
       try {
-        let response = await prisma.city.findMany()
+        if(!byName){
+        let response = await prisma.city.findMany({
+          include:{
+            activity:true
+          }
+        })
         return res.json(response)
+      }else{
+        let response = await controllersCities.getCitiesNames({byName})
+        return res.json(response)
+      }
       } catch (error) {
         return res.json(error)
       }

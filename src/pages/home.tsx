@@ -147,7 +147,7 @@ const Home = ({ trips, activities }: Props) => {
             id="home"
             position={"fixed"}
             top={{ base: "8%", md: "10%" }}
-            left={{ base: "0%", md: "5%" }}
+            left={{ base: "0%", md: "1%" }}
             bg={useColorModeValue("#02b1b1", "#02b1b1")}
             color={"white"}
             rounded={"100%"}
@@ -158,7 +158,7 @@ const Home = ({ trips, activities }: Props) => {
               color: "black",
             }}
             m={5}
-            mt={8}
+            mt={12}
             w={"45px"}
             h={"45px"}
             marginBottom={{ sm: "-15px" }}

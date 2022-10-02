@@ -22,7 +22,7 @@ export default function AvaCarousel({ trips }: Props) {
         borderRadius={"xl"}
         overflow={"hidden"}
       >
-        <link
+        {/* <link
           rel="stylesheet"
           type="text/css"
           charSet="UTF-8"
@@ -32,7 +32,7 @@ export default function AvaCarousel({ trips }: Props) {
           rel="stylesheet"
           type="text/css"
           href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css"
-        />
+        /> */}
         <Slider {...settings}>
           {trips?.map((trip) => (
             <Box key={trip.id}>

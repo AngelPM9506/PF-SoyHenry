@@ -64,6 +64,13 @@ let usersControllers = {
       select: {
         id: true,
         name: true,
+        avatar: true,
+        description: true,
+        keyWords: true,
+        urlTikTok: true,
+        urlInstagram: true,
+        urlFaceBook: true,
+        isAdmin: true,
         trips: true,
         useOnTrip: { select: { trip: true } },
         active: true,

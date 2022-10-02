@@ -106,7 +106,7 @@ export default function TripDetail({ data, isLoading, error }: any) {
               src={location}
               alt={"icon"}
             />
-            <Text>{data.name}</Text>
+            <Text textTransform={"capitalize"}>{data.name}</Text>
           </Heading>
           <Stack
             alignItems={"center"}

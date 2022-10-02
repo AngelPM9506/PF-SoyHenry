@@ -76,6 +76,7 @@ export default function ActivityDetail({
               fontWeight={600}
               fontSize={{ base: "2xl", sm: "4xl", lg: "5xl" }}
               color={useColorModeValue("#F3B46F", "#F3B46F")}
+              textTransform={"capitalize"}
             >
               {data.activity.name}
             </Heading>

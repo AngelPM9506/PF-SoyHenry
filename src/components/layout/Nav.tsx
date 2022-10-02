@@ -33,10 +33,10 @@ const logoNight: string =
 
 const Links = [
   ["/home", "Home"],
-  ["/trips", "All Trips"],
-  ["/activities", "All Activities"],
+  ["/trips", "All-Trips"],
+  ["/activities", "All-Activities"],
   ["/about", "About"],
-  ["/contact", "Contact Us"],
+  ["/contact", "Contact-Us"],
 ];
 
 export default function NavBar() {
@@ -55,6 +55,7 @@ export default function NavBar() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { colorMode, toggleColorMode } = useColorMode();
   const textColor = useColorModeValue("#293541", "white");
+
   return (
     <>
       <Flex
@@ -75,17 +76,18 @@ export default function NavBar() {
         >
           <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
             <IconButton
+              id="menu"
               size={"md"}
               icon={isOpen ? <CloseIcon /> : <HamburgerIcon />}
               aria-label={"Open Menu"}
-              display={{ xl: "none" }}
+              display={{ lg: "none" }}
               onClick={isOpen ? onClose : onOpen}
             />
             <HStack spacing={12} alignItems={"center"}>
               <NextLink href={Links[0][0]}>
                 <Image
                   cursor={"pointer"}
-                  w={["100px", "150px", "200px"]}
+                  w={["100px", "150px", "150px", "200px"]}
                   src={useColorModeValue(logo, logoNight)}
                   alt="logo"
                 />
@@ -95,19 +97,19 @@ export default function NavBar() {
               as={"nav"}
               spacing={10}
               justifyContent={"center"}
-              display={{ base: "none", xl: "flex" }}
+              display={{ base: "none", lg: "flex", xl: "flex" }}
             >
               {Links.map((l, index) => (
-                <NextLink href={l[0]} key={index}>
+                <NextLink href={l[0]} id={l[1]} key={index}>
                   <Heading
+                    id={l[1]}
                     cursor={"pointer"}
                     fontSize={"2xl"}
                     fontWeight={"3px"}
-                    id={l[0]}
                     onClick={(e) => handleActive(e)}
                     color={active === l[0] ? "#F3B46F" : textColor}
                   >
-                    {l[1]}
+                    {l[1].split("-").join(" ")}
                   </Heading>
                 </NextLink>
               ))}
@@ -119,6 +121,7 @@ export default function NavBar() {
                 alignItems={"center"}
                 onClick={toggleColorMode}
                 bgColor={"transparent"}
+                id="daynight"
               >
                 {colorMode === "light" ? <MoonIcon /> : <SunIcon />}
               </Button>
@@ -130,7 +133,7 @@ export default function NavBar() {
                   cursor={"pointer"}
                   minW={0}
                 >
-                  <Avatar size={"md"} src={userDb?.data.avatar} />
+                  <Avatar id="profile" size={"md"} src={userDb?.data.avatar} />
                 </MenuButton>
                 <MenuList>
                   <MenuItem>
@@ -165,12 +168,29 @@ export default function NavBar() {
             </Flex>
           </Flex>
           {isOpen ? (
-            <Box pb={4} display={{ xl: "none" }}>
+            <Box
+              backgroundColor="#2e3c4d"
+              width={"100%"}
+              height={"88.5vh"}
+              rounded={"10px"}
+              mt={1.5}
+              mb={1.5}
+              pb={4}
+              pl={4}
+              pt={2}
+              display={{ base: "flex", xl: "none" }}
+              justifyContent={"center"}
+              alignItems={"center"}
+              flexDirection={"column"}
+              boxShadow={"2px 8px 35px -6px rgba(0,0,0,0.76)"}
+            >
               {Links.map((l, index) => (
                 <NextLink href={l[0]} key={index}>
                   <Heading
+                    mt={10}
+                    mb={10}
                     cursor={"pointer"}
-                    fontSize={"md"}
+                    fontSize={"2xl"}
                     fontWeight={"2px"}
                     id={l[0]}
                     onClick={(e) => handleActive(e)}

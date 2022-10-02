@@ -40,8 +40,9 @@ const getauthorsinfo = () => {
       job: "Full Stack Web Developer",
       linkedin: "https://www.linkedin.com/in/pernamauro/",
       github: "https://github.com/MauroPerna",
-      cv: "https://www.linkedin.com/in/pernamauro/",
-      avatar: "https://avatars.githubusercontent.com/u/72810799?v=4",
+      cv: "http://drive.google.com/uc?export=view&id=18iOb0_zCyuGC713CvnHYI7QIO8EiJOy5",
+      avatar:
+        "http://drive.google.com/uc?export=view&id=1Fis9ZbVTQujZP_WuSw4Lkr5-uifhg7qm",
       image:
         // "http://drive.google.com/uc?export=view&id=1_qsAn-4e7xBfc_IGLbtQMt9Sgo29WjUv"
         "http://drive.google.com/uc?export=view&id=1CczbOs_-ph6f4sbWzxZwMJcPDWpahD2l",
@@ -51,7 +52,7 @@ const getauthorsinfo = () => {
       job: "Full Stack Web Developer",
       linkedin: "https://www.linkedin.com/in/santino-fajardo-810a61235/",
       github: "https://github.com/SantinoFajardo",
-      cv: "https://www.linkedin.com/in/santino-fajardo-810a61235/",
+      cv: "http://drive.google.com/uc?export=view&id=13qDom0TdtENsDV_vRq1ycAQRoeDRIlF9",
       avatar: "https://avatars.githubusercontent.com/u/106558763?v=4",
       image:
         // "http://drive.google.com/uc?export=view&id=1_qsAn-4e7xBfc_IGLbtQMt9Sgo29WjUv"

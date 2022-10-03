@@ -15,19 +15,28 @@ const AboutPage = () => {
     <Layout>
       <NextSeo title="About" />
       <Stack
+        alignSelf={"center"}
         direction={{ base: "column", sm: "column", md: "column", lg: "row" }}
         margin={"2%"}
+        paddingTop={{ base: "8%", sm: "4%", md: "4%", lg: "2%" }}
       >
         <Heading
+          textAlign={"center"}
           textShadow={"2px 2px #02b1b1"}
           fontWeight={"extrabold"}
           fontStyle={"oblique"}
           fontSize={{ base: "2xl", md: "4xl", lg: "8xl" }}
-          marginLeft={"5%"}
+          marginLeft={{ base: "0%", sm: "0%", md: "0%", lg: "5%" }}
         >
           This is World Travelers
         </Heading>
-        <Box paddingTop={"1%"} paddingLeft={"3%"} paddingRight={"6%"}>
+        <Box
+          alignSelf={"center"}
+          maxWidth={{ base: "90%", sm: "98%", md: "98%", lg: "90%" }}
+          paddingTop={"1%"}
+          paddingLeft={{ base: "0", sm: "0", md: "5%", lg: "5%" }}
+          paddingRight={{ base: "0", sm: "0", md: "5%", lg: "5%" }}
+        >
           <Text
             fontSize={{ base: "sm", sm: "xs", md: "md", lg: "xl" }}
             textAlign={"justify"}

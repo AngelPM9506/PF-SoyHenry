@@ -49,6 +49,7 @@ export default function AboutCarousel() {
         <Slider {...settings}>
           {cards.map((card, index) => (
             <Box
+              alignSelf={"center"}
               key={index}
               height={"100%"}
               position="relative"
@@ -57,14 +58,14 @@ export default function AboutCarousel() {
               backgroundSize="cover"
               backgroundImage={`url(${card.image})`}
             >
-              <Container height="90vh" position="relative">
+              <Container alignSelf={"center"} height="90vh" position="relative">
                 <Stack
-                  w={"full"}
                   position="absolute"
                   top="50%"
-                  transform="translate(0, -50%)"
+                  transform="translate(0%, -50%)"
                 >
                   <Heading
+                    width={"100%"}
                     fontWeight={"heavy"}
                     fontStyle={"oblique"}
                     textAlign={"center"}

@@ -23,8 +23,6 @@ interface Props {
 export const UserDetail = ({ userDetail, trips }: Props) => {
   const user = userDetail;
 
-  console.log(user);
-
   const logo: string =
     "https://drive.google.com/file/d/1ti7xmFJWKOqUUNcuV2TEpMCb56NAaMU3/view";
   const tikTok: string =
@@ -58,7 +56,9 @@ export const UserDetail = ({ userDetail, trips }: Props) => {
       alignItems={"center"}
     >
       <Center pt={6}>
-        <Heading>Meet the traveler</Heading>
+        <Heading color={useColorModeValue("#293541", "white")}>
+          Meet the traveler
+        </Heading>
       </Center>
       <Center>
         <Stack
@@ -186,7 +186,7 @@ export const UserDetail = ({ userDetail, trips }: Props) => {
           </Box>
 
           <Box display={"flex"} justifyContent={"center"} flexDir={"column"}>
-            {myCreatedActiveTrips?.length > 0 && (
+            {myCreatedActiveTrips.length && !tripsTravJoined.length ? (
               <>
                 <Text
                   textAlign={"center"}
@@ -201,8 +201,7 @@ export const UserDetail = ({ userDetail, trips }: Props) => {
                   <AvatarCarousel trips={myCreatedActiveTrips} />
                 </Box>{" "}
               </>
-            )}
-            {tripsTravJoined?.length > 0 && (
+            ) : tripsTravJoined.length && !myCreatedActiveTrips.length ? (
               <>
                 <Text
                   textAlign={"center"}
@@ -215,6 +214,63 @@ export const UserDetail = ({ userDetail, trips }: Props) => {
                 </Text>
                 <Box display={"flex"} justifyContent={"center"}>
                   <AvaCarousel trips={tripsTravJoined} />
+                </Box>{" "}
+              </>
+            ) : tripsTravJoined.length && myCreatedActiveTrips.length ? (
+              <>
+                <Text
+                  textAlign={"center"}
+                  color={useColorModeValue("#293541", "#F3B46F")}
+                  fontSize={"xl"}
+                  fontFamily={"body"}
+                  p={2}
+                >
+                  Trips created by this traveler
+                </Text>
+                <Box display={"flex"} justifyContent={"center"}>
+                  <AvatarCarousel trips={myCreatedActiveTrips} />
+                </Box>{" "}
+                <Text
+                  textAlign={"center"}
+                  color={useColorModeValue("#293541", "#F3B46F")}
+                  fontSize={"xl"}
+                  fontFamily={"body"}
+                  p={2}
+                >
+                  Trips traveler joined
+                </Text>
+                <Box display={"flex"} justifyContent={"center"}>
+                  <AvaCarousel trips={tripsTravJoined} />
+                </Box>{" "}
+              </>
+            ) : (
+              <>
+                <Text
+                  textAlign={"center"}
+                  color={useColorModeValue("#293541", "#F3B46F")}
+                  fontSize={"xl"}
+                  fontFamily={"body"}
+                  p={2}
+                >
+                  Trips created by this traveler
+                </Text>
+                <Box display={"flex"} justifyContent={"center"}>
+                  <Text>This traveler has not created trips yet.</Text>
+                </Box>{" "}
+                <Text
+                  textAlign={"center"}
+                  color={useColorModeValue("#293541", "#F3B46F")}
+                  fontSize={"xl"}
+                  fontFamily={"body"}
+                  p={2}
+                >
+                  Trips traveler joined
+                </Text>
+                <Box display={"flex"} justifyContent={"center"}>
+                  <Text>
+                    This traveler has not joined any travel, please invite the
+                    user to join yours.
+                  </Text>
                 </Box>{" "}
               </>
             )}

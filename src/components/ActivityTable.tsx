@@ -34,7 +34,7 @@ import {
 } from "react-query";
 import Reviews from "./Reviews";
 import { ModalReviews } from "./ModalReviews";
-import Loading from "./Loading";
+import Loading from "./LoadingWithoutLayout";
 type Props = {
   activity: Activity;
 };
@@ -139,7 +139,7 @@ export function ActivityTable({ activity }: Props) {
       isClosable: true,
     });
   };
-  if (isLoading) return <Loading />;
+
   return (
     <Tr key={changed}>
       <Td minWidth={{ base: "300px", sm: "200px" }}>

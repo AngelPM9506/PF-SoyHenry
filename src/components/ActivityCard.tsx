@@ -28,7 +28,7 @@ const averageRating = (feedbacks: Feedback[]) => {
 export function ActivityCard({ props }: any) {
   return (
     <Center key={props.id} py={12}>
-      <Link style={{ textDecoration: "none" }}>
+      <Text style={{ textDecoration: "none" }}>
         <Box
           role={"group"}
           p={6}
@@ -88,6 +88,7 @@ export function ActivityCard({ props }: any) {
               fontFamily={"body"}
               fontWeight={600}
               textAlign={"center"}
+              textTransform={"capitalize"}
             >
               {props.name}
             </Heading>
@@ -143,7 +144,7 @@ export function ActivityCard({ props }: any) {
             </Button>
           </NextLink>
         </Box>
-      </Link>
+      </Text>
     </Center>
   );
 }

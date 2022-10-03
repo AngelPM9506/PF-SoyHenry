@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import {
   Button,
   FormControl,
@@ -16,6 +17,7 @@ import {
   IconButton,
   HStack,
   Text,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import React, { ChangeEvent, SetStateAction, useState, useEffect } from "react";
 import { updateUser, UserAuth0, getOrCreateUser } from "src/utils/User";
@@ -184,7 +186,9 @@ export const UserProfile = ({ user }: UserAuth0 | any) => {
   return (
     <Stack height={"max-content"}>
       <Center marginTop={{ base: "7%", sm: "5%", md: "3%", lg: "3%" }}>
-        <Heading color="primary">Update User Profile</Heading>
+        <Heading color={useColorModeValue("#293541", "white")}>
+          Update User Profile
+        </Heading>
       </Center>
       <form
         onSubmit={(e) => {

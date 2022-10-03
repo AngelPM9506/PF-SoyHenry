@@ -8,7 +8,6 @@ import { MdOutlineTripOrigin } from "react-icons/md";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import {
   HStack,
-  Image,
   Link,
   Text,
   VStack,
@@ -22,7 +21,9 @@ import {
   AlertTitle,
   AlertDescription,
   Tooltip,
+  Flex,
 } from "@chakra-ui/react";
+
 import NextLink from "next/link";
 import CardTimeLine from "./CardTimeLine";
 import axios from "axios";
@@ -37,6 +38,8 @@ import { useAccount, useConnect, useDisconnect } from "wagmi";
 import { SendTransaction } from "./SendWeb3Transaction";
 import { ModalWeb3 } from "./ModalWeb3";
 import { useWindowSize } from "src/utils/windowsize";
+import { FaPaypal, FaCcPaypal } from "react-icons/fa";
+import Image from "next/image";
 export const TimeLine = ({ data, ethPrice, validate, setValidate }: any) => {
   const activitiesinOrder = data.activitiesOnTrips.sort(function compareFn(
     a: any,
@@ -55,7 +58,7 @@ export const TimeLine = ({ data, ethPrice, validate, setValidate }: any) => {
   const { user, error } = useUser();
   const { isConnected } = useAccount();
   const [userOnTrip, setUserOnTrip] = useState(false);
-
+  const [showPayment, setShowPayment] = useState(false);
   const { data: userDb, isLoading } = useQuery(
     ["userDb", user],
     () => user && getOrCreateUser(user)
@@ -82,7 +85,7 @@ export const TimeLine = ({ data, ethPrice, validate, setValidate }: any) => {
   }, [data.id, userDb]);
 
   return (
-    <Stack width={"100%"} align={"center"} key={validate}>
+    <Stack width={"100%"} align={"center"} key={validate} mb={10}>
       {userOnTrip ? (
         <Alert
           status="success"
@@ -170,7 +173,6 @@ export const TimeLine = ({ data, ethPrice, validate, setValidate }: any) => {
             rounded={"lg"}
             w={"100%"}
             pb={"2px"}
-            mb={"10px"}
             mt={"0px"}
             size={"lg"}
             py={"8"}
@@ -178,7 +180,7 @@ export const TimeLine = ({ data, ethPrice, validate, setValidate }: any) => {
             color={useColorModeValue("white", "gray.900")}
             textTransform={"uppercase"}
             fontSize={"xl"}
-            onClick={() => payTrip()}
+            onClick={() => setShowPayment(showPayment ? false : true)}
             _hover={{
               transform: "translateY(-2px)",
               boxShadow: "lg",
@@ -189,17 +191,53 @@ export const TimeLine = ({ data, ethPrice, validate, setValidate }: any) => {
           >
             Pay and Join the trip!
           </Button>
-          <ConnectButton
-            label={"Connect Ethereum Wallet"}
-            showBalance={false}
-          />
-          <ModalWeb3
-            value={data.price}
-            ethPrice={ethPrice}
-            tripData={data}
-            setValidate={setValidate}
-            validate={validate}
-          />
+          {showPayment && (
+            <>
+              <VerticalTimeline />
+              <Flex gap={5} pb={5}>
+                <Button
+                  bg="#02b1b1"
+                  color="white"
+                  _hover={{
+                    transform: "translateY(-2px)",
+                    boxShadow: "lg",
+                    bg: "#F3B46F",
+                    color: "#293541",
+                  }}
+                  borderRadius={10}
+                  fontWeight="bold"
+                  fontSize="lg"
+                  w={140}
+                  onClick={() => payTrip()}
+                >
+                  <FaPaypal color="#003087" style={{ fontSize: "1.5rem" }} />
+                  <Text pl={2}>Paypal</Text>
+                </Button>
+
+                {!isConnected ? (
+                  <ConnectButton label={"Connect Wallet"} showBalance={false} />
+                ) : (
+                  <ModalWeb3
+                    value={data.price}
+                    ethPrice={ethPrice}
+                    tripData={data}
+                    setValidate={setValidate}
+                    validate={validate}
+                  />
+                )}
+              </Flex>
+            </>
+          )}
+
+          {/* {isConnected && (
+            <ModalWeb3
+              value={data.price}
+              ethPrice={ethPrice}
+              tripData={data}
+              setValidate={setValidate}
+              validate={validate}
+            />
+          )} */}
         </Stack>
       )}
     </Stack>

@@ -36,7 +36,7 @@ import searchUser from "src/utils/searchUserOnTrip";
 import { useAccount, useConnect, useDisconnect } from "wagmi";
 import { SendTransaction } from "./SendWeb3Transaction";
 import { ModalWeb3 } from "./ModalWeb3";
-export const TimeLine = ({ data, ethPrice }: any) => {
+export const TimeLine = ({ data, ethPrice, validate, setValidate }: any) => {
   const activitiesinOrder = data.activitiesOnTrips.sort(function compareFn(
     a: any,
     b: any
@@ -81,7 +81,7 @@ export const TimeLine = ({ data, ethPrice }: any) => {
   }, [data.id, userDb]);
 
   return (
-    <Stack width={"100%"} align={"center"}>
+    <Stack width={"100%"} align={"center"} key={validate}>
       {userOnTrip ? (
         <Alert
           status="success"
@@ -196,6 +196,8 @@ export const TimeLine = ({ data, ethPrice }: any) => {
             value={data.price}
             ethPrice={ethPrice}
             tripData={data}
+            setValidate={setValidate}
+            validate={validate}
           />
         </Stack>
       )}

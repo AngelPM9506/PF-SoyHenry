@@ -49,7 +49,14 @@ interface Users {
   users: User[];
 }
 
-export default function TripDetail({ data, isLoading, error, ethPrice }: any) {
+export default function TripDetail({
+  data,
+  isLoading,
+  error,
+  ethPrice,
+  validate,
+  setValidate,
+}: any) {
   const urlFacebook = Url + "/trips/" + data.id;
   const { user } = useUser();
   const router = useRouter();
@@ -67,7 +74,7 @@ export default function TripDetail({ data, isLoading, error, ethPrice }: any) {
     router.push("/404");
   if (error) return <div>{error.message}</div>;
   return (
-    <Container maxW={"7xl"}>
+    <Container maxW={"7xl"} key={validate}>
       <VStack
         bg={useColorModeValue("#D1DFE3", "#4b647c")}
         boxShadow={"2xl"}
@@ -287,7 +294,12 @@ export default function TripDetail({ data, isLoading, error, ethPrice }: any) {
             /> */}
           </Box>
 
-          <TimeLine data={data} ethPrice={ethPrice} />
+          <TimeLine
+            data={data}
+            ethPrice={ethPrice}
+            validate={validate}
+            setValidate={setValidate}
+          />
         </Box>
       </VStack>
     </Container>

@@ -24,19 +24,20 @@ export function ModalWeb3({
   value,
   ethPrice,
   tripData,
+  setValidate,
+  validate,
 }: {
   value: string;
-
+  setValidate: any;
   ethPrice: number;
-
+  validate: string | undefined;
   tripData: Trip;
 }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { isConnected } = useAccount();
-  const { data, isError, isLoading } = useEnsAvatar({
+  const { data } = useEnsAvatar({
     addressOrName: "world-travelers.eth",
   });
-  const priceInEth = Number(value) / Number(ethPrice);
 
   return (
     <>
@@ -49,7 +50,7 @@ export function ModalWeb3({
         <Text>Pay With Ethereum</Text>
       </Button>
 
-      <Modal isOpen={isOpen} onClose={onClose} key={value} size={"2xl"}>
+      <Modal isOpen={isOpen} onClose={onClose} size={"xl"}>
         <ModalOverlay />
         <ModalContent bg={"#4b647c"}>
           <ModalHeader>Pay With Ethereum</ModalHeader>
@@ -57,11 +58,13 @@ export function ModalWeb3({
           <ModalBody>
             {isConnected && (
               <SendTransaction
-                value={priceInEth.toFixed(9).toString()}
+                value={value.toString()}
                 address={"world-travelers.eth"}
                 avatar={data}
                 tripData={tripData}
                 ethPrice={ethPrice}
+                setValidate={setValidate}
+                validate={validate}
               />
             )}
           </ModalBody>

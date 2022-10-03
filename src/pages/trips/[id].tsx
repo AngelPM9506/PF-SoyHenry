@@ -11,6 +11,7 @@ import { useUser } from "@auth0/nextjs-auth0";
 import { useRouter } from "next/router";
 import { NextSeo } from "next-seo";
 import { getEthPrice } from "src/utils/web3";
+import { useState } from "react";
 
 interface Props {
   id: QueryFunctionContext<string[], any>;
@@ -19,11 +20,11 @@ interface Props {
 }
 
 export default function Detail(props: Props) {
-  console.log(props.ethPrice);
+  const [validate, setValidate] = useState(undefined);
   const router = useRouter();
   const { user, isLoading: userLoading } = useUser();
   const { data, isLoading, error } = useQuery(
-    ["propsId"],
+    ["TripId", validate],
     () => getTripId(props.id),
     {
       initialData: props.trip,
@@ -42,6 +43,8 @@ export default function Detail(props: Props) {
         isLoading={isLoading}
         error={error}
         ethPrice={props.ethPrice}
+        validate={validate}
+        setValidate={setValidate}
       />
     </Layout>
   );

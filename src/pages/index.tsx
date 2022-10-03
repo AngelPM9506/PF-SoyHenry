@@ -210,14 +210,14 @@ const LandingPage: NextPage = () => {
   );
 };
 
-export const getServerSideProps = async () => {
-  const response = await axios.get("/hello");
-  const dataCities = await response.data;
-  return {
-    props: {
-      cities: dataCities,
-    },
-  };
-};
+// export const getServerSideProps = async () => {
+//   const response = await axios.get("/hello");
+//   const dataCities = await response.data;
+//   return {
+//     props: {
+//       cities: dataCities,
+//     },
+//   };
+// };
 
 export default LandingPage;

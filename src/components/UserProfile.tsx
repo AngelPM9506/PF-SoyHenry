@@ -182,8 +182,8 @@ export const UserProfile = ({ user }: UserAuth0 | any) => {
   const toast = useToast();
 
   return (
-    <Stack>
-      <Center margin="2%">
+    <Stack height={"max-content"}>
+      <Center marginTop={{ base: "7%", sm: "5%", md: "3%", lg: "3%" }}>
         <Heading color="primary">Update User Profile</Heading>
       </Center>
       <form
@@ -191,12 +191,11 @@ export const UserProfile = ({ user }: UserAuth0 | any) => {
           handleSubmit(e);
         }}
       >
-        <FormControl height={{ sm: "120vh", lg: "115vh" }}>
+        <FormControl>
           <Center>
             <Grid
-              h="90vh"
               w="80vw"
-              templateRows="repeat(4, 1fr)"
+              templateRows="repeat(2, 1fr)"
               templateColumns="300px 1fr 1fr 1fr 1fr"
               gap={1}
             >

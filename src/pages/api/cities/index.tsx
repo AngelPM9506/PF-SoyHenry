@@ -4,7 +4,7 @@ import prisma from "src/utils/prisma";
 
 
 export default async function Cities(req: NextApiRequest, res: NextApiResponse) {
-  const { method,query:{byName} } = req;
+  const { method, query:{byName}, body:{name, country}} = req;
   switch (method) {
     case 'GET':
       try {
@@ -22,7 +22,19 @@ export default async function Cities(req: NextApiRequest, res: NextApiResponse) 
       } catch (error) {
         return res.json(error)
       }
+
+    case 'POST': {
+      let exist = await prisma.city.findFirst({ where: { name: name.toLowerCase() } });
+			if (exist) {
+				return res.json(exist);
+			} else {
+				const response = await controllersCities.createCity(name, country)
+				return res.json(response);
+			}
+    }
     default:
       return res.status(400).json({ msg: 'Method not supported, try again' })
   }
 }
+
+

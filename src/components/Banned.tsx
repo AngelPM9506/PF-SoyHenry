@@ -4,7 +4,7 @@ import NextLink from "next/link";
 import { NextSeo } from "next-seo";
 import { AiOutlineArrowDown } from "react-icons/ai";
 
-const Banned = () => {
+export const BannedAlert = () => {
   return (
     <Layout>
       <NextSeo title="404" />
@@ -86,5 +86,3 @@ const Banned = () => {
     </Layout>
   );
 };
-
-export default Banned;

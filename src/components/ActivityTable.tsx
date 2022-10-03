@@ -34,7 +34,7 @@ import {
 } from "react-query";
 import Reviews from "./Reviews";
 import { ModalReviews } from "./ModalReviews";
-import Loading from "./Loading";
+import Loading from "./LoadingWithoutLayout";
 type Props = {
   activity: Activity;
 };

@@ -70,7 +70,7 @@ function Trips({ trips }: Props) {
   //const data = trips;
   const [currentPage, setCurrentPage] = useState(1);
   const [tripsPerPage, setTripsPerPage] = useState(8);
-  data = data?.filter((t: Trip) => t.active === true)
+  data = data?.filter((t: Trip) => t.active === true);
   const max = Math.ceil((data ? data.length : trips) / tripsPerPage);
   const [inputPage, setInputPage] = useState(1);
   if (sort === "Sort Order") setSort("desc");
@@ -149,7 +149,11 @@ function Trips({ trips }: Props) {
         ml={{ md: "120" }}
         marginBottom={"50px"}
       >
-        <Heading width={"100%"} color={useColorModeValue("#293541", "white")}>
+        <Heading
+          mt={"10px"}
+          width={"100%"}
+          color={useColorModeValue("#293541", "white")}
+        >
           All Our Travelers Trips
         </Heading>
         <NextLink href="/trips/create">
@@ -167,7 +171,7 @@ function Trips({ trips }: Props) {
             }}
             m={5}
             w={175}
-            marginBottom={{ sm: "-15px" }}
+            marginBottom={{ sm: "10px" }}
           >
             CREATE NEW TRIP
           </Button>
@@ -180,18 +184,21 @@ function Trips({ trips }: Props) {
         align-items="center"
         justifyContent={{ md: "space-around" }}
         justifyItems={{ md: "center" }}
+        padding={"5px"}
       >
         <HStack
           margin={"auto"}
           height={"45px"}
-          justifyContent={"center"}
+          justifyContent={"flex-start"}
           alignItems={"center"}
           spacing="10px"
+          width={200}
+          marginBottom={"5px"}
         >
-          <Text>Max price: </Text>
+          <Text width={"80%"}>Max price: </Text>
           <form onSubmit={(e) => handleMaxPrice(e)}>
             <Input
-              width="80px"
+              width="100%"
               textAlign={"left"}
               placeholder="$"
               onChange={(e) => handleInput(e)}
@@ -205,9 +212,10 @@ function Trips({ trips }: Props) {
           marginTop={{ base: "20px", sm: "10px", md: "0", lg: "0", xl: "0" }}
           margin={"auto"}
           height={"45px"}
-          width="250px"
+          width={200}
           placeholder="Order by:"
           onChange={(e) => handleSortBy(e)}
+          marginBottom={"5px"}
         >
           <option value="name">Trips names </option>
           <option value="price">Price</option>
@@ -215,9 +223,10 @@ function Trips({ trips }: Props) {
         <Select
           marginTop={{ base: "20px", sm: "10px", md: "0", lg: "0", xl: "0" }}
           margin={"auto"}
-          width="160px"
+          width={200}
           placeholder={" ↑ ↓ "}
           onChange={(e) => handleSort(e)}
+          marginBottom={"5px"}
         >
           <option value={"asc"}>ascendent </option>
           <option value={"desc"}>descendent</option>
@@ -227,18 +236,19 @@ function Trips({ trips }: Props) {
           margin={"auto"}
           display={"flex"}
           align-items={"center"}
-          width={{ base: "50%", sm: "50%", md: "20%", lg: "20%", xl: "20%" }}
+          width={200}
+          // width={{ base: "50%", sm: "50%", md: "20%", lg: "20%", xl: "20%" }}
           height={"45px"}
           justify-content={"center"}
         >
           <Input
             margin="auto"
             // width="200px"
-            marginRight={"20px"}
+            marginRight={{ base: "2", lg: "5px" }}
             placeholder="Type a City ..."
             onKeyDown={(e) => onKeyDown(e)}
             onChange={(e) => handleInputCity(e)}
-            width={"1000px"}
+            width={{ base: "120px", lg: "200px" }}
           />
           <Button
             margin="auto"
@@ -251,7 +261,7 @@ function Trips({ trips }: Props) {
               transform: "translateY(-2px)",
               boxShadow: "lg",
             }}
-            width={"80%"}
+            width={{ base: "80px", lg: "90px" }}
           >
             Search
           </Button>
@@ -276,7 +286,11 @@ function Trips({ trips }: Props) {
           RESET
         </Button>
       </Box>
-      <SimpleGrid columnGap={"7px"} minChildWidth="330px" columns={[2, null, 3]}>
+      <SimpleGrid
+        columnGap={"7px"}
+        minChildWidth="330px"
+        columns={[2, null, 3]}
+      >
         {data.length != 0 ? (
           data
             .slice(

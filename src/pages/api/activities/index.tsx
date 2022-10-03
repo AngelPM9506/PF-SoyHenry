@@ -12,12 +12,13 @@ export default async function index(req: NextApiRequest, res: NextApiResponse) {
   let {
     method,
     body: { name, availability, description, price, cityName, image },
-    query: { wName, sort, sortBy, wCity, maxPrice },
+    query: { wName, sort, sortBy, wCity, maxPrice,byName },
   } = req;
   try {
     switch (method) {
       /**obtener todos las actividades */
       case "GET":
+        if(!byName){
         let repGet = await ActivitiesControles.getActivities({
           wName,
           sort,
@@ -26,7 +27,10 @@ export default async function index(req: NextApiRequest, res: NextApiResponse) {
           maxPrice,
         });
         return res.status(200).json(repGet);
-
+        }else{
+          let response = await ActivitiesControles.getActivitiesByName({byName})
+          return res.json(response)
+        }
       /**agregar una nueva actividad */
       case "POST":
         let repPost = await ActivitiesControles.postActivity({

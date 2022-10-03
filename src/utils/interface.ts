@@ -5,14 +5,14 @@ export interface Trip {
   activityId?: string;
   plannerId?: string;
   id?: string;
-  name: string;
+  name?: string;
   initDate?: string;
   cities?: string[];
-  endDate: string;
+  endDate?: string;
   planner?: { avatar?: string; id?: string } | any;
   tripOnUser?: { trip: Trip; user: User }[];
-  description: string;
-  activitiesName: { name: string; actDate: string }[];
+  description?: string;
+  activitiesName?: { name: string; actDate: string }[];
   image?: string | ArrayBuffer;
   price?: number;
   active?: boolean;
@@ -22,6 +22,7 @@ export interface Trip {
     tripId?: string;
   }[];
   citiesOnTrips?: { city: CityInDB }[];
+  trip?: Trip;
 }
 
 export interface User {
@@ -132,6 +133,7 @@ export interface City {
   featureCode: string;
   adminCode: string;
   population: Number;
+  activity?: [];
   loc: {
     type: string;
     coordinates: Number[];

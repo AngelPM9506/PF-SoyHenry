@@ -64,7 +64,7 @@ function TablesTableRow({
     <>
       <Layout>
  <NextSeo title="Admin Panel" />
-        <Box overflowX={{ base: "scroll", xl: "initial" }} mt={5} ml={5} p={7}>
+        <Box overflowX={{ base: "scroll", xl: "initial" }} mt={12} ml={5} p={7}>
           <Flex
             textAlign={{ base: "center", xl: "left" }}
             p="6px 0px 22px 0px"

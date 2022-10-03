@@ -22,7 +22,9 @@ export const getTrips = async (
   return trips.data;
 };
 
-export const getTripId = async (id: QueryFunctionContext<string[], any>) => {
+export const getTripId = async (
+  id: QueryFunctionContext<string[], any> | string
+) => {
   const trip = await axios.get(`/api/trips/${id}`);
   return trip.data;
 };

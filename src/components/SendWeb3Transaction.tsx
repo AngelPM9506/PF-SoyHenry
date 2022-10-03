@@ -209,7 +209,7 @@ export function SendTransaction({
                     borderRadius="1.25rem"
                     _hover={{ bg: "rgb(255,165,0)" }}
                   >
-                    {isLoading ? "Sending Payment..." : "Pay Activity"}
+                    {isLoading ? "Sending Payment..." : "Pay Trip"}
                   </Button>
                 </Box>
               </FormControl>

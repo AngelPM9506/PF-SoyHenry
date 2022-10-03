@@ -142,12 +142,21 @@ const Activities = ({ activities }: Props) => {
               justifyContent={"center"}
               alignContent={"center"}
             >
-              <Text m={"15px"} textAlign={"center"} fontSize={"40px"}>
+              <Text
+                m={"15px"}
+                textAlign={"center"}
+                fontSize={{ base: "20px", sm: "25px", md: "30px", lg: "40px" }}
+              >
                 Sorry! There are no activities with the selected condition.
               </Text>
               <Center>
                 <Button
-                  fontSize={"40px"}
+                  fontSize={{
+                    base: "20px",
+                    sm: "20px",
+                    md: "20px",
+                    lg: "20px",
+                  }}
                   bg={useColorModeValue("#151f21", "#293541")}
                   color={"white"}
                   type={"submit"}

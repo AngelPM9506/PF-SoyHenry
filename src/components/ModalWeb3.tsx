@@ -47,7 +47,7 @@ export function ModalWeb3({
         bg="#02b1b1"
         color="white"
       >
-        <Text>Pay With Ethereum</Text>
+        <Text>Pay on Ethereum</Text>
       </Button>
 
       <Modal
@@ -60,7 +60,9 @@ export function ModalWeb3({
       >
         <ModalOverlay />
         <ModalContent bg={"#4b647c"}>
-          <ModalHeader>Pay With Ethereum</ModalHeader>
+          <Box textAlign={"center"}>
+            <ModalHeader>Web3 Payment</ModalHeader>
+          </Box>
           <ModalCloseButton />
           <ModalBody>
             {isConnected && (

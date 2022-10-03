@@ -50,6 +50,7 @@ interface Users {
   users: User[];
 }
 
+
 export default function TripDetail({
   data,
   isLoading,
@@ -90,7 +91,7 @@ export default function TripDetail({
     router.push("/404");
   if (error) return <div>{error.message}</div>;
   return (
-    <Container maxW={"7xl"} key={validate}>
+    <Container alignSelf={"center"} maxW={"7xl"}>
       <VStack
         bg={useColorModeValue("#D1DFE3", "#4b647c")}
         boxShadow={"2xl"}

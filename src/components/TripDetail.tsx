@@ -75,13 +75,8 @@ export default function TripDetail({
   const eday = data.endDate.slice(0, 10).split("-").reverse().join("/");
 
   const openChat = () => {
-<<<<<<< HEAD
     router.push(`/chat/${data.id}`)
   }
-=======
-    router.push(`/chat/${data.id}`);
-  };
->>>>>>> develop
 
   useEffect(() => {
     async function a() {
@@ -277,17 +272,6 @@ export default function TripDetail({
                         )}
                       </List>
                     </ListItem>
-<<<<<<< HEAD
-                    {
-                      userOnTrip ?
-                        <Button onClick={() => openChat()} borderRadius="100%" h="48px" mt="20px" bg="#F3B46F" transition="0.5s" _hover={{ bg: "#25D366" }}>
-                          <Tooltip label={`Go to chat!`} placement="right" hasArrow arrowSize={10}>
-                            <ChatIcon />
-                          </Tooltip>
-                        </Button>
-                        : null
-                    }
-=======
                     {userOnTrip ? (
                       <Button
                         onClick={() => openChat()}
@@ -308,7 +292,6 @@ export default function TripDetail({
                         </Tooltip>
                       </Button>
                     ) : null}
->>>>>>> develop
                   </List>
                 </SimpleGrid>
               </Box>

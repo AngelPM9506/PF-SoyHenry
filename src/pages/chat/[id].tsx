@@ -101,7 +101,7 @@ export default function ChatRoom(props: Props) {
     let dateF = arraydate[0].split("-").reverse().join("-");
     let timePre = arraydate[1].split(".")[0].split(":");
     let time = `${timePre[0]}:${timePre[1]}`;
-    return `${dateF}: ${time}`;
+    return `${date}`;
   };
   useEffect(() => {
     bottomRef?.current?.scrollIntoView({ behavior: "smooth" });

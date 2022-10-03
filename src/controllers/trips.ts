@@ -381,3 +381,4 @@ const TripsControllers = {
 };
 
 export default TripsControllers;
+

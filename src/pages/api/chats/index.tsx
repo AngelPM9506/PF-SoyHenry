@@ -15,8 +15,12 @@ const Index = async (req: NextApiRequest, res: NextApiResponse) => {
                 return res.status(200).json({ status: 'success', messages: clients });
             case 'POST':
                 if (!idTrip || !nameUser || !message || !avatar) return res.status(404).json({ status: 'error', msg: 'Data Missing' })
-                let newClient = await ChatModel.create({ idTrip, nameUser, message, avatar });
+                let now = new Date();
+                let createdAt = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(),
+                    now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds(), now.getUTCMilliseconds());
+                let newClient = await ChatModel.create({ idTrip, nameUser, message, avatar, createdAt });
                 return res.status(201).json({ status: 'success', newClient });
+            //return res.status(201).json({  dateUTCNow: new Date(dateUTCNow).toLocaleString() });
             default:
                 return res.status(404).json({ status: 'error', msg: 'Method unsuported' });
         }

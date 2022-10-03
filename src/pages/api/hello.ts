@@ -9,11 +9,24 @@ import prisma from "src/utils/prisma";
 
 const createCity = async () => {
   const countryID = [
+    "US",
     "MX",
+    "VE",
+    "CO",
+    "EC",
+    "PE",
+    "CL",
     "AR",
+    "UY",
+    "BR",
+    "ES",
+    "PT",
+    "FR",
+    "DE",
+    "IT",
   ];
   const response = cities.filter(
-    (city: City) => city.population > 100000 && countryID.includes(city.country)
+    (city: City) => city.population > 10000 && countryID.includes(city.country)
   );
   let citiesCreatedInDB = response.map((c: City) => ({
     name: c.name,

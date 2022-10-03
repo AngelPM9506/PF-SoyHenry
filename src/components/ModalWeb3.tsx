@@ -46,6 +46,12 @@ export function ModalWeb3({
         isDisabled={!isConnected}
         bg="#02b1b1"
         color="white"
+        _hover={{
+          transform: "translateY(-2px)",
+          boxShadow: "lg",
+          bg: "#F3B46F",
+          color: "#293541",
+        }}
       >
         <Text>Pay on Ethereum</Text>
       </Button>

@@ -88,6 +88,7 @@ export function ActivityCard({ props }: any) {
               fontFamily={"body"}
               fontWeight={600}
               textAlign={"center"}
+              textTransform={"capitalize"}
             >
               {props.name}
             </Heading>

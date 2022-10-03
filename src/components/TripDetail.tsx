@@ -19,7 +19,6 @@ import {
   AspectRatio,
   Avatar,
   Tooltip,
-
 } from "@chakra-ui/react";
 import { MinusIcon, ChatIcon } from "@chakra-ui/icons";
 import { City, User } from "src/utils/interface";
@@ -51,8 +50,15 @@ interface Users {
   users: User[];
 }
 
-export default function TripDetail({ data, isLoading, error }: any) {
 
+export default function TripDetail({
+  data,
+  isLoading,
+  error,
+  ethPrice,
+  validate,
+  setValidate,
+}: any) {
   const urlFacebook = Url + "/trips/" + data.id;
   const { user } = useUser();
   const router = useRouter();
@@ -69,8 +75,13 @@ export default function TripDetail({ data, isLoading, error }: any) {
   const eday = data.endDate.slice(0, 10).split("-").reverse().join("/");
 
   const openChat = () => {
+<<<<<<< HEAD
     router.push(`/chat/${data.id}`)
   }
+=======
+    router.push(`/chat/${data.id}`);
+  };
+>>>>>>> develop
 
   useEffect(() => {
     async function a() {
@@ -85,7 +96,7 @@ export default function TripDetail({ data, isLoading, error }: any) {
     router.push("/404");
   if (error) return <div>{error.message}</div>;
   return (
-    <Container maxW={"7xl"}>
+    <Container alignSelf={"center"} maxW={"7xl"}>
       <VStack
         bg={useColorModeValue("#D1DFE3", "#4b647c")}
         boxShadow={"2xl"}
@@ -266,6 +277,7 @@ export default function TripDetail({ data, isLoading, error }: any) {
                         )}
                       </List>
                     </ListItem>
+<<<<<<< HEAD
                     {
                       userOnTrip ?
                         <Button onClick={() => openChat()} borderRadius="100%" h="48px" mt="20px" bg="#F3B46F" transition="0.5s" _hover={{ bg: "#25D366" }}>
@@ -275,6 +287,28 @@ export default function TripDetail({ data, isLoading, error }: any) {
                         </Button>
                         : null
                     }
+=======
+                    {userOnTrip ? (
+                      <Button
+                        onClick={() => openChat()}
+                        borderRadius="100%"
+                        h="48px"
+                        mt="20px"
+                        bg="#F3B46F"
+                        transition="0.5s"
+                        _hover={{ bg: "#25D366" }}
+                      >
+                        <Tooltip
+                          label={`Go to chat!`}
+                          placement="right"
+                          hasArrow
+                          arrowSize={10}
+                        >
+                          <ChatIcon />
+                        </Tooltip>
+                      </Button>
+                    ) : null}
+>>>>>>> develop
                   </List>
                 </SimpleGrid>
               </Box>
@@ -312,7 +346,12 @@ export default function TripDetail({ data, isLoading, error }: any) {
             /> */}
           </Box>
 
-          <TimeLine data={data} />
+          <TimeLine
+            data={data}
+            ethPrice={ethPrice}
+            validate={validate}
+            setValidate={setValidate}
+          />
         </Box>
       </VStack>
     </Container>

@@ -306,7 +306,7 @@ export default function MyTrips() {
 
   useEffect(() => {
     const filterTrips: Trip[] = usuario?.useOnTrip
-      ?.filter((t: Trip) => t.plannerId !== userDb.data.id)
+      ?.filter((t: Trip) => t.trip.plannerId !== userDb.data.id)
       .map((t: Trip) => t.trip);
     setOtherTrips(filterTrips);
     setTrips(usuario?.trips);
@@ -324,7 +324,10 @@ export default function MyTrips() {
   return (
     <Layout>
       <NextSeo title="My Trips" />
-      {usuario?.trips && !usuario?.useOnTrip ? (
+      {usuario.trips.length &&
+      !usuario.useOnTrip.filter(
+        (t: Trip) => t.trip.plannerId !== userDb.data.id
+      ).length ? (
         <>
           <Box
             display={"flex"}
@@ -333,6 +336,7 @@ export default function MyTrips() {
             alignItems={{ base: "center", md: "center", lg: "center" }}
           >
             <Heading
+              color={useColorModeValue("#293541", "white")}
               marginTop={"2%"}
               fontSize={{ sm: "xl", md: "3xl", lg: "5xl" }}
             >
@@ -400,7 +404,9 @@ export default function MyTrips() {
             </Center>
           </Flex>
         </>
-      ) : usuario?.useOnTrip && !usuario?.trips ? (
+      ) : usuario.useOnTrip.filter(
+          (t: Trip) => t.trip.plannerId !== userDb.data.id
+        ).length && !usuario.trips.length ? (
         <>
           <Box
             display={"flex"}
@@ -409,6 +415,7 @@ export default function MyTrips() {
             alignItems={{ base: "center", md: "center", lg: "center" }}
           >
             <Heading
+              color={useColorModeValue("#293541", "white")}
               marginTop={"2%"}
               fontSize={{ sm: "xl", md: "3xl", lg: "5xl" }}
             >
@@ -476,7 +483,10 @@ export default function MyTrips() {
             </Center>
           </Flex>
         </>
-      ) : usuario?.trips && usuario?.useOnTrip ? (
+      ) : usuario.trips.length &&
+        usuario.useOnTrip.filter(
+          (t: Trip) => t.trip.plannerId !== userDb.data.id
+        ).length ? (
         <Stack minHeight={{ sm: "110vh", md: "120vh", lg: "195vh" }}>
           <Box
             display={"flex"}
@@ -485,6 +495,7 @@ export default function MyTrips() {
             alignItems={{ base: "center", md: "center", lg: "center" }}
           >
             <Heading
+              color={useColorModeValue("#293541", "white")}
               marginTop={"2%"}
               fontSize={{ sm: "xl", md: "3xl", lg: "5xl" }}
             >
@@ -597,6 +608,7 @@ export default function MyTrips() {
             alignItems={{ base: "center", md: "center", lg: "center" }}
           >
             <Heading
+              color={useColorModeValue("#293541", "white")}
               marginTop={"2%"}
               fontSize={{ sm: "xl", md: "3xl", lg: "5xl" }}
             >

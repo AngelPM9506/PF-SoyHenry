@@ -10,7 +10,7 @@ class Chat {
     @prop({ type: () => String })
     public message?: String;
 
-    @prop({ type: () => Date, default: new Date() })
+    @prop({ type: () => Date, default: Date.now() })
     public createdAt?: Date;
 
     @prop({ type: () => String })

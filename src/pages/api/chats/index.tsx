@@ -6,7 +6,7 @@ mongoConection();
 
 
 const Index = async (req: NextApiRequest, res: NextApiResponse) => {
-    let { method, query: { room }, body: { idTrip, nameUser, message, avatar } } = req;
+    let { method, query: { room }, body: { idTrip, nameUser, message, avatar, createdAt } } = req;
     try {
         switch (method) {
             case 'GET':
@@ -14,9 +14,16 @@ const Index = async (req: NextApiRequest, res: NextApiResponse) => {
                 const clients = await ChatModel.find(selectRom);
                 return res.status(200).json({ status: 'success', messages: clients });
             case 'POST':
-                if (!idTrip || !nameUser || !message || !avatar) return res.status(404).json({ status: 'error', msg: 'Data Missing' })
-                let newClient = await ChatModel.create({ idTrip, nameUser, message, avatar });
+                if (!idTrip || !nameUser || !message || !avatar || !createdAt) return res.status(404).json({ status: 'error', msg: 'Data Missing' })
+                  let now = new Date(createdAt);
+                  let date = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(),
+                      now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds(), now.getUTCMilliseconds());
+                      console.log(date);                      
+                let newClient = await ChatModel.create({ idTrip, nameUser, message, avatar, createdAt: date });
+                console.log(newClient);
+                
                 return res.status(201).json({ status: 'success', newClient });
+            //return res.status(201).json({  dateUTCNow: new Date(dateUTCNow).toLocaleString() });
             default:
                 return res.status(404).json({ status: 'error', msg: 'Method unsuported' });
         }

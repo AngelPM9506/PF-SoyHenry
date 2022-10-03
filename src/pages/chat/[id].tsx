@@ -60,16 +60,17 @@ export default function ChatRoom(props: Props) {
   };
 
   const disconnectSocket = () => {
-    if (socket) socket.on("disconnect", () => {});
+    if (socket) socket.on("disconnect", () => { });
   };
 
   const sendMessage = (
     room: string,
     message: string,
     user: string,
-    avatar: string
+    avatar: string,
+    createdAt: Date | number | string
   ) => {
-    if (socket) socket.emit("chat", { message, room, user, avatar });
+    if (socket) socket.emit("chat", { message, room, user, avatar, createdAt });
   };
 
   const oldMesages = async () => {
@@ -97,11 +98,11 @@ export default function ChatRoom(props: Props) {
   }, []);
 
   const prefixDate = (date: string) => {
-    let arraydate = date.split("T");
+    let arraydate = new Date(date).toLocaleString();
     let dateF = arraydate[0].split("-").reverse().join("-");
     let timePre = arraydate[1].split(".")[0].split(":");
     let time = `${timePre[0]}:${timePre[1]}`;
-    return `${date}`;
+    return `${arraydate}`;
   };
   useEffect(() => {
     bottomRef?.current?.scrollIntoView({ behavior: "smooth" });
@@ -118,8 +119,9 @@ export default function ChatRoom(props: Props) {
     event.preventDefault();
     let user = userDb.data.name;
     let userAvatar = userDb.data.avatar;
+    let date = Date.now();
     if (!message || message === "") return;
-    sendMessage(room, message.trim(), user, userAvatar);
+    sendMessage(room, message.trim(), user, userAvatar, date);
     setMessage("");
   };
   const renderAvatar = (avatar: string) => {

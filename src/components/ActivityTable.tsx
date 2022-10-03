@@ -139,7 +139,7 @@ export function ActivityTable({ activity }: Props) {
       isClosable: true,
     });
   };
-  if (isLoading) return <Loading />;
+
   return (
     <Tr key={changed}>
       <Td minWidth={{ base: "300px", sm: "200px" }}>

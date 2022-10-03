@@ -50,7 +50,14 @@ export function ModalWeb3({
         <Text>Pay With Ethereum</Text>
       </Button>
 
-      <Modal isOpen={isOpen} onClose={onClose} size={"xl"}>
+      <Modal
+        isOpen={isOpen}
+        onClose={() => {
+          setValidate("activate");
+          return onClose();
+        }}
+        size={"xl"}
+      >
         <ModalOverlay />
         <ModalContent bg={"#4b647c"}>
           <ModalHeader>Pay With Ethereum</ModalHeader>

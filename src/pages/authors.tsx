@@ -126,9 +126,9 @@ const Authors = () => {
                       justifyContent={"center"}
                       mt={"6px"}
                     >
-                      <NextLink href={a.linkedin}>
+                       <a href={a.linkedin} rel="noreferrer noopener" target="_blank">
                         <Button
-                          w={"300px"}
+                          w={"100%"}
                           bg={useColorModeValue("#151f21", "gray.900")}
                           color={"white"}
                           rounded={"md"}
@@ -138,13 +138,13 @@ const Authors = () => {
                             boxShadow: "lg",
                           }}
                         >
-                          <TiSocialLinkedin size={"33"} color={"#F3B46F"} />
+                          <TiSocialLinkedin size={"23"} color={"#F3B46F"} />
                           LinkedIn
                         </Button>
-                      </NextLink>
-                      <NextLink href={a.github}>
+                      </a>
+                      <a href={a.github} rel="noreferrer noopener" target="_blank">
                         <Button
-                          w={"350px"}
+                          w={"100%"}
                           bg={useColorModeValue("#151f21", "gray.900")}
                           color={"white"}
                           rounded={"md"}
@@ -154,10 +154,10 @@ const Authors = () => {
                             boxShadow: "lg",
                           }}
                         >
-                          <TiSocialGithub size={"33"} color={"#F3B46F"} />
+                          <TiSocialGithub size={"25"} color={"#F3B46F"} />
                           GitHub
                         </Button>
-                      </NextLink>
+                      </a>
                     </Stack>
                     <Stack
                       direction={"row"}

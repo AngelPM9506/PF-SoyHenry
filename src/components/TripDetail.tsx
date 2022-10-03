@@ -50,7 +50,6 @@ interface Users {
   users: User[];
 }
 
-
 export default function TripDetail({
   data,
   isLoading,
@@ -96,7 +95,7 @@ export default function TripDetail({
         bg={useColorModeValue("#D1DFE3", "#4b647c")}
         boxShadow={"2xl"}
         rounded={"2xl"}
-        margin={"20px"}
+        margin={{ base: "2px", md: "20px" }}
         mt={"40px"}
         height={"max-content"}
       >
@@ -106,7 +105,7 @@ export default function TripDetail({
           justifyContent={"space-between"}
           display={"flex"}
           flexDirection={{ base: "column", md: "row" }}
-          width={"90%"}
+          width={{ base: "100%", md: "90%" }}
         >
           <Heading
             width={"100%"}

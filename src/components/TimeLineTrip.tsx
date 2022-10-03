@@ -37,6 +37,7 @@ import searchUser from "src/utils/searchUserOnTrip";
 import { useAccount, useConnect, useDisconnect } from "wagmi";
 import { SendTransaction } from "./SendWeb3Transaction";
 import { ModalWeb3 } from "./ModalWeb3";
+import { useWindowSize } from "src/utils/windowsize";
 import { FaPaypal, FaCcPaypal } from "react-icons/fa";
 import Image from "next/image";
 export const TimeLine = ({ data, ethPrice, validate, setValidate }: any) => {
@@ -52,7 +53,7 @@ export const TimeLine = ({ data, ethPrice, validate, setValidate }: any) => {
       return 1;
     }
   });
-
+  const size = useWindowSize();
   const router = useRouter();
   const { user, error } = useUser();
   const { isConnected } = useAccount();
@@ -114,7 +115,7 @@ export const TimeLine = ({ data, ethPrice, validate, setValidate }: any) => {
           Trips itinerary
         </Text>
       </Box>
-      <VerticalTimeline>
+      <VerticalTimeline animate={size.width > 1000 ? true : false}>
         {data.activitiesOnTrips.length != 0 ? (
           data.activitiesOnTrips.map((activity: any) => (
             <CardTimeLine

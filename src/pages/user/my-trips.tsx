@@ -66,6 +66,7 @@ export default function MyTrips() {
           <NextLink href={`/trips/${trip.id}`}>
             <Title level={5}>
               <Text
+                cursor={"pointer"}
                 fontSize={["xs", "sm", "md"]}
                 fontStyle={trip.active ? "italic" : "normal"}
                 textTransform={"capitalize"}
@@ -191,6 +192,7 @@ export default function MyTrips() {
           <NextLink href={`/trips/${newTrip.id}`}>
             <Title level={5}>
               <Text
+                cursor={"pointer"}
                 fontSize={["xs", "sm", "md"]}
                 fontStyle={newTrip.active ? "italic" : "normal"}
                 textTransform={"capitalize"}
@@ -324,343 +326,363 @@ export default function MyTrips() {
   return (
     <Layout>
       <NextSeo title="My Trips" />
-      {usuario.trips.length &&
+      {/* {usuario.trips.length &&
       !usuario.useOnTrip.filter(
         (t: Trip) => t.trip.plannerId !== userDb.data.id
-      ).length ? (
-        <>
-          <Box
-            display={"flex"}
-            flexDirection={"column"}
-            textAlign={"center"}
-            alignItems={{ base: "center", md: "center", lg: "center" }}
+      ).length ? (  */}
+      <Stack
+        display={"flex"}
+        paddingTop={{ base: "7%", sm: "5%", md: "5%", lg: "1%" }}
+        height={"fit-content"}
+        paddingBottom={{ base: "7%", sm: "5%", md: "5%", lg: "2%" }}
+      >
+        <Box
+          display={"flex"}
+          flexDirection={"column"}
+          textAlign={"center"}
+          alignItems={{ base: "center", md: "center", lg: "center" }}
+        >
+          <Heading
+            color={useColorModeValue("#293541", "white")}
+            marginTop={"2%"}
+            fontSize={{ sm: "xl", md: "3xl", lg: "5xl" }}
           >
-            <Heading
-              color={useColorModeValue("#293541", "white")}
-              marginTop={"2%"}
-              fontSize={{ sm: "xl", md: "3xl", lg: "5xl" }}
-            >
-              My Trips Section
-            </Heading>
-            <Text
-              fontStyle={"italic"}
-              fontSize={{ sm: "sm", md: "md", lg: "2xl" }}
-              color={useColorModeValue("#293541", "#F3B46F")}
-              marginTop={"1%"}
-            >
-              Hello traveler, you will find your created trips and their status
-              in this section.
-            </Text>
-          </Box>
-          <Flex alignItems={"center"} flexDirection="row">
-            <Center w="100%" h="100%" bg="none">
-              <Box minHeight={"95vh"} w="90%">
-                <Stack direction={"column"}>
-                  <Stack
-                    margin={"2%"}
-                    rounded={"20px"}
-                    overflow={"hidden"}
-                    background={"#D1DFE3"}
-                    boxShadow={"2xl"}
-                  >
-                    <Table
-                      size="middle"
-                      columns={columns}
-                      dataSource={trips}
-                      pagination={{
-                        current: page,
-                        pageSize: pageSize,
-                        onChange: (page, pageSize) => {
-                          setPage(page);
-                          setPageSize(pageSize);
-                        },
-                      }}
-                    />
-                  </Stack>
-                  <Center>
-                    <NextLink href={"/trips/create"}>
-                      <Button
-                        bg={useColorModeValue("#02b1b1", "#02b1b1")}
-                        color={"#293541"}
-                        marginRight={"55px"}
-                        rounded={"md"}
-                        padding={"20px"}
-                        _hover={{
-                          transform: "translateY(-2px)",
-                          boxShadow: "lg",
-                          bg: "#F3B46F",
-                          color: "#293541",
-                        }}
-                        m={5}
-                        w={175}
-                        marginBottom={{ sm: "-15px" }}
-                      >
-                        Create a new trip
-                      </Button>
-                    </NextLink>
-                  </Center>
+            My Trips Section
+          </Heading>
+          <Text
+            fontStyle={"italic"}
+            fontSize={{ sm: "sm", md: "md", lg: "2xl" }}
+            color={useColorModeValue("#293541", "#F3B46F")}
+            marginTop={"1%"}
+          >
+            Hello traveler, you will find your created trips and their status in
+            this section.
+          </Text>
+        </Box>
+        <Flex alignItems={"center"} flexDirection="row">
+          <Center w="100%" h="100%" bg="none">
+            <Box w="90%">
+              <Stack direction={"column"}>
+                <Stack
+                  margin={"2%"}
+                  rounded={"20px"}
+                  overflow={"hidden"}
+                  background={"#D1DFE3"}
+                  boxShadow={"2xl"}
+                >
+                  <Table
+                    size="middle"
+                    columns={columns}
+                    dataSource={trips}
+                    pagination={{
+                      current: page,
+                      pageSize: pageSize,
+                      onChange: (page, pageSize) => {
+                        setPage(page);
+                        setPageSize(pageSize);
+                      },
+                    }}
+                  />
                 </Stack>
-              </Box>
-            </Center>
-          </Flex>
-        </>
-      ) : usuario.useOnTrip.filter(
+                <Center>
+                  <NextLink href={"/trips/create"}>
+                    <Button
+                      bg={useColorModeValue("#02b1b1", "#02b1b1")}
+                      color={"#293541"}
+                      marginRight={"55px"}
+                      rounded={"md"}
+                      padding={"20px"}
+                      _hover={{
+                        transform: "translateY(-2px)",
+                        boxShadow: "lg",
+                        bg: "#F3B46F",
+                        color: "#293541",
+                      }}
+                      m={5}
+                      w={175}
+                      marginBottom={{ sm: "-15px" }}
+                    >
+                      Create a new trip
+                    </Button>
+                  </NextLink>
+                </Center>
+              </Stack>
+            </Box>
+          </Center>
+        </Flex>
+      </Stack>
+      {/* ) : usuario.useOnTrip.filter(
           (t: Trip) => t.trip.plannerId !== userDb.data.id
         ).length && !usuario.trips.length ? (
-        <>
-          <Box
-            display={"flex"}
-            flexDirection={"column"}
-            textAlign={"center"}
-            alignItems={{ base: "center", md: "center", lg: "center" }}
+      <Stack
+        display={"flex"}
+        paddingTop={{ base: "7%", sm: "5%", md: "5%", lg: "1%" }}
+        height={{ base: "50vh", sm: "60vh", md: "70vh", lg: "80vh" }}
+        paddingBottom={{ base: "7%", sm: "5%", md: "5%", lg: "2%" }}
+      >
+        <Box
+          display={"flex"}
+          flexDirection={"column"}
+          textAlign={"center"}
+          alignItems={{ base: "center", md: "center", lg: "center" }}
+        >
+          <Heading
+            color={useColorModeValue("#293541", "white")}
+            marginTop={"2%"}
+            fontSize={{ sm: "xl", md: "3xl", lg: "5xl" }}
           >
-            <Heading
-              color={useColorModeValue("#293541", "white")}
-              marginTop={"2%"}
-              fontSize={{ sm: "xl", md: "3xl", lg: "5xl" }}
-            >
-              My Trips Section
-            </Heading>
-            <Text
-              fontStyle={"italic"}
-              fontSize={{ sm: "sm", md: "md", lg: "2xl" }}
-              color={useColorModeValue("#293541", "#F3B46F")}
-              marginTop={"1%"}
-            >
-              Hello traveler, you will find all the info related to the trips
-              you have joined here, you can create your own.
-            </Text>
-          </Box>
-          <Flex alignItems={"center"} flexDirection="row">
-            <Center w="100%" h="100%" bg="none">
-              <Box minHeight={"95vh"} w="90%">
-                <Stack direction={"column"}>
-                  <Stack
-                    margin={"2%"}
-                    rounded={"20px"}
-                    overflow={"hidden"}
-                    background={"#D1DFE3"}
-                    boxShadow={"2xl"}
-                  >
-                    <Table
-                      size="middle"
-                      columns={otherColumns}
-                      dataSource={otherTrips}
-                      pagination={{
-                        current: page,
-                        pageSize: pageSize,
-                        onChange: (page, pageSize) => {
-                          setPage(page);
-                          setPageSize(pageSize);
-                        },
-                      }}
-                    />
-                  </Stack>
-                  <Center>
-                    <NextLink href={"/trips/create"}>
-                      <Button
-                        bg={useColorModeValue("#02b1b1", "#02b1b1")}
-                        color={"#293541"}
-                        marginRight={"55px"}
-                        rounded={"md"}
-                        padding={"20px"}
-                        _hover={{
-                          transform: "translateY(-2px)",
-                          boxShadow: "lg",
-                          bg: "#F3B46F",
-                          color: "#293541",
-                        }}
-                        m={5}
-                        w={175}
-                        marginBottom={{ sm: "-15px" }}
-                      >
-                        Create a new trip
-                      </Button>
-                    </NextLink>
-                  </Center>
+            My Trips Section
+          </Heading>
+          <Text
+            fontStyle={"italic"}
+            fontSize={{ sm: "sm", md: "md", lg: "2xl" }}
+            color={useColorModeValue("#293541", "#F3B46F")}
+            marginTop={"1%"}
+          >
+            Hello traveler, you will find all the info related to the trips you
+            have joined here, you can create your own.
+          </Text>
+        </Box>
+        <Flex alignItems={"center"} flexDirection="row">
+          <Center w="100%" h="100%" bg="none">
+            <Box w="90%">
+              <Stack direction={"column"}>
+                <Stack
+                  margin={"2%"}
+                  rounded={"20px"}
+                  overflow={"hidden"}
+                  background={"#D1DFE3"}
+                  boxShadow={"2xl"}
+                >
+                  <Table
+                    size="middle"
+                    columns={otherColumns}
+                    dataSource={otherTrips}
+                    pagination={{
+                      current: page,
+                      pageSize: pageSize,
+                      onChange: (page, pageSize) => {
+                        setPage(page);
+                        setPageSize(pageSize);
+                      },
+                    }}
+                  />
                 </Stack>
-              </Box>
-            </Center>
-          </Flex>
-        </>
-      ) : usuario.trips.length &&
+                <Center>
+                  <NextLink href={"/trips/create"}>
+                    <Button
+                      bg={useColorModeValue("#02b1b1", "#02b1b1")}
+                      color={"#293541"}
+                      marginRight={"55px"}
+                      rounded={"md"}
+                      padding={"20px"}
+                      _hover={{
+                        transform: "translateY(-2px)",
+                        boxShadow: "lg",
+                        bg: "#F3B46F",
+                        color: "#293541",
+                      }}
+                      m={5}
+                      w={175}
+                      marginBottom={{ sm: "-15px" }}
+                    >
+                      Create a new trip
+                    </Button>
+                  </NextLink>
+                </Center>
+              </Stack>
+            </Box>
+          </Center>
+        </Flex>
+      </Stack> */}
+      {/* ) : usuario.trips.length &&
         usuario.useOnTrip.filter(
           (t: Trip) => t.trip.plannerId !== userDb.data.id
-        ).length ? (
-        <Stack minHeight={{ sm: "110vh", md: "120vh", lg: "195vh" }}>
-          <Box
-            display={"flex"}
-            flexDirection={"column"}
-            textAlign={"center"}
-            alignItems={{ base: "center", md: "center", lg: "center" }}
+        ).length ? ( */}
+      {/* <Stack
+        display={"flex"}
+        paddingTop={{ base: "7%", sm: "5%", md: "5%", lg: "1%" }}
+        height={"100%"}
+        paddingBottom={{ base: "7%", sm: "5%", md: "5%", lg: "2%" }}
+      >
+        <Box
+          display={"flex"}
+          flexDirection={"column"}
+          textAlign={"center"}
+          alignItems={{ base: "center", md: "center", lg: "center" }}
+        >
+          <Heading
+            color={useColorModeValue("#293541", "white")}
+            marginTop={"2%"}
+            fontSize={{ sm: "xl", md: "3xl", lg: "5xl" }}
           >
-            <Heading
-              color={useColorModeValue("#293541", "white")}
-              marginTop={"2%"}
-              fontSize={{ sm: "xl", md: "3xl", lg: "5xl" }}
-            >
-              My Trips Section
-            </Heading>
-            <Text
-              fontStyle={"italic"}
-              fontSize={{ sm: "sm", md: "md", lg: "2xl" }}
-              color={useColorModeValue("#293541", "#F3B46F")}
-              marginTop={"1%"}
-            >
-              Hello traveler, you will find your created trips and their status
-              in this section.
-            </Text>
-          </Box>
-          <Flex alignItems={"center"} flexDirection="row">
-            <Center w="100%" h="100%" bg="none">
-              <Box minHeight={"95vh"} w="90%">
-                <Stack direction={"column"}>
-                  <Stack
-                    margin={"2%"}
-                    rounded={"20px"}
-                    overflow={"hidden"}
-                    background={"#D1DFE3"}
-                    boxShadow={"2xl"}
-                  >
-                    <Table
-                      size="middle"
-                      columns={columns}
-                      dataSource={trips}
-                      pagination={{
-                        current: page,
-                        pageSize: pageSize,
-                        onChange: (page, pageSize) => {
-                          setPage(page);
-                          setPageSize(pageSize);
-                        },
-                      }}
-                    />
-                  </Stack>
-                  <Stack>
-                    <Center>
-                      <Text
-                        fontStyle={"italic"}
-                        fontSize={{ sm: "sm", md: "md", lg: "2xl" }}
-                        color={useColorModeValue("#293541", "#F3B46F")}
-                        marginTop={"1%"}
-                        marginBottom={"1%"}
-                      >
-                        Here you will find all the info related to the trips you
-                        have joined.
-                      </Text>
-                    </Center>
-                  </Stack>
-                  <Stack
-                    margin={"2%"}
-                    rounded={"20px"}
-                    overflow={"hidden"}
-                    background={"#D1DFE3"}
-                    boxShadow={"2xl"}
-                  >
-                    <Table
-                      size="middle"
-                      columns={otherColumns}
-                      dataSource={otherTrips}
-                      pagination={{
-                        current: page,
-                        pageSize: pageSize,
-                        onChange: (page, pageSize) => {
-                          setPage(page);
-                          setPageSize(pageSize);
-                        },
-                      }}
-                    />
-                  </Stack>
-                  <Center>
-                    <NextLink href={"/trips/create"}>
-                      <Button
-                        bg={useColorModeValue("#02b1b1", "#02b1b1")}
-                        color={"#293541"}
-                        marginRight={"55px"}
-                        rounded={"md"}
-                        padding={"20px"}
-                        _hover={{
-                          transform: "translateY(-2px)",
-                          boxShadow: "lg",
-                          bg: "#F3B46F",
-                          color: "#293541",
-                        }}
-                        m={5}
-                        w={175}
-                        marginBottom={{ sm: "-15px" }}
-                      >
-                        Create a new trip
-                      </Button>
-                    </NextLink>
-                  </Center>
+            My Trips Section
+          </Heading>
+          <Text
+            fontStyle={"italic"}
+            fontSize={{ sm: "sm", md: "md", lg: "2xl" }}
+            color={useColorModeValue("#293541", "#F3B46F")}
+            marginTop={"1%"}
+          >
+            Hello traveler, you will find your created trips and their status in
+            this section.
+          </Text>
+        </Box>
+        <Flex alignItems={"center"} flexDirection="row">
+          <Center w="100%" h="100%" bg="none">
+            <Box w="90%">
+              <Stack direction={"column"}>
+                <Stack
+                  margin={"2%"}
+                  rounded={"20px"}
+                  overflow={"hidden"}
+                  background={"#D1DFE3"}
+                  boxShadow={"2xl"}
+                >
+                  <Table
+                    size="middle"
+                    columns={columns}
+                    dataSource={trips}
+                    pagination={{
+                      current: page,
+                      pageSize: pageSize,
+                      onChange: (page, pageSize) => {
+                        setPage(page);
+                        setPageSize(pageSize);
+                      },
+                    }}
+                  />
                 </Stack>
-              </Box>
-            </Center>
-          </Flex>
-        </Stack>
-      ) : (
-        <>
-          <Box
-            marginTop={"5%"}
-            display={"flex"}
-            flexDirection={"column"}
-            textAlign={"center"}
-            alignItems={{ base: "center", md: "center", lg: "center" }}
-          >
-            <Heading
-              color={useColorModeValue("#293541", "white")}
-              marginTop={"2%"}
-              fontSize={{ sm: "xl", md: "3xl", lg: "5xl" }}
-            >
-              My Trips Section
-            </Heading>
-          </Box>
-          <Flex alignItems={"center"} flexDirection="row">
-            <Center w="100%" h="100%" bg="none">
-              <Box h={"50vh"} w="90%">
-                <Stack direction={"column"}>
-                  <Stack margin={"2%"}>
+                <Stack>
+                  <Center>
                     <Text
                       fontStyle={"italic"}
                       fontSize={{ sm: "sm", md: "md", lg: "2xl" }}
                       color={useColorModeValue("#293541", "#F3B46F")}
                       marginTop={"1%"}
-                      textAlign={"center"}
+                      marginBottom={"1%"}
                     >
-                      Hello traveler, you will find your created trips and their
-                      status in this section. But, It looks like you do not have
-                      any trips created or you have not joined a trip yet, so
-                      create one now.
+                      Here you will find all the info related to the trips you
+                      have joined.
                     </Text>
-                  </Stack>
-                  <Center>
-                    <NextLink href={"/trips/create"}>
-                      <Button
-                        bg={useColorModeValue("#02b1b1", "#02b1b1")}
-                        color={"#293541"}
-                        marginRight={"55px"}
-                        rounded={"md"}
-                        padding={"20px"}
-                        _hover={{
-                          transform: "translateY(-2px)",
-                          boxShadow: "lg",
-                          bg: "#F3B46F",
-                          color: "#293541",
-                        }}
-                        m={5}
-                        w={175}
-                        marginBottom={{ sm: "-15px" }}
-                      >
-                        Create a new trip
-                      </Button>
-                    </NextLink>
                   </Center>
                 </Stack>
-              </Box>
-            </Center>
-          </Flex>
-        </>
-      )}
+                <Stack
+                  margin={"2%"}
+                  rounded={"20px"}
+                  overflow={"hidden"}
+                  background={"#D1DFE3"}
+                  boxShadow={"2xl"}
+                >
+                  <Table
+                    size="middle"
+                    columns={otherColumns}
+                    dataSource={otherTrips}
+                    pagination={{
+                      current: page,
+                      pageSize: pageSize,
+                      onChange: (page, pageSize) => {
+                        setPage(page);
+                        setPageSize(pageSize);
+                      },
+                    }}
+                  />
+                </Stack>
+                <Center>
+                  <NextLink href={"/trips/create"}>
+                    <Button
+                      bg={useColorModeValue("#02b1b1", "#02b1b1")}
+                      color={"#293541"}
+                      marginRight={"55px"}
+                      rounded={"md"}
+                      padding={"20px"}
+                      _hover={{
+                        transform: "translateY(-2px)",
+                        boxShadow: "lg",
+                        bg: "#F3B46F",
+                        color: "#293541",
+                      }}
+                      m={5}
+                      w={175}
+                      marginBottom={{ sm: "-15px" }}
+                    >
+                      Create a new trip
+                    </Button>
+                  </NextLink>
+                </Center>
+              </Stack>
+            </Box>
+          </Center>
+        </Flex>
+      </Stack> */}
+      {/* ) : (
+      <Stack
+        marginTop={{ base: "25%", sm: "20%", md: "15%", lg: "0" }}
+        display={"flex"}
+        alignSelf={"center"}
+        justifySelf={"center"}
+      >
+        <Box
+          marginTop={"5%"}
+          display={"flex"}
+          flexDirection={"column"}
+          textAlign={"center"}
+          alignItems={{ base: "center", md: "center", lg: "center" }}
+        >
+          <Heading
+            color={useColorModeValue("#293541", "white")}
+            marginTop={"2%"}
+            fontSize={{ sm: "xl", md: "3xl", lg: "5xl" }}
+          >
+            My Trips Section
+          </Heading>
+        </Box>
+        <Flex alignItems={"center"} flexDirection="row">
+          <Center w="100%" h="100%" bg="none">
+            <Box h={"50vh"} w="90%">
+              <Stack direction={"column"}>
+                <Stack margin={"2%"}>
+                  <Text
+                    fontStyle={"italic"}
+                    fontSize={{ sm: "sm", md: "md", lg: "2xl" }}
+                    color={useColorModeValue("#293541", "#F3B46F")}
+                    marginTop={"1%"}
+                    textAlign={"center"}
+                  >
+                    Hello traveler, you will find your created trips and their
+                    status in this section. But, It looks like you do not have
+                    any trips created or you have not joined a trip yet, so
+                    create one now.
+                  </Text>
+                </Stack>
+                <Center>
+                  <NextLink href={"/trips/create"}>
+                    <Button
+                      bg={useColorModeValue("#02b1b1", "#02b1b1")}
+                      color={"#293541"}
+                      marginRight={"55px"}
+                      rounded={"md"}
+                      padding={"20px"}
+                      _hover={{
+                        transform: "translateY(-2px)",
+                        boxShadow: "lg",
+                        bg: "#F3B46F",
+                        color: "#293541",
+                      }}
+                      m={5}
+                      w={175}
+                      marginBottom={{ sm: "-15px" }}
+                    >
+                      Create a new trip
+                    </Button>
+                  </NextLink>
+                </Center>
+              </Stack>
+            </Box>
+          </Center>
+        </Flex>
+      </Stack>
+      )} */}
     </Layout>
   );
 }

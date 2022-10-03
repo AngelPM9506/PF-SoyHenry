@@ -66,6 +66,7 @@ export default function MyTrips() {
           <NextLink href={`/trips/${trip.id}`}>
             <Title level={5}>
               <Text
+                cursor={"pointer"}
                 fontSize={["xs", "sm", "md"]}
                 fontStyle={trip.active ? "italic" : "normal"}
                 textTransform={"capitalize"}
@@ -191,6 +192,7 @@ export default function MyTrips() {
           <NextLink href={`/trips/${newTrip.id}`}>
             <Title level={5}>
               <Text
+                cursor={"pointer"}
                 fontSize={["xs", "sm", "md"]}
                 fontStyle={newTrip.active ? "italic" : "normal"}
                 textTransform={"capitalize"}
@@ -328,7 +330,12 @@ export default function MyTrips() {
       !usuario.useOnTrip.filter(
         (t: Trip) => t.trip.plannerId !== userDb.data.id
       ).length ? (
-        <>
+        <Stack
+          display={"flex"}
+          paddingTop={{ base: "7%", sm: "5%", md: "5%", lg: "1%" }}
+          height={"fit-content"}
+          paddingBottom={{ base: "7%", sm: "5%", md: "5%", lg: "2%" }}
+        >
           <Box
             display={"flex"}
             flexDirection={"column"}
@@ -354,7 +361,7 @@ export default function MyTrips() {
           </Box>
           <Flex alignItems={"center"} flexDirection="row">
             <Center w="100%" h="100%" bg="none">
-              <Box minHeight={"95vh"} w="90%">
+              <Box w="90%">
                 <Stack direction={"column"}>
                   <Stack
                     margin={"2%"}
@@ -403,11 +410,16 @@ export default function MyTrips() {
               </Box>
             </Center>
           </Flex>
-        </>
+        </Stack>
       ) : usuario.useOnTrip.filter(
           (t: Trip) => t.trip.plannerId !== userDb.data.id
         ).length && !usuario.trips.length ? (
-        <>
+        <Stack
+          display={"flex"}
+          paddingTop={{ base: "7%", sm: "5%", md: "5%", lg: "1%" }}
+          height={{ base: "50vh", sm: "60vh", md: "70vh", lg: "80vh" }}
+          paddingBottom={{ base: "7%", sm: "5%", md: "5%", lg: "2%" }}
+        >
           <Box
             display={"flex"}
             flexDirection={"column"}
@@ -433,7 +445,7 @@ export default function MyTrips() {
           </Box>
           <Flex alignItems={"center"} flexDirection="row">
             <Center w="100%" h="100%" bg="none">
-              <Box minHeight={"95vh"} w="90%">
+              <Box w="90%">
                 <Stack direction={"column"}>
                   <Stack
                     margin={"2%"}
@@ -482,12 +494,17 @@ export default function MyTrips() {
               </Box>
             </Center>
           </Flex>
-        </>
+        </Stack>
       ) : usuario.trips.length &&
         usuario.useOnTrip.filter(
           (t: Trip) => t.trip.plannerId !== userDb.data.id
         ).length ? (
-        <Stack minHeight={{ sm: "110vh", md: "120vh", lg: "195vh" }}>
+        <Stack
+          display={"flex"}
+          paddingTop={{ base: "7%", sm: "5%", md: "5%", lg: "1%" }}
+          height={"100%"}
+          paddingBottom={{ base: "7%", sm: "5%", md: "5%", lg: "2%" }}
+        >
           <Box
             display={"flex"}
             flexDirection={"column"}
@@ -513,7 +530,7 @@ export default function MyTrips() {
           </Box>
           <Flex alignItems={"center"} flexDirection="row">
             <Center w="100%" h="100%" bg="none">
-              <Box minHeight={"95vh"} w="90%">
+              <Box w="90%">
                 <Stack direction={"column"}>
                   <Stack
                     margin={"2%"}
@@ -599,7 +616,12 @@ export default function MyTrips() {
           </Flex>
         </Stack>
       ) : (
-        <>
+        <Stack
+          marginTop={{ base: "25%", sm: "20%", md: "15%", lg: "0" }}
+          display={"flex"}
+          alignSelf={"center"}
+          justifySelf={"center"}
+        >
           <Box
             marginTop={"5%"}
             display={"flex"}
@@ -659,7 +681,7 @@ export default function MyTrips() {
               </Box>
             </Center>
           </Flex>
-        </>
+        </Stack>
       )}
     </Layout>
   );

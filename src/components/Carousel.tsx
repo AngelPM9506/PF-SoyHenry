@@ -176,7 +176,7 @@ const MyCarousel = ({ trips, activities }: Props) => {
           </Heading>
         </Box>
         <Box
-          marginBottom={"7%"}
+          paddingBottom={"30px"}
           width={"95vw"}
           display={"flex"}
           justifyContent={"center"}

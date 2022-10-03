@@ -17,7 +17,7 @@ const getauthorsinfo = () => {
       job: "Full Stack Web Developer",
       linkedin: "https://www.linkedin.com/in/jonathanbracho",
       github: "https://github.com/JonathanJB88",
-      cv: "https://www.linkedin.com/in/jonathanbracho",
+      cv: "http://drive.google.com/uc?export=view&id=13ov74dej0C_3DXL7j4hQXMmbaZg_ph_i",
       avatar:
         "http://drive.google.com/uc?export=view&id=1-ao_4tW7f1wIRoJ5jtA_Tjm_URkOD_tx",
       image:
@@ -29,8 +29,9 @@ const getauthorsinfo = () => {
       job: "Full Stack Web Developer",
       linkedin: "https://www.linkedin.com/in/miguel-angel-p-1404a4120/",
       github: "https://github.com/AngelPM9506",
-      cv: "https://www.linkedin.com/in/miguel-angel-p-1404a4120/",
-      avatar: "https://avatars.githubusercontent.com/u/66454153?v=4",
+      cv: "http://drive.google.com/uc?export=view&id=1D3Z-yu9aNCMRaolSLO6-7Pj1zB8Frj5_",
+      avatar:
+        "http://drive.google.com/uc?export=view&id=10WqdGXLQ2wLRYuzgp_IoUMdcX9Ha-7Tp",
       image:
         // "http://drive.google.com/uc?export=view&id=1_qsAn-4e7xBfc_IGLbtQMt9Sgo29WjUv"
         "http://drive.google.com/uc?export=view&id=1CczbOs_-ph6f4sbWzxZwMJcPDWpahD2l",
@@ -63,8 +64,9 @@ const getauthorsinfo = () => {
       job: "Full Stack Web Developer",
       linkedin: "https://www.linkedin.com/in/alejandromhernandez/",
       github: "https://github.com/ephcrat",
-      cv: "https://www.linkedin.com/in/alejandromhernandez/",
-      avatar: "https://avatars.githubusercontent.com/u/83259500?v=4",
+      cv: "http://drive.google.com/uc?export=view&id=12yIGI7tzH0CYzQp3beoSvdTd7sdP2j9i",
+      avatar:
+        "http://drive.google.com/uc?export=view&id=1d-gQhRpyzNKDrzi7tqhqLefgpNoQnA5j",
       image:
         // "http://drive.google.com/uc?export=view&id=1_qsAn-4e7xBfc_IGLbtQMt9Sgo29WjUv"
         "http://drive.google.com/uc?export=view&id=1CczbOs_-ph6f4sbWzxZwMJcPDWpahD2l",

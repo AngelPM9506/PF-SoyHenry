@@ -19,8 +19,7 @@ import { useUser } from "@auth0/nextjs-auth0";
 import { getOrCreateUser } from "src/utils/User";
 import { tokenOptions, validateWeb3Payment } from "src/utils/web3";
 import { useRouter } from "next/router";
-import { TokenSelect } from "./tokenSelect";
-
+import { TokenSelect } from "./TokenSelect";
 export function SendTransaction({
   value,
   address,

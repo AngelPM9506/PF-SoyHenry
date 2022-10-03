@@ -37,7 +37,7 @@ const Activities = ({ activities }: Props) => {
   const [sort, setSort] = useState<string>("desc");
   const [sortBy, setSortBy] = useState<string>("name");
   const [input, setInput] = useState<string>(undefined);
-  const { data, isLoading } = useQuery(
+  let { data, isLoading } = useQuery(
     ["activities", city, name, maxPrice, sort, sortBy], //dependencies: React is going to re-render when one of these changes
     () => getActivities(city, name, maxPrice, sort, sortBy)
   );
@@ -96,7 +96,7 @@ const Activities = ({ activities }: Props) => {
   if (!isLoading && userDb && !userDb.data.active) {
     return <BannedAlert />;
   }
-
+  data = data?.filter((a: Activity) => a.active === true);
   return (
     <div>
       <Layout>

@@ -169,7 +169,7 @@ export default function NavBar() {
           </Flex>
           {isOpen ? (
             <Box
-              backgroundColor="#2e3c4d"
+              backgroundColor={useColorModeValue("white", "#2e3c4d")}
               width={"100%"}
               height={"88.5vh"}
               rounded={"10px"}

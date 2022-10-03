@@ -62,7 +62,7 @@ export function ModalWeb3({
           setValidate("activate");
           return onClose();
         }}
-        size={"xl"}
+        size={"lg"}
       >
         <ModalOverlay />
         <ModalContent bg={"#4b647c"}>

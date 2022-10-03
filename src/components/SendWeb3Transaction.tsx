@@ -101,7 +101,7 @@ export function SendTransaction({
     <Box
       w="25.62rem"
       mx="auto"
-      mt="5.25rem"
+      mt="1.25rem"
       boxShadow="rgb(0 0 0 / 8%) 0rem 0.37rem 0.62rem"
       borderRadius="1.37rem"
       bg="#D1DFE3"

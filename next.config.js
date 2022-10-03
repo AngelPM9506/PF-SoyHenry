@@ -6,9 +6,9 @@ const nextConfig = {
     styledComponents: true,
   },
   images: {
-    domains: ["lh3.googleusercontent.com", "res.cloudinary.com"],
+    domains: ["lh3.googleusercontent.com", "res.cloudinary.com", "i.vgy.me"],
   },
-  pageExtensions: ["tsx", "ts"],
+  pageExtensions: ['tsx', 'ts']
 };
 
 module.exports = nextConfig;

@@ -17,6 +17,7 @@ import { useState } from "react";
 import NextLink from "next/link";
 import styles from "../styles/landing.module.css";
 import { NextSeo } from "next-seo";
+import { useWindowSize } from "src/utils/windowsize";
 
 const LandingPage: NextPage = () => {
   const url =
@@ -25,6 +26,7 @@ const LandingPage: NextPage = () => {
   const [ismuted, setismuted] = useState(true);
   const [color, setcolor] = useState("#D1DFE3");
 
+  const size = useWindowSize();
   const handlemuted = () => {
     setismuted(!ismuted);
     if (color === "#D1DFE3") {
@@ -40,15 +42,27 @@ const LandingPage: NextPage = () => {
   return (
     <Box className={styles.main}>
       <NextSeo title="World Travelers" />
-      <video
-        src={url}
-        loop
-        className={styles.video}
-        controls={false}
-        onMouseMove={play}
-        muted={ismuted}
-        onMouseOver={(e: any) => e.target.play()}
-      />
+      {size.width < 400 ? (
+        <video
+          src={url}
+          loop
+          className={styles.video}
+          controls={false}
+          muted={ismuted}
+          autoPlay
+        />
+      ) : (
+        <video
+          src={url}
+          loop
+          className={styles.video}
+          controls={false}
+          onMouseMove={play}
+          muted={ismuted}
+          onMouseOver={(e: any) => e.target.play()}
+        />
+      )}
+
       <Box>
         <FormControl
           position={"fixed"}
@@ -115,70 +129,77 @@ const LandingPage: NextPage = () => {
                 direction="column"
                 alignItems={"center"}
               >
-                <Stack alignItems={"center"}>
-                  {/*eslint-disable-next-line @next/next/no-html-link-for-pages*/}
-                  <a href="/api/auth/login">
-                    <Button
-                      mt={{ base: "60px", md: "10px" }}
-                      rounded="full"
-                      size={"lg"}
-                      width={{ base: "200px", md: "180px" }}
-                      height={{ base: "75px", md: "70px" }}
-                      fontWeight="700"
-                      px={15}
-                      color="#293541"
-                      fontSize={{ base: "24", md: "34" }}
-                      bg="#02b1b1"
-                      _hover={{ bg: "#F3B46F", color: "#293541" }}
-                    >
-                      LOG IN
-                    </Button>
-                  </a>
-                </Stack>
                 <Stack
-                  direction="row"
+                  direction="column"
                   alignItems={"center"}
                   justifyContent={"center"}
                   bottom="5vh"
                   position="fixed"
                   marginTop={{ base: "30px", md: "100px" }}
                 >
-                  <NextLink href="/contact">
-                    <Button
-                      mt={{ base: "60px", md: "0px" }}
-                      rounded="full"
-                      size={"lg"}
-                      width={{ base: "110px", md: "180px" }}
-                      height={{ base: "35px", md: "65px" }}
-                      fontWeight="800"
-                      px={15}
-                      color="#293541"
-                      fontSize={{ base: "18", md: "24" }}
-                      bg="RGBA(209,223,227,0.50)"
-                      mr={"30px"}
-                      _hover={{ bg: "#F3B46F", color: "#293541" }}
-                    >
-                      Contact Us
-                    </Button>
-                  </NextLink>{" "}
                   {/*eslint-disable-next-line @next/next/no-html-link-for-pages*/}
-                  <a href="/about">
-                    <Button
-                      mt={{ base: "60px", md: "0px" }}
-                      rounded="full"
-                      size={"lg"}
-                      width={{ base: "110px", md: "180px" }}
-                      height={{ base: "35px", md: "65px" }}
-                      fontWeight="800"
-                      px={15}
-                      color="#293541"
-                      fontSize={{ base: "18", md: "24" }}
-                      bg={"RGBA(209,223,227,0.50)"}
-                      _hover={{ bg: "#F3B46F", color: "#293541" }}
-                    >
-                      About Us
-                    </Button>
-                  </a>
+                  <Stack>
+                    <a href="/api/auth/login">
+                      <Button
+                        mt={{ base: "60px", md: "10px" }}
+                        rounded="full"
+                        size={"lg"}
+                        width={{ base: "200px", md: "180px" }}
+                        height={{ base: "75px", md: "70px" }}
+                        fontWeight="700"
+                        px={15}
+                        color="#293541"
+                        fontSize={{ base: "24", md: "34" }}
+                        bg="#02b1b1"
+                        _hover={{ bg: "#F3B46F", color: "#293541" }}
+                      >
+                        LOG IN
+                      </Button>
+                    </a>
+                  </Stack>
+                  <Stack
+                    direction="row"
+                    alignItems={"center"}
+                    justifyContent={"center"}
+                    bottom="5vh"
+                  >
+                    <NextLink href="/contact">
+                      <Button
+                        mt={{ base: "60px", md: "5px" }}
+                        rounded="full"
+                        size={"lg"}
+                        width={{ base: "110px", md: "140px" }}
+                        height={{ base: "35px", md: "45px" }}
+                        fontWeight="800"
+                        px={15}
+                        color="#293541"
+                        fontSize={{ base: "18", md: "24" }}
+                        bg="RGBA(209,223,227,0.50)"
+                        mr={"30px"}
+                        _hover={{ bg: "#F3B46F", color: "#293541" }}
+                      >
+                        Contact Us
+                      </Button>
+                    </NextLink>{" "}
+                    {/*eslint-disable-next-line @next/next/no-html-link-for-pages*/}
+                    <a href="/about">
+                      <Button
+                        mt={{ base: "60px", md: "5px" }}
+                        rounded="full"
+                        size={"lg"}
+                        width={{ base: "110px", md: "140px" }}
+                        height={{ base: "35px", md: "45px" }}
+                        fontWeight="800"
+                        px={15}
+                        color="#293541"
+                        fontSize={{ base: "18", md: "24" }}
+                        bg={"RGBA(209,223,227,0.50)"}
+                        _hover={{ bg: "#F3B46F", color: "#293541" }}
+                      >
+                        About Us
+                      </Button>
+                    </a>
+                  </Stack>
                 </Stack>
               </Stack>
             </Center>

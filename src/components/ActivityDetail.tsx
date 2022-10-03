@@ -42,7 +42,7 @@ export default function ActivityDetail({
     (t: any) => t.trip.active === true
   );
   return (
-    <Container maxW={"7xl"}>
+    <Container alignSelf={"center"} maxW={"7xl"}>
       <SimpleGrid
         columns={{ base: 1, lg: 2 }}
         spacing={{ base: 8, md: 10 }}

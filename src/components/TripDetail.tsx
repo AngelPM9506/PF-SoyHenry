@@ -19,7 +19,6 @@ import {
   AspectRatio,
   Avatar,
   Tooltip,
-
 } from "@chakra-ui/react";
 import { MinusIcon, ChatIcon } from "@chakra-ui/icons";
 import { City, User } from "src/utils/interface";
@@ -51,12 +50,19 @@ interface Users {
   users: User[];
 }
 
-export default function TripDetail({ data, isLoading, error }: any) {
 
+export default function TripDetail({
+  data,
+  isLoading,
+  error,
+  ethPrice,
+  validate,
+  setValidate,
+}: any) {
   const urlFacebook = Url + "/trips/" + data.id;
   const { user } = useUser();
   const router = useRouter();
-	const [userOnTrip, setUserOnTrip] = useState(false);
+  const [userOnTrip, setUserOnTrip] = useState(false);
 
   const { data: userDb } = useQuery(
     ["userDb", user],
@@ -68,24 +74,24 @@ export default function TripDetail({ data, isLoading, error }: any) {
   const iday = data.initDate.slice(0, 10).split("-").reverse().join("/");
   const eday = data.endDate.slice(0, 10).split("-").reverse().join("/");
 
-	const openChat = () => {
-		router.push(`/chat/${data.id}`)
-	}
+  const openChat = () => {
+    router.push(`/chat/${data.id}`);
+  };
 
-	useEffect(() => {
-		async function a() {
-		  const bool = await searchUser(data.id, userDb?.data.id);
-		  setUserOnTrip(bool);
-		}
-		a();
-	}, [data.id, userDb]);
+  useEffect(() => {
+    async function a() {
+      const bool = await searchUser(data.id, userDb?.data.id);
+      setUserOnTrip(bool);
+    }
+    a();
+  }, [data.id, userDb]);
 
   if (isLoading || !userDb || !user) return <LoadingWithoutLayout />;
   if (data.plannerId !== userDb.data.id && data.active === false)
     router.push("/404");
   if (error) return <div>{error.message}</div>;
   return (
-    <Container maxW={"7xl"}>
+    <Container alignSelf={"center"} maxW={"7xl"}>
       <VStack
         bg={useColorModeValue("#D1DFE3", "#4b647c")}
         boxShadow={"2xl"}
@@ -266,15 +272,26 @@ export default function TripDetail({ data, isLoading, error }: any) {
                         )}
                       </List>
                     </ListItem>
-										{
-											userOnTrip ? 
-											<Button onClick={() => openChat()} borderRadius="100%" h="48px" mt="20px" bg="#F3B46F" transition="0.5s" _hover={{bg:"#25D366"}}>
-												<Tooltip label={`Go to chat!`} placement="right" hasArrow arrowSize={10}>
-													<ChatIcon/>
-												</Tooltip>
-											</Button> 
-											: null
-										}
+                    {userOnTrip ? (
+                      <Button
+                        onClick={() => openChat()}
+                        borderRadius="100%"
+                        h="48px"
+                        mt="20px"
+                        bg="#F3B46F"
+                        transition="0.5s"
+                        _hover={{ bg: "#25D366" }}
+                      >
+                        <Tooltip
+                          label={`Go to chat!`}
+                          placement="right"
+                          hasArrow
+                          arrowSize={10}
+                        >
+                          <ChatIcon />
+                        </Tooltip>
+                      </Button>
+                    ) : null}
                   </List>
                 </SimpleGrid>
               </Box>
@@ -312,7 +329,12 @@ export default function TripDetail({ data, isLoading, error }: any) {
             /> */}
           </Box>
 
-          <TimeLine data={data} />
+          <TimeLine
+            data={data}
+            ethPrice={ethPrice}
+            validate={validate}
+            setValidate={setValidate}
+          />
         </Box>
       </VStack>
     </Container>

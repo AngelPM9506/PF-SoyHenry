@@ -131,7 +131,7 @@ export const ActivityDashboard = ({
 	};
 
 
-	const onSubmit = async(e: FormEvent<HTMLFormElement>) => {
+	const onSubmit = async(e: any) => {
 		e.preventDefault();
 		const response = await createCity(inputCity);
 		setInputCity({

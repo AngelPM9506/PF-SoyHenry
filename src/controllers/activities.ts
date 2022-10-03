@@ -17,6 +17,7 @@ type query = {
   wCity?: string | string[];
   maxPrice?: string | string[];
   idFeedback?: String;
+  byName?: String | String[];
 };
 
 type body = {
@@ -82,6 +83,28 @@ const uploadImage = async (image: string, name: string) => {
 };
 
 const ActivitiesControles = {
+  getActivitiesByName: async (query: query) => {
+    let { byName } = query;
+    if (byName) {
+      let response = await prisma.activity.findMany({
+        select: {
+          id: true,
+          name: true,
+          availability: true,
+          price: true,
+          image: true,
+          public_id_image: true,
+          city: {
+            select: {
+              name: true,
+            },
+          },
+        },
+      });
+      return response;
+    }
+  },
+
   getActivities: async (query: query) => {
     let { wName, sort, sortBy, wCity, maxPrice } = query;
     let orderBy: typeSort[] = [];

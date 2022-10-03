@@ -40,8 +40,12 @@ export default function Footer() {
       >
         <HStack>
           <Logo />
+
           <NextLink href="/home">
-            <Text cursor={"pointer"}>Authors</Text>
+            <Text id="authors" cursor={"pointer"}>
+              Authors
+            </Text>
+
           </NextLink>
         </HStack>
 

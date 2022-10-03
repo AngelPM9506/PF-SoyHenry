@@ -76,6 +76,7 @@ export default function ActivityDetail({
               fontWeight={600}
               fontSize={{ base: "2xl", sm: "4xl", lg: "5xl" }}
               color={useColorModeValue("#F3B46F", "#F3B46F")}
+              textTransform={"capitalize"}
             >
               {data.activity.name}
             </Heading>
@@ -149,6 +150,7 @@ export default function ActivityDetail({
           </Stack>
         </Stack>
       </SimpleGrid>
+
       {data.activity.activitiesOnTrips.length > 0 && (
         <Box
           display={"flex"}
@@ -264,6 +266,7 @@ export default function ActivityDetail({
           mutatesubmit={mutatesubmit}
           mutateedit={mutateedit}
           mutatedelete={mutatedelete}
+          admin={false}
         />
       </Box>
     </Container>

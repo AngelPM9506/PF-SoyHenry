@@ -55,7 +55,9 @@ const MyCarousel = ({ trips, activities }: Props) => {
     return (
       <>
         <Box p={5} mt={"20px"}>
-          <Heading textAlign={"center"}>Trending Trips</Heading>
+          <Heading textAlign={"center"} id="toptrips">
+            Trending Trips
+          </Heading>
         </Box>
         <Box
           width={"95vw"}
@@ -63,16 +65,16 @@ const MyCarousel = ({ trips, activities }: Props) => {
           justifyContent={"center"}
           alignItems={"center"}
         >
-          <Stack width={"80%"}>
+          <Stack id="masinfo" width={"80%"}>
             <Slider {...settings}>
-              {tripsCarousel.map((t) => {
+              {tripsCarousel.map((t, index) => {
                 return (
                   <Center p={8} py={12} key={t.id}>
                     <Box
                       role={"group"}
                       p={6}
-                      minW={"250px"}
-                      minH={"380px"}
+                      minWidth={"250px"}
+                      minHeight={"380px"}
                       w={"full"}
                       bg={useColorModeValue(
                         "RGBA(75,100,124,0.41)",
@@ -169,7 +171,9 @@ const MyCarousel = ({ trips, activities }: Props) => {
           </Stack>
         </Box>
         <Box p={5} mt={"20px"}>
-          <Heading textAlign={"center"}>Trending Activities</Heading>
+          <Heading textAlign={"center"} id="topAct">
+            Trending Activities
+          </Heading>
         </Box>
         <Box
           marginBottom={"7%"}
@@ -275,6 +279,7 @@ const MyCarousel = ({ trips, activities }: Props) => {
                                   bg: useColorModeValue("#293541", "#D1DFE3"),
                                   color: useColorModeValue("white", "#293541"),
                                 }}
+                                id="masinfoact"
                               >
                                 +Info
                               </Button>

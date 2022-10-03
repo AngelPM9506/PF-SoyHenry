@@ -20,9 +20,9 @@ import {
   Avatar,
   Tooltip,
 } from "@chakra-ui/react";
-import { MinusIcon } from "@chakra-ui/icons";
+import { MinusIcon, ChatIcon } from "@chakra-ui/icons";
 import { City, User } from "src/utils/interface";
-import { Key, useEffect } from "react";
+import { Key, useEffect, useState } from "react";
 import { QueryFunctionContext, useQuery } from "react-query";
 import { TimeLine } from "./TimeLineTrip";
 import { TripDescription } from "./TripDescription";
@@ -38,6 +38,7 @@ import {
   WhatsappShareButton,
   WhatsappIcon,
 } from "next-share";
+import searchUser from "src/utils/searchUserOnTrip";
 
 // const Url = "http://localhost:3000";
 const Url = "https://worldtravelers.vercel.app";
@@ -60,14 +61,29 @@ export default function TripDetail({
   const urlFacebook = Url + "/trips/" + data.id;
   const { user } = useUser();
   const router = useRouter();
+  const [userOnTrip, setUserOnTrip] = useState(false);
+
   const { data: userDb } = useQuery(
     ["userDb", user],
     () => user && getOrCreateUser(user)
   );
+
   const location =
     "https://drive.google.com/uc?id=1w5WnrjO9EbDHxa8B7h9oedYuk0SgQWBL";
   const iday = data.initDate.slice(0, 10).split("-").reverse().join("/");
   const eday = data.endDate.slice(0, 10).split("-").reverse().join("/");
+
+  const openChat = () => {
+    router.push(`/chat/${data.id}`);
+  };
+
+  useEffect(() => {
+    async function a() {
+      const bool = await searchUser(data.id, userDb?.data.id);
+      setUserOnTrip(bool);
+    }
+    a();
+  }, [data.id, userDb]);
 
   if (isLoading || !userDb || !user) return <LoadingWithoutLayout />;
   if (data.plannerId !== userDb.data.id && data.active === false)
@@ -112,7 +128,7 @@ export default function TripDetail({
               src={location}
               alt={"icon"}
             />
-            <Text>{data.name}</Text>
+            <Text textTransform={"capitalize"}>{data.name}</Text>
           </Heading>
           <Stack
             alignItems={"center"}
@@ -233,7 +249,7 @@ export default function TripDetail({
                   Details
                 </Text>
 
-                <SimpleGrid columns={{ base: 1, md: 2 }} spacing={10}>
+                <SimpleGrid columns={{ base: 1, md: 2 }} spacing={12}>
                   <List spacing={2}>
                     <ListItem>Initial date: {iday}</ListItem>
                     <ListItem>Ending date: {eday}</ListItem>
@@ -255,6 +271,26 @@ export default function TripDetail({
                         )}
                       </List>
                     </ListItem>
+                    {userOnTrip ? (
+                      <Button
+                        onClick={() => openChat()}
+                        borderRadius="100%"
+                        h="48px"
+                        mt="20px"
+                        bg="#F3B46F"
+                        transition="0.5s"
+                        _hover={{ bg: "#25D366" }}
+                      >
+                        <Tooltip
+                          label={`Go to chat!`}
+                          placement="right"
+                          hasArrow
+                          arrowSize={10}
+                        >
+                          <ChatIcon />
+                        </Tooltip>
+                      </Button>
+                    ) : null}
                   </List>
                 </SimpleGrid>
               </Box>
@@ -279,13 +315,11 @@ export default function TripDetail({
               borderWidth={"1.5px"}
               color={"#293541"}
             /> */}
-
             {data.tripOnUser.length > 0 && (
               <Box height={"200px"} overflow={"hidden"}>
                 <AvatarCarousel props={data.tripOnUser} />
               </Box>
             )}
-
             {/* <Divider
               orientation="horizontal"
               width={"80%"}

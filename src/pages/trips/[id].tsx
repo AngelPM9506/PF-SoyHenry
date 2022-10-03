@@ -9,6 +9,7 @@ import axios from "axios";
 import { GetServerSideProps } from "next/types";
 import { useUser } from "@auth0/nextjs-auth0";
 import { useRouter } from "next/router";
+import NotFound from "../404";
 import { NextSeo } from "next-seo";
 import { getEthPrice } from "src/utils/web3";
 import { useState } from "react";
@@ -30,10 +31,12 @@ export default function Detail(props: Props) {
       initialData: props.trip,
     }
   );
-
   if (!userLoading && !user) {
     router.push("/api/auth/login");
     return <div></div>;
+  }
+  if (!isLoading && !data) {
+    return <NotFound />;
   }
   return (
     <Layout>

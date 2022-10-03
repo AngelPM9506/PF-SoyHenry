@@ -30,7 +30,7 @@ export default function Profile() {
     userDb &&
     !isLoading && (
       <Layout>
-        <NextSeo title={`${userDb.data.name} profile`} />
+        <NextSeo title={`${userDb.data.name} Profile`} />
         <UserProfile user={userDb} />
       </Layout>
     )

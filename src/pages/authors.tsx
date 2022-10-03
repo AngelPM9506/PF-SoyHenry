@@ -60,12 +60,16 @@ const Authors = () => {
       >
         <Stack
           width={{ base: "90%", xl: "71%" }}
-          bg={"RGBA(209,223,227,0.1)"}
+          bg={useColorModeValue(
+            "RGBA(209,223,227,0.6)",
+            "RGBA(209,223,227,0.1)"
+          )}
           display={"flex"}
           justifyContent={"space-around"}
           rounded={"20px"}
           marginTop={"20px"}
           pb={"25px"}
+          boxShadow={"1px 1px 15px 2px rgba(0,0,0,0.20)"}
         >
           <Image
             alignSelf={"center"}
@@ -122,9 +126,9 @@ const Authors = () => {
                       justifyContent={"center"}
                       mt={"6px"}
                     >
-                      <NextLink href={a.linkedin}>
+                       <a href={a.linkedin} rel="noreferrer noopener" target="_blank">
                         <Button
-                          w={"300px"}
+                          w={"100%"}
                           bg={useColorModeValue("#151f21", "gray.900")}
                           color={"white"}
                           rounded={"md"}
@@ -134,13 +138,13 @@ const Authors = () => {
                             boxShadow: "lg",
                           }}
                         >
-                          <TiSocialLinkedin size={"33"} color={"#F3B46F"} />
+                          <TiSocialLinkedin size={"23"} color={"#F3B46F"} />
                           LinkedIn
                         </Button>
-                      </NextLink>
-                      <NextLink href={a.github}>
+                      </a>
+                      <a href={a.github} rel="noreferrer noopener" target="_blank">
                         <Button
-                          w={"350px"}
+                          w={"100%"}
                           bg={useColorModeValue("#151f21", "gray.900")}
                           color={"white"}
                           rounded={"md"}
@@ -150,17 +154,19 @@ const Authors = () => {
                             boxShadow: "lg",
                           }}
                         >
-                          <TiSocialGithub size={"33"} color={"#F3B46F"} />
+                          <TiSocialGithub size={"25"} color={"#F3B46F"} />
                           GitHub
                         </Button>
-                      </NextLink>
+                      </a>
                     </Stack>
                     <Stack
                       direction={"row"}
                       justifyContent={"center"}
                       mt={"6px"}
                     >
-                      <NextLink href={a.cv}>
+                      {/*eslint-disable-next-line @next/next/no-html-link-for-pages*/}
+
+                      <a href={a.cv} rel="noreferrer noopener" target="_blank">
                         <Button
                           marginTop={"6px"}
                           width={"100%"}
@@ -177,7 +183,7 @@ const Authors = () => {
                           <ImLink />
                           Curriculum / Portfolio
                         </Button>
-                      </NextLink>
+                      </a>
                     </Stack>
                   </Box>
                 </Box>

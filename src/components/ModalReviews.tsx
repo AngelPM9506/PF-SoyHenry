@@ -47,16 +47,16 @@ export function ModalReviews({
         Reviews
       </Button>
 
-      <Modal isOpen={isOpen} onClose={onClose} key={data.id} size={"3xl"}>
+      <Modal isOpen={isOpen} onClose={onClose} key={data?.id} size={"3xl"}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>{data.activity.name}</ModalHeader>
+          <ModalHeader>{data?.activity?.name}</ModalHeader>
           <ModalCloseButton />
           <Center>
             <ModalBody w={700}>
               <Reviews
-                feedbacks={data.activity.feedbacks}
-                id={data.id}
+                feedbacks={data?.activity?.feedbacks}
+                id={data?.id}
                 admin={true}
                 mutatesubmit={mutatesubmit}
                 mutateedit={mutateedit}

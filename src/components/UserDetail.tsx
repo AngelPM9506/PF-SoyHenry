@@ -57,7 +57,7 @@ export const UserDetail = ({ userDetail, trips }: Props) => {
     >
       <Center pt={6}>
         <Heading color={useColorModeValue("#293541", "white")}>
-          Meet the traveler
+          Meet the Traveler
         </Heading>
       </Center>
       <Center>

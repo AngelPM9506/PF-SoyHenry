@@ -137,8 +137,8 @@ const LandingPage: NextPage = () => {
                   position="fixed"
                   marginTop={{ base: "30px", md: "100px" }}
                 >
-                  {/*eslint-disable-next-line @next/next/no-html-link-for-pages*/}
                   <Stack>
+                    {/*eslint-disable-next-line @next/next/no-html-link-for-pages*/}
                     <a href="/api/auth/login">
                       <Button
                         mt={{ base: "60px", md: "10px" }}
@@ -180,7 +180,7 @@ const LandingPage: NextPage = () => {
                       >
                         Contact Us
                       </Button>
-                    </NextLink>{" "}
+                    </NextLink>
                     {/*eslint-disable-next-line @next/next/no-html-link-for-pages*/}
                     <a href="/about">
                       <Button

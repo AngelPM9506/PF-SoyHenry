@@ -50,11 +50,11 @@ export default function ChatRoom(props: Props) {
     await axios("/api/socket");
     socket = io();
     socket.on("connect", () => {
-      console.log(socket.id);
+      //console.log(socket.id);
     });
     socket.emit("join", room);
     socket.on("chat", (data) => {
-      console.log(data);
+      //console.log(data);
       setChat((olodChat) => [...olodChat, data]);
     });
   };
@@ -78,7 +78,7 @@ export default function ChatRoom(props: Props) {
     let {
       data: { messages },
     } = respuesta;
-    console.log(messages);
+    //console.log(messages);
     setChat(messages);
   };
 
@@ -98,11 +98,11 @@ export default function ChatRoom(props: Props) {
   }, []);
 
   const prefixDate = (date: string) => {
-    let arraydate = new Date(date).toLocaleString();
-    let dateF = arraydate[0].split("-").reverse().join("-");
-    let timePre = arraydate[1].split(".")[0].split(":");
+    let arraydate = new Date(date).toLocaleString().split(', ');
+    let dateF = arraydate[0].split("/").join("-");
+    let timePre = arraydate[1].split(':');
     let time = `${timePre[0]}:${timePre[1]}`;
-    return `${arraydate}`;
+    return `${dateF} ${time}`;
   };
   useEffect(() => {
     bottomRef?.current?.scrollIntoView({ behavior: "smooth" });
@@ -119,7 +119,7 @@ export default function ChatRoom(props: Props) {
     event.preventDefault();
     let user = userDb.data.name;
     let userAvatar = userDb.data.avatar;
-    let date = Date.now();
+    let date = new Date().toUTCString();
     if (!message || message === "") return;
     sendMessage(room, message.trim(), user, userAvatar, date);
     setMessage("");

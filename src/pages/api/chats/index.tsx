@@ -15,9 +15,10 @@ const Index = async (req: NextApiRequest, res: NextApiResponse) => {
                 return res.status(200).json({ status: 'success', messages: clients });
             case 'POST':
                 if (!idTrip || !nameUser || !message || !avatar || !createdAt) return res.status(404).json({ status: 'error', msg: 'Data Missing' })
-                 let now = new Date(createdAt);
-                 let date = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(),
-                     now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds(), now.getUTCMilliseconds());
+                  let now = new Date(createdAt);
+                  let date = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(),
+                      now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds(), now.getUTCMilliseconds());
+                      console.log(date);                      
                 let newClient = await ChatModel.create({ idTrip, nameUser, message, avatar, createdAt: date });
                 console.log(newClient);
                 

@@ -200,7 +200,7 @@ export function SendTransaction({
                 </Flex>
                 <Box mt="0.5rem">
                   <Button
-                    disabled={isLoading || !sendTransaction}
+                    disabled={isLoading || !sendTransaction || isSuccess}
                     type={"submit"}
                     color="white"
                     bg="rgb(255,140,0)"

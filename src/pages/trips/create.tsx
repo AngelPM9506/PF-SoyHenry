@@ -654,7 +654,7 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
                               columns={{ base: 3, md: 7 }}
                               spacing={1}
                             >
-                              {activities?.map((act, i) => {
+                              {activities?.filter(a => a.active === true).map((act, i) => {
                                 if (input.cities.includes(act.city.name)) {
                                   const id = act.id;
                                   return (

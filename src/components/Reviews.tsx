@@ -64,7 +64,6 @@ const Reviews = ({
     setRatingEdit(mycomment.rating);
     setCommentEdit(mycomment.comment);
   }
-  console.log(allComments);
   const handleInput = (e: any) => {
     setComment(e.target.value);
   };
@@ -587,7 +586,7 @@ const Reviews = ({
                 fontWeight={"bold"}
                 paddingRight={"50px"}
               >
-                write a comment:
+                Type a comment:
               </Text>
               <Box width={"200px"} height={"60px"} pt={"15px"}>
                 <StarRatings

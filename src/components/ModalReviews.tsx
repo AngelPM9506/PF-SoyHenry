@@ -47,7 +47,7 @@ export function ModalReviews({
         Reviews
       </Button>
 
-      <Modal isOpen={isOpen} onClose={onClose} key={data.id} size={"3xl"}>
+      <Modal isOpen={isOpen} onClose={onClose} key={data?.id} size={"3xl"}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>{data.name}</ModalHeader>

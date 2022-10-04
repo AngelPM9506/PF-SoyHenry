@@ -34,10 +34,9 @@ const MyCarousel = ({ trips, activities }: Props) => {
     "https://res.cloudinary.com/mauro4202214/image/upload/v1663331567/world-travelers/defaultimagetrip_j90ewc.png";
 
   const activeTrips = trips.filter((trip) => trip.active === true);
-
+  const activeActivities = activities.filter((act) => act.active === true);
   const lastTrips = activeTrips?.slice(-12);
-  const lastActivities = activities?.slice(-12);
-
+  const lastActivities = activeActivities?.slice(-12);
   const [tripsCarousel, setTripsCarousel] = useState<Trip[]>(lastTrips);
   const [activitiesCarousel, setActivitiesCarousel] =
     useState<Activity[]>(lastActivities);
@@ -129,7 +128,7 @@ const MyCarousel = ({ trips, activities }: Props) => {
                         </Heading>
                         <Stack direction={"row"} align={"center"}>
                           <Text fontWeight={800} fontSize={"xl"}>
-                            {`$${t.price}`}
+                            {`US$${t.price}`}
                           </Text>
                         </Stack>
                       </Stack>
@@ -176,7 +175,7 @@ const MyCarousel = ({ trips, activities }: Props) => {
           </Heading>
         </Box>
         <Box
-          marginBottom={"7%"}
+          paddingBottom={"30px"}
           width={"95vw"}
           display={"flex"}
           justifyContent={"center"}
@@ -249,7 +248,7 @@ const MyCarousel = ({ trips, activities }: Props) => {
                         </Text>
                         <Stack direction={"row"} align={"center"}>
                           <Text fontWeight={800} fontSize={"xl"}>
-                            {`$${a.price}`}
+                            {`US$${a.price}`}
                           </Text>
                         </Stack>
                         <Stack direction={"row"} align={"center"}>

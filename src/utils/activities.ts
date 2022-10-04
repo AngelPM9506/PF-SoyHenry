@@ -42,8 +42,6 @@ export const createActivity = async ({
       description,
       price,
     });
-    console.log(activity);
-    console.log(activity.data);
     return activity.data;
   } catch (err) {
     console.error(err);

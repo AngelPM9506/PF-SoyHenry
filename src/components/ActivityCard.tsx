@@ -28,7 +28,7 @@ const averageRating = (feedbacks: Feedback[]) => {
 export function ActivityCard({ props }: any) {
   return (
     <Center key={props.id} py={12}>
-      <Link style={{ textDecoration: "none" }}>
+      <Text style={{ textDecoration: "none" }}>
         <Box
           role={"group"}
           p={6}
@@ -88,14 +88,21 @@ export function ActivityCard({ props }: any) {
               fontFamily={"body"}
               fontWeight={600}
               textAlign={"center"}
+              textTransform={"capitalize"}
+              noOfLines={1}
             >
               {props.name}
             </Heading>
-            <Text fontWeight={400} fontSize={"xl"} textAlign={"center"}>
+            <Text
+              fontWeight={400}
+              fontSize={"xl"}
+              textAlign={"center"}
+              textTransform={"capitalize"}
+            >
               {props.city.name}
             </Text>
             <Text fontWeight={700} fontSize={"xl"}>
-              $ {props.price}
+              US$ {props.price}
             </Text>
           </Box>
           {props.feedbacks.length > 0 ? (
@@ -125,7 +132,10 @@ export function ActivityCard({ props }: any) {
             width={"100%"}
             mt={"2px"}
           >
-            this activity is in {props.activitiesOnTrips.length} trips
+            {props.activitiesOnTrips.length === 0
+              ? "There are no trips with this activity."
+              : `This activity is in ${props.activitiesOnTrips.length}
+            ${props.activitiesOnTrips.length === 1 ? " trip" : " trips"}`}
           </Box>
           <NextLink href={`/activities/${props.id}`}>
             <Button
@@ -143,7 +153,7 @@ export function ActivityCard({ props }: any) {
             </Button>
           </NextLink>
         </Box>
-      </Link>
+      </Text>
     </Center>
   );
 }

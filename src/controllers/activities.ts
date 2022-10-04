@@ -76,7 +76,6 @@ const uploadImage = async (image: string, name: string) => {
     },
     function (error: any, result: any) {
       if (error) console.log(error);
-      console.log(result);
     }
   );
   return resp;
@@ -94,6 +93,7 @@ const ActivitiesControles = {
           price: true,
           image: true,
           public_id_image: true,
+          active: true,
           city: {
             select: {
               name: true,

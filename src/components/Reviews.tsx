@@ -66,7 +66,6 @@ const Reviews = ({
     setRatingEdit(mycomment.rating);
     setCommentEdit(mycomment.comment);
   }
-  console.log(allComments);
   const handleInput = (e: any) => {
     setComment(e.target.value);
   };

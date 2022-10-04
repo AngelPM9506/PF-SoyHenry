@@ -15,7 +15,6 @@ export const validateWeb3Payment = async (userId: string, tripId: string) => {
     userId: userId,
     tripId: tripId,
   });
-  console.log(response.data);
   return response.data;
 };
 

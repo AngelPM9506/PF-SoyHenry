@@ -9,3 +9,8 @@ export const getCities = async () => {
   const city = await axios.get(`/cities`);
   return city.data;
 };
+
+export const createCity = async (inputCity: object) => {
+  const city = await axios.post('/api/cities', inputCity);
+  return city.data
+}

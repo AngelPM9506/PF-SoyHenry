@@ -7,71 +7,76 @@ import prisma from "src/utils/prisma";
 // 	msg?: string
 // }
 
-const createCity = async () => {
-  const countryID = [
-    "US",
-    "MX",
-    "VE",
-    "CO",
-    "EC",
-    "PE",
-    "CL",
-    "AR",
-    "UY",
-    "BR",
-    "ES",
-    "PT",
-    "FR",
-    "DE",
-    "IT",
-  ];
-  const response = cities.filter(
-    (city: City) => city.population > 10000 && countryID.includes(city.country)
-  );
-  let citiesCreatedInDB = response.map((c: City) => ({
-    name: c.name,
-    country: c.country,
-    population: c.population,
-    latitude: c.loc.coordinates[0],
-    longitude: c.loc.coordinates[1],
-  }));
+const createCity = async (name: string, country: string) => {
   try {
-    const response = await prisma.$transaction(
-      citiesCreatedInDB.map((c: CityInDB) =>
-        prisma.city.upsert({
-          where: { name: c.name },
-          update: {},
-          create: {
-            name: c.name,
-            country: c.country,
-            population: c.population,
-            latitude: c.latitude,
-            longitude: c.longitude,
-          },
-        })
-      )
+    const response = cities.find(
+      (city: City) => city.name === name && city.country === country
     );
+    if (JSON.stringify(response) === "{}") {
+      return "The city doesn't exist";
+    } else {
+      let cityInDb = {
+        name: response.name.toLowerCase(),
+        country: response.country,
+        population: response.population,
+        latitude: response.loc.coordinates[0],
+        longitude: response.loc.coordinates[1],
+      };
+
+      let prismaResponse = prisma.city.create({ data: cityInDb });
+
+      return prismaResponse;
+    }
   } catch (error: any) {
-    throw new Error(error);
+    return error.message;
   }
+  // let citiesCreatedInDB = response.map((c: City) => ({
+  //   name: c.name,
+  //   country: c.country,
+  //   population: c.population,
+  //   latitude: c.loc.coordinates[0],
+  //   longitude: c.loc.coordinates[1],
+  // }));
+  // try {
+  //   const response = await prisma.$transaction(
+  //     citiesCreatedInDB.map((c: CityInDB) =>
+  //       prisma.city.upsert({
+  //         where: { name: c.name },
+  //         update: {},
+  //         create: {
+  //           name: c.name.toLowerCase(),
+  //           country: c.country,
+  //           population: c.population,
+  //           latitude: c.latitude,
+  //           longitude: c.longitude,
+  //         },
+  //       })
+  //     )
+  //   );
+  // } catch (error: any) {
+  //   throw new Error(error);
+  // }
 };
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const { method } = req;
+  const {
+    method,
+    body: { name, country },
+  } = req;
 
   switch (method) {
     case "GET":
-      let exist = await prisma.city.findFirst();
+      let exist = await prisma.city.findFirst({
+        where: { name: name.toLowerCase() },
+      });
       if (exist) {
-        return res.json("DB is up");
+        return res.json(exist);
       } else {
-        setTimeout(() => {
-          createCity();
-        }, 0);
-        return res.json("done");
+        const response = await createCity(name, country);
+        return res.json(response);
       }
     default:
       return res.status(400).send({ msg: "Method not supported try again" });

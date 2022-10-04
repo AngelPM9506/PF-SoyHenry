@@ -32,12 +32,12 @@ import MapView from "src/components/DynamicMap";
 import { useUser } from "@auth0/nextjs-auth0";
 import { getOrCreateUser } from "src/utils/User";
 import { useRouter } from "next/router";
-import {
-  FacebookShareButton,
-  FacebookIcon,
-  WhatsappShareButton,
-  WhatsappIcon,
-} from "next-share";
+//import {
+//  FacebookShareButton,
+//  FacebookIcon,
+//  WhatsappShareButton,
+//  WhatsappIcon,
+//} from "next-share";
 import searchUser from "src/utils/searchUserOnTrip";
 
 // const Url = "http://localhost:3000";
@@ -49,7 +49,6 @@ interface Props {
 interface Users {
   users: User[];
 }
-
 
 export default function TripDetail({
   data,
@@ -96,7 +95,7 @@ export default function TripDetail({
         bg={useColorModeValue("#D1DFE3", "#4b647c")}
         boxShadow={"2xl"}
         rounded={"2xl"}
-        margin={"20px"}
+        margin={{ base: "2px", md: "20px" }}
         mt={"40px"}
         height={"max-content"}
       >
@@ -106,7 +105,7 @@ export default function TripDetail({
           justifyContent={"space-between"}
           display={"flex"}
           flexDirection={{ base: "column", md: "row" }}
-          width={"90%"}
+          width={{ base: "100%", md: "90%" }}
         >
           <Heading
             width={"100%"}
@@ -131,7 +130,7 @@ export default function TripDetail({
             />
             <Text textTransform={"capitalize"}>{data.name}</Text>
           </Heading>
-          <Stack
+          {/*<Stack
             alignItems={"center"}
             justifyContent={"center"}
             direction={"row"}
@@ -162,7 +161,7 @@ export default function TripDetail({
             >
               <WhatsappIcon size={40} round />
             </WhatsappShareButton>
-          </Stack>
+          </Stack>*/}
         </Stack>
         <Divider
           orientation="horizontal"
@@ -214,7 +213,7 @@ export default function TripDetail({
                   marginTop={"20px"}
                   fontSize={"2xl"}
                 >
-                  Price: $ {data.price}
+                  Price: US$ {data.price}
                 </Text>
                 <Stack direction={"row"} alignItems={"center"}>
                   <Text>Planner</Text>
@@ -259,7 +258,7 @@ export default function TripDetail({
                       <List>
                         {data.citiesOnTrips.length != 0 ? (
                           data.citiesOnTrips.map((c: any, index: Key) => (
-                            <ListItem key={index}>
+                            <ListItem key={index} textTransform={"capitalize"}>
                               <ListIcon as={MinusIcon} color="#F3B46F" />
                               {c.city.name}
                             </ListItem>
@@ -343,72 +342,72 @@ export default function TripDetail({
 
 {
   /* <Text
-			  fontSize={{ base: "16px", lg: "18px" }}
-			  color={useColorModeValue("#F3B46F", "#F3B46F")}
-			  fontWeight={"500"}
-			  textTransform={"uppercase"}
-			  mb={"4"}
-			  ml={"20px"}
-			  pb={"3px"}
-			>
-			  Activities
-			</Text> */
+        fontSize={{ base: "16px", lg: "18px" }}
+        color={useColorModeValue("#F3B46F", "#F3B46F")}
+        fontWeight={"500"}
+        textTransform={"uppercase"}
+        mb={"4"}
+        ml={"20px"}
+        pb={"3px"}
+      >
+        Activities
+      </Text> */
 }
 {
   /* <SimpleGrid ml={"20px"} mr={"20px"} columns={5} spacing={2}>
-			  {data.activitiesOnTrips.length != 0 ? (
-				data.activitiesOnTrips.map((activity: any, i: number) => (
-				  <MiniCardAct
-				  Key={i}
-					activity={activity.activity}
-					cities={data.citiesOnTrips}
-				  />
-				))
-			  ) : (
-				<Text> No Activities found</Text>
-			  )}
-			</SimpleGrid> */
+        {data.activitiesOnTrips.length != 0 ? (
+        data.activitiesOnTrips.map((activity: any, i: number) => (
+          <MiniCardAct
+          Key={i}
+          activity={activity.activity}
+          cities={data.citiesOnTrips}
+          />
+        ))
+        ) : (
+        <Text> No Activities found</Text>
+        )}
+      </SimpleGrid> */
 }
 // </Box>
 {
   /* <Stack width={"100vw"} align={"center"}>
-			<StackDivider
-			  borderColor={useColorModeValue("gray.200", "gray.600")}
-			/>
-			<Box
-			  bgColor={"#02b1b1"}
-			  height={"60px"}
-			  width={"230px"}
-			  rounded={"lg"}
-			  padding={"8px"}
-			  boxShadow={"0px 5px   white"}
-			>
-			  <Text textAlign={"center"} fontWeight={"bold"} fontSize={"2xl"}>
-				Trip's itinerary
-			  </Text>
-			</Box>
-			<TimeLine />
-			<Stack alignItems={"center"} justifyContent={"center"}>
-			  <Button
-				rounded={"lg"}
-				w={"100%"}
-				pb={"2px"}
-				mb={"10px"}
-				mt={4}
-				size={"lg"}
-				py={"7"}
-				bg={useColorModeValue("gray.900", "gray.50")}
-				color={useColorModeValue("white", "gray.900")}
-				textTransform={"uppercase"}
-				_hover={{
-				  transform: "translateY(2px)",
-				  boxShadow: "lg",
-				}}
-			  >
-				Pay and Join the trip!
-			  </Button>
-			</Stack>
-		  </Stack> */
+      <StackDivider
+        borderColor={useColorModeValue("gray.200", "gray.600")}
+      />
+      <Box
+        bgColor={"#02b1b1"}
+        height={"60px"}
+        width={"230px"}
+        rounded={"lg"}
+        padding={"8px"}
+        boxShadow={"0px 5px   white"}
+      >
+        <Text textAlign={"center"} fontWeight={"bold"} fontSize={"2xl"}>
+        Trip's itinerary
+        </Text>
+      </Box>
+      <TimeLine />
+      <Stack alignItems={"center"} justifyContent={"center"}>
+        <Button
+        rounded={"lg"}
+        w={"100%"}
+        pb={"2px"}
+        mb={"10px"}
+        mt={4}
+        size={"lg"}
+        py={"7"}
+        bg={useColorModeValue("gray.900", "gray.50")}
+        color={useColorModeValue("white", "gray.900")}
+        textTransform={"uppercase"}
+        _hover={{
+          transform: "translateY(2px)",
+          boxShadow: "lg",
+        }}
+        >
+        Pay and Join the trip!
+        </Button>
+      </Stack>
+      </Stack> */
 }
 //       </VStack>
 //     </Container>

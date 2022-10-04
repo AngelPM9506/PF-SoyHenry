@@ -1,5 +1,5 @@
 import { Box, Button, Flex, FormControl, Input, Text } from "@chakra-ui/react";
-import { useAddRecentTransaction } from "@rainbow-me/rainbowkit";
+import { ConnectButton, useAddRecentTransaction } from "@rainbow-me/rainbowkit";
 import { parseEther } from "ethers/lib/utils";
 import { useState } from "react";
 import {
@@ -107,6 +107,7 @@ export function SendTransaction({
       pb={5}
       pl={1}
     >
+    
       <Flex
         alignItems="center"
         p="1rem 1.25rem 0.5rem"

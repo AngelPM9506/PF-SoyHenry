@@ -12,12 +12,18 @@ import {
   Thead,
   Tr,
   useColorModeValue,
+  FormControl,
+  Stack,
+  useToast,
+  Tooltip,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { Activity } from "src/utils/interface";
 import { ActivityTable } from "./ActivityTable";
 import Link from "next/link";
 import Pagination from "./pagination";
+import { createCity } from "src/utils/cities";
+
 export const ActivityDashboard = ({
   activities,
 }: {
@@ -45,6 +51,11 @@ export const ActivityDashboard = ({
   const [activitiesPerPage, setActivitiesPerPage] = useState(5);
   const max = Math.ceil(data.length / activitiesPerPage);
   const [inputPage, setInputPage] = useState(1);
+  const [inputCity, setInputCity] = useState({
+    name: "",
+    country: "",
+  });
+  const toast = useToast();
 
   const handleActivitiesPerPage = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setActivitiesPerPage(Number(e.target.value));
@@ -117,11 +128,38 @@ export const ActivityDashboard = ({
     }
     setData(city ? data.filter((a) => a.city.name === city) : activities);
   };
+
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const response = await createCity(inputCity);
+    setInputCity({
+      name: "",
+      country: "",
+    });
+    if (response.name) {
+      toast({
+        title: "City added",
+        description: "We've added your city",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
+    } else {
+      toast({
+        title: "City not added",
+        description: "We could not add your city",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+    }
+  };
   return (
     <Box>
       <Flex
         alignItems={{ base: "center", xl: "right" }}
-        justifyContent={{ base: "center", xl: "right" }}
+        justifyContent={{ base: "center", lg: "space-between" }}
+        flexDirection={{ base: "column", lg: "row" }}
       >
         <Link href="/activities/create" passHref>
           <a>
@@ -143,6 +181,64 @@ export const ActivityDashboard = ({
             </Button>
           </a>
         </Link>
+        <Stack>
+          <form onSubmit={onSubmit}>
+            <FormControl
+              display="flex"
+              flexDirection={{ base: "column", lg: "row" }}
+              w="100%"
+            >
+              <Input
+                type="text"
+                onChange={(e) =>
+                  setInputCity({
+                    ...inputCity,
+                    name: e.target.value,
+                  })
+                }
+                placeholder="Type the name of the city..."
+                value={inputCity.name}
+                width={"250px"}
+                marginTop={{ base: "10px", lg: "0px" }}
+              />
+              <Tooltip label="Country code top-level domain. ex. AR,ES">
+                <Input
+                  width={{ base: "250px", lg: "130px" }}
+                  type="text"
+                  onChange={(e) =>
+                    setInputCity({
+                      ...inputCity,
+                      country: e.target.value,
+                    })
+                  }
+                  placeholder={"Country code..."}
+                  value={inputCity.country}
+                  marginLeft={{ base: "0px", lg: "10px" }}
+                  marginTop={{ base: "10px", lg: "0px" }}
+                />
+              </Tooltip>
+              <Button
+                marginTop={{ base: "10px", lg: "0px" }}
+                type="submit"
+                bg={"#4b647c"}
+                color={"white"}
+                rounded={"md"}
+                padding={"20px"}
+                paddingLeft={"30px"}
+                paddingRight={"30px"}
+                marginLeft={{ base: "0px", lg: "10px" }}
+                _hover={{
+                  transform: "translateY(-2px)",
+                  boxShadow: "lg",
+                  bg: "#F3B46F",
+                  color: "black",
+                }}
+              >
+                Add new city
+              </Button>
+            </FormControl>
+          </form>
+        </Stack>
       </Flex>
       <Flex
         textAlign={"center"}
@@ -150,7 +246,9 @@ export const ActivityDashboard = ({
         mb={5}
         mt={5}
         key={availability}
-        direction={{ base: "column", xl: "row" }}
+        direction={{ base: "column", lg: "row" }}
+        justifyContent={{ base: "center", lg: "left" }}
+        alignItems={{ base: "center", lg: "left" }}
       >
         <Select
           width={250}

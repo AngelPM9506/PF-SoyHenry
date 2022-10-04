@@ -62,7 +62,6 @@ const uploadImage = async (image: string, name: string) => {
     },
     function (error: any, result: any) {
       if (error) console.log(error);
-      console.log(result);
     }
   );
   return resp;
@@ -97,34 +96,62 @@ const TripsControllers = {
 
     wplanner
       ? (condition.where = {
-        ...condition.where,
-        planner: { is: { id: wplanner.toString() } },
-      }) : "";
+          ...condition.where,
+          planner: { is: { id: wplanner.toString() } },
+        })
+      : "";
     wActivity
       ? (condition.where = {
-        ...condition.where,
-        activitiesOnTrips: { some: { activity: { is: { name: { contains: wActivity.toString(), }, }, }, }, },
-      }) : "";
+          ...condition.where,
+          activitiesOnTrips: {
+            some: {
+              activity: { is: { name: { contains: wActivity.toString() } } },
+            },
+          },
+        })
+      : "";
     wCity
       ? (condition.where = {
-        ...condition.where,
-        citiesOnTrips: { some: { city: { is: { name: { contains: wCity.toString(), }, }, }, }, },
-      }) : "";
+          ...condition.where,
+          citiesOnTrips: {
+            some: { city: { is: { name: { contains: wCity.toString() } } } },
+          },
+        })
+      : "";
 
     maxPrice
       ? (condition.where = {
-        ...condition.where,
-        price: { lte: parseFloat(maxPrice.toString()) },
-      }) : "";
+          ...condition.where,
+          price: { lte: parseFloat(maxPrice.toString()) },
+        })
+      : "";
 
     const response = await prisma.trip.findMany(condition);
     return response;
   },
   postTrip: async (body: body) => {
-    const { name, initDate, endDate, planner, description, price, activitiesName, image, cities, } = body;
+    const {
+      name,
+      initDate,
+      endDate,
+      planner,
+      description,
+      price,
+      activitiesName,
+      image,
+      cities,
+    } = body;
     if (
-      !name || !initDate || !endDate || !description || !price || !planner || !activitiesName || !cities ||
-      !Array.isArray(activitiesName) || !Array.isArray(cities)
+      !name ||
+      !initDate ||
+      !endDate ||
+      !description ||
+      !price ||
+      !planner ||
+      !activitiesName ||
+      !cities ||
+      !Array.isArray(activitiesName) ||
+      !Array.isArray(cities)
     ) {
       throw new Error("Missing or invalid data, try again");
     }
@@ -138,15 +165,18 @@ const TripsControllers = {
 
     let createActivities: createActivities[] = activitiesName
       ? activitiesName.map((nameAct: activeDate) => {
-        let newDate = new Date(nameAct.actDate);
-        return { actDate: newDate, activity: { connect: { name: nameAct.name, }, }, };
-      })
+          let newDate = new Date(nameAct.actDate);
+          return {
+            actDate: newDate,
+            activity: { connect: { name: nameAct.name } },
+          };
+        })
       : [];
 
     let createCities: createCity[] = cities
       ? cities.map((nameCity: string) => {
-        return { city: { connect: { name: nameCity.toString() } } };
-      })
+          return { city: { connect: { name: nameCity.toString() } } };
+        })
       : [];
 
     let condition: postCondition = {
@@ -250,28 +280,28 @@ const TripsControllers = {
     let createUsers: createUsers[] =
       idPartaker && Array.isArray(idPartaker)
         ? idPartaker.map((idP: string) => {
-          return { user: { connect: { id: idP.toString() } } };
-        })
+            return { user: { connect: { id: idP.toString() } } };
+          })
         : [];
 
     let createActivities: createActivities[] = activitiesName
       ? activitiesName.map((nameAct: activeDate) => {
-        let newDate = new Date(nameAct.actDate);
-        return {
-          actDate: newDate,
-          activity: {
-            connect: {
-              name: nameAct.name,
+          let newDate = new Date(nameAct.actDate);
+          return {
+            actDate: newDate,
+            activity: {
+              connect: {
+                name: nameAct.name,
+              },
             },
-          },
-        };
-      })
+          };
+        })
       : [];
 
     let createCities: createCity[] = cities
       ? cities.map((nameCity: string) => {
-        return { city: { connect: { name: nameCity.toString() } } };
-      })
+          return { city: { connect: { name: nameCity.toString() } } };
+        })
       : [];
 
     let trip = await prisma.trip.findUnique({ where: { id: id.toString() } });
@@ -324,26 +354,26 @@ const TripsControllers = {
     }
     let createUsers: createUsers[] = idPartaker
       ? idPartaker.map((idP: Object) => {
-        return { user: { connect: { id: idP.toString() } } };
-      })
+          return { user: { connect: { id: idP.toString() } } };
+        })
       : [];
     let createActivities: createActivities[] = activitiesName
       ? activitiesName.map((nameAct: activeDate) => {
-        let newDate = new Date(nameAct.actDate);
-        return {
-          actDate: newDate,
-          activity: {
-            connect: {
-              name: nameAct.name,
+          let newDate = new Date(nameAct.actDate);
+          return {
+            actDate: newDate,
+            activity: {
+              connect: {
+                name: nameAct.name,
+              },
             },
-          },
-        };
-      })
+          };
+        })
       : [];
     let createCities: createCity[] = cities
       ? cities.map((City: string) => {
-        return { city: { connect: { name: City.toString() } } };
-      })
+          return { city: { connect: { name: City.toString() } } };
+        })
       : [];
 
     let condition = {

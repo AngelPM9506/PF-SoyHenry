@@ -27,7 +27,6 @@ import { editActivity } from "src/utils/activities";
 
 import { NextSeo } from "next-seo";
 
-
 function TablesTableRow({
   users,
   activities,
@@ -63,12 +62,12 @@ function TablesTableRow({
   return (
     <>
       <Layout>
- <NextSeo title="Admin Panel" />
+        <NextSeo title="Admin Panel" />
         <Box overflowX={{ base: "scroll", xl: "initial" }} mt={12} ml={5} p={7}>
           <Flex
-            textAlign={{ base: "center", xl: "left" }}
+            textAlign={{ base: "center", lg: "left" }}
             p="6px 0px 22px 0px"
-            direction={{ base: "column", xl: "row" }}
+            direction={{ base: "column", lg: "row" }}
             gap={{ base: 3, xl: 10 }}
           >
             <Text

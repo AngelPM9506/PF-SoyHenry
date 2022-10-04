@@ -1,3 +1,4 @@
+import "@rainbow-me/rainbowkit/styles.css";
 import "../styles/globals.css";
 import type { AppProps } from "next/app";
 import { UserProvider } from "@auth0/nextjs-auth0";
@@ -13,7 +14,6 @@ import { Hydrate, QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import type { DehydratedState } from "@tanstack/react-query";
 import axios from "axios";
-import "@rainbow-me/rainbowkit/styles.css";
 import {
   darkTheme,
   getDefaultWallets,
@@ -59,22 +59,24 @@ function MyApp({
     return <></>;
   } else {
     return (
-      <ChakraProvider>
-        <ThemeProvider theme={myTheme}>
-          <QueryClientProvider client={queryClient}>
-            <WagmiConfig client={wagmiClient}>
-              <RainbowKitProvider
-                appInfo={{
-                  appName: "World Travelers",
-                }}
-                theme={{
-                  lightMode: lightTheme(),
-                  darkMode: darkTheme(),
-                }}
-                chains={chains}
-                showRecentTransactions={true}
-                coolMode
-              >
+      <WagmiConfig client={wagmiClient}>
+        <RainbowKitProvider
+          appInfo={{
+            appName: "World Travelers",
+          }}
+          theme={{
+            lightMode: lightTheme(),
+            darkMode: darkTheme({
+              accentColor: "#02b1b1",
+            }),
+          }}
+          chains={chains}
+          showRecentTransactions={true}
+          coolMode
+        >
+          <ChakraProvider>
+            <ThemeProvider theme={myTheme}>
+              <QueryClientProvider client={queryClient}>
                 <ColorModeProvider>
                   <UserProvider>
                     <Hydrate state={pageProps.dehydratedState}>
@@ -83,11 +85,11 @@ function MyApp({
                     <ReactQueryDevtools />
                   </UserProvider>
                 </ColorModeProvider>
-              </RainbowKitProvider>
-            </WagmiConfig>
-          </QueryClientProvider>
-        </ThemeProvider>
-      </ChakraProvider>
+              </QueryClientProvider>
+            </ThemeProvider>
+          </ChakraProvider>
+        </RainbowKitProvider>
+      </WagmiConfig>
     );
   }
 }

@@ -14,6 +14,7 @@ import { getTripId } from "src/utils/trips";
 import { useEffect, useState } from "react";
 import { getActivitiesId } from "src/utils/activities";
 import { getUsersById } from "src/utils/User";
+import NotFound from "src/pages/404";
 
 const BreadCrumb = () => {
   const router = useRouter();
@@ -74,16 +75,24 @@ const BreadCrumb = () => {
 
   useEffect(() => {
     if (pathname === "/trips/[id]") {
-      getTripId(id.toString()).then((res) => setTripName(res.name));
+      getTripId(id.toString()).then((res) => {
+        res ? setTripName(res.name) : <NotFound />;
+      });
     }
     if (pathname === "/activities/[id]") {
-      getActivitiesId(id.toString()).then((res) => setActName(res.name));
+      getActivitiesId(id.toString()).then((res) => {
+        res ? setActName(res.name) : <NotFound />;
+      });
     }
     if (pathname === "/user/[id]") {
-      getUsersById(id.toString()).then((res: any) => setUserName(res.name));
+      getUsersById(id.toString()).then((res: any) => {
+        res ? setUserName(res.name) : <NotFound />;
+      });
     }
     if (pathname === "/chat/[id]") {
-      getTripId(id.toString()).then((res) => setChatName(res.name));
+      getTripId(id.toString()).then((res) => {
+        res ? setChatName(res.name) : <NotFound />;
+      });
     }
   });
 

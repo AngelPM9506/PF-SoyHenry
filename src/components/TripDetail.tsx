@@ -74,8 +74,8 @@ export default function TripDetail({
   const eday = data.endDate.slice(0, 10).split("-").reverse().join("/");
 
   const openChat = () => {
-    router.push(`/chat/${data.id}`)
-  }
+    router.push(`/chat/${data.id}`);
+  };
 
   useEffect(() => {
     async function a() {
@@ -189,7 +189,7 @@ export default function TripDetail({
             >
               <AspectRatio w="100%" h="100%" zIndex={0}>
                 {data.citiesOnTrips[0].city.latitude &&
-                  data.citiesOnTrips[0].city.latitude ? (
+                data.citiesOnTrips[0].city.latitude ? (
                   <MapView
                     cities={data.citiesOnTrips.map((c: any) => c.city)}
                   />
@@ -213,7 +213,7 @@ export default function TripDetail({
                   marginTop={"20px"}
                   fontSize={"2xl"}
                 >
-                  Price: $ {data.price}
+                  Price: US$ {data.price}
                 </Text>
                 <Stack direction={"row"} alignItems={"center"}>
                   <Text>Planner</Text>

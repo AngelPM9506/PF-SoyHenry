@@ -66,8 +66,6 @@ const Home = ({ trips, activities }: Props) => {
   if (!isLoading && userDb && !userDb.data.active) {
     return <BannedAlert />;
   }
-
-  console.log(size);
   return (
     <>
       <ROnboardingWrapper

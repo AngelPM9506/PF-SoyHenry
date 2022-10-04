@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import {
   Box,
   Button,
@@ -10,6 +11,7 @@ import {
   Textarea,
   useToast,
   Tooltip,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import StarRatings from "react-star-ratings";
@@ -652,10 +654,11 @@ const Reviews = ({
                 </Button>
                 <Button
                   rightIcon={<ImCancelCircle />}
-                  textColor="#293541"
+                  textColor="white"
+                  _hover={{ textColor: "#293541", background: "transparent" }}
                   fontWeight={"bold"}
                   backgroundColor={"#4b647c"}
-                  variant="outline"
+                  variant={useColorModeValue("none", "outline")}
                   width={"160px"}
                   fontSize={"xl"}
                   onClick={() => handleCancelComment()}

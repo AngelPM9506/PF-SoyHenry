@@ -13,7 +13,6 @@ import {
   Button,
   Wrap,
   WrapItem,
-  Link,
   Avatar,
 } from "@chakra-ui/react";
 import { settings } from "src/utils/SettingsCarousel";
@@ -22,6 +21,8 @@ import StarRatings from "react-star-ratings";
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import { chakra } from "@chakra-ui/react";
+import { useRouter } from "next/router";
+import Link from "next/link";
 
 interface Props {
   trips: Trip[];
@@ -31,6 +32,8 @@ interface Props {
 const Img = chakra(Image);
 
 const MyCarousel = ({ trips, activities }: Props) => {
+  const router = useRouter();
+
   const defaultpic: string =
     "https://res.cloudinary.com/mauro4202214/image/upload/v1663331567/world-travelers/defaultimagetrip_j90ewc.png";
 
@@ -144,22 +147,27 @@ const MyCarousel = ({ trips, activities }: Props) => {
                                 src={t.planner ? t.planner.avatar : defaultpic}
                               />
                             </NextLink>
-                            <Button
-                              marginLeft={"50px"}
-                              bg={useColorModeValue("#D1DFE3", "#293541")}
-                              color={useColorModeValue("#293541", "white")}
-                              rounded={"md"}
-                              _hover={{
-                                transform: "translateY(-2px)",
-                                boxShadow: "lg",
-                                bg: useColorModeValue("#293541", "#D1DFE3"),
-                                color: useColorModeValue("white", "#293541"),
-                              }}
-                            >
-                              <NextLink href={`/trips/${t.id}`}>
-                                <Link>+Info</Link>
-                              </NextLink>
-                            </Button>
+                            <Link href={`trips/${t.id}`} passHref>
+                              <a>
+                                <Button
+                                  marginLeft={"50px"}
+                                  bg={useColorModeValue("#D1DFE3", "#293541")}
+                                  color={useColorModeValue("#293541", "white")}
+                                  rounded={"md"}
+                                  _hover={{
+                                    transform: "translateY(-2px)",
+                                    boxShadow: "lg",
+                                    bg: useColorModeValue("#293541", "#D1DFE3"),
+                                    color: useColorModeValue(
+                                      "white",
+                                      "#293541"
+                                    ),
+                                  }}
+                                >
+                                  +Info
+                                </Button>
+                              </a>
+                            </Link>
                           </WrapItem>
                         </Box>
                       </Wrap>
@@ -267,23 +275,28 @@ const MyCarousel = ({ trips, activities }: Props) => {
                                 name="rating"
                               />
                             )}
-                            <Button
-                              marginTop={"10px"}
-                              bg={useColorModeValue("#D1DFE3", "#293541")}
-                              color={useColorModeValue("#293541", "white")}
-                              rounded={"md"}
-                              _hover={{
-                                transform: "translateY(-2px)",
-                                boxShadow: "lg",
-                                bg: useColorModeValue("#293541", "#D1DFE3"),
-                                color: useColorModeValue("white", "#293541"),
-                              }}
-                              id="masinfoact"
-                            >
-                              <NextLink href={`/activities/${a.id}`}>
-                                <Link>+Info</Link>
-                              </NextLink>
-                            </Button>
+                            <Link href={`/activities/${a.id}`}>
+                              <a>
+                                <Button
+                                  marginTop={"10px"}
+                                  bg={useColorModeValue("#D1DFE3", "#293541")}
+                                  color={useColorModeValue("#293541", "white")}
+                                  rounded={"md"}
+                                  _hover={{
+                                    transform: "translateY(-2px)",
+                                    boxShadow: "lg",
+                                    bg: useColorModeValue("#293541", "#D1DFE3"),
+                                    color: useColorModeValue(
+                                      "white",
+                                      "#293541"
+                                    ),
+                                  }}
+                                  id="masinfoact"
+                                >
+                                  +Info
+                                </Button>
+                              </a>
+                            </Link>
                           </Box>
                         </Stack>
                       </Stack>

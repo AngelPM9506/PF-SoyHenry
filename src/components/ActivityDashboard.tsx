@@ -4,7 +4,6 @@ import {
   Center,
   Flex,
   Input,
-  Link,
   Select,
   Table,
   Tbody,
@@ -21,7 +20,7 @@ import {
 import React, { useState } from "react";
 import { Activity } from "src/utils/interface";
 import { ActivityTable } from "./ActivityTable";
-import NextLink from "next/link";
+import Link from "next/link";
 import Pagination from "./pagination";
 import { createCity } from "src/utils/cities";
 import { useQueryClient } from "react-query";
@@ -164,6 +163,26 @@ export const ActivityDashboard = ({
         justifyContent={{ base: "center", lg: "space-between" }}
         flexDirection={{ base: "column", lg: "row" }}
       >
+        <Link href="/activities/create" passHref>
+          <a>
+            <Button
+              bg={background}
+              mb={5}
+              mt={5}
+              color={"white"}
+              rounded={"md"}
+              padding={"20px"}
+              _hover={{
+                transform: "translateY(-2px)",
+                boxShadow: "lg",
+                bg: "#F3B46F",
+                color: "black",
+              }}
+            >
+              Create Activity
+            </Button>
+          </a>
+        </Link>
         <Stack>
           <form onSubmit={onSubmit}>
             <FormControl
@@ -222,24 +241,6 @@ export const ActivityDashboard = ({
             </FormControl>
           </form>
         </Stack>
-        <Button
-          bg={background}
-          mb={5}
-          mt={5}
-          color={"white"}
-          rounded={"md"}
-          padding={"20px"}
-          _hover={{
-            transform: "translateY(-2px)",
-            boxShadow: "lg",
-            bg: "#F3B46F",
-            color: "black",
-          }}
-        >
-          <NextLink href="/activities/create">
-            <Link>Create Activity</Link>
-          </NextLink>
-        </Button>
       </Flex>
       <Flex
         textAlign={"center"}

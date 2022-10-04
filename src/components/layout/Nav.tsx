@@ -17,6 +17,7 @@ import {
   Image,
   useColorMode,
   Text,
+  Link,
 } from "@chakra-ui/react";
 import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
 import { MoonIcon, SunIcon } from "@chakra-ui/icons";
@@ -48,11 +49,11 @@ export default function NavBar() {
     ["userDb", user],
     () => user && getOrCreateUser(user)
   );
-  const handleActive = (
-    e: React.MouseEvent<HTMLHeadingElement, MouseEvent>
-  ) => {
-    setActive(e.currentTarget.id);
-  };
+  // const handleActive = (
+  //   e: React.MouseEvent<HTMLHeadingElement, MouseEvent>
+  // ) => {
+  //   setActive(e.currentTarget.id);
+  // };
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { colorMode, toggleColorMode } = useColorMode();
   const textColor = useColorModeValue("#293541", "white");
@@ -102,16 +103,16 @@ export default function NavBar() {
             >
               {Links.map((l, index) => (
                 <NextLink href={l[0]} id={l[1]} key={index}>
-                  <Heading
+                  <Link
                     id={l[1]}
                     cursor={"pointer"}
                     fontSize={"2xl"}
                     fontWeight={"3px"}
-                    onClick={(e) => handleActive(e)}
+                    // onClick={(e) => handleActive(e)}
                     color={active === l[0] ? "#F3B46F" : textColor}
                   >
                     {l[1].split("-").join(" ")}
-                  </Heading>
+                  </Link>
                 </NextLink>
               ))}
             </HStack>
@@ -139,29 +140,31 @@ export default function NavBar() {
                 <MenuList>
                   <MenuItem>
                     <NextLink href={`/user/profile`}>
-                      <Text>My Profile</Text>
+                      <Link>My Profile</Link>
                     </NextLink>
                   </MenuItem>
                   <MenuItem>
                     <NextLink href={`/user/${userDb?.data.id}`}>
-                      <Text> My Public Profile </Text>
+                      <Link> My Public Profile </Link>
                     </NextLink>
                   </MenuItem>
                   <MenuItem>
-                    <NextLink href={`/user/my-trips`}>
-                      <Text> My Trips </Text>
+                    <NextLink href={`/user/my-trips`} passHref>
+                      <a>
+                        <Link> My Trips </Link>
+                      </a>
                     </NextLink>
                   </MenuItem>
                   {userDb?.data.isAdmin && (
                     <MenuItem>
                       <NextLink href={`/user/admin`}>
-                        <Text> Admin Panel </Text>
+                        <Link> Admin Panel </Link>
                       </NextLink>
                     </MenuItem>
                   )}
                   <MenuItem>
                     <NextLink href={"/api/auth/logout"}>
-                      <Text>Logout</Text>
+                      <Link>Logout</Link>
                     </NextLink>
                   </MenuItem>
                 </MenuList>
@@ -187,18 +190,18 @@ export default function NavBar() {
             >
               {Links.map((l, index) => (
                 <NextLink href={l[0]} key={index}>
-                  <Heading
+                  <Link
                     mt={10}
                     mb={10}
                     cursor={"pointer"}
                     fontSize={"2xl"}
                     fontWeight={"2px"}
                     id={l[0]}
-                    onClick={(e) => handleActive(e)}
+                    // onClick={(e) => handleActive(e)}
                     color={active === l[0] ? "#02b1b1" : textColor}
                   >
                     {l[1]}
-                  </Heading>
+                  </Link>
                 </NextLink>
               ))}
             </Box>

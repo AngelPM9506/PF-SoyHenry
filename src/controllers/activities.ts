@@ -76,7 +76,6 @@ const uploadImage = async (image: string, name: string) => {
     },
     function (error: any, result: any) {
       if (error) console.log(error);
-      console.log(result);
     }
   );
   return resp;

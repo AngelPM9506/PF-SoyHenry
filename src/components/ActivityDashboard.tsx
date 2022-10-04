@@ -130,7 +130,7 @@ export const ActivityDashboard = ({
     setData(city ? data.filter((a) => a.city.name === city) : activities);
   };
 
-  const onSubmit = async (e: any) => {
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const response = await createCity(inputCity);
     setInputCity({
@@ -177,6 +177,7 @@ export const ActivityDashboard = ({
                     name: e.target.value,
                   })
                 }
+
                 placeholder="Type the name of the city..."
                 value={inputCity.name}
                 width={"250px"}

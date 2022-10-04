@@ -213,7 +213,7 @@ export default function TripDetail({
                   marginTop={"20px"}
                   fontSize={"2xl"}
                 >
-                  Price: $ {data.price}
+                  Price: US$ {data.price}
                 </Text>
                 <Stack direction={"row"} alignItems={"center"}>
                   <Text>Planner</Text>

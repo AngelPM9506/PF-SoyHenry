@@ -136,7 +136,7 @@ export const TimeLine = ({ data, ethPrice, validate, setValidate }: any) => {
           <Tooltip
             hasArrow
             placement="auto"
-            label="Ya has pagado y te encuentras en este viaje!"
+            label="Your payment has been successfully, you are part of the trip now!"
           >
             <Button
               isDisabled

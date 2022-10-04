@@ -149,8 +149,10 @@ export default function NavBar() {
                     </NextLink>
                   </MenuItem>
                   <MenuItem>
-                    <NextLink href={`/user/my-trips`}>
-                      <Link> My Trips </Link>
+                    <NextLink href={`/user/my-trips`} passHref>
+                      <a>
+                        <Link> My Trips </Link>
+                      </a>
                     </NextLink>
                   </MenuItem>
                   {userDb?.data.isAdmin && (

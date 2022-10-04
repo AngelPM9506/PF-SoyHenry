@@ -9,13 +9,12 @@ import {
   Switch,
   FormControl,
   FormLabel,
-  Link,
 } from "@chakra-ui/react";
 import ReactPlayer from "react-player";
 import axios from "axios";
 import { GiSoundWaves } from "react-icons/gi";
 import { useState } from "react";
-import NextLink from "next/link";
+import Link from "next/link";
 import styles from "../styles/landing.module.css";
 import { NextSeo } from "next-seo";
 import { useWindowSize } from "src/utils/windowsize";
@@ -164,42 +163,46 @@ const LandingPage: NextPage = () => {
                     justifyContent={"center"}
                     bottom="5vh"
                   >
-                    <Button
-                      mt={{ base: "60px", md: "5px" }}
-                      rounded="full"
-                      size={"lg"}
-                      width={{ base: "110px", md: "140px" }}
-                      height={{ base: "35px", md: "45px" }}
-                      fontWeight="800"
-                      px={15}
-                      color="#293541"
-                      fontSize={{ base: "18", md: "24" }}
-                      bg="RGBA(209,223,227,0.50)"
-                      mr={"30px"}
-                      _hover={{ bg: "#F3B46F", color: "#293541" }}
-                    >
-                      <NextLink href="/contact">
-                        <Link>Contact Us</Link>
-                      </NextLink>
-                    </Button>
+                    <Link href="/contact" passHref>
+                      <a>
+                        <Button
+                          mt={{ base: "60px", md: "5px" }}
+                          rounded="full"
+                          size={"lg"}
+                          width={{ base: "110px", md: "140px" }}
+                          height={{ base: "35px", md: "45px" }}
+                          fontWeight="800"
+                          px={15}
+                          color="#293541"
+                          fontSize={{ base: "18", md: "24" }}
+                          bg="RGBA(209,223,227,0.50)"
+                          mr={"30px"}
+                          _hover={{ bg: "#F3B46F", color: "#293541" }}
+                        >
+                          Contact Us
+                        </Button>
+                      </a>
+                    </Link>
                     {/*eslint-disable-next-line @next/next/no-html-link-for-pages*/}
-                    <a href="/about">
-                      <Button
-                        mt={{ base: "60px", md: "5px" }}
-                        rounded="full"
-                        size={"lg"}
-                        width={{ base: "110px", md: "140px" }}
-                        height={{ base: "35px", md: "45px" }}
-                        fontWeight="800"
-                        px={15}
-                        color="#293541"
-                        fontSize={{ base: "18", md: "24" }}
-                        bg={"RGBA(209,223,227,0.50)"}
-                        _hover={{ bg: "#F3B46F", color: "#293541" }}
-                      >
-                        About Us
-                      </Button>
-                    </a>
+                    <Link href="/about" passHref>
+                      <a>
+                        <Button
+                          mt={{ base: "60px", md: "5px" }}
+                          rounded="full"
+                          size={"lg"}
+                          width={{ base: "110px", md: "140px" }}
+                          height={{ base: "35px", md: "45px" }}
+                          fontWeight="800"
+                          px={15}
+                          color="#293541"
+                          fontSize={{ base: "18", md: "24" }}
+                          bg={"RGBA(209,223,227,0.50)"}
+                          _hover={{ bg: "#F3B46F", color: "#293541" }}
+                        >
+                          About Us
+                        </Button>
+                      </a>
+                    </Link>
                   </Stack>
                 </Stack>
               </Stack>
@@ -211,14 +214,14 @@ const LandingPage: NextPage = () => {
   );
 };
 
-export const getServerSideProps = async () => {
-  const response = await axios.get("/hello");
-  const dataCities = await response.data;
-  return {
-    props: {
-      cities: dataCities,
-    },
-  };
-};
+// export const getServerSideProps = async () => {
+//   const response = await axios.get("/hello");
+//   const dataCities = await response.data;
+//   return {
+//     props: {
+//       cities: dataCities,
+//     },
+//   };
+// };
 
 export default LandingPage;

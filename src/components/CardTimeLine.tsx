@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import {
   Text,
   HStack,
@@ -5,10 +6,10 @@ import {
   Button,
   Image,
   Heading,
+  useColorModeValue,
   Flex,
-  Link,
 } from "@chakra-ui/react";
-import NextLink from "next/link";
+import Link from "next/link";
 import { useQuery } from "react-query";
 import { VerticalTimelineElement } from "react-vertical-timeline-component";
 import { MdOutlineTripOrigin } from "react-icons/md";
@@ -36,7 +37,7 @@ export default function CardTimeLine({ activity, actDate, cities }: any) {
       className="vertical-timeline-element--work"
       contentStyle={{
         background: "#D1DFE3",
-        color: "#F3B46F",
+        color: useColorModeValue("#293541", "#F3B46F"),
       }}
       contentArrowStyle={{ borderRight: "7px solid #D1DFE3" }}
       date={date}
@@ -91,11 +92,13 @@ export default function CardTimeLine({ activity, actDate, cities }: any) {
               );
             }
           })}
-          <Button bg={"#02b1b1"} color={"#293541"}>
-            <NextLink href={`/activities/${activity.id}`}>
-              <Link>More Info</Link>
-            </NextLink>
-          </Button>
+          <Link href={`/activities/${activity.id}`} passHref>
+            <a>
+              <Button bg={"#02b1b1"} color={"#293541"}>
+                More Info
+              </Button>
+            </a>
+          </Link>
         </VStack>
       </HStack>
     </VerticalTimelineElement>

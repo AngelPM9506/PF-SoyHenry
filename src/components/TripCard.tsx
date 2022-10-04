@@ -102,7 +102,6 @@ export function TripCard({ props }: any) {
           </Text>
         </Stack>
         <Stack marginTop={"5px"} textAlign={"center"} justifyContent={"center"}>
-          <NextLink href={`/trips/${props.id}`}>
             <Button
               w={"full"}
               mt={5}
@@ -114,9 +113,12 @@ export function TripCard({ props }: any) {
                 boxShadow: "lg",
               }}
             >
+            <NextLink href={`/trips/${props.id}`}>
+            <Link>
               See more Information
+              </Link>
+              </NextLink>
             </Button>
-          </NextLink>
         </Stack>
       </Box>
     </Center>

@@ -137,21 +137,21 @@ export function ActivityCard({ props }: any) {
               : `This activity is in ${props.activitiesOnTrips.length}
             ${props.activitiesOnTrips.length === 1 ? " trip" : " trips"}`}
           </Box>
-          <NextLink href={`/activities/${props.id}`}>
-            <Button
-              w={"full"}
-              mt={7}
-              bg={useColorModeValue("#151f21", "#f4f4f4")}
-              color={useColorModeValue("#f4f4f4", "#151f21")}
-              rounded={"md"}
-              _hover={{
-                transform: "translateY(-2px)",
-                boxShadow: "lg",
-              }}
-            >
-              See more Information
-            </Button>
-          </NextLink>
+          <Button
+            w={"full"}
+            mt={7}
+            bg={useColorModeValue("#151f21", "#f4f4f4")}
+            color={useColorModeValue("#f4f4f4", "#151f21")}
+            rounded={"md"}
+            _hover={{
+              transform: "translateY(-2px)",
+              boxShadow: "lg",
+            }}
+          >
+            <NextLink href={`/activities/${props.id}`}>
+              <Link>See more Information</Link>
+            </NextLink>
+          </Button>
         </Box>
       </Text>
     </Center>

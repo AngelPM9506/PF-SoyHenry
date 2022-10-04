@@ -68,7 +68,7 @@ const NotFound = () => {
           display={{ base: "flex", md: "none" }}
         >
           <NextLink href={"/home"}>
-            <Link href="/home">Go back home</Link>
+            <Link>Go back home</Link>
           </NextLink>
         </Button>
       </Box>

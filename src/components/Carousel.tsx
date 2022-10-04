@@ -13,6 +13,7 @@ import {
   Button,
   Wrap,
   WrapItem,
+  Link,
   Avatar,
 } from "@chakra-ui/react";
 import { settings } from "src/utils/SettingsCarousel";
@@ -143,22 +144,22 @@ const MyCarousel = ({ trips, activities }: Props) => {
                                 src={t.planner ? t.planner.avatar : defaultpic}
                               />
                             </NextLink>
-                            <NextLink href={`/trips/${t.id}`}>
-                              <Button
-                                marginLeft={"50px"}
-                                bg={useColorModeValue("#D1DFE3", "#293541")}
-                                color={useColorModeValue("#293541", "white")}
-                                rounded={"md"}
-                                _hover={{
-                                  transform: "translateY(-2px)",
-                                  boxShadow: "lg",
-                                  bg: useColorModeValue("#293541", "#D1DFE3"),
-                                  color: useColorModeValue("white", "#293541"),
-                                }}
-                              >
-                                +Info
-                              </Button>
-                            </NextLink>
+                            <Button
+                              marginLeft={"50px"}
+                              bg={useColorModeValue("#D1DFE3", "#293541")}
+                              color={useColorModeValue("#293541", "white")}
+                              rounded={"md"}
+                              _hover={{
+                                transform: "translateY(-2px)",
+                                boxShadow: "lg",
+                                bg: useColorModeValue("#293541", "#D1DFE3"),
+                                color: useColorModeValue("white", "#293541"),
+                              }}
+                            >
+                              <NextLink href={`/trips/${t.id}`}>
+                                <Link>+Info</Link>
+                              </NextLink>
+                            </Button>
                           </WrapItem>
                         </Box>
                       </Wrap>
@@ -266,23 +267,23 @@ const MyCarousel = ({ trips, activities }: Props) => {
                                 name="rating"
                               />
                             )}
-                            <NextLink href={`/activities/${a.id}`}>
-                              <Button
-                                marginTop={"10px"}
-                                bg={useColorModeValue("#D1DFE3", "#293541")}
-                                color={useColorModeValue("#293541", "white")}
-                                rounded={"md"}
-                                _hover={{
-                                  transform: "translateY(-2px)",
-                                  boxShadow: "lg",
-                                  bg: useColorModeValue("#293541", "#D1DFE3"),
-                                  color: useColorModeValue("white", "#293541"),
-                                }}
-                                id="masinfoact"
-                              >
-                                +Info
-                              </Button>
-                            </NextLink>
+                            <Button
+                              marginTop={"10px"}
+                              bg={useColorModeValue("#D1DFE3", "#293541")}
+                              color={useColorModeValue("#293541", "white")}
+                              rounded={"md"}
+                              _hover={{
+                                transform: "translateY(-2px)",
+                                boxShadow: "lg",
+                                bg: useColorModeValue("#293541", "#D1DFE3"),
+                                color: useColorModeValue("white", "#293541"),
+                              }}
+                              id="masinfoact"
+                            >
+                              <NextLink href={`/activities/${a.id}`}>
+                                <Link>+Info</Link>
+                              </NextLink>
+                            </Button>
                           </Box>
                         </Stack>
                       </Stack>

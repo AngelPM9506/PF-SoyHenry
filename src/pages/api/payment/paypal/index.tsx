@@ -63,6 +63,7 @@ export default async function Payment(req: NextApiRequest, res: NextApiResponse)
 							Authorization: `Bearer ${token.data.access_token}`
 						}
 					})
+					console.log(response);
 					
 					return res.json(response.data)
 				}

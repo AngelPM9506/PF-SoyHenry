@@ -150,7 +150,7 @@ function Trips({ trips }: Props) {
         marginBottom={"50px"}
       >
         <Heading
-          mt={"10px"}
+          mt={{ base: "5%", sm: "5%", md: "0%", lg: "0%" }}
           width={"100%"}
           color={useColorModeValue("#293541", "white")}
         >
@@ -301,16 +301,20 @@ function Trips({ trips }: Props) {
         ) : (
           <Box
             height={"38vh"}
-            width={"100%"}
+            width={{ base: "100%", sm: "100%", md: "100%", lg: "100%" }}
             justifyContent={"center"}
             alignContent={"center"}
           >
-            <Text m={"15px"} textAlign={"center"} fontSize={"40px"}>
+            <Text
+              m={"15px"}
+              textAlign={"center"}
+              fontSize={{ base: "20px", sm: "25px", md: "30px", lg: "40px" }}
+            >
               Sorry! There are no trips with the selected condition.
             </Text>
             <Center>
               <Button
-                fontSize={"40px"}
+                fontSize={{ base: "20px", sm: "20px", md: "20px", lg: "20px" }}
                 bg={useColorModeValue("#151f21", "#293541")}
                 color={"white"}
                 type={"submit"}

@@ -66,8 +66,10 @@ export function TripCard({ props }: any) {
             fontFamily={"body"}
             fontWeight={600}
             textAlign={"center"}
+            textTransform={"capitalize"}
+            noOfLines={1}
           >
-            {props.name.charAt(0).toUpperCase() + props.name.slice(1)}
+            {props.name}
           </Heading>
         </Stack>
         <VStack direction={"row"} align={"center"} marginTop={"-25px"}>
@@ -80,8 +82,12 @@ export function TripCard({ props }: any) {
           <Text fontWeight={800} fontSize={"xl"} marginBottom="-15px">
             Cities:
           </Text>
-          <Text fontWeight={400} fontSize={"xl"}>
-            {props.citiesOnTrips.map((a: any) => a.city.name)}
+          <Text fontWeight={400} fontSize={"xl"} textTransform={"capitalize"}>
+            {props.citiesOnTrips.map(
+              (a: any, i: any) =>
+                ` ${a.city.name} ` +
+                (i == props.citiesOnTrips.length - 1 ? "" : "-")
+            )}
           </Text>
         </VStack>
 
@@ -92,25 +98,27 @@ export function TripCard({ props }: any) {
             fontWeight={700}
             fontSize={"xl"}
           >
-            $ {props.price}
+            US$ {props.price}
           </Text>
         </Stack>
         <Stack marginTop={"5px"} textAlign={"center"} justifyContent={"center"}>
-          <Button
-            w={"full"}
-            mt={5}
-            bg={useColorModeValue("#151f21", "#f4f4f4")}
-            color={useColorModeValue("#f4f4f4", "#151f21")}
-            rounded={"md"}
-            _hover={{
-              transform: "translateY(-2px)",
-              boxShadow: "lg",
-            }}
-          >
+            <Button
+              w={"full"}
+              mt={5}
+              bg={useColorModeValue("#151f21", "#f4f4f4")}
+              color={useColorModeValue("#f4f4f4", "#151f21")}
+              rounded={"md"}
+              _hover={{
+                transform: "translateY(-2px)",
+                boxShadow: "lg",
+              }}
+            >
             <NextLink href={`/trips/${props.id}`}>
-              <Link> +Info </Link>
-            </NextLink>
-          </Button>
+            <Link>
+              See more Information
+              </Link>
+              </NextLink>
+            </Button>
         </Stack>
       </Box>
     </Center>

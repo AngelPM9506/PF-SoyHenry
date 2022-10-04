@@ -58,7 +58,6 @@ export default function Detail(props: Props) {
       : "error";
 
     const id = props.id;
-    console.log(props.activity);
     return {
       activity: activity,
       id: id,

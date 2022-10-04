@@ -5,14 +5,14 @@ export interface Trip {
   activityId?: string;
   plannerId?: string;
   id?: string;
-  name: string;
+  name?: string;
   initDate?: string;
   cities?: string[];
-  endDate: string;
+  endDate?: string;
   planner?: { avatar?: string; id?: string } | any;
   tripOnUser?: { trip: Trip; user: User }[];
-  description: string;
-  activitiesName: { name: string; actDate: string }[];
+  description?: string;
+  activitiesName?: { name: string; actDate: string }[];
   image?: string | ArrayBuffer;
   price?: number;
   active?: boolean;
@@ -22,6 +22,7 @@ export interface Trip {
     tripId?: string;
   }[];
   citiesOnTrips?: { city: CityInDB }[];
+  trip?: Trip;
 }
 
 export interface User {
@@ -51,7 +52,17 @@ export interface Activity {
   active?: boolean;
   idFeedback?: string;
   comment?: string;
+  feedbacks?: Feedback[];
 }
+
+export type Feedback = {
+  id: string;
+  userMail: string;
+  comment: string;
+  rating: number;
+  feedbackDate: string;
+  User: User;
+};
 
 export type typeSort = {
   [x: string]: string;
@@ -122,6 +133,7 @@ export interface City {
   featureCode: string;
   adminCode: string;
   population: Number;
+  activity?: [];
   loc: {
     type: string;
     coordinates: Number[];
@@ -180,7 +192,7 @@ export type contact = {
   whatsapp: string;
   message: string;
   userId?: string;
-}
+};
 
 export type newContact = {
   name: string;
@@ -190,4 +202,4 @@ export type newContact = {
   whatsapp: string;
   message: string;
   userId: string;
-}
+};

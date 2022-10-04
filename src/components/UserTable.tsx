@@ -123,6 +123,7 @@ function UserTable({ user }: UserData) {
               value={data.isAdmin}
               borderColor={"transparent"}
               onChange={(e) => handleChange(e)}
+              w={100}
             >
               <option value={"true"}>True</option>
               <option value={"false"}>False</option>
@@ -147,6 +148,7 @@ function UserTable({ user }: UserData) {
               value={data.active}
               borderColor={"transparent"}
               onChange={(e) => handleChange(e)}
+              w={100}
             >
               <option value={"true"}>Active</option>
               <option value={"false"}>Inactive</option>
@@ -171,7 +173,7 @@ function UserTable({ user }: UserData) {
             fontWeight="bold"
             cursor="pointer"
           >
-            Edit
+            Save
           </Text>
         </Button>
       </Td>

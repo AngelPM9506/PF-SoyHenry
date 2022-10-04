@@ -1,11 +1,15 @@
-export var settings = {
-  dots: true,
+export const settings = {
+  dots: false,
   infinite: true,
-  speed: 500,
   slidesToShow: 3,
-  slidesToScroll: 1,
-  initialSlide: 0,
+  slidesToScroll: 3,
+  autoplay: true,
+  speed: 2500,
+  autoplaySpeed: 2500,
+  cssEase: "linear",
   adaptiveHeight: true,
+  adaptiveWidth: true,
+  pauseOnHover: true,
   responsive: [
     {
       breakpoint: 1024,
@@ -19,7 +23,7 @@ export var settings = {
     {
       breakpoint: 600,
       settings: {
-        slidesToShow: 2,
+        slidesToShow: 1,
         slidesToScroll: 1,
         initialSlide: 2,
       },

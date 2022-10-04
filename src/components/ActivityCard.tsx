@@ -7,23 +7,36 @@ import {
   Stack,
   Image,
   Button,
-  Link,
   Highlight,
 } from "@chakra-ui/react";
-import NextLink from "next/link";
+import Link from "next/link";
+import StarRatings from "react-star-ratings";
+import { Feedback } from "src/utils/interface";
 const defaultpic: string =
   "https://drive.google.com/uc?id=1_6Nlg2YJEROqakx47LjLzuLjhLifPJ5t";
+
+const averageRating = (feedbacks: Feedback[]) => {
+  let total = 0;
+  if (feedbacks.length === 0) return 0;
+  feedbacks.forEach((feedback) => {
+    total += feedback.rating;
+  });
+  return Math.ceil(total / feedbacks.length);
+};
 
 export function ActivityCard({ props }: any) {
   return (
     <Center key={props.id} py={12}>
-      <Link style={{ textDecoration: "none" }}>
+      <Text style={{ textDecoration: "none" }}>
         <Box
           role={"group"}
           p={6}
           maxW={"330px"}
           w={"full"}
-          bg={useColorModeValue("#D1DFE3", "blackAlpha.400")}
+          bg={useColorModeValue(
+            "RGBA(75,100,124,0.41)",
+            "RGBA(75,100,124,0.41)"
+          )}
           boxShadow={"2xl"}
           rounded={"lg"}
           pos={"relative"}
@@ -74,41 +87,74 @@ export function ActivityCard({ props }: any) {
               fontFamily={"body"}
               fontWeight={600}
               textAlign={"center"}
+              textTransform={"capitalize"}
+              noOfLines={1}
             >
               {props.name}
             </Heading>
-            <Text fontWeight={400} fontSize={"xl"} textAlign={"center"}>
-              {props.city.name}
-            </Text>
             <Text
               fontWeight={400}
-              fontSize={"lg"}
-              overflow={"hidden"}
-              height={"120px"}
+              fontSize={"xl"}
+              textAlign={"center"}
+              textTransform={"capitalize"}
             >
-              {props.description}
+              {props.city.name}
             </Text>
             <Text fontWeight={700} fontSize={"xl"}>
-              $ {props.price}
+              US$ {props.price}
             </Text>
           </Box>
-          <NextLink href={`/activities/${props.id}`}>
-            <Button
-              w={"full"}
-              mt={7}
-              bg={useColorModeValue("#151f21", "#f4f4f4")}
-              color={useColorModeValue("#f4f4f4", "#151f21")}
-              rounded={"md"}
-              _hover={{
-                transform: "translateY(-2px)",
-                boxShadow: "lg",
-              }}
+          {props.feedbacks.length > 0 ? (
+            <Box
+              display={"flex"}
+              alignItems={"center"}
+              justifyContent={"center"}
+              width={"100%"}
+              height={"30px"}
             >
-              See more Information
-            </Button>
-          </NextLink>
+              <StarRatings
+                rating={averageRating(props.feedbacks)}
+                starRatedColor={"#02b1b1"}
+                numberOfStars={5}
+                starDimension={"20px"}
+                starSpacing={"3px"}
+                name="rating"
+              />
+            </Box>
+          ) : (
+            <Box height={"30px"}></Box>
+          )}
+          <Box
+            display={"flex"}
+            alignItems={"center"}
+            justifyContent={"center"}
+            width={"100%"}
+            mt={"2px"}
+          >
+            {props.activitiesOnTrips.length === 0
+              ? "There are no trips with this activity."
+              : `This activity is in ${props.activitiesOnTrips.length}
+            ${props.activitiesOnTrips.length === 1 ? " trip" : " trips"}`}
+          </Box>
+          <Link href={`/activities/${props.id}`} passHref>
+            <a>
+              <Button
+                w={"full"}
+                mt={7}
+                bg={useColorModeValue("#151f21", "#f4f4f4")}
+                color={useColorModeValue("#f4f4f4", "#151f21")}
+                rounded={"md"}
+                _hover={{
+                  transform: "translateY(-2px)",
+                  boxShadow: "lg",
+                }}
+              >
+                See more Information
+              </Button>
+            </a>
+          </Link>
         </Box>
-      </Link>
+      </Text>
     </Center>
   );
 }

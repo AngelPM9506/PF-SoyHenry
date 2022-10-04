@@ -1,108 +1,78 @@
 import {
   Box,
-  chakra,
   Container,
   Image,
   Link,
   Stack,
   Text,
   useColorModeValue,
-  VisuallyHidden,
   HStack,
 } from "@chakra-ui/react";
-import {
-  FaGithub,
-  FaInstagram,
-  FaLinkedin,
-  FaTwitter,
-  FaYoutube,
-} from "react-icons/fa";
-import { ReactNode } from "react";
+import { FaGithub } from "react-icons/fa";
+import NextLink from "next/link";
 
-const Logo = (props: any) => {
+const Logo = () => {
   return (
     <Image
-      src="https://drive.google.com/uc?id=1gKEypG3nEJaIizOy_3BjPyYb8IWYApck"
+      src="https://res.cloudinary.com/mauro4202214/image/upload/v1663331567/world-travelers/favicon.ico_c8ryjz.png"
       alt="logo"
       height={"60px"}
     />
   );
 };
 
-const SocialButton = ({
-  children,
-  label,
-  href,
-}: {
-  children: ReactNode;
-  label: string;
-  href: string;
-}) => {
-  return (
-    <chakra.button
-      bg={"transparent"}
-      rounded={"full"}
-      w={8}
-      h={8}
-      cursor={"pointer"}
-      as={"a"}
-      href={href}
-      display={"inline-flex"}
-      alignItems={"center"}
-      justifyContent={"center"}
-      transition={"background 0.3s ease"}
-      _hover={{
-        bg: useColorModeValue("blackAlpha.200", "whiteAlpha.200"),
-      }}
-    >
-      <VisuallyHidden>{label}</VisuallyHidden>
-      {children}
-    </chakra.button>
-  );
-};
-
 export default function Footer() {
   return (
-    <Box bg={"transparent"} color={useColorModeValue("gray.700", "gray.200")}>
-      <Box
-        borderTopWidth={2}
-        borderStyle={"solid"}
-        borderColor={useColorModeValue("#D1DFE3", "#F3B46F")}
+    <Box
+      borderTopWidth={2}
+      borderStyle={"solid"}
+      borderColor={useColorModeValue("#D1DFE3", "#F3B46F")}
+    >
+      <Container
+        bg={"transparent"}
+        as={Stack}
+        maxW={"8xl"}
+        py={1}
+        direction={{ base: "column", md: "row" }}
+        spacing={4}
+        justify={{ base: "center", md: "space-between" }}
+        align={{ base: "center", md: "center" }}
       >
-        <Container
-          bg={"transparent"}
-          as={Stack}
-          maxW={"8xl"}
-          py={1}
-          direction={{ base: "column", md: "row" }}
-          spacing={4}
-          justify={{ base: "center", md: "space-between" }}
-          align={{ base: "center", md: "center" }}
-        >
-          <HStack>
-            <Logo />
-            <Link href="Authors">Authors</Link>
-          </HStack>
+        <HStack>
+          <Logo />
 
-          <Text>© 2022 World Travelers. All rights reserved</Text>
-          <Stack
-            justifyContent={"center"}
-            alignItems={"center"}
-            direction={"row"}
-            spacing={6}
-          >
-            <SocialButton
-              label={"GitHub"}
-              href={"https://github.com/AngelPM9506/PF-SoyHenry"}
-            >
-              <FaGithub />
-            </SocialButton>
-            <Link href={"https://github.com/AngelPM9506/PF-SoyHenry"}>
-              GitHub Repository
+          <NextLink href="/authors">
+            <Link id="authors" cursor={"pointer"}>
+              Authors
             </Link>
-          </Stack>
-        </Container>
-      </Box>
+          </NextLink>
+        </HStack>
+
+        <Text textAlign={"center"} noOfLines={1}>
+          © 2022 World Travelers. All Rights Reserved
+        </Text>
+        <Stack
+          justifyContent={"center"}
+          alignItems={"center"}
+          direction={"row"}
+          spacing={6}
+        >
+          <Link
+            textDecoration={"none"}
+            href={"https://github.com/AngelPM9506/PF-SoyHenry"}
+            target="_blank"
+          >
+            <FaGithub />
+          </Link>
+          <Link
+            textDecoration={"none"}
+            href={"https://github.com/AngelPM9506/PF-SoyHenry"}
+            target="_blank"
+          >
+            GitHub Repository
+          </Link>
+        </Stack>
+      </Container>
     </Box>
   );
 }

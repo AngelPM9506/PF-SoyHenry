@@ -1,13 +1,11 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import React, { Component } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { Trip, Activity } from "src/utils/interface";
+import { Trip, Activity, Feedback } from "src/utils/interface";
 import {
   Box,
   Heading,
-  Image,
   Text,
   Center,
   useColorModeValue,
@@ -19,48 +17,72 @@ import {
 } from "@chakra-ui/react";
 import { settings } from "src/utils/SettingsCarousel";
 import NextLink from "next/link";
+import StarRatings from "react-star-ratings";
+import { useState, useEffect } from "react";
+import Image from "next/image";
+import { chakra } from "@chakra-ui/react";
+import { useRouter } from "next/router";
+import Link from "next/link";
 
 interface Props {
   trips: Trip[];
   activities: Activity[];
 }
 
-export const upPrice = (price: number) => {
-  return Math.floor(price + (price * 30) / 100);
-};
+const Img = chakra(Image);
 
 const MyCarousel = ({ trips, activities }: Props) => {
+  const router = useRouter();
+
   const defaultpic: string =
     "https://res.cloudinary.com/mauro4202214/image/upload/v1663331567/world-travelers/defaultimagetrip_j90ewc.png";
 
-  const lastTrips = trips?.reverse().slice(0, 13);
-  const lastActivities = activities?.reverse().slice(0, 13);
+  const activeTrips = trips.filter((trip) => trip.active === true);
+  const activeActivities = activities.filter((act) => act.active === true);
+  const lastTrips = activeTrips?.slice(-12);
+  const lastActivities = activeActivities?.slice(-12);
+  const [tripsCarousel, setTripsCarousel] = useState<Trip[]>(lastTrips);
+  const [activitiesCarousel, setActivitiesCarousel] =
+    useState<Activity[]>(lastActivities);
 
-  const useColorMode = useColorModeValue("white", "gray.800");
+  const averageRating = (feedbacks: Feedback[]) => {
+    let total = 0;
+    if (feedbacks.length === 0) return 0;
+    feedbacks.forEach((feedback) => {
+      total += feedback.rating;
+    });
+    return Math.ceil(total / feedbacks.length);
+  };
 
-  return (
-    <>
-      <Box p={5} mt={"20px"}>
-        <Heading textAlign={"center"}>Trending Trips</Heading>
-      </Box>
-      <Box
-        width={"100%"}
-        display={"flex"}
-        justifyContent={"center"}
-        alignItems={"center"}
-      >
-        <Stack width={"80%"}>
-          <Slider {...settings}>
-            {lastTrips?.map((t) => {
-              if (t.active) {
+  if (tripsCarousel.length !== 0 && activitiesCarousel.length !== 0) {
+    return (
+      <>
+        <Box p={5} mt={"20px"}>
+          <Heading textAlign={"center"} id="toptrips">
+            Trending Trips
+          </Heading>
+        </Box>
+        <Box
+          width={"95vw"}
+          display={"flex"}
+          justifyContent={"center"}
+          alignItems={"center"}
+        >
+          <Stack id="masinfo" width={"80%"}>
+            <Slider {...settings}>
+              {tripsCarousel.map((t, index) => {
                 return (
                   <Center p={8} py={12} key={t.id}>
                     <Box
                       role={"group"}
                       p={6}
-                      maxW={"330px"}
+                      minWidth={"250px"}
+                      minHeight={"380px"}
                       w={"full"}
-                      bg={useColorModeValue("#D1DFE3", "blackAlpha.400")}
+                      bg={useColorModeValue(
+                        "RGBA(75,100,124,0.41)",
+                        "RGBA(75,100,124,0.41)"
+                      )}
                       boxShadow={"2xl"}
                       rounded={"lg"}
                       pos={"relative"}
@@ -88,9 +110,10 @@ const MyCarousel = ({ trips, activities }: Props) => {
                           },
                         }}
                       >
-                        <Image
-                          alt="image"
+                        <Img
+                          alt="Trip Image"
                           rounded={"lg"}
+                          layout="fill"
                           height={230}
                           width={282}
                           objectFit={"cover"}
@@ -99,6 +122,7 @@ const MyCarousel = ({ trips, activities }: Props) => {
                       </Box>
                       <Stack pt={4} align={"center"}>
                         <Heading
+                          textTransform={"capitalize"}
                           noOfLines={1}
                           fontSize={"2xl"}
                           fontFamily={"body"}
@@ -108,138 +132,184 @@ const MyCarousel = ({ trips, activities }: Props) => {
                         </Heading>
                         <Stack direction={"row"} align={"center"}>
                           <Text fontWeight={800} fontSize={"xl"}>
-                            {`$${t.price}`}
-                          </Text>
-                          <Text
-                            textDecoration={"line-through"}
-                            color={"#F3B46F"}
-                          >
-                            {`$${upPrice(t.price)}`}
+                            {`US$${t.price}`}
                           </Text>
                         </Stack>
-                        <NextLink href={`/trips/${t.id}`}>
-                          <Button>+Info</Button>
-                        </NextLink>
                       </Stack>
-                      <Wrap>
-                        <Box
-                          display={"flex"}
-                          flexDirection={"column"}
-                          justifyContent={"center"}
-                        >
+                      <Wrap justify={"center"}>
+                        <Box display={"flex"} flexDirection={"column"}>
                           <Text fontSize={"sm"}>Planner</Text>
                           <WrapItem>
                             <NextLink href={`/user/${t.planner.id}`}>
                               <Avatar
                                 cursor={"pointer"}
-                                name="Trip Planner"
+                                name={t.planner.name}
                                 src={t.planner ? t.planner.avatar : defaultpic}
                               />
                             </NextLink>
+                            <Link href={`trips/${t.id}`} passHref>
+                              <a>
+                                <Button
+                                  marginLeft={"50px"}
+                                  bg={useColorModeValue("#D1DFE3", "#293541")}
+                                  color={useColorModeValue("#293541", "white")}
+                                  rounded={"md"}
+                                  _hover={{
+                                    transform: "translateY(-2px)",
+                                    boxShadow: "lg",
+                                    bg: useColorModeValue("#293541", "#D1DFE3"),
+                                    color: useColorModeValue(
+                                      "white",
+                                      "#293541"
+                                    ),
+                                  }}
+                                >
+                                  +Info
+                                </Button>
+                              </a>
+                            </Link>
                           </WrapItem>
                         </Box>
                       </Wrap>
                     </Box>
                   </Center>
                 );
-              }
-            })}
-          </Slider>
-        </Stack>
-      </Box>
-      <Box p={5} mt={"20px"}>
-        <Heading textAlign={"center"}>Trending Activities</Heading>
-      </Box>
-      <Box
-        height={"550px"}
-        width={"100%"}
-        display={"flex"}
-        justifyContent={"center"}
-        alignItems={"center"}
-      >
-        <Stack width={"80%"}>
-          <Slider {...settings}>
-            {lastActivities?.map((a) => {
-              return (
-                <Center p={8} py={12} key={a.id}>
-                  <Box
-                    role={"group"}
-                    p={6}
-                    maxW={"330px"}
-                    w={"full"}
-                    bg={useColorModeValue("#D1DFE3", "blackAlpha.400")}
-                    boxShadow={"2xl"}
-                    rounded={"lg"}
-                    pos={"relative"}
-                    zIndex={1}
-                  >
+              })}
+            </Slider>
+          </Stack>
+        </Box>
+        <Box p={5} mt={"20px"}>
+          <Heading textAlign={"center"} id="topAct">
+            Trending Activities
+          </Heading>
+        </Box>
+        <Box
+          paddingBottom={"30px"}
+          width={"95vw"}
+          display={"flex"}
+          justifyContent={"center"}
+          alignItems={"center"}
+        >
+          <Stack width={"80%"}>
+            <Slider {...settings}>
+              {activitiesCarousel.map((a) => {
+                return (
+                  <Center p={8} py={12} key={a.id}>
                     <Box
+                      role={"group"}
+                      p={6}
+                      minW={"250px"}
+                      minH={"435px"}
+                      w={"full"}
+                      bg={useColorModeValue(
+                        "RGBA(75,100,124,0.41)",
+                        "RGBA(75,100,124,0.41)"
+                      )}
+                      boxShadow={"2xl"}
                       rounded={"lg"}
-                      mt={-12}
                       pos={"relative"}
-                      height={"230px"}
-                      _after={{
-                        transition: "all .3s ease",
-                        content: '""',
-                        w: "full",
-                        h: "full",
-                        pos: "absolute",
-                        top: 5,
-                        left: 0,
-                        filter: "blur(15px)",
-                        zIndex: -1,
-                      }}
-                      _groupHover={{
-                        _after: {
-                          filter: "blur(20px)",
-                        },
-                      }}
+                      zIndex={1}
                     >
-                      <Image
-                        alt="image"
+                      <Box
                         rounded={"lg"}
-                        height={230}
-                        width={282}
-                        objectFit={"cover"}
-                        src={a.image ? a.image.toString() : defaultpic}
-                      />
-
-                      <Stack p={2} direction={"row"} justifyContent="center">
+                        mt={-12}
+                        pos={"relative"}
+                        height={"230px"}
+                        _after={{
+                          transition: "all .3s ease",
+                          content: '""',
+                          w: "full",
+                          h: "full",
+                          pos: "absolute",
+                          top: 5,
+                          left: 0,
+                          filter: "blur(15px)",
+                          zIndex: -1,
+                        }}
+                        _groupHover={{
+                          _after: {
+                            filter: "blur(20px)",
+                          },
+                        }}
+                      >
+                        <Img
+                          alt="Trip Image"
+                          rounded={"lg"}
+                          layout="fill"
+                          height={230}
+                          width={282}
+                          objectFit={"cover"}
+                          src={a.image ? a.image.toString() : defaultpic}
+                        />
+                      </Box>
+                      <Stack pt={5} align={"center"}>
+                        <Heading
+                          textTransform={"capitalize"}
+                          noOfLines={1}
+                          fontSize={"2xl"}
+                          fontFamily={"body"}
+                          fontWeight={500}
+                        >
+                          {a.name}
+                        </Heading>
                         <Text fontWeight={200} fontSize={"lg"}>
                           {a.city.name}
                         </Text>
+                        <Stack direction={"row"} align={"center"}>
+                          <Text fontWeight={800} fontSize={"xl"}>
+                            {`US$${a.price}`}
+                          </Text>
+                        </Stack>
+                        <Stack direction={"row"} align={"center"}>
+                          <Box display={"flex"} flexDirection={"column"}>
+                            {a.feedbacks.length > 0 && (
+                              <StarRatings
+                                rating={averageRating(a.feedbacks)}
+                                starRatedColor={useColorModeValue(
+                                  "#293541",
+                                  "#F3B46F"
+                                )}
+                                numberOfStars={5}
+                                starDimension={"20px"}
+                                starSpacing={"3px"}
+                                name="rating"
+                              />
+                            )}
+                            <Link href={`/activities/${a.id}`}>
+                              <a>
+                                <Button
+                                  marginTop={"10px"}
+                                  bg={useColorModeValue("#D1DFE3", "#293541")}
+                                  color={useColorModeValue("#293541", "white")}
+                                  rounded={"md"}
+                                  _hover={{
+                                    transform: "translateY(-2px)",
+                                    boxShadow: "lg",
+                                    bg: useColorModeValue("#293541", "#D1DFE3"),
+                                    color: useColorModeValue(
+                                      "white",
+                                      "#293541"
+                                    ),
+                                  }}
+                                  id="masinfoact"
+                                >
+                                  +Info
+                                </Button>
+                              </a>
+                            </Link>
+                          </Box>
+                        </Stack>
                       </Stack>
                     </Box>
-                    <Stack pt={10} align={"center"}>
-                      <Heading
-                        noOfLines={1}
-                        fontSize={"2xl"}
-                        fontFamily={"body"}
-                        fontWeight={500}
-                      >
-                        {a.name}
-                      </Heading>
-                      <Stack direction={"row"} align={"center"}>
-                        <Text fontWeight={800} fontSize={"xl"}>
-                          {`$${a.price}`}
-                        </Text>
-                        <Text textDecoration={"line-through"} color={"#F3B46F"}>
-                          {`$${upPrice(a.price)}`}
-                        </Text>
-                      </Stack>
-                      <NextLink href={`/activities/${a.id}`}>
-                        <Button>+Info</Button>
-                      </NextLink>
-                    </Stack>
-                  </Box>
-                </Center>
-              );
-            })}
-          </Slider>
-        </Stack>
-      </Box>
-    </>
-  );
+                  </Center>
+                );
+              })}
+            </Slider>
+          </Stack>
+        </Box>
+      </>
+    );
+  }
 };
 
 export default MyCarousel;

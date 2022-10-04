@@ -1,35 +1,17 @@
 import { useUser } from "@auth0/nextjs-auth0";
-import {
-  Avatar,
-  Badge,
-  Box,
-  Button,
-  Container,
-  Flex,
-  Input,
-  Link,
-  Select,
-  Table,
-  Tbody,
-  Td,
-  Text,
-  Th,
-  Thead,
-  Tr,
-  useColorModeValue,
-} from "@chakra-ui/react";
-import { fromPairs } from "lodash";
+import { Box, Flex, Text, useColorModeValue } from "@chakra-ui/react";
+
 import React, { useState } from "react";
-import { dehydrate, QueryClient, useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import Layout from "src/components/layout/Layout";
 import { UserData } from "src/components/UserProfile";
-import UserTable from "src/components/UserTable";
-import { getOrCreateUser, getUsers } from "src/utils/User";
-import NextLink from "next/link";
+
+import { getOrCreateUser, updateUser } from "src/utils/User";
+
 import NotFound from "src/pages/404";
 
 import ActivitiesControles from "src/controllers/activities";
-import ActivityTable from "src/components/ActivityTable";
+
 import { Activity, CityInDB, Trip } from "src/utils/interface";
 import { ActivityDashboard } from "src/components/ActivityDashboard";
 import { UserDashboard } from "src/components/UserDashboard";
@@ -41,21 +23,25 @@ import Loading from "src/components/Loading";
 
 import { getCities } from "src/utils/cities";
 
+import { editActivity } from "src/utils/activities";
+
+import { NextSeo } from "next-seo";
+
 function TablesTableRow({
   users,
   activities,
   trips,
-  cities,
 }: {
   activities: Activity[];
   users: UserData[];
   trips: Trip[];
-  cities: CityInDB[];
+  cities?: CityInDB[];
 }) {
-  const { user, error } = useUser();
+  const { user } = useUser();
   const { data: userDb, isLoading } = useQuery(["userDb", user], () =>
     getOrCreateUser(user)
   );
+
   const [active, setActive] = useState("users");
 
   const textColor = useColorModeValue("gray.700", "white");
@@ -72,11 +58,18 @@ function TablesTableRow({
   if (isLoading || !userDb?.data) return <Loading />;
 
   if (!userDb.data.isAdmin) return <NotFound />;
+
   return (
     <>
       <Layout>
-        <Box overflowX={{ sm: "scroll", xl: "hidden" }} mt={5} ml={5}>
-          <Box p="6px 0px 22px 0px" display={"inline-flex"} gap={10}>
+        <NextSeo title="Admin Panel" />
+        <Box overflowX={{ base: "scroll", xl: "initial" }} mt={12} ml={5} p={7}>
+          <Flex
+            textAlign={{ base: "center", lg: "left" }}
+            p="6px 0px 22px 0px"
+            direction={{ base: "column", lg: "row" }}
+            gap={{ base: 3, xl: 10 }}
+          >
             <Text
               fontSize="xl"
               color={active === "users" ? textColor : "gray"}
@@ -107,7 +100,7 @@ function TablesTableRow({
             >
               Trips Dashboard
             </Text>
-          </Box>
+          </Flex>
           {active === "users" && <UserDashboard users={users} />}
           {active === "activities" && (
             <ActivityDashboard activities={activities} />
@@ -123,7 +116,6 @@ function TablesTableRow({
 
 export const getServerSideProps = async () => {
   //   const queryClient = new QueryClient(); //https://tanstack.com/query/v4/docs/guides/ssr
-
   const users = JSON.parse(JSON.stringify(await usersControllers.getUsers()));
   const activities = JSON.parse(
     JSON.stringify(await ActivitiesControles.getActivities({}))

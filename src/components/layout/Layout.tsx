@@ -1,6 +1,6 @@
+import { Box, Stack } from "@chakra-ui/react";
 import Footer from "./Footer";
 import Nav from "./Nav";
-import { Container } from "@chakra-ui/react";
 
 export default function Layout({
   children,
@@ -8,10 +8,10 @@ export default function Layout({
   children: JSX.Element | JSX.Element[];
 }) {
   return (
-    <>
+    <Stack minHeight={"100vh"}>
       <Nav />
       {children}
       <Footer />
-    </>
+    </Stack>
   );
 }

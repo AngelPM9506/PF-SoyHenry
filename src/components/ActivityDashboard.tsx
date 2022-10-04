@@ -4,7 +4,6 @@ import {
   Center,
   Flex,
   Input,
-  Link,
   Select,
   Table,
   Tbody,
@@ -13,13 +12,20 @@ import {
   Thead,
   Tr,
   useColorModeValue,
+  FormControl,
+  Stack,
+  useToast,
+  Tooltip,
 } from "@chakra-ui/react";
-import React, { SetStateAction, useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Activity } from "src/utils/interface";
-import ActivityTable from "./ActivityTable";
-import NextLink from "next/link";
+import { ActivityTable } from "./ActivityTable";
+import Link from "next/link";
 import Pagination from "./pagination";
-import { Select as ReactSelect } from "chakra-react-select";
+import { createCity } from "src/utils/cities";
+import { useQueryClient } from "react-query";
+import { getActivitiesId } from "src/utils/activities";
+
 export const ActivityDashboard = ({
   activities,
 }: {
@@ -31,8 +37,8 @@ export const ActivityDashboard = ({
     "availability",
     "active",
     "description",
-    "edit",
-    "delete",
+    "reviews",
+    "save changes",
   ];
   const cities = activities.map((a) => a.city.name);
   const citiesUnique: string[] = Array.from(new Set(cities)).sort(); // remove duplicates, sort alphabetically
@@ -47,7 +53,12 @@ export const ActivityDashboard = ({
   const [activitiesPerPage, setActivitiesPerPage] = useState(5);
   const max = Math.ceil(data.length / activitiesPerPage);
   const [inputPage, setInputPage] = useState(1);
-
+  const [inputCity, setInputCity] = useState({
+    name: "",
+    country: "",
+  });
+  const toast = useToast();
+  const queryClient = useQueryClient();
   const handleActivitiesPerPage = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setActivitiesPerPage(Number(e.target.value));
   };
@@ -119,33 +130,127 @@ export const ActivityDashboard = ({
     }
     setData(city ? data.filter((a) => a.city.name === city) : activities);
   };
+
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const response = await createCity(inputCity);
+    setInputCity({
+      name: "",
+      country: "",
+    });
+    if (response.name) {
+      toast({
+        title: "City added",
+        description: "We've added your city",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
+    } else {
+      toast({
+        title: "City not added",
+        description: "We could not add your city",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+    }
+  };
   return (
-    <>
-      <Button
-        position={"absolute"}
-        right={0}
-        mr={10}
-        bg={background}
-        color={"white"}
-        rounded={"md"}
-        padding={"20px"}
-        _hover={{
-          transform: "translateY(-2px)",
-          boxShadow: "lg",
-          bg: "#F3B46F",
-          color: "black",
-        }}
+    <Box>
+      <Flex
+        alignItems={{ base: "center", xl: "right" }}
+        justifyContent={{ base: "center", lg: "space-between" }}
+        flexDirection={{ base: "column", lg: "row" }}
       >
-        <NextLink href="/activities/create">
-          <Link>Create Activity</Link>
-        </NextLink>
-      </Button>
-      <Box
+        <Link href="/activities/create" passHref>
+          <a>
+            <Button
+              bg={background}
+              mb={5}
+              mt={5}
+              color={"white"}
+              rounded={"md"}
+              padding={"20px"}
+              _hover={{
+                transform: "translateY(-2px)",
+                boxShadow: "lg",
+                bg: "#F3B46F",
+                color: "black",
+              }}
+            >
+              Create Activity
+            </Button>
+          </a>
+        </Link>
+        <Stack>
+          <form onSubmit={onSubmit}>
+            <FormControl
+              display="flex"
+              flexDirection={{ base: "column", lg: "row" }}
+              w="100%"
+            >
+              <Input
+                type="text"
+                onChange={(e) =>
+                  setInputCity({
+                    ...inputCity,
+                    name: e.target.value,
+                  })
+                }
+                placeholder="Type the name of the city..."
+                value={inputCity.name}
+                width={"250px"}
+                marginTop={{ base: "10px", lg: "0px" }}
+              />
+              <Tooltip label="Country code top-level domain. ex. AR,ES">
+                <Input
+                  width={{ base: "250px", lg: "130px" }}
+                  type="text"
+                  onChange={(e) =>
+                    setInputCity({
+                      ...inputCity,
+                      country: e.target.value,
+                    })
+                  }
+                  placeholder={"Country code..."}
+                  value={inputCity.country}
+                  marginLeft={{ base: "0px", lg: "10px" }}
+                  marginTop={{ base: "10px", lg: "0px" }}
+                />
+              </Tooltip>
+              <Button
+                marginTop={{ base: "10px", lg: "0px" }}
+                type="submit"
+                bg={"#4b647c"}
+                color={"white"}
+                rounded={"md"}
+                padding={"20px"}
+                paddingLeft={"30px"}
+                paddingRight={"30px"}
+                marginLeft={{ base: "0px", lg: "10px" }}
+                _hover={{
+                  transform: "translateY(-2px)",
+                  boxShadow: "lg",
+                  bg: "#F3B46F",
+                  color: "black",
+                }}
+              >
+                Add new city
+              </Button>
+            </FormControl>
+          </form>
+        </Stack>
+      </Flex>
+      <Flex
         textAlign={"center"}
-        display={"inline-flex"}
         gap={5}
         mb={5}
+        mt={5}
         key={availability}
+        direction={{ base: "column", lg: "row" }}
+        justifyContent={{ base: "center", lg: "left" }}
+        alignItems={{ base: "center", lg: "left" }}
       >
         <Select
           width={250}
@@ -191,17 +296,16 @@ export const ActivityDashboard = ({
           <option value={"Saturday"}>Saturday</option>
           <option value={"Sunday"}>Sunday</option>
         </Select>
-      </Box>
+      </Flex>
       <Table>
         <Thead>
-          <Tr my=".8rem" pl="0px" color={textColor} gap={5}>
+          <Tr my=".8rem" pl="0px" color={textColor}>
             {captions.map((c, i) => {
               return (
                 <Th
                   color={textColor}
                   key={i}
                   ps={i === 0 ? "10px" : null}
-                  gap={50}
                   pl={30}
                 >
                   {c}
@@ -217,18 +321,26 @@ export const ActivityDashboard = ({
               (currentPage - 1) * activitiesPerPage + activitiesPerPage
             )
             .map((a: Activity) => {
+              queryClient.prefetchQuery(
+                ["editActivity", a.id],
+                () => getActivitiesId(a.id),
+                {
+                  staleTime: 10 * 1000, // only prefetch if older than 10 seconds
+                }
+              );
               return <ActivityTable activity={a} key={a.id} />;
             })}
         </Tbody>
       </Table>
       <Center>
-        <Flex gap={50}>
+        <Flex direction="column">
           <Select
             value={activitiesPerPage}
             name={"activitiesPerPage"}
             onChange={(e) => handleActivitiesPerPage(e)}
+            mt={5}
             w={130}
-            mt={8}
+            ml={16}
           >
             <option value={5}>5 Results</option>
             <option value={10}>10 Results</option>
@@ -244,6 +356,6 @@ export const ActivityDashboard = ({
           />
         </Flex>
       </Center>
-    </>
+    </Box>
   );
 };

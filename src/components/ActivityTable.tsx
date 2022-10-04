@@ -2,34 +2,76 @@ import {
   Avatar,
   Badge,
   Button,
-  Code,
   Flex,
   FormControl,
-  FormLabel,
   Input,
   Select,
   Td,
   Text,
-  Textarea,
   Tr,
   useColorModeValue,
   useToast,
   Link,
+  Box,
+  Center,
+  Stack,
+  Skeleton,
 } from "@chakra-ui/react";
 import { Select as ReactSelect } from "chakra-react-select";
-import React, { SetStateAction, useEffect, useState } from "react";
-import { deleteActivity, editActivity } from "src/utils/activities";
+import React, { SetStateAction, useState } from "react";
+import {
+  deleteActivity,
+  deleteComment,
+  editActivity,
+  editComment,
+  getActivitiesId,
+  patchActivity,
+} from "src/utils/activities";
 import { Activity } from "src/utils/interface";
-import { updateUser } from "src/utils/User";
-import { UserData } from "./UserProfile";
 import NextLink from "next/link";
 import { ModalTextarea } from "./ModalEditableTextarea";
+import {
+  QueryFunctionContext,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "react-query";
+import Reviews from "./Reviews";
+import { ModalReviews } from "./ModalReviews";
+import Loading from "./LoadingWithoutLayout";
 type Props = {
   activity: Activity;
 };
 
-function ActivityTable({ activity }: Props) {
-  const textColor = useColorModeValue("gray.700", "white");
+export function ActivityTable({ activity }: Props) {
+  const textColor = useColorModeValue("#151f21", "#f4f4f4");
+  const bg = useColorModeValue("#f4f4f4", "#151f21");
+  const {
+    data: actData,
+    isLoading,
+    error,
+  } = useQuery(["editActivity", activity], () => getActivitiesId(activity.id));
+  const queryClient = useQueryClient();
+  const mutatesubmit = useMutation(patchActivity, {
+    onSuccess: () => {
+      queryClient.resetQueries(["editActivity"]);
+    },
+  });
+  const mutateedit = useMutation(editComment, {
+    onSuccess: () => {
+      queryClient.resetQueries(["editActivity"]);
+    },
+  });
+  const mutatedelete = useMutation(deleteComment, {
+    onSuccess: () => {
+      queryClient.resetQueries(["editActivity"]);
+    },
+  });
+  const mutateActivity = useMutation(editActivity, {
+    onSuccess: () => {
+      queryClient.resetQueries(["editActivity"]);
+    },
+  });
 
   const toast = useToast();
   const avaFormated = activity.availability.map((d) => ({
@@ -96,10 +138,20 @@ function ActivityTable({ activity }: Props) {
       isClosable: true,
     });
   };
-
+  if (isLoading) {
+    return (
+      <Stack>
+        <Skeleton height="150px" width={"100vw"} />
+        <Skeleton height="150px" width={"100vw"} />
+        <Skeleton height="150px" width={"100vw"} />
+        <Skeleton height="150px" width={"100vw"} />
+        <Skeleton height="150px" width={"100vw"} />
+      </Stack>
+    );
+  }
   return (
     <Tr key={changed}>
-      <Td minWidth={{ sm: "250px" }} pl="0px">
+      <Td minWidth={{ base: "300px", sm: "200px" }}>
         <Flex align="center" py=".8rem" minWidth="100%" flexWrap="nowrap">
           <Avatar
             src={activity.image as string}
@@ -141,7 +193,7 @@ function ActivityTable({ activity }: Props) {
       </Td>
       <Td>
         <Flex direction="column">
-          <FormControl maxWidth={300}>
+          <FormControl>
             <ReactSelect
               id="availability"
               name="availability"
@@ -172,6 +224,7 @@ function ActivityTable({ activity }: Props) {
               value={data.active.toString()}
               borderColor={"transparent"}
               onChange={(e) => handleActive(e)}
+              w={100}
             >
               <option value={"true"}>Active</option>
               <option value={"false"}>Inactive</option>
@@ -181,14 +234,6 @@ function ActivityTable({ activity }: Props) {
       </Td>
       <Td>
         <Flex direction="column">
-          {/* <Textarea
-            fontSize="sm"
-            color="black"
-            name={"description"}
-            value={data.description}
-            onChange={(e) => handleChange(e)}
-            bg={"white"}
-          ></Textarea> */}
           <ModalTextarea
             title={"Description"}
             name={"description"}
@@ -198,9 +243,19 @@ function ActivityTable({ activity }: Props) {
         </Flex>
       </Td>
       <Td>
+        <Flex direction="column">
+          <ModalReviews
+            data={actData}
+            mutatesubmit={mutatesubmit}
+            mutateedit={mutateedit}
+            mutatedelete={mutatedelete}
+          />
+        </Flex>
+      </Td>
+      <Td>
         <Button
-          bg={useColorModeValue("#151f21", "#f4f4f4")}
-          color={useColorModeValue("#f4f4f4", "#151f21")}
+          bg={textColor}
+          color={textColor}
           rounded={"md"}
           _hover={{
             transform: "translateY(-2px)",
@@ -208,39 +263,11 @@ function ActivityTable({ activity }: Props) {
           }}
           onClick={() => handleEdit()}
         >
-          <Text
-            fontSize="md"
-            color={useColorModeValue("#f4f4f4", "#151f21")}
-            fontWeight="bold"
-            cursor="pointer"
-          >
-            Edit
-          </Text>
-        </Button>
-      </Td>
-      <Td>
-        <Button
-          bg={"red"}
-          color={"#151f21"}
-          rounded={"md"}
-          _hover={{
-            transform: "translateY(-2px)",
-            boxShadow: "lg",
-          }}
-          onClick={() => handleDelete()}
-        >
-          <Text
-            fontSize="md"
-            color={"white"}
-            fontWeight="bold"
-            cursor="pointer"
-          >
-            Delete
+          <Text fontSize="md" color={bg} fontWeight="bold" cursor="pointer">
+            Save
           </Text>
         </Button>
       </Td>
     </Tr>
   );
 }
-
-export default ActivityTable;

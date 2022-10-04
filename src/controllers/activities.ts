@@ -17,6 +17,7 @@ type query = {
   wCity?: string | string[];
   maxPrice?: string | string[];
   idFeedback?: String;
+  byName?: String | String[];
 };
 
 type body = {
@@ -75,13 +76,35 @@ const uploadImage = async (image: string, name: string) => {
     },
     function (error: any, result: any) {
       if (error) console.log(error);
-      console.log(result);
     }
   );
   return resp;
 };
 
 const ActivitiesControles = {
+  getActivitiesByName: async (query: query) => {
+    let { byName } = query;
+    if (byName) {
+      let response = await prisma.activity.findMany({
+        select: {
+          id: true,
+          name: true,
+          availability: true,
+          price: true,
+          image: true,
+          public_id_image: true,
+          active: true,
+          city: {
+            select: {
+              name: true,
+            },
+          },
+        },
+      });
+      return response;
+    }
+  },
+
   getActivities: async (query: query) => {
     let { wName, sort, sortBy, wCity, maxPrice } = query;
     let orderBy: typeSort[] = [];
@@ -98,6 +121,22 @@ const ActivitiesControles = {
           include: { trip: true },
         },
         city: true,
+        feedbacks: {
+          select: {
+            id: true,
+            userMail: true,
+            comment: true,
+            rating: true,
+            feedbackDate: true,
+            User: {
+              select: {
+                name: true,
+                id: true,
+                avatar: true,
+              },
+            },
+          },
+        },
       },
       orderBy,
     };

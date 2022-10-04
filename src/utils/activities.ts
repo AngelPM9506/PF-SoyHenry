@@ -19,7 +19,7 @@ export const getActivities = async (
 };
 
 export const getActivitiesId = async (
-  id: QueryFunctionContext<string[], any>
+  id: QueryFunctionContext<string[], any> | string
 ) => {
   const activity = await axios.get(`/api/activities/${id}`);
   return activity.data;
@@ -42,8 +42,6 @@ export const createActivity = async ({
       description,
       price,
     });
-    console.log(activity);
-    console.log(activity.data);
     return activity.data;
   } catch (err) {
     console.error(err);
@@ -122,7 +120,7 @@ export const deleteActivity = async (id: string) => {
   return activity.data;
 };
 
-export const deleteComment = async (id: string, idFeedback: string) => {
+export const deleteComment = async ({ id, idFeedback }: any) => {
   const comment = await axios.delete(
     `/api/activities/${id}?idFeedback=${idFeedback}`
   );

@@ -2,20 +2,15 @@ import {
   Avatar,
   Badge,
   Button,
-  Code,
   Flex,
-  FormControl,
-  FormLabel,
-  Input,
   Select,
   Td,
   Text,
-  Textarea,
   Tr,
   useColorModeValue,
   useToast,
   Link,
-  useDisclosure,
+  Container,
 } from "@chakra-ui/react";
 
 import React, { useState } from "react";
@@ -87,86 +82,93 @@ function TripTable({ trip, activities }: Props) {
   };
 
   return (
-    <Tr key={changed}>
-      <Td minWidth={{ sm: "250px" }} pl="0px">
-        <Flex align="center" py=".8rem" minWidth="100%" flexWrap="nowrap">
-          <Avatar
-            src={data.image as string}
-            w="50px"
-            borderRadius="12px"
-            me="18px"
-          />
-          <Flex direction="column">
-            <NextLink href={`/trips/${data.id}`}>
-              <Link>
-                <Text
-                  fontSize="md"
-                  color={textColor}
-                  fontWeight="bold"
-                  minWidth="100%"
-                >
-                  {data.name}
-                </Text>
-              </Link>
-            </NextLink>
-            {data.citiesOnTrips.map((c) => {
-              return (
-                <Text
-                  fontSize="sm"
-                  color="gray.400"
-                  fontWeight="normal"
-                  key={c.city.id}
-                >
-                  {c.city.name}
-                </Text>
-              );
-            })}
-          </Flex>
-        </Flex>
-      </Td>
-      <Td pl="0px">
-        <Flex align="center" py=".8rem" minWidth="100%" flexWrap="nowrap">
-          <Avatar
-            src={data.planner.avatar as string}
-            w="50px"
-            borderRadius="12px"
-            me="18px"
-          />
-          <Flex direction="column">
-            <NextLink href={`/user/${data.plannerId}`}>
-              <Link>
-                <Text
-                  fontSize="md"
-                  color={textColor}
-                  fontWeight="bold"
-                  minWidth="100%"
-                >
-                  {data.planner.name}
-                </Text>
-              </Link>
-            </NextLink>
-            <Text fontSize="sm" color="gray.400" fontWeight="normal">
-              {data.planner.mail}
-            </Text>
-          </Flex>
-        </Flex>
-      </Td>
-      <Td>
-        {data.activitiesOnTrips.map((a) => {
-          return (
-            <Flex direction="column" key={a.activityId}>
-              <NextLink href={`/activities/${a.activityId}`}>
+    <>
+      <Tr key={changed}>
+        <Td minWidth={{ base: "300px", sm: "200px" }} pl="0px">
+          <Flex align="center" py=".8rem" minWidth="100%" flexWrap="nowrap">
+            <Avatar
+              src={data.image as string}
+              w="50px"
+              borderRadius="12px"
+              me="18px"
+            />
+            <Flex direction="column">
+              <NextLink href={`/trips/${data.id}`}>
                 <Link>
-                  <Text fontSize="sm" color={textColor} fontWeight="bold">
-                    {a.activity.name}
+                  <Text
+                    fontSize="sm"
+                    color={textColor}
+                    fontWeight="bold"
+                    minWidth="100%"
+                  >
+                    {data.name}
                   </Text>
                 </Link>
               </NextLink>
+              {data.citiesOnTrips.map((c) => {
+                return (
+                  <Text
+                    fontSize="sm"
+                    color="gray.400"
+                    fontWeight="normal"
+                    key={c.city.id}
+                  >
+                    {c.city.name}
+                  </Text>
+                );
+              })}
             </Flex>
-          );
-        })}
+          </Flex>
+        </Td>
+        <Td pl="0px">
+          <Flex align="center" py=".8rem" minWidth="100%" flexWrap="nowrap">
+            <Avatar
+              src={data.planner.avatar as string}
+              w="50px"
+              borderRadius="12px"
+              me="18px"
+            />
+            <Flex direction="column">
+              <NextLink href={`/user/${data.plannerId}`}>
+                <Link>
+                  <Text
+                    fontSize="sm"
+                    color={textColor}
+                    fontWeight="bold"
+                    minWidth="100%"
+                  >
+                    {data.planner.name}
+                  </Text>
+                </Link>
+              </NextLink>
+              <Text fontSize="sm" color="gray.400" fontWeight="normal">
+                {data.planner.mail}
+              </Text>
+            </Flex>
+          </Flex>
+        </Td>
+        <Td pl="10px">
+          {data.activitiesOnTrips.map((a) => {
+            return (
+              <Flex direction="column" key={a.activityId}>
+                <NextLink href={`/activities/${a.activityId}`}>
+                  <Link>
+                    <Text
+                      fontSize="sm"
+                      color={textColor}
+                      fontWeight="bold"
+                      ml={4}
+                      w={79}
+                    >
+                      {a.activity.name}
+                    </Text>
+                  </Link>
+                </NextLink>
+              </Flex>
+            );
+          })}
 
-        {/* <FormControl>
+          {/* <FormControl>
             <ReactSelect
               id="activity"
               name="activity"
@@ -180,47 +182,47 @@ function TripTable({ trip, activities }: Props) {
             />
           </FormControl>
         */}
-      </Td>
-      <Td>
-        <Flex direction="column" textAlign={"center"}>
-          <Text
-            w={79}
-            fontSize="sm"
-            color={textColor}
-            fontWeight="bold"
-            borderColor={textColor}
-            border="solid 1px"
-            borderRadius={10}
-            p={2}
-          >
-            {data.price}
-          </Text>
-        </Flex>
-      </Td>
-      <Td>
-        <Badge
-          bg={data.active === true ? "green.400" : "#e63946"}
-          color={data.active === true ? "white" : "#e63946"}
-          borderRadius="8px"
-        >
-          <Flex direction="column">
-            <Select
+        </Td>
+        <Td>
+          <Flex direction="column" textAlign={"center"}>
+            <Text
+              w={79}
               fontSize="sm"
-              color="white"
+              color={textColor}
               fontWeight="bold"
-              name={"active"}
-              value={data.active.toString()}
-              borderColor={"transparent"}
-              onChange={(e) => handleChange(e)}
-              w={95}
+              borderColor={textColor}
+              border="solid 1px"
+              borderRadius={10}
+              p={2}
             >
-              <option value={"true"}>Active</option>
-              <option value={"false"}>Inactive</option>
-            </Select>
+              {data.price}
+            </Text>
           </Flex>
-        </Badge>
-      </Td>
-      {/* <Td>
+        </Td>
+        <Td>
+          <Badge
+            bg={data.active === true ? "green.400" : "#e63946"}
+            color={data.active === true ? "white" : "#e63946"}
+            borderRadius="8px"
+          >
+            <Flex direction="column">
+              <Select
+                fontSize="sm"
+                color="white"
+                fontWeight="bold"
+                name={"active"}
+                value={data.active.toString()}
+                borderColor={"transparent"}
+                onChange={(e) => handleChange(e)}
+                w={100}
+              >
+                <option value={"true"}>Active</option>
+                <option value={"false"}>Inactive</option>
+              </Select>
+            </Flex>
+          </Badge>
+        </Td>
+        {/* <Td>
         <Flex direction="column">
           <FormControl>
             <ReactSelect
@@ -237,9 +239,9 @@ function TripTable({ trip, activities }: Props) {
           </FormControl>
         </Flex>
       </Td> */}
-      <Td>
-        <Flex direction="column">
-          {/* <Textarea
+        <Td>
+          <Flex direction="column">
+            {/* <Textarea
             fontSize="sm"
             color="black"
             name={"description"}
@@ -247,58 +249,59 @@ function TripTable({ trip, activities }: Props) {
             onChange={(e) => handleChange(e)}
             bg={"white"}
           /> */}
-          <ModalTextarea
-            title={"Description"}
-            name={"description"}
-            value={data.description}
-            handler={setData}
-          />
-        </Flex>
-      </Td>
+            <ModalTextarea
+              title={"Description"}
+              name={"description"}
+              value={data.description}
+              handler={setData}
+            />
+          </Flex>
+        </Td>
 
-      <Td>
-        <Button
-          bg={useColorModeValue("#151f21", "#f4f4f4")}
-          color={useColorModeValue("#f4f4f4", "#151f21")}
-          rounded={"md"}
-          _hover={{
-            transform: "translateY(-2px)",
-            boxShadow: "lg",
-          }}
-          onClick={() => handleEdit()}
-        >
-          <Text
-            fontSize="md"
+        <Td>
+          <Button
+            bg={useColorModeValue("#151f21", "#f4f4f4")}
             color={useColorModeValue("#f4f4f4", "#151f21")}
-            fontWeight="bold"
-            cursor="pointer"
+            rounded={"md"}
+            _hover={{
+              transform: "translateY(-2px)",
+              boxShadow: "lg",
+            }}
+            onClick={() => handleEdit()}
           >
-            Edit
-          </Text>
-        </Button>
-      </Td>
-      <Td>
-        <Button
-          bg={"red"}
-          color={"#151f21"}
-          rounded={"md"}
-          _hover={{
-            transform: "translateY(-2px)",
-            boxShadow: "lg",
-          }}
-          onClick={() => handleDelete()}
-        >
-          <Text
-            fontSize="md"
-            color={"white"}
-            fontWeight="bold"
-            cursor="pointer"
+            <Text
+              fontSize="md"
+              color={useColorModeValue("#f4f4f4", "#151f21")}
+              fontWeight="bold"
+              cursor="pointer"
+            >
+              Save
+            </Text>
+          </Button>
+        </Td>
+        <Td>
+          <Button
+            bg={"red"}
+            color={"#151f21"}
+            rounded={"md"}
+            _hover={{
+              transform: "translateY(-2px)",
+              boxShadow: "lg",
+            }}
+            onClick={() => handleDelete()}
           >
-            Delete
-          </Text>
-        </Button>
-      </Td>
-    </Tr>
+            <Text
+              fontSize="md"
+              color={"white"}
+              fontWeight="bold"
+              cursor="pointer"
+            >
+              Delete
+            </Text>
+          </Button>
+        </Td>
+      </Tr>
+    </>
   );
 }
 

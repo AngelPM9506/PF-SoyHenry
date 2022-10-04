@@ -5,9 +5,9 @@ import {
 } from "react-vertical-timeline-component";
 import "react-vertical-timeline-component/style.min.css";
 import { MdOutlineTripOrigin } from "react-icons/md";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
 import {
   HStack,
-  Image,
   Link,
   Text,
   VStack,
@@ -21,7 +21,9 @@ import {
   AlertTitle,
   AlertDescription,
   Tooltip,
+  Flex,
 } from "@chakra-ui/react";
+
 import NextLink from "next/link";
 import CardTimeLine from "./CardTimeLine";
 import axios from "axios";
@@ -32,8 +34,13 @@ import { getOrCreateUser } from "src/utils/User";
 import { useRef, useEffect, useState } from "react";
 import usersControllers from "src/controllers/users";
 import searchUser from "src/utils/searchUserOnTrip";
-
-export const TimeLine = ({ data }: any) => {
+import { useAccount, useConnect, useDisconnect } from "wagmi";
+import { SendTransaction } from "./SendWeb3Transaction";
+import { ModalWeb3 } from "./ModalWeb3";
+import { useWindowSize } from "src/utils/windowsize";
+import { FaPaypal, FaCcPaypal } from "react-icons/fa";
+import Image from "next/image";
+export const TimeLine = ({ data, ethPrice, validate, setValidate }: any) => {
   const activitiesinOrder = data.activitiesOnTrips.sort(function compareFn(
     a: any,
     b: any
@@ -46,18 +53,18 @@ export const TimeLine = ({ data }: any) => {
       return 1;
     }
   });
-
+  const size = useWindowSize();
   const router = useRouter();
   const { user, error } = useUser();
+  const { isConnected } = useAccount();
   const [userOnTrip, setUserOnTrip] = useState(false);
-
+  const [showPayment, setShowPayment] = useState(false);
   const { data: userDb, isLoading } = useQuery(
     ["userDb", user],
     () => user && getOrCreateUser(user)
   );
 
   const payTrip = async () => {
-    // console.log(data)
     const response = await axios.post("/api/payment/paypal", {
       id: data.id,
       description: data.name,
@@ -77,7 +84,7 @@ export const TimeLine = ({ data }: any) => {
   }, [data.id, userDb]);
 
   return (
-    <Stack width={"100%"} align={"center"}>
+    <Stack width={"100%"} align={"center"} key={validate} mb={10}>
       {userOnTrip ? (
         <Alert
           status="success"
@@ -107,7 +114,7 @@ export const TimeLine = ({ data }: any) => {
           Trips itinerary
         </Text>
       </Box>
-      <VerticalTimeline>
+      <VerticalTimeline animate={size.width > 1000 ? true : false}>
         {data.activitiesOnTrips.length != 0 ? (
           data.activitiesOnTrips.map((activity: any) => (
             <CardTimeLine
@@ -132,7 +139,7 @@ export const TimeLine = ({ data }: any) => {
           <Tooltip
             hasArrow
             placement="auto"
-            label="Ya has pagado y te encuentras en este viaje!"
+            label="Your payment has been successfully, you are part of the trip now!"
           >
             <Button
               isDisabled
@@ -165,7 +172,6 @@ export const TimeLine = ({ data }: any) => {
             rounded={"lg"}
             w={"100%"}
             pb={"2px"}
-            mb={"10px"}
             mt={"0px"}
             size={"lg"}
             py={"8"}
@@ -173,7 +179,7 @@ export const TimeLine = ({ data }: any) => {
             color={useColorModeValue("white", "gray.900")}
             textTransform={"uppercase"}
             fontSize={"xl"}
-            onClick={() => payTrip()}
+            onClick={() => setShowPayment(showPayment ? false : true)}
             _hover={{
               transform: "translateY(-2px)",
               boxShadow: "lg",
@@ -184,6 +190,53 @@ export const TimeLine = ({ data }: any) => {
           >
             Pay and Join the trip!
           </Button>
+          {showPayment && (
+            <>
+              <VerticalTimeline />
+              <Flex gap={5} pb={5}>
+                <Button
+                  bg="#02b1b1"
+                  color="white"
+                  _hover={{
+                    transform: "translateY(-2px)",
+                    boxShadow: "lg",
+                    bg: "#F3B46F",
+                    color: "#293541",
+                  }}
+                  borderRadius={10}
+                  fontWeight="bold"
+                  fontSize="lg"
+                  w={140}
+                  onClick={() => payTrip()}
+                >
+                  <FaPaypal color="#003087" style={{ fontSize: "1.5rem" }} />
+                  <Text pl={2}>Paypal</Text>
+                </Button>
+
+                {!isConnected ? (
+                  <ConnectButton label={"Connect Wallet"} showBalance={false} />
+                ) : (
+                  <ModalWeb3
+                    value={data.price}
+                    ethPrice={ethPrice}
+                    tripData={data}
+                    setValidate={setValidate}
+                    validate={validate}
+                  />
+                )}
+              </Flex>
+            </>
+          )}
+
+          {/* {isConnected && (
+            <ModalWeb3
+              value={data.price}
+              ethPrice={ethPrice}
+              tripData={data}
+              setValidate={setValidate}
+              validate={validate}
+            />
+          )} */}
         </Stack>
       )}
     </Stack>

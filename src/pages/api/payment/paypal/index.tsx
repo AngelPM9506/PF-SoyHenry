@@ -23,7 +23,7 @@ const getCredentials = async() => {
 }
 
 export default async function Payment(req: NextApiRequest, res: NextApiResponse) {
-	const { method, body: {price, description, id, userID}, query: {token, tripID} } = req;
+	const { method, body: {price, description, id, userID}, query: {token, tripID, user_id} } = req;
 	try {
 		switch (method) {
 			case 'POST': {
@@ -51,7 +51,7 @@ export default async function Payment(req: NextApiRequest, res: NextApiResponse)
 							brand_name: "worldtravelers.com",
 							landing_page: "LOGIN",
 							user_action: "PAY_NOW",
-							return_url: `${PAYPAL_URL}/api/payment/paypal?tripID=${id}`,
+							return_url: `${PAYPAL_URL}/api/payment/paypal?tripID=${id}&user_id=${userID}`,
 							cancel_url: `${PAYPAL_URL}/trips/${id}`,
 						}
 					}
@@ -63,20 +63,21 @@ export default async function Payment(req: NextApiRequest, res: NextApiResponse)
 							Authorization: `Bearer ${token.data.access_token}`
 						}
 					})
+					console.log(response);
 					
 					return res.json(response.data)
 				}
 			}
 
 			case 'GET': {
-				console.log(tripID);
 				const credentials = await getCredentials();
 				const response = await axios.post(`${PAYPAL_API}/v2/checkout/orders/${token}/capture`, {}, {
 					headers: {
 						Authorization: `Bearer ${credentials.data.access_token}`
 					}
 				})
-				const mail: string = response.data.payment_source.paypal.email_address;	
+
+				// const mail: string = response.data.payment_source.paypal.email_address;	
 
 				if(response.data.status.toString() === "COMPLETED") {
                     const response = await prisma.trip.update({
@@ -85,7 +86,7 @@ export default async function Payment(req: NextApiRequest, res: NextApiResponse)
 							active: true
 						}
 					})
-					const user = await prisma.user.findFirst({where: {mail: mail.toString()}})
+					const user = await prisma.user.findFirst({where: {id: user_id.toString()}})
 					const trip = await prisma.trip.findFirst({where: {id: tripID.toString()}})
 					const userInTrip = await prisma.usersOnTrips.create({
 						data: {
@@ -94,16 +95,16 @@ export default async function Payment(req: NextApiRequest, res: NextApiResponse)
 						}
 					})
 
-					// await axios.post(`${PAYPAL_URL}/api/mail`, {
-					// 	mail: user.mail,
-					// 	subject: `Trip ${trip.name} has been payed successfuly thanks to use WORLD TRAVELERS`,
-					// 	message: `Your Trip: ${trip.name} has been payed successfuly thanks to use WORLD TRAVELERS`,
-					// 	html: {
-					// 	  title: 'Trip payed successfuly',
-					// 	  actionName: trip.name,
-					// 	  text: `Your Trip ${trip.name} has been payed, enjoy your trip`
-					// 	}
-					// }).catch(error => console.log(error));
+					await axios.post(`${PAYPAL_URL}/api/mail`, {
+						mail: user.mail,
+						subject: `Trip ${trip.name} has been payed successfuly thanks to use WORLD TRAVELERS`,
+						message: `Your Trip: ${trip.name} has been payed successfuly thanks to use WORLD TRAVELERS`,
+						html: {
+						  title: 'Trip payed successfuly',
+						  actionName: trip.name,
+						  text: `Your Trip ${trip.name} has been payed, enjoy your trip`
+						}
+					}).catch(error => console.log(error));
 
 					return res.redirect(`${PAYPAL_URL}/trips/${tripID}`)
 				} else {

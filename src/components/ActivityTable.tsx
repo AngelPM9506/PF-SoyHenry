@@ -14,6 +14,8 @@ import {
   Link,
   Box,
   Center,
+  Stack,
+  Skeleton,
 } from "@chakra-ui/react";
 import { Select as ReactSelect } from "chakra-react-select";
 import React, { SetStateAction, useState } from "react";
@@ -136,128 +138,136 @@ export function ActivityTable({ activity }: Props) {
       isClosable: true,
     });
   };
-
+  if (isLoading) {
+    return (
+      <Stack>
+        <Skeleton height="150px" width={"100vw"} />
+        <Skeleton height="150px" width={"100vw"} />
+        <Skeleton height="150px" width={"100vw"} />
+        <Skeleton height="150px" width={"100vw"} />
+        <Skeleton height="150px" width={"100vw"} />
+      </Stack>
+    );
+  }
   return (
-    !isLoading && (
-      <Tr key={changed}>
-        <Td minWidth={{ base: "300px", sm: "200px" }}>
-          <Flex align="center" py=".8rem" minWidth="100%" flexWrap="nowrap">
-            <Avatar
-              src={activity.image as string}
-              w="50px"
-              borderRadius="12px"
-              me="18px"
-            />
-            <Flex direction="column">
-              <NextLink href={`/activities/${activity.id}`}>
-                <Link>
-                  <Text
-                    fontSize="md"
-                    color={textColor}
-                    fontWeight="bold"
-                    minWidth="100%"
-                  >
-                    {activity.name}
-                  </Text>
-                </Link>
-              </NextLink>
-              <Text fontSize="sm" color="gray.400" fontWeight="normal">
-                {activity.city.name}, {activity.city.country}
-              </Text>
-            </Flex>
-          </Flex>
-        </Td>
-        <Td>
+    <Tr key={changed}>
+      <Td minWidth={{ base: "300px", sm: "200px" }}>
+        <Flex align="center" py=".8rem" minWidth="100%" flexWrap="nowrap">
+          <Avatar
+            src={activity.image as string}
+            w="50px"
+            borderRadius="12px"
+            me="18px"
+          />
           <Flex direction="column">
-            <Input
-              w={100}
-              fontSize="sm"
-              color={textColor}
-              fontWeight="bold"
-              name={"price"}
-              value={data.price}
-              onChange={(e) => handleChange(e)}
-            />
-          </Flex>
-        </Td>
-        <Td>
-          <Flex direction="column">
-            <FormControl>
-              <ReactSelect
-                id="availability"
-                name="availability"
-                options={availability}
-                closeMenuOnSelect={false}
-                size="sm"
-                onChange={(e: any) => handleAvailability(e)}
-                value={value}
-                colorScheme={"blue"}
-                isMulti
-              />
-            </FormControl>
-          </Flex>
-        </Td>
-        <Td>
-          <Badge
-            bg={data.active === true ? "green.400" : "#e63946"}
-            color={data.active === true ? "white" : "#e63946"}
-            fontSize="16px"
-            borderRadius="8px"
-          >
-            <Flex direction="column">
-              <Select
-                fontSize="sm"
-                color="white"
-                fontWeight="bold"
-                name={"active"}
-                value={data.active.toString()}
-                borderColor={"transparent"}
-                onChange={(e) => handleActive(e)}
-                w={100}
-              >
-                <option value={"true"}>Active</option>
-                <option value={"false"}>Inactive</option>
-              </Select>
-            </Flex>
-          </Badge>
-        </Td>
-        <Td>
-          <Flex direction="column">
-            <ModalTextarea
-              title={"Description"}
-              name={"description"}
-              value={data.description}
-              handler={setData}
-            />
-          </Flex>
-        </Td>
-        <Td>
-          <Flex direction="column">
-            <ModalReviews
-              data={actData}
-              mutatesubmit={mutatesubmit}
-              mutateedit={mutateedit}
-              mutatedelete={mutatedelete}
-            />
-          </Flex>
-        </Td>
-        <Td>
-          <Button
-            bg={textColor}
-            color={textColor}
-            rounded={"md"}
-            _hover={{
-              transform: "translateY(-2px)",
-              boxShadow: "lg",
-            }}
-            onClick={() => handleEdit()}
-          >
-            <Text fontSize="md" color={bg} fontWeight="bold" cursor="pointer">
-              Save
+            <NextLink href={`/activities/${activity.id}`}>
+              <Link>
+                <Text
+                  fontSize="md"
+                  color={textColor}
+                  fontWeight="bold"
+                  minWidth="100%"
+                >
+                  {activity.name}
+                </Text>
+              </Link>
+            </NextLink>
+            <Text fontSize="sm" color="gray.400" fontWeight="normal">
+              {activity.city.name}, {activity.city.country}
             </Text>
-          </Button>
-        </Td>
-      </Tr>
-    )
+          </Flex>
+        </Flex>
+      </Td>
+      <Td>
+        <Flex direction="column">
+          <Input
+            w={100}
+            fontSize="sm"
+            color={textColor}
+            fontWeight="bold"
+            name={"price"}
+            value={data.price}
+            onChange={(e) => handleChange(e)}
+          />
+        </Flex>
+      </Td>
+      <Td>
+        <Flex direction="column">
+          <FormControl>
+            <ReactSelect
+              id="availability"
+              name="availability"
+              options={availability}
+              closeMenuOnSelect={false}
+              size="sm"
+              onChange={(e: any) => handleAvailability(e)}
+              value={value}
+              colorScheme={"blue"}
+              isMulti
+            />
+          </FormControl>
+        </Flex>
+      </Td>
+      <Td>
+        <Badge
+          bg={data.active === true ? "green.400" : "#e63946"}
+          color={data.active === true ? "white" : "#e63946"}
+          fontSize="16px"
+          borderRadius="8px"
+        >
+          <Flex direction="column">
+            <Select
+              fontSize="sm"
+              color="white"
+              fontWeight="bold"
+              name={"active"}
+              value={data.active.toString()}
+              borderColor={"transparent"}
+              onChange={(e) => handleActive(e)}
+              w={100}
+            >
+              <option value={"true"}>Active</option>
+              <option value={"false"}>Inactive</option>
+            </Select>
+          </Flex>
+        </Badge>
+      </Td>
+      <Td>
+        <Flex direction="column">
+          <ModalTextarea
+            title={"Description"}
+            name={"description"}
+            value={data.description}
+            handler={setData}
+          />
+        </Flex>
+      </Td>
+      <Td>
+        <Flex direction="column">
+          <ModalReviews
+            data={actData}
+            mutatesubmit={mutatesubmit}
+            mutateedit={mutateedit}
+            mutatedelete={mutatedelete}
+          />
+        </Flex>
+      </Td>
+      <Td>
+        <Button
+          bg={textColor}
+          color={textColor}
+          rounded={"md"}
+          _hover={{
+            transform: "translateY(-2px)",
+            boxShadow: "lg",
+          }}
+          onClick={() => handleEdit()}
+        >
+          <Text fontSize="md" color={bg} fontWeight="bold" cursor="pointer">
+            Save
+          </Text>
+        </Button>
+      </Td>
+    </Tr>
   );
 }

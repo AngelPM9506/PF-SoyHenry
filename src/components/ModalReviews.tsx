@@ -15,7 +15,7 @@ import {
   Center,
 } from "@chakra-ui/react";
 import { useState } from "react";
-import { Comment, Trip } from "src/utils/interface";
+import { Activity, Comment, Trip } from "src/utils/interface";
 import Reviews from "./Reviews";
 
 export function ModalReviews({
@@ -24,7 +24,7 @@ export function ModalReviews({
   mutateedit,
   mutatedelete,
 }: {
-  data: { activity: { feedbacks: Comment[]; name: string }; id: string };
+  data: Activity;
   mutatesubmit: any;
   mutateedit: any;
   mutatedelete: any;
@@ -50,13 +50,13 @@ export function ModalReviews({
       <Modal isOpen={isOpen} onClose={onClose} key={data.id} size={"3xl"}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>{data.activity.name}</ModalHeader>
+          <ModalHeader>{data.name}</ModalHeader>
           <ModalCloseButton />
           <Center>
             <ModalBody w={700}>
               <Reviews
-                feedbacks={data.activity.feedbacks}
-                id={data.id}
+                feedbacks={data.feedbacks}
+                id={data?.id}
                 admin={true}
                 mutatesubmit={mutatesubmit}
                 mutateedit={mutateedit}

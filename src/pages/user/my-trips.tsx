@@ -334,6 +334,7 @@ export default function MyTrips() {
           display={"flex"}
           paddingTop={{ base: "7%", sm: "5%", md: "5%", lg: "1%" }}
           height={"fit-content"}
+          minHeight={"80vh"}
           paddingBottom={{ base: "7%", sm: "5%", md: "5%", lg: "2%" }}
         >
           <Box
@@ -417,7 +418,8 @@ export default function MyTrips() {
         <Stack
           display={"flex"}
           paddingTop={{ base: "7%", sm: "5%", md: "5%", lg: "1%" }}
-          height={{ base: "50vh", sm: "60vh", md: "70vh", lg: "80vh" }}
+          height={"fit-content"}
+          minHeight={"80vh"}
           paddingBottom={{ base: "7%", sm: "5%", md: "5%", lg: "2%" }}
         >
           <Box
@@ -502,7 +504,8 @@ export default function MyTrips() {
         <Stack
           display={"flex"}
           paddingTop={{ base: "7%", sm: "5%", md: "5%", lg: "1%" }}
-          height={"100%"}
+          height={"fit-content"}
+          minHeight={"80vh"}
           paddingBottom={{ base: "7%", sm: "5%", md: "5%", lg: "2%" }}
         >
           <Box
@@ -619,6 +622,8 @@ export default function MyTrips() {
         <Stack
           marginTop={{ base: "25%", sm: "20%", md: "15%", lg: "0" }}
           display={"flex"}
+          height={"fit-content"}
+          minHeight={"80vh"}
           alignSelf={"center"}
           justifySelf={"center"}
         >

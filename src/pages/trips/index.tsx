@@ -290,6 +290,7 @@ function Trips({ trips }: Props) {
         columnGap={"7px"}
         minChildWidth="330px"
         columns={[2, null, 3]}
+        p="4px"
       >
         {data.length != 0 ? (
           data

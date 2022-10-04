@@ -12,6 +12,10 @@ import {
   useColorModeValue,
   useToast,
   Link,
+  Box,
+  Center,
+  Stack,
+  Skeleton,
 } from "@chakra-ui/react";
 import { Select as ReactSelect } from "chakra-react-select";
 import React, { SetStateAction, useState } from "react";
@@ -42,16 +46,11 @@ type Props = {
 export function ActivityTable({ activity }: Props) {
   const textColor = useColorModeValue("#151f21", "#f4f4f4");
   const bg = useColorModeValue("#f4f4f4", "#151f21");
-  const { data: actData, isLoading } = useQuery(["editActivity"], async () => {
-    const id = activity.id;
-    const actDetail = await getActivitiesId(id);
-
-    return {
-      activity: actDetail,
-      id: id,
-    };
-  });
-
+  const {
+    data: actData,
+    isLoading,
+    error,
+  } = useQuery(["editActivity", activity], () => getActivitiesId(activity.id));
   const queryClient = useQueryClient();
   const mutatesubmit = useMutation(patchActivity, {
     onSuccess: () => {
@@ -139,7 +138,17 @@ export function ActivityTable({ activity }: Props) {
       isClosable: true,
     });
   };
-
+  if (isLoading) {
+    return (
+      <Stack>
+        <Skeleton height="150px" width={"100vw"} />
+        <Skeleton height="150px" width={"100vw"} />
+        <Skeleton height="150px" width={"100vw"} />
+        <Skeleton height="150px" width={"100vw"} />
+        <Skeleton height="150px" width={"100vw"} />
+      </Stack>
+    );
+  }
   return (
     <Tr key={changed}>
       <Td minWidth={{ base: "300px", sm: "200px" }}>
@@ -225,14 +234,6 @@ export function ActivityTable({ activity }: Props) {
       </Td>
       <Td>
         <Flex direction="column">
-          {/* <Textarea
-            fontSize="sm"
-            color="black"
-            name={"description"}
-            value={data.description}
-            onChange={(e) => handleChange(e)}
-            bg={"white"}
-          ></Textarea> */}
           <ModalTextarea
             title={"Description"}
             name={"description"}

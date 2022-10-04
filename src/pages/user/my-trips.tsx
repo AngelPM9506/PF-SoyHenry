@@ -20,7 +20,7 @@ import { Table, Tag, Tooltip, Typography, Input, BackTop } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import type { ColumnsType, TableProps } from "antd/es/table";
 import "antd/dist/antd.css";
-import NextLink from "next/link";
+import Link from "next/link";
 import { Trip } from "src/utils/interface";
 import { BannedAlert } from "src/components/Banned";
 import { useRouter } from "next/router";
@@ -63,21 +63,23 @@ export default function MyTrips() {
       render: (name: string) => {
         let trip = trips.find((t) => t.name === name);
         return (
-          <NextLink href={`/trips/${trip.id}`}>
-            <Title level={5}>
-              <Text
-                cursor={"pointer"}
-                fontSize={["xs", "sm", "md"]}
-                fontStyle={trip.active ? "italic" : "normal"}
-                textTransform={"capitalize"}
-                fontWeight={"bold"}
-                color={trip.active ? "#293541" : "#F3B46F"}
-                textShadow={"1px 1px #293541"}
-              >
-                {name}
-              </Text>
-            </Title>
-          </NextLink>
+          <Title level={5}>
+            <Link href={`/trips/${trip.id}`} passHref>
+              <a>
+                <Text
+                  cursor={"pointer"}
+                  fontSize={["xs", "sm", "md"]}
+                  fontStyle={trip.active ? "italic" : "normal"}
+                  textTransform={"capitalize"}
+                  fontWeight={"bold"}
+                  color={trip.active ? "#293541" : "#F3B46F"}
+                  textShadow={"1px 1px #293541"}
+                >
+                  {name}
+                </Text>
+              </a>
+            </Link>
+          </Title>
         );
       },
       filterDropdown: ({ setSelectedKeys, selectedKeys, confirm }) => {
@@ -189,21 +191,23 @@ export default function MyTrips() {
       render: (name: string) => {
         let newTrip: any = otherTrips?.map((t) => t.name);
         return (
-          <NextLink href={`/trips/${newTrip.id}`}>
-            <Title level={5}>
-              <Text
-                cursor={"pointer"}
-                fontSize={["xs", "sm", "md"]}
-                fontStyle={newTrip.active ? "italic" : "normal"}
-                textTransform={"capitalize"}
-                fontWeight={"bold"}
-                color={newTrip.active ? "#293541" : "#F3B46F"}
-                textShadow={"1px 1px #293541"}
-              >
-                {name}
-              </Text>
-            </Title>
-          </NextLink>
+          <Title level={5}>
+            <Link href={`/trips/${newTrip.id}`} passHref>
+              <a>
+                <Text
+                  cursor={"pointer"}
+                  fontSize={["xs", "sm", "md"]}
+                  fontStyle={newTrip.active ? "italic" : "normal"}
+                  textTransform={"capitalize"}
+                  fontWeight={"bold"}
+                  color={newTrip.active ? "#293541" : "#F3B46F"}
+                  textShadow={"1px 1px #293541"}
+                >
+                  {name}
+                </Text>
+              </a>
+            </Link>
+          </Title>
         );
       },
 
@@ -334,6 +338,7 @@ export default function MyTrips() {
           display={"flex"}
           paddingTop={{ base: "7%", sm: "5%", md: "5%", lg: "1%" }}
           height={"fit-content"}
+          minHeight={"80vh"}
           paddingBottom={{ base: "7%", sm: "5%", md: "5%", lg: "2%" }}
         >
           <Box
@@ -385,26 +390,28 @@ export default function MyTrips() {
                     />
                   </Stack>
                   <Center>
-                    <NextLink href={"/trips/create"}>
-                      <Button
-                        bg={useColorModeValue("#02b1b1", "#02b1b1")}
-                        color={"#293541"}
-                        marginRight={"55px"}
-                        rounded={"md"}
-                        padding={"20px"}
-                        _hover={{
-                          transform: "translateY(-2px)",
-                          boxShadow: "lg",
-                          bg: "#F3B46F",
-                          color: "#293541",
-                        }}
-                        m={5}
-                        w={175}
-                        marginBottom={{ sm: "-15px" }}
-                      >
-                        Create a new trip
-                      </Button>
-                    </NextLink>
+                    <Link href={"/trips/create"} passHref>
+                      <a>
+                        <Button
+                          bg={useColorModeValue("#02b1b1", "#02b1b1")}
+                          color={"#293541"}
+                          marginRight={"55px"}
+                          rounded={"md"}
+                          padding={"20px"}
+                          _hover={{
+                            transform: "translateY(-2px)",
+                            boxShadow: "lg",
+                            bg: "#F3B46F",
+                            color: "#293541",
+                          }}
+                          m={5}
+                          w={175}
+                          marginBottom={{ sm: "-15px" }}
+                        >
+                          Create a new trip
+                        </Button>
+                      </a>
+                    </Link>
                   </Center>
                 </Stack>
               </Box>
@@ -417,7 +424,8 @@ export default function MyTrips() {
         <Stack
           display={"flex"}
           paddingTop={{ base: "7%", sm: "5%", md: "5%", lg: "1%" }}
-          height={{ base: "50vh", sm: "60vh", md: "70vh", lg: "80vh" }}
+          height={"fit-content"}
+          minHeight={"80vh"}
           paddingBottom={{ base: "7%", sm: "5%", md: "5%", lg: "2%" }}
         >
           <Box
@@ -469,26 +477,28 @@ export default function MyTrips() {
                     />
                   </Stack>
                   <Center>
-                    <NextLink href={"/trips/create"}>
-                      <Button
-                        bg={useColorModeValue("#02b1b1", "#02b1b1")}
-                        color={"#293541"}
-                        marginRight={"55px"}
-                        rounded={"md"}
-                        padding={"20px"}
-                        _hover={{
-                          transform: "translateY(-2px)",
-                          boxShadow: "lg",
-                          bg: "#F3B46F",
-                          color: "#293541",
-                        }}
-                        m={5}
-                        w={175}
-                        marginBottom={{ sm: "-15px" }}
-                      >
-                        Create a new trip
-                      </Button>
-                    </NextLink>
+                    <Link href={"/trips/create"} passHref>
+                      <a>
+                        <Button
+                          bg={useColorModeValue("#02b1b1", "#02b1b1")}
+                          color={"#293541"}
+                          marginRight={"55px"}
+                          rounded={"md"}
+                          padding={"20px"}
+                          _hover={{
+                            transform: "translateY(-2px)",
+                            boxShadow: "lg",
+                            bg: "#F3B46F",
+                            color: "#293541",
+                          }}
+                          m={5}
+                          w={175}
+                          marginBottom={{ sm: "-15px" }}
+                        >
+                          Create a new trip
+                        </Button>
+                      </a>
+                    </Link>
                   </Center>
                 </Stack>
               </Box>
@@ -502,7 +512,8 @@ export default function MyTrips() {
         <Stack
           display={"flex"}
           paddingTop={{ base: "7%", sm: "5%", md: "5%", lg: "1%" }}
-          height={"100%"}
+          height={"fit-content"}
+          minHeight={"80vh"}
           paddingBottom={{ base: "7%", sm: "5%", md: "5%", lg: "2%" }}
         >
           <Box
@@ -589,26 +600,28 @@ export default function MyTrips() {
                     />
                   </Stack>
                   <Center>
-                    <NextLink href={"/trips/create"}>
-                      <Button
-                        bg={useColorModeValue("#02b1b1", "#02b1b1")}
-                        color={"#293541"}
-                        marginRight={"55px"}
-                        rounded={"md"}
-                        padding={"20px"}
-                        _hover={{
-                          transform: "translateY(-2px)",
-                          boxShadow: "lg",
-                          bg: "#F3B46F",
-                          color: "#293541",
-                        }}
-                        m={5}
-                        w={175}
-                        marginBottom={{ sm: "-15px" }}
-                      >
-                        Create a new trip
-                      </Button>
-                    </NextLink>
+                    <Link href={"/trips/create"} passHref>
+                      <a>
+                        <Button
+                          bg={useColorModeValue("#02b1b1", "#02b1b1")}
+                          color={"#293541"}
+                          marginRight={"55px"}
+                          rounded={"md"}
+                          padding={"20px"}
+                          _hover={{
+                            transform: "translateY(-2px)",
+                            boxShadow: "lg",
+                            bg: "#F3B46F",
+                            color: "#293541",
+                          }}
+                          m={5}
+                          w={175}
+                          marginBottom={{ sm: "-15px" }}
+                        >
+                          Create a new trip
+                        </Button>
+                      </a>
+                    </Link>
                   </Center>
                 </Stack>
               </Box>
@@ -619,6 +632,8 @@ export default function MyTrips() {
         <Stack
           marginTop={{ base: "25%", sm: "20%", md: "15%", lg: "0" }}
           display={"flex"}
+          height={"fit-content"}
+          minHeight={"80vh"}
           alignSelf={"center"}
           justifySelf={"center"}
         >
@@ -656,26 +671,28 @@ export default function MyTrips() {
                     </Text>
                   </Stack>
                   <Center>
-                    <NextLink href={"/trips/create"}>
-                      <Button
-                        bg={useColorModeValue("#02b1b1", "#02b1b1")}
-                        color={"#293541"}
-                        marginRight={"55px"}
-                        rounded={"md"}
-                        padding={"20px"}
-                        _hover={{
-                          transform: "translateY(-2px)",
-                          boxShadow: "lg",
-                          bg: "#F3B46F",
-                          color: "#293541",
-                        }}
-                        m={5}
-                        w={175}
-                        marginBottom={{ sm: "-15px" }}
-                      >
-                        Create a new trip
-                      </Button>
-                    </NextLink>
+                    <Link href={"/trips/create"} passHref>
+                      <a>
+                        <Button
+                          bg={useColorModeValue("#02b1b1", "#02b1b1")}
+                          color={"#293541"}
+                          marginRight={"55px"}
+                          rounded={"md"}
+                          padding={"20px"}
+                          _hover={{
+                            transform: "translateY(-2px)",
+                            boxShadow: "lg",
+                            bg: "#F3B46F",
+                            color: "#293541",
+                          }}
+                          m={5}
+                          w={175}
+                          marginBottom={{ sm: "-15px" }}
+                        >
+                          Create a new trip
+                        </Button>
+                      </a>
+                    </Link>
                   </Center>
                 </Stack>
               </Box>

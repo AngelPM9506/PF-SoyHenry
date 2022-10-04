@@ -419,14 +419,18 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
         </Heading>
       </Center>
       <form onSubmit={(e) => handleSubmit(e)}>
-        <Box h={"3xl"} marginBottom={{ base: "350px", md: "70px" }}>
-          <FormControl>
+        <Box
+          minH={"3xl"}
+          h={"max-content"}
+          marginBottom={{ base: "0px", lg: "80px" }}
+        >
+          <FormControl height={"max-content"}>
             <Center>
               <Grid
-                marginBottom={"20px"}
-                h="80vh"
+                marginBottom={"0px"}
+                h={{ base: "max-content", lg: "80vh" }}
                 w="80vw"
-                templateRows="repeat(4, 1fr)"
+                templateRows={{ base: "repeat(3, 1fr)", lg: "repeat(4, 1fr)" }}
                 templateColumns="300px 1fr 1fr 1fr 1fr"
                 gap={1}
               >
@@ -462,7 +466,7 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
                     <Button
                       onClick={(event) => handleClick(event)}
                       mt="20px"
-                      marginBottom={{ base: "20px", md: 0 }}
+                      marginBottom={{ base: "0px", md: 0 }}
                     >
                       Change Trip Image
                     </Button>
@@ -600,17 +604,37 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
                   borderRadius="2xl"
                   colSpan={5}
                   textAlign={{ base: "left", md: "left" }}
+                  height={"max-content"}
+                  width={"100%"}
                 >
                   <FormLabel
-                    paddingLeft="2"
                     htmlFor="activitiesName"
                     mt={1}
                     textAlign={{ base: "left", md: "left" }}
                   >
                     Associated activities: <br />
-                    {input.activitiesName.map((a) => (
-                      <Text key={a.name}> - {a.name}</Text>
-                    ))}
+                    <SimpleGrid
+                      columns={3}
+                      bg={useColorModeValue(
+                        "RGBA(75,100,124,0.41)",
+                        "RGBA(75,100,124,0.41)"
+                      )}
+                      width={"100%"}
+                      rounded={"10px"}
+                    >
+                      {input.activitiesName.map((a) => (
+                        <Box key="a.name" padding={"10px"}>
+                          <Text
+                            noOfLines={1}
+                            overflow-wrap="break-word"
+                            key={a.name}
+                            textTransform={"capitalize"}
+                          >
+                            - {a.name}
+                          </Text>
+                        </Box>
+                      ))}
+                    </SimpleGrid>
                   </FormLabel>
                   <Button
                     ml="4"
@@ -649,7 +673,7 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
                         <Box display={"flex"} flexDirection={"row"}>
                           <Center>
                             <SimpleGrid
-                              columns={{ base: 3, md: 7 }}
+                              columns={{ base: 3, md: 6 }}
                               spacing={1}
                             >
                               {activities
@@ -691,6 +715,9 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
                                           pt={1}
                                           display={"flex"}
                                           alignItems={"center"}
+                                          flex-wrap="wrap"
+                                          width={"100%"}
+                                          overflow={"hidden"}
                                         >
                                           <Text
                                             noOfLines={1}
@@ -698,6 +725,7 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
                                             fontSize={"md"}
                                             fontFamily={"body"}
                                             fontWeight={70}
+                                            overflow-wrap="break-word"
                                           >
                                             {act?.name}
                                           </Text>
@@ -808,12 +836,14 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
                             </SimpleGrid>
                           </Center>
                         </Box>
-                        <Center>
-                          <Flex
+                        <Center width={"100%"}>
+                          <SimpleGrid
                             flex-wrap="wrap"
+                            columns={6}
                             justify-content="space-around"
                             marginTop={"10px"}
                             marginBottom={"5px"}
+                            width={"100%"}
                           >
                             {input.activitiesName?.map((a, index) => {
                               return (
@@ -838,7 +868,7 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
                                 </>
                               );
                             })}
-                          </Flex>
+                          </SimpleGrid>
                         </Center>
                       </ModalBody>
                       <ModalFooter>
@@ -853,9 +883,8 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
                       </Text>
                     )}
                   </GridItem>
-                  <Center marginTop={2} marginBottom="2%">
+                  <Center marginTop={2} height={"max-content"}>
                     <Button
-                      mt="20px"
                       ml={{ md: "300px", lg: "0" }}
                       bg="highlight"
                       color="primary"

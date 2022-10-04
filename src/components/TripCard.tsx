@@ -7,10 +7,9 @@ import {
   Stack,
   Image,
   Button,
-  Link,
   VStack,
 } from "@chakra-ui/react";
-import NextLink from "next/link";
+import Link from "next/link";
 const defaultpic: string =
   "https://drive.google.com/uc?id=1YZhzZFB0nRQuLLzmFVq13upFeZQo5CLd";
 
@@ -27,6 +26,7 @@ export function TripCard({ props }: any) {
         rounded={"lg"}
         pos={"relative"}
         zIndex={1}
+        minH="100%"
       >
         <Box
           rounded={"lg"}
@@ -82,7 +82,7 @@ export function TripCard({ props }: any) {
           <Text fontWeight={800} fontSize={"xl"} marginBottom="-15px">
             Cities:
           </Text>
-          <Text fontWeight={400} fontSize={"xl"} textTransform={"capitalize"}>
+          <Text fontWeight={400} fontSize={"xl"} textTransform={"capitalize"} noOfLines={1}>
             {props.citiesOnTrips.map(
               (a: any, i: any) =>
                 ` ${a.city.name} ` +
@@ -102,21 +102,23 @@ export function TripCard({ props }: any) {
           </Text>
         </Stack>
         <Stack marginTop={"5px"} textAlign={"center"} justifyContent={"center"}>
-          <NextLink href={`/trips/${props.id}`}>
-            <Button
-              w={"full"}
-              mt={5}
-              bg={useColorModeValue("#151f21", "#f4f4f4")}
-              color={useColorModeValue("#f4f4f4", "#151f21")}
-              rounded={"md"}
-              _hover={{
-                transform: "translateY(-2px)",
-                boxShadow: "lg",
-              }}
-            >
-              See more Information
-            </Button>
-          </NextLink>
+          <Link href={`/trips/${props.id}`} passHref>
+            <a>
+              <Button
+                w={"full"}
+                mt={5}
+                bg={useColorModeValue("#151f21", "#f4f4f4")}
+                color={useColorModeValue("#f4f4f4", "#151f21")}
+                rounded={"md"}
+                _hover={{
+                  transform: "translateY(-2px)",
+                  boxShadow: "lg",
+                }}
+              >
+                +Info
+              </Button>
+            </a>
+          </Link>
         </Stack>
       </Box>
     </Center>

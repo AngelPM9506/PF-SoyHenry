@@ -27,6 +27,7 @@ export function TripCard({ props }: any) {
         rounded={"lg"}
         pos={"relative"}
         zIndex={1}
+        minH="100%"
       >
         <Box
           rounded={"lg"}
@@ -82,7 +83,7 @@ export function TripCard({ props }: any) {
           <Text fontWeight={800} fontSize={"xl"} marginBottom="-15px">
             Cities:
           </Text>
-          <Text fontWeight={400} fontSize={"xl"} textTransform={"capitalize"}>
+          <Text fontWeight={400} fontSize={"xl"} textTransform={"capitalize"} noOfLines={1}>
             {props.citiesOnTrips.map(
               (a: any, i: any) =>
                 ` ${a.city.name} ` +

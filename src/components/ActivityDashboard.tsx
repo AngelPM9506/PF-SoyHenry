@@ -24,6 +24,8 @@ import { ActivityTable } from "./ActivityTable";
 import NextLink from "next/link";
 import Pagination from "./pagination";
 import { createCity } from "src/utils/cities";
+import { useQueryClient } from "react-query";
+import { getActivitiesId } from "src/utils/activities";
 
 export const ActivityDashboard = ({
   activities,
@@ -57,7 +59,7 @@ export const ActivityDashboard = ({
     country: "",
   });
   const toast = useToast();
-
+  const queryClient = useQueryClient();
   const handleActivitiesPerPage = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setActivitiesPerPage(Number(e.target.value));
   };
@@ -177,7 +179,6 @@ export const ActivityDashboard = ({
                     name: e.target.value,
                   })
                 }
-
                 placeholder="Type the name of the city..."
                 value={inputCity.name}
                 width={"250px"}
@@ -319,6 +320,13 @@ export const ActivityDashboard = ({
               (currentPage - 1) * activitiesPerPage + activitiesPerPage
             )
             .map((a: Activity) => {
+              queryClient.prefetchQuery(
+                ["editActivity", a.id],
+                () => getActivitiesId(a.id),
+                {
+                  staleTime: 10 * 1000, // only prefetch if older than 10 seconds
+                }
+              );
               return <ActivityTable activity={a} key={a.id} />;
             })}
         </Tbody>

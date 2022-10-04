@@ -130,6 +130,7 @@ export default function ActivityDetail({
                       color={useColorModeValue("gray.500", "gray.400")}
                       fontSize={"2xl"}
                       fontWeight={"300"}
+                      textTransform={"capitalize"}
                     >
                       {data.activity.city.name}
                     </Text>

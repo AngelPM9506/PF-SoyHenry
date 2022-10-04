@@ -94,6 +94,7 @@ const ActivitiesControles = {
           price: true,
           image: true,
           public_id_image: true,
+          active: true,
           city: {
             select: {
               name: true,

@@ -83,7 +83,7 @@ export function TripCard({ props }: any) {
             Cities:
           </Text>
           <Text fontWeight={400} fontSize={"xl"} textTransform={"capitalize"}>
-            {props.citiesOnTrips.map((a: any) => a.city.name)}
+            {props.citiesOnTrips.map((a: any,i:any) => ` ${a.city.name} ` + (i == props.citiesOnTrips.length - 1 ? "" : "-"))}
           </Text>
         </VStack>
 

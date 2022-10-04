@@ -82,7 +82,11 @@ export function TripCard({ props }: any) {
             Cities:
           </Text>
           <Text fontWeight={400} fontSize={"xl"}>
-            {props.citiesOnTrips.map((a: any,i:any) => ` ${a.city.name} ` + (i == props.citiesOnTrips.length - 1 ? "" : "-"))}
+            {props.citiesOnTrips.map(
+              (a: any, i: any) =>
+                ` ${a.city.name} ` +
+                (i == props.citiesOnTrips.length - 1 ? "" : "-")
+            )}
           </Text>
         </VStack>
 
@@ -93,7 +97,7 @@ export function TripCard({ props }: any) {
             fontWeight={700}
             fontSize={"xl"}
           >
-            $ {props.price}
+            US$ {props.price}
           </Text>
         </Stack>
         <Stack marginTop={"5px"} textAlign={"center"} justifyContent={"center"}>

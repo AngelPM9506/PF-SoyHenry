@@ -96,7 +96,7 @@ export function ActivityCard({ props }: any) {
               {props.city.name}
             </Text>
             <Text fontWeight={700} fontSize={"xl"}>
-              $ {props.price}
+              US$ {props.price}
             </Text>
           </Box>
           {props.feedbacks.length > 0 ? (

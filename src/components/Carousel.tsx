@@ -128,7 +128,7 @@ const MyCarousel = ({ trips, activities }: Props) => {
                         </Heading>
                         <Stack direction={"row"} align={"center"}>
                           <Text fontWeight={800} fontSize={"xl"}>
-                            {`$${t.price}`}
+                            {`US$${t.price}`}
                           </Text>
                         </Stack>
                       </Stack>
@@ -248,7 +248,7 @@ const MyCarousel = ({ trips, activities }: Props) => {
                         </Text>
                         <Stack direction={"row"} align={"center"}>
                           <Text fontWeight={800} fontSize={"xl"}>
-                            {`$${a.price}`}
+                            {`US$${a.price}`}
                           </Text>
                         </Stack>
                         <Stack direction={"row"} align={"center"}>

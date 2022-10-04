@@ -86,7 +86,7 @@ export default function ActivityDetail({
               marginTop={"20px"}
               fontSize={"2xl"}
             >
-              $ {data.activity.price}
+              US$ {data.activity.price}
             </Text>
           </Box>
 

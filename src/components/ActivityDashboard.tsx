@@ -16,6 +16,7 @@ import {
   FormControl,
   Stack,
   useToast,
+  Tooltip,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { Activity } from "src/utils/interface";
@@ -158,11 +159,16 @@ export const ActivityDashboard = ({
     <Box>
       <Flex
         alignItems={{ base: "center", xl: "right" }}
-        justifyContent={{ base: "center", xl: "space-between" }}
+        justifyContent={{ base: "center", lg: "space-between" }}
+        flexDirection={{ base: "column", lg: "row" }}
       >
         <Stack>
           <form onSubmit={onSubmit}>
-            <FormControl display="flex" flexDirection="row" w="50%">
+            <FormControl
+              display="flex"
+              flexDirection={{ base: "column", lg: "row" }}
+              w="100%"
+            >
               <Input
                 type="text"
                 onChange={(e) =>
@@ -171,19 +177,47 @@ export const ActivityDashboard = ({
                     name: e.target.value,
                   })
                 }
+
+                placeholder="Type the name of the city..."
                 value={inputCity.name}
+                width={"250px"}
+                marginTop={{ base: "10px", lg: "0px" }}
               />
-              <Input
-                type="text"
-                onChange={(e) =>
-                  setInputCity({
-                    ...inputCity,
-                    country: e.target.value,
-                  })
-                }
-                value={inputCity.country}
-              />
-              <Button type="submit">Send</Button>
+              <Tooltip label="Country code top-level domain. ex. AR,ES">
+                <Input
+                  width={{ base: "250px", lg: "130px" }}
+                  type="text"
+                  onChange={(e) =>
+                    setInputCity({
+                      ...inputCity,
+                      country: e.target.value,
+                    })
+                  }
+                  placeholder={"Country code..."}
+                  value={inputCity.country}
+                  marginLeft={{ base: "0px", lg: "10px" }}
+                  marginTop={{ base: "10px", lg: "0px" }}
+                />
+              </Tooltip>
+              <Button
+                marginTop={{ base: "10px", lg: "0px" }}
+                type="submit"
+                bg={"#4b647c"}
+                color={"white"}
+                rounded={"md"}
+                padding={"20px"}
+                paddingLeft={"30px"}
+                paddingRight={"30px"}
+                marginLeft={{ base: "0px", lg: "10px" }}
+                _hover={{
+                  transform: "translateY(-2px)",
+                  boxShadow: "lg",
+                  bg: "#F3B46F",
+                  color: "black",
+                }}
+              >
+                Add new city
+              </Button>
             </FormControl>
           </form>
         </Stack>
@@ -212,7 +246,9 @@ export const ActivityDashboard = ({
         mb={5}
         mt={5}
         key={availability}
-        direction={{ base: "column", xl: "row" }}
+        direction={{ base: "column", lg: "row" }}
+        justifyContent={{ base: "center", lg: "left" }}
+        alignItems={{ base: "center", lg: "left" }}
       >
         <Select
           width={250}

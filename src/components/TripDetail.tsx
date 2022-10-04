@@ -258,7 +258,7 @@ export default function TripDetail({
                       <List>
                         {data.citiesOnTrips.length != 0 ? (
                           data.citiesOnTrips.map((c: any, index: Key) => (
-                            <ListItem key={index}>
+                            <ListItem key={index} textTransform={"capitalize"}>
                               <ListIcon as={MinusIcon} color="#F3B46F" />
                               {c.city.name}
                             </ListItem>

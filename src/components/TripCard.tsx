@@ -67,6 +67,7 @@ export function TripCard({ props }: any) {
             fontWeight={600}
             textAlign={"center"}
             textTransform={"capitalize"}
+            noOfLines={1}
           >
             {props.name}
           </Heading>
@@ -81,7 +82,7 @@ export function TripCard({ props }: any) {
           <Text fontWeight={800} fontSize={"xl"} marginBottom="-15px">
             Cities:
           </Text>
-          <Text fontWeight={400} fontSize={"xl"}>
+          <Text fontWeight={400} fontSize={"xl"} textTransform={"capitalize"}>
             {props.citiesOnTrips.map(
               (a: any, i: any) =>
                 ` ${a.city.name} ` +

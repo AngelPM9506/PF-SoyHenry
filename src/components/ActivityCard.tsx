@@ -89,10 +89,16 @@ export function ActivityCard({ props }: any) {
               fontWeight={600}
               textAlign={"center"}
               textTransform={"capitalize"}
+              noOfLines={1}
             >
               {props.name}
             </Heading>
-            <Text fontWeight={400} fontSize={"xl"} textAlign={"center"}>
+            <Text
+              fontWeight={400}
+              fontSize={"xl"}
+              textAlign={"center"}
+              textTransform={"capitalize"}
+            >
               {props.city.name}
             </Text>
             <Text fontWeight={700} fontSize={"xl"}>
@@ -126,7 +132,10 @@ export function ActivityCard({ props }: any) {
             width={"100%"}
             mt={"2px"}
           >
-            this activity is in {props.activitiesOnTrips.length} trips
+            {props.activitiesOnTrips.length === 0
+              ? "There are no trips with this activity."
+              : `This activity is in ${props.activitiesOnTrips.length}
+            ${props.activitiesOnTrips.length === 1 ? " trip" : " trips"}`}
           </Box>
           <NextLink href={`/activities/${props.id}`}>
             <Button

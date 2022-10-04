@@ -6,6 +6,7 @@ import {
   Image,
   Heading,
   Flex,
+  Link,
 } from "@chakra-ui/react";
 import NextLink from "next/link";
 import { useQuery } from "react-query";
@@ -90,11 +91,11 @@ export default function CardTimeLine({ activity, actDate, cities }: any) {
               );
             }
           })}
-          <NextLink href={`/activities/${activity.id}`}>
-            <Button bg={"#02b1b1"} color={"#293541"}>
-              More Info
-            </Button>
-          </NextLink>
+          <Button bg={"#02b1b1"} color={"#293541"}>
+            <NextLink href={`/activities/${activity.id}`}>
+              <Link>More Info</Link>
+            </NextLink>
+          </Button>
         </VStack>
       </HStack>
     </VerticalTimelineElement>

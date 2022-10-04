@@ -156,26 +156,26 @@ function Trips({ trips }: Props) {
         >
           All Our Travelers Trips
         </Heading>
-        <NextLink href="/trips/create">
-          <Button
-            bg={useColorModeValue("#02b1b1", "#02b1b1")}
-            color={"white"}
-            marginRight={"55px"}
-            rounded={"md"}
-            padding={"20px"}
-            _hover={{
-              transform: "translateY(-2px)",
-              boxShadow: "lg",
-              bg: "#F3B46F",
-              color: "black",
-            }}
-            m={5}
-            w={175}
-            marginBottom={{ sm: "10px" }}
-          >
-            CREATE NEW TRIP
-          </Button>
-        </NextLink>
+        <Button
+          bg={useColorModeValue("#02b1b1", "#02b1b1")}
+          color={"white"}
+          marginRight={"55px"}
+          rounded={"md"}
+          padding={"20px"}
+          _hover={{
+            transform: "translateY(-2px)",
+            boxShadow: "lg",
+            bg: "#F3B46F",
+            color: "black",
+          }}
+          m={5}
+          w={175}
+          marginBottom={{ sm: "10px" }}
+        >
+          <NextLink href="/trips/create">
+            <Link>CREATE NEW TRIP</Link>
+          </NextLink>
+        </Button>
       </Heading>
       <Box
         display={{ md: "flex" }}

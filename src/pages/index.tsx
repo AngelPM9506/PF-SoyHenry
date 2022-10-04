@@ -9,6 +9,7 @@ import {
   Switch,
   FormControl,
   FormLabel,
+  Link,
 } from "@chakra-ui/react";
 import ReactPlayer from "react-player";
 import axios from "axios";
@@ -163,24 +164,24 @@ const LandingPage: NextPage = () => {
                     justifyContent={"center"}
                     bottom="5vh"
                   >
-                    <NextLink href="/contact">
-                      <Button
-                        mt={{ base: "60px", md: "5px" }}
-                        rounded="full"
-                        size={"lg"}
-                        width={{ base: "110px", md: "140px" }}
-                        height={{ base: "35px", md: "45px" }}
-                        fontWeight="800"
-                        px={15}
-                        color="#293541"
-                        fontSize={{ base: "18", md: "24" }}
-                        bg="RGBA(209,223,227,0.50)"
-                        mr={"30px"}
-                        _hover={{ bg: "#F3B46F", color: "#293541" }}
-                      >
-                        Contact Us
-                      </Button>
-                    </NextLink>
+                    <Button
+                      mt={{ base: "60px", md: "5px" }}
+                      rounded="full"
+                      size={"lg"}
+                      width={{ base: "110px", md: "140px" }}
+                      height={{ base: "35px", md: "45px" }}
+                      fontWeight="800"
+                      px={15}
+                      color="#293541"
+                      fontSize={{ base: "18", md: "24" }}
+                      bg="RGBA(209,223,227,0.50)"
+                      mr={"30px"}
+                      _hover={{ bg: "#F3B46F", color: "#293541" }}
+                    >
+                      <NextLink href="/contact">
+                        <Link>Contact Us</Link>
+                      </NextLink>
+                    </Button>
                     {/*eslint-disable-next-line @next/next/no-html-link-for-pages*/}
                     <a href="/about">
                       <Button

@@ -63,7 +63,6 @@ const Contact = () => {
     setErrors(validateInput({ ...input, [name]: value }));
   };
   const setWhatsapp = (value: string) => {
-    console.log(value);
     setInput({ ...input, whatsapp: value });
     setErrors(validateInput({ ...input, whatsapp: value }));
   };
@@ -184,7 +183,6 @@ const Contact = () => {
           },
         })
         .then(async (resp) => {
-          //console.log(resp);
           await axios.post("/api/mail", {
             mail: input.email,
             subjet: "successful contact WORLD TRAVELERS",

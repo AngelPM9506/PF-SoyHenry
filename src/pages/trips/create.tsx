@@ -275,7 +275,6 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(input);
     let tripCreated = await createTrip(input);
     setInput(initialState);
     try {
@@ -406,7 +405,6 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
     // setInput({...input,
     //    cities: citiesSelected
     //   })
-    console.log(input);
   };
   return (
     <Layout>
@@ -654,153 +652,159 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
                               columns={{ base: 3, md: 7 }}
                               spacing={1}
                             >
-                              {activities?.filter(a => a.active === true).map((act, i) => {
-                                if (input.cities.includes(act.city.name)) {
-                                  const id = act.id;
-                                  return (
-                                    <Box
-                                      key={act.id}
-                                      role={"group"}
-                                      p={2}
-                                      width={"100%"}
-                                      bg={useColorModeValue(
-                                        "RGBA(75,100,124,0.41)",
-                                        "RGBA(75,100,124,0.41)"
-                                      )}
-                                      boxShadow={"2xl"}
-                                      rounded={"lg"}
-                                      zIndex={1}
-                                      margin={2}
-                                    >
-                                      <Center>
-                                        <Image
-                                          rounded={"md"}
-                                          height={"80px"}
-                                          width={"80px"}
-                                          objectFit={"cover"}
-                                          src={
-                                            act?.image != null
-                                              ? act?.image.toString()
-                                              : url
-                                          }
-                                          alt={act?.name}
-                                        />
-                                      </Center>
-
-                                      <Stack
-                                        pt={1}
-                                        display={"flex"}
-                                        alignItems={"center"}
+                              {activities
+                                ?.filter((a) => a.active === true)
+                                .map((act, i) => {
+                                  if (input.cities.includes(act.city.name)) {
+                                    const id = act.id;
+                                    return (
+                                      <Box
+                                        key={act.id}
+                                        role={"group"}
+                                        p={2}
+                                        width={"100%"}
+                                        bg={useColorModeValue(
+                                          "RGBA(75,100,124,0.41)",
+                                          "RGBA(75,100,124,0.41)"
+                                        )}
+                                        boxShadow={"2xl"}
+                                        rounded={"lg"}
+                                        zIndex={1}
+                                        margin={2}
                                       >
-                                        <Text
-                                          noOfLines={1}
-                                          textAlign={"center"}
-                                          fontSize={"md"}
-                                          fontFamily={"body"}
-                                          fontWeight={70}
-                                        >
-                                          {act?.name}
-                                        </Text>
-                                        <Box
-                                          key={act.name}
+                                        <Center>
+                                          <Image
+                                            rounded={"md"}
+                                            height={"80px"}
+                                            width={"80px"}
+                                            objectFit={"cover"}
+                                            src={
+                                              act?.image != null
+                                                ? act?.image.toString()
+                                                : url
+                                            }
+                                            alt={act?.name}
+                                          />
+                                        </Center>
+
+                                        <Stack
+                                          pt={1}
                                           display={"flex"}
-                                          flexDirection={"row"}
                                           alignItems={"center"}
                                         >
                                           <Text
-                                            p={1}
-                                            fontWeight={70}
+                                            noOfLines={1}
+                                            textAlign={"center"}
                                             fontSize={"md"}
+                                            fontFamily={"body"}
+                                            fontWeight={70}
                                           >
-                                            {`$${act?.price}`}
+                                            {act?.name}
                                           </Text>
-                                        </Box>
-                                        <GridItem>
-                                          <FormLabel fontSize={"xs"}>
-                                            Choose a date
-                                          </FormLabel>
-                                          <MyDataPicker
-                                            _hover={{ cursor: "pointer" }}
-                                            dateFormat="yyyy/mm/ddd"
-                                            onChange={(date) => {
-                                              let D = new Date(date.toString());
-                                              handleActDate(
-                                                `${D.toISOString().slice(
-                                                  0,
-                                                  10
-                                                )}`,
-                                                id
-                                              );
-                                            }}
-                                            filterDate={(date) =>
-                                              ableDays(date, act.availability)
-                                            }
-                                            placeholderText={
-                                              input.activitiesName
-                                                .find(
-                                                  (a: any) =>
-                                                    a.name ===
-                                                    act.name.toString()
-                                                )
-                                                ?.actDate.slice(0, 10)
-                                                ? input.activitiesName
-                                                    .find(
-                                                      (a: any) =>
-                                                        a.name ===
-                                                        act.name.toString()
-                                                    )
-                                                    ?.actDate.slice(0, 10)
-                                                : "Choose a date"
-                                            }
-                                            withPortal
-                                            portalId="root"
-                                            width={"100%"}
-                                            borderRadius={"md"}
-                                            minDate={new Date(input.initDate)}
-                                            maxDate={new Date(input.endDate)}
-                                          />
-                                        </GridItem>
-                                        {/* <GridItem>
+                                          <Box
+                                            key={act.name}
+                                            display={"flex"}
+                                            flexDirection={"row"}
+                                            alignItems={"center"}
+                                          >
+                                            <Text
+                                              p={1}
+                                              fontWeight={70}
+                                              fontSize={"md"}
+                                            >
+                                              {`$${act?.price}`}
+                                            </Text>
+                                          </Box>
+                                          <GridItem>
+                                            <FormLabel fontSize={"xs"}>
+                                              Choose a date
+                                            </FormLabel>
+                                            <MyDataPicker
+                                              _hover={{ cursor: "pointer" }}
+                                              dateFormat="yyyy/mm/ddd"
+                                              onChange={(date) => {
+                                                let D = new Date(
+                                                  date.toString()
+                                                );
+                                                handleActDate(
+                                                  `${D.toISOString().slice(
+                                                    0,
+                                                    10
+                                                  )}`,
+                                                  id
+                                                );
+                                              }}
+                                              filterDate={(date) =>
+                                                ableDays(date, act.availability)
+                                              }
+                                              placeholderText={
+                                                input.activitiesName
+                                                  .find(
+                                                    (a: any) =>
+                                                      a.name ===
+                                                      act.name.toString()
+                                                  )
+                                                  ?.actDate.slice(0, 10)
+                                                  ? input.activitiesName
+                                                      .find(
+                                                        (a: any) =>
+                                                          a.name ===
+                                                          act.name.toString()
+                                                      )
+                                                      ?.actDate.slice(0, 10)
+                                                  : "Choose a date"
+                                              }
+                                              withPortal
+                                              portalId="root"
+                                              width={"100%"}
+                                              borderRadius={"md"}
+                                              minDate={new Date(input.initDate)}
+                                              maxDate={new Date(input.endDate)}
+                                            />
+                                          </GridItem>
+                                          {/* <GridItem>
                                           {errorActivities && (
                                             <Text m={1} color={"#F3B46F"}>
                                               {errorActivities.date}
                                             </Text>
                                           )}
                                         </GridItem> */}
-                                        <Box
-                                          key={act.id + act.name}
-                                          display={"flex"}
-                                          flexDirection={"row"}
-                                          alignItems={"center"}
-                                          justifyContent={"space-between"}
-                                        >
-                                          <Link
-                                            href={`/activities/${act.id}`}
-                                            passHref
+                                          <Box
+                                            key={act.id + act.name}
+                                            display={"flex"}
+                                            flexDirection={"row"}
+                                            alignItems={"center"}
+                                            justifyContent={"space-between"}
                                           >
-                                            <a target={"_blank"}>
-                                              <Button margin={1} size={"xs"}>
-                                                +Info
-                                              </Button>
-                                            </a>
-                                          </Link>
-                                          <Button
-                                            id={id}
-                                            disabled={!isDisabled.includes(id)}
-                                            margin={1}
-                                            onClick={() => {
-                                              handleSelect(act);
-                                            }}
-                                            size={"xs"}
-                                          >
-                                            Add
-                                          </Button>
-                                        </Box>
-                                      </Stack>
-                                    </Box>
-                                  );
-                                }
-                              })}
+                                            <Link
+                                              href={`/activities/${act.id}`}
+                                              passHref
+                                            >
+                                              <a target={"_blank"}>
+                                                <Button margin={1} size={"xs"}>
+                                                  +Info
+                                                </Button>
+                                              </a>
+                                            </Link>
+                                            <Button
+                                              id={id}
+                                              disabled={
+                                                !isDisabled.includes(id)
+                                              }
+                                              margin={1}
+                                              onClick={() => {
+                                                handleSelect(act);
+                                              }}
+                                              size={"xs"}
+                                            >
+                                              Add
+                                            </Button>
+                                          </Box>
+                                        </Stack>
+                                      </Box>
+                                    );
+                                  }
+                                })}
                             </SimpleGrid>
                           </Center>
                         </Box>

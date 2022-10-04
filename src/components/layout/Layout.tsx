@@ -10,9 +10,7 @@ export default function Layout({
   return (
     <Stack minHeight={"100vh"}>
       <Nav />
-      <Box as="main" minHeight={'100vh'}>
-        {children}
-      </Box>
+      {children}
       <Footer />
     </Stack>
   );

@@ -1,4 +1,4 @@
-import { Stack } from "@chakra-ui/react";
+import { Box, Stack } from "@chakra-ui/react";
 import Footer from "./Footer";
 import Nav from "./Nav";
 
@@ -10,7 +10,9 @@ export default function Layout({
   return (
     <Stack minHeight={"100vh"}>
       <Nav />
-      {children}
+      <Box as="main" minHeight={'100vh'}>
+        {children}
+      </Box>
       <Footer />
     </Stack>
   );

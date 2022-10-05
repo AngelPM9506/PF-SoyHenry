@@ -35,7 +35,7 @@ export default function AvaCarousel({ trips }: Props) {
         /> */}
         <Slider {...settings}>
           {trips?.map((trip) => (
-            <NextLink href={`/trips/${trip.id}`}>
+            <NextLink key={trip.id} href={`/trips/${trip.id}`}>
               <Box key={trip.id}>
                 <Tooltip
                   textTransform={"capitalize"}

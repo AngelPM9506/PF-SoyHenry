@@ -225,13 +225,19 @@ export default function ActivityDetail({
                                 ${price}
                               </Text>
                             </Text>
-                            <Text>
+                            <Text 
+                            >
+
+                            <Text >
                               Duration:
+                              </Text>
                               <Text
                                 color={"#F3B46F"}
                                 fontWeight={"bold"}
                                 as={"span"}
+                                
                               >
+                                {/* <br/> */}
                                 {" "}
                                 {initDate.split("T")[0]}{" "}
                               </Text>
@@ -245,6 +251,7 @@ export default function ActivityDetail({
                                 {endDate.split("T")[0]}{" "}
                               </Text>
                             </Text>
+                            
                           </Stack>
                         </Stack>
                       </TabPanel>

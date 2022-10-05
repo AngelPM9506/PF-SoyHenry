@@ -189,10 +189,11 @@ export default function MyTrips() {
       width: "27%",
       responsive: ["lg", "md", "sm", "xs"],
       render: (name: string) => {
-        let newTrip: any = otherTrips?.map((t) => t.name);
+        let newTrip: any = otherTrips?.find((t) => t.name === name);
+
         return (
           <Title level={5}>
-            <Link href={`/trips/${newTrip.id}`} passHref>
+            <Link href={`/trips/${newTrip?.id}`} passHref>
               <a>
                 <Text
                   cursor={"pointer"}

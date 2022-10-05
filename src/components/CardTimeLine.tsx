@@ -27,8 +27,8 @@ export default function CardTimeLine({ activity, actDate, cities }: any) {
   };
   const datedisorder = actDate.slice(0, 10).split("-");
   let datei = [];
-  datei.push(datedisorder[1]);
   datei.push(datedisorder[2]);
+  datei.push(datedisorder[1]);
   datei.push(datedisorder[0]);
   const date = datei.join("/");
 

@@ -679,7 +679,10 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
                               {activities
                                 ?.filter((a) => a.active === true)
                                 .map((act, i) => {
-                                  if (input.cities.includes(act.city.name)) {
+                                  if (
+                                    input.cities.includes(act.city.name) &&
+                                    act.active === true
+                                  ) {
                                     const id = act.id;
                                     return (
                                       <Box

@@ -115,7 +115,7 @@ const ActivitiesControles = {
     orderBy.push(sortfrom);
 
     let condition: condition = {
-      where: wName ? { name: { contains: wName.toString() } } : {},
+      where: wName ? { name: { contains: wName.toString(), mode: 'insensitive' } } : {},
       include: {
         activitiesOnTrips: {
           include: { trip: true },
@@ -144,7 +144,7 @@ const ActivitiesControles = {
     wCity
       ? (condition.where = {
           ...condition.where,
-          city: { is: { name: { contains: wCity.toString() } } },
+          city: { is: { name: { contains: wCity.toString(), mode: 'insensitive' } } },
         })
       : "";
 

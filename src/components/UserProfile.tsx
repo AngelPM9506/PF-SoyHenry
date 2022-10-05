@@ -31,6 +31,7 @@ import {
   validateKeyWords,
 } from "src/utils/validations";
 import { Errors } from "src/utils/interface";
+import { Trip } from "src/utils/interface";
 
 export interface UserData {
   user?: any;
@@ -55,6 +56,7 @@ export interface UserData {
   };
   isAdmin?: boolean;
   active?: boolean;
+  useOnTrip?: Trip[];
 }
 
 export const UserProfile = ({ user }: UserAuth0 | any) => {

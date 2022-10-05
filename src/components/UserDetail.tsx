@@ -41,11 +41,17 @@ export const UserDetail = ({ userDetail, trips }: Props) => {
     (trip) => trip.planner.id === user?.id && trip.active === true
   );
 
-  const tripsTravJoined: Trip[] = trips
-    ?.map((trip) => trip.tripOnUser)
-    .flat()
-    .map((trip) => trip.trip)
-    .filter((trip) => trip.plannerId !== user?.id);
+  const tripsTravJoined = user?.useOnTrip
+    ?.map((trip) => trip.trip)
+    ?.filter((trip) => trip.plannerId !== user?.id);
+
+  console.log(tripsTravJoined);
+
+  // const tripsTravJoined: Trip[] = trips
+  //   ?.map((trip) => trip.tripOnUser)
+  //   .flat()
+  //   .map((trip) => trip.trip)
+  //   .filter((trip) => trip.plannerId !== user?.id);
 
   return (
     <Stack

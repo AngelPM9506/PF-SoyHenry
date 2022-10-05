@@ -21,6 +21,7 @@ import { Trip } from "src/utils/interface";
 import { useAccount, useEnsAddress, useEnsAvatar } from "wagmi";
 import { SendTransaction } from "./SendWeb3Transaction";
 import { FaEthereum } from "react-icons/fa";
+import { useRouter } from "next/router";
 export function ModalWeb3({
   value,
   ethPrice,
@@ -39,7 +40,7 @@ export function ModalWeb3({
   const { data } = useEnsAvatar({
     addressOrName: "world-travelers.eth",
   });
-
+  const router = useRouter();
   return (
     <>
       <Box pl={5}>
@@ -69,7 +70,7 @@ export function ModalWeb3({
       <Modal
         isOpen={isOpen}
         onClose={() => {
-          setValidate("activate");
+          setValidate("validate");
           return onClose();
         }}
         size={"lg"}

@@ -252,7 +252,11 @@ const MyCarousel = ({ trips, activities }: Props) => {
                         >
                           {a.name}
                         </Heading>
-                        <Text fontWeight={200} fontSize={"lg"}>
+                        <Text
+                          textTransform={"capitalize"}
+                          fontWeight={200}
+                          fontSize={"lg"}
+                        >
                           {a.city.name}
                         </Text>
                         <Stack direction={"row"} align={"center"}>

@@ -36,7 +36,7 @@ export default function CardTimeLine({ activity, actDate, cities }: any) {
     <VerticalTimelineElement
       className="vertical-timeline-element--work"
       contentStyle={{
-        background: "#D1DFE3",
+        background: useColorModeValue("white", "#D1DFE3"),
         color: useColorModeValue("#293541", "#F3B46F"),
       }}
       contentArrowStyle={{ borderRight: "7px solid #D1DFE3" }}

@@ -81,10 +81,10 @@ export const TimeLine = ({ data, ethPrice, validate, setValidate }: any) => {
       setUserOnTrip(bool);
     }
     a();
-  }, [data.id, userDb]);
+  }, [data.id, userDb, validate]);
 
   return (
-    <Stack width={"100%"} align={"center"} key={validate} mb={10}>
+    <Stack width={"100%"} align={"center"} mb={10}>
       {userOnTrip ? (
         <Alert
           status="success"

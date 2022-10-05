@@ -107,7 +107,6 @@ export function SendTransaction({
       pb={5}
       pl={1}
     >
-    
       <Flex
         alignItems="center"
         p="1rem 1.25rem 0.5rem"

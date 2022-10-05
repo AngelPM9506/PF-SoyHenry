@@ -83,7 +83,7 @@ export default function TripDetail({
       setUserOnTrip(bool);
     }
     a();
-  }, [data.id, userDb]);
+  }, [data.id, userDb, validate]);
 
   if (isLoading || !userDb || !user) return <LoadingWithoutLayout />;
   if (data.plannerId !== userDb.data.id && data.active === false)

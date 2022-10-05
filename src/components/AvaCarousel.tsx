@@ -35,8 +35,8 @@ export default function AvaCarousel({ trips }: Props) {
         /> */}
         <Slider {...settings}>
           {trips?.map((trip) => (
-            <Box key={trip.id}>
-              <NextLink href={`/trips/${trip.id}`} passHref>
+            <NextLink href={`/trips/${trip.id}`}>
+              <Box key={trip.id}>
                 <Tooltip
                   textTransform={"capitalize"}
                   hasArrow
@@ -53,8 +53,8 @@ export default function AvaCarousel({ trips }: Props) {
                     src={trip.image ? trip.image.toString() : logo}
                   />
                 </Tooltip>
-              </NextLink>
-            </Box>
+              </Box>
+            </NextLink>
           ))}
         </Slider>
       </Box>

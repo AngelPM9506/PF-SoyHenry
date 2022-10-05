@@ -133,7 +133,7 @@ const BreadCrumb = () => {
             <BreadcrumbItem key={index}>
               <Text textTransform={"capitalize"}>{myPath(name)}</Text>
             </BreadcrumbItem>
-          ) : name === "user" ? (
+          ) : name === "user" || name === "chat" ? (
             <BreadcrumbItem key={index}>
               <Text
                 color={useColorModeValue("#293541", "#F3B46F")}

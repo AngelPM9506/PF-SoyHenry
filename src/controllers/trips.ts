@@ -78,7 +78,7 @@ const TripsControllers = {
     sortfrom[sortName] = sort ? sort.toString().toLowerCase() : "desc";
     orderBy.push(sortfrom);
     var condition: condition = {
-      where: wName ? { name: { contains: wName.toString() } } : {},
+      where: wName ? { name: { contains: wName.toString() , mode: 'insensitive' } } : {},
       include: {
         planner: true,
         tripOnUser: {
@@ -105,7 +105,7 @@ const TripsControllers = {
           ...condition.where,
           activitiesOnTrips: {
             some: {
-              activity: { is: { name: { contains: wActivity.toString() } } },
+              activity: { is: { name: { contains: wActivity.toString(), mode: 'insensitive' } } },
             },
           },
         })
@@ -114,7 +114,7 @@ const TripsControllers = {
       ? (condition.where = {
           ...condition.where,
           citiesOnTrips: {
-            some: { city: { is: { name: { contains: wCity.toString() } } } },
+            some: { city: { is: { name: { contains: wCity.toString(), mode: 'insensitive' } } } },
           },
         })
       : "";

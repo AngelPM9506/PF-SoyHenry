@@ -105,7 +105,7 @@ function Trips({ trips }: Props) {
   };
   const handleInputCity = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
-    const city = value.charAt(0).toUpperCase() + value.slice(1);
+    const city = value.toLowerCase();
     setInputCity(city);
   };
   const handleLoadAll = () => {

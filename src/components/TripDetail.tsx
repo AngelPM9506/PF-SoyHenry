@@ -130,7 +130,7 @@ export default function TripDetail({
             />
             <Text textTransform={"capitalize"}>{data.name}</Text>
           </Heading>
-          {/*<Stack
+          <Stack
             alignItems={"center"}
             justifyContent={"center"}
             direction={"row"}
@@ -161,7 +161,7 @@ export default function TripDetail({
             >
               <WhatsappIcon size={40} round />
             </WhatsappShareButton>
-          </Stack>*/}
+          </Stack>
         </Stack>
         <Divider
           orientation="horizontal"

@@ -32,16 +32,16 @@ import MapView from "src/components/DynamicMap";
 import { useUser } from "@auth0/nextjs-auth0";
 import { getOrCreateUser } from "src/utils/User";
 import { useRouter } from "next/router";
-//import {
-//  FacebookShareButton,
-//  FacebookIcon,
-//  WhatsappShareButton,
-//  WhatsappIcon,
-//} from "next-share";
+import {
+  FacebookShareButton,
+  FacebookIcon,
+  WhatsappShareButton,
+  WhatsappIcon,
+} from "next-share";
 import searchUser from "src/utils/searchUserOnTrip";
 
 // const Url = "http://localhost:3000";
-const Url = "https://worldtravelers.vercel.app";
+const Url = "https://worldtravelers-app.herokuapp.com/";
 interface Props {
   id: QueryFunctionContext<string[], any>;
   cities: City[];
@@ -130,7 +130,7 @@ export default function TripDetail({
             />
             <Text textTransform={"capitalize"}>{data.name}</Text>
           </Heading>
-          {/*<Stack
+          <Stack
             alignItems={"center"}
             justifyContent={"center"}
             direction={"row"}
@@ -161,7 +161,7 @@ export default function TripDetail({
             >
               <WhatsappIcon size={40} round />
             </WhatsappShareButton>
-          </Stack>*/}
+          </Stack>
         </Stack>
         <Divider
           orientation="horizontal"

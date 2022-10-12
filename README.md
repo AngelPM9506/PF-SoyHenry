@@ -37,21 +37,12 @@
 <!-- TABLE OF CONTENTS -->
 <details>
   <summary>Table of Contents</summary>
-  <ol>
-    <li>
-      <a href="#about-the-project">About The Project</a>
-      <ul>
-        <li><a href="#built-with">Built With</a></li>
-      </ul>
-    </li>
-    <li>
-      <a href="#roadmap">Roadmap</a>
-      <ul>
-        <li><a href="#prerequisites">Prerequisites</a></li>
-      </ul>
-    </li>
-    <li><a href="#Enviroment variables">Enviroments variables</a></li>
-  </ol>
+  <ul>
+    <li><a href="#about-the-project">About The Project</a></li>
+    <li><a href="#built-with">Built With</a></li>
+    <li><a href="#roadmap">Roadmap</a></li>
+    <li><a href="#payments-accounts">Payments accounts</a></li>
+    <li><a href="#enviroment-variables">Enviroments variables</a></li>
 </details>
 
 
@@ -69,7 +60,7 @@ Our project is called World Travelers. It is a single page application that allo
 
 ## Built With
 
-This section should list any major frameworks/libraries used to bootstrap your project. Leave any add-ons/plugins for the acknowledgements section. Here are a few examples.
+The project was carried out with the following technologies
 <img src="./technologies.png">
 
 <!-- * [![Next][Next.js]][Next-url]
@@ -129,6 +120,7 @@ This is an example of how to list things you need to use the software and how to
   ```sh
   "Get your ether goerli tests in:" https://goerlifaucet.com/
   ```
+  <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- ## Installation
 

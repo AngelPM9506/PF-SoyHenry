@@ -182,9 +182,9 @@ const ActivitiesControles = {
         activity.data.public_id_image = uploadedImage.public_id;
       } else {
         activity.data.image =
-          "https://res.cloudinary.com/mauro4202214/image/upload/v1663527844/world-travelers/activitydefault_q9aljz.png";
+          "https://res.cloudinary.com/santino/image/upload/v1665663024/worldTravelers/activitydefault_reyzfh.png";
         activity.data.public_id_image =
-          "https://res.cloudinary.com/mauro4202214/image/upload/v1663527844/world-travelers/activitydefault_q9aljz.png";
+          "https://res.cloudinary.com/santino/image/upload/v1665663024/worldTravelers/activitydefault_reyzfh.png";
       }
       var responseP = await prisma.activity.create(activity);
       return responseP;

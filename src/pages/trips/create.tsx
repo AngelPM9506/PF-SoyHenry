@@ -84,7 +84,7 @@ const CreateTrip = ({ activities, cities, trips }: Props) => {
     options.push(selectObject);
   });
   const url =
-    "https://res.cloudinary.com/mauro4202214/image/upload/v1663527844/world-travelers/activitydefault_q9aljz.png";
+    "https://res.cloudinary.com/santino/image/upload/v1665663024/worldTravelers/activitydefault_reyzfh.png";
 
   const initialState: Trip = {
     name: "",

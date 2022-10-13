@@ -206,9 +206,9 @@ const TripsControllers = {
       condition.data.public_id_image = uploadedImage.public_id;
     } else {
       condition.data.image =
-        "https://res.cloudinary.com/mauro4202214/image/upload/v1663331567/world-travelers/defaultimagetrip_j90ewc.png";
+        "https://res.cloudinary.com/santino/image/upload/v1665663145/worldTravelers/defaultimagetrip_um4e4r.png";
       condition.data.public_id_image =
-        "https://res.cloudinary.com/mauro4202214/image/upload/v1663331567/world-travelers/defaultimagetrip_j90ewc.png";
+        "https://res.cloudinary.com/santino/image/upload/v1665663145/worldTravelers/defaultimagetrip_um4e4r.png";
     }
 
     try {
@@ -242,7 +242,7 @@ const TripsControllers = {
               "cities": [
                   "Cancún"
               ],
-              "image": "https://res.cloudinary.com/mauro4202214/image/upload/v1663527844/world-travelers/activitydefault_q9aljz.png"
+              "image": "https://res.cloudinary.com/santino/image/upload/v1665663024/worldTravelers/activitydefault_reyzfh.png"
           }
     */
   },

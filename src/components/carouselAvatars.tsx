@@ -21,7 +21,7 @@ import NextLink from "next/link";
 
 export const AvatarCarousel = (props: any) => {
   const defaultpic: string =
-    "https://res.cloudinary.com/mauro4202214/image/upload/v1663331567/world-travelers/favicon.ico_c8ryjz.png";
+    "https://res.cloudinary.com/santino/image/upload/v1665663128/worldTravelers/favicon.ico_tzzyne.png";
 
   return (
     <>

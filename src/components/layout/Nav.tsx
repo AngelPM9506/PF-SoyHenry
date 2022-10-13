@@ -29,9 +29,9 @@ import { useRouter } from "next/router";
 import BreadCrumb from "../BreadCrumb";
 
 const logo: string =
-  "https://res.cloudinary.com/mauro4202214/image/upload/v1663331570/world-travelers/logowt_qifbpn.png";
+  "https://res.cloudinary.com/santino/image/upload/v1665663050/worldTravelers/logowt_ksqzd4.png";
 const logoNight: string =
-  "https://res.cloudinary.com/mauro4202214/image/upload/v1663331569/world-travelers/logolargonight_yqpbps.png";
+  "https://res.cloudinary.com/santino/image/upload/v1665663062/worldTravelers/logolargonight_vzbwzl.png";
 
 const Links = [
   ["/home", "Home"],

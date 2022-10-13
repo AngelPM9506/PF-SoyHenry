@@ -129,7 +129,7 @@ export default function ChatRoom(props: Props) {
       <Image boxSize={"50px"}
         src={
           avatar ||
-          "https://res.cloudinary.com/mauro4202214/image/upload/v1663331567/world-travelers/favicon.ico_c8ryjz.png"
+          "https://res.cloudinary.com/santino/image/upload/v1665663128/worldTravelers/favicon.ico_tzzyne.png"
         }
         alt={""} borderRadius={"full"} boxShadow={"0px 0px 13px 10px rgba(0,0,0,0.1)"} margin={"1px"} />
     );

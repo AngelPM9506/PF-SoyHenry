@@ -21,7 +21,7 @@ import { useWindowSize } from "src/utils/windowsize";
 
 const LandingPage: NextPage = () => {
   const url =
-    " https://res.cloudinary.com/santino/video/upload/v1665663044/worldTravelers/videolandingpagecrop_jlaq6g.mp4/video/upload/v1664478710/world-travelers/videolanding_aborr1.mp4";
+    "https://res.cloudinary.com/santino/video/upload/v1665663044/worldTravelers/videolandingpagecrop_jlaq6g.mp4/video/upload/v1664478710/world-travelers/videolanding_aborr1.mp4";
 
   const [ismuted, setismuted] = useState(true);
   const [color, setcolor] = useState("#D1DFE3");

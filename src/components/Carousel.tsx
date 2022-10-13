@@ -35,7 +35,7 @@ const MyCarousel = ({ trips, activities }: Props) => {
   const router = useRouter();
 
   const defaultpic: string =
-    "https://res.cloudinary.com/mauro4202214/image/upload/v1663331567/world-travelers/defaultimagetrip_j90ewc.png";
+    "https://res.cloudinary.com/santino/image/upload/v1665663145/worldTravelers/defaultimagetrip_um4e4r.png";
 
   const activeTrips = trips.filter((trip) => trip.active === true);
   const activeActivities = activities.filter((act) => act.active === true);

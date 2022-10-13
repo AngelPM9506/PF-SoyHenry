@@ -15,7 +15,7 @@ import { VerticalTimelineElement } from "react-vertical-timeline-component";
 import { MdOutlineTripOrigin } from "react-icons/md";
 
 const url =
-  "https://res.cloudinary.com/mauro4202214/image/upload/v1663527844/world-travelers/activitydefault_q9aljz.png";
+  "https://res.cloudinary.com/santino/image/upload/v1665663024/worldTravelers/activitydefault_reyzfh.png";
 
 export default function CardTimeLine({ activity, actDate, cities }: any) {
   const breakpoints = {

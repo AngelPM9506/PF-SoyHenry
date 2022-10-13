@@ -21,7 +21,7 @@ export default function Loading() {
           <Image
             h={["150px", "150px", "200px"]}
             src={
-              "https://res.cloudinary.com/mauro4202214/image/upload/v1663331568/world-travelers/Loading_veui4u.gif"
+              "https://res.cloudinary.com/santino/image/upload/v1665663116/worldTravelers/Loading_qxacon.gif"
             }
             alt="loading"
           />

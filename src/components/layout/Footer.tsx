@@ -14,7 +14,7 @@ import NextLink from "next/link";
 const Logo = () => {
   return (
     <Image
-      src="https://res.cloudinary.com/mauro4202214/image/upload/v1663331567/world-travelers/favicon.ico_c8ryjz.png"
+      src="https://res.cloudinary.com/santino/image/upload/v1665663128/worldTravelers/favicon.ico_tzzyne.png"
       alt="logo"
       height={"60px"}
     />
